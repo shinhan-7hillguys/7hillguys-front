@@ -1,38 +1,108 @@
-.App {
-  text-align: center;
+
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+div {
+  background: #fff;
+}
+.container {
+  max-width: 500px;
+  height: 100vh;
+  background: #000;
+  margin: 0 auto;
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header_top {
+  background: #DF6E99;
+  width: 100%;
+  height: 40px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header_bottom {
+  height: 50px;
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+.header_bottom h2 {
+  display: flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 3px;
 }
 
-.App-link {
-  color: #61dafb;
+.container {
+  position: relative;
+  /* 기타 레이아웃 스타일 */
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+header {
+  display: flex;
+  flex-direction: column;
+  /* 헤더 스타일 */
+}
+
+.header_bottom {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  /* 헤더 하단 스타일 */
+}
+
+/* 사이드바 기본 스타일 */
+.sidebar {
+  position: absolute;
+  top: 40px;
+  height: calc(100vh - 40px);
+  right: 0;
+  width: 100%;
+  background-color: #0000003f;
+  transition: transform 0.3s ease-in-out;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+
+
+/* 사이드바 내부 링크 스타일 (필요에 따라 추가) */
+.sidebar ul {
+  background: #e8b9e5;
+  width: 70%;
+  padding: 1rem;
+}
+
+.sidebar li {
+  margin-bottom: 1rem;
+}
+
+
+
+
+
+
+
+.card_benefit_sec1 {
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px;
+}
+.card_benefit_sec1 div {
+  width: 280px;
+  height: 170px;
+  background: #DF6E99;
+}
+.card_benefit_sec2 {
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  gap:15px;
+}
+.card_benefit_sec3 {
+  background: #ffd2ff;
 }
