@@ -74,7 +74,11 @@ const Main = () => {
   return (
     <div className="main">
       <div className="main_header">
-        <Link to="/mypage">L o g i n</Link>
+        <div>
+          <Link to="/mypage">
+            <img src="./logo.png" alt="" width={30} height={30} />L o g i n
+          </Link>
+        </div>
       </div>
       <div ref={containerRef} className="viewport-container">
         <div ref={scrollerRef} className="horizontal-scroller">

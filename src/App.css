@@ -2,7 +2,7 @@
   --bg-color: #df6e99;
   --button-color: #df6e99;
   --color: #000;
-  --max-width: 100%;
+  --max-width: 700px;
   --side-padding: 0 30px;
 
   --color-gray: rgba(58, 58, 58, 1);
@@ -150,14 +150,24 @@ header {
   z-index: 10;
   background: transparent;
   margin: 0 auto;
-  max-width: var(--max-width);
   width: 100%;
-  text-align: right;
+  display: flex;
+  justify-content: center;
   padding: 10px;
   font-weight: 600;
 }
+.main_header div {
+  width: var(--max-width);
+  background: transparent;
+  text-align: right;
+  padding-right: 10px;
+}
+.main_header div img {
+}
 .main_header a {
   color: #fff;
+  display: inline-flex;
+  align-items: center;
 }
 
 /* 뷰포트 컨테이너: 600px 폭, 충분한 수직 스크롤을 위해 높이를 500px + 2400px = 2900px로 설정 */
@@ -203,7 +213,7 @@ header {
 .main_box {
   height: 80vh;
   max-width: var(--max-width);
-
+  width: 100%;
   position: relative;
   background: transparent;
   /* backdrop-filter: blur(3px); */
@@ -299,7 +309,7 @@ header {
   display: flex;
   justify-content: right;
   width: 100%;
-  padding: 8px 30px;
+  padding: 8px 20px;
 }
 
 .card_benefit_sec1 {
