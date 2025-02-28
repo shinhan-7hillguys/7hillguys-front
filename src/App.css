@@ -2,7 +2,7 @@
   --bg-color: #df6e99;
   --button-color: #df6e99;
   --color: #000;
-  --max-width: 600px;
+  --max-width: 100%;
   --side-padding: 0 30px;
 
   --color-gray: rgba(58, 58, 58, 1);
@@ -57,13 +57,21 @@
   --font-size20: 20px;
   --font-size22: 22px;
   --font-size24: 24px;
+  --font-size26: 26px;
+  --font-size28: 28px;
+  --font-size30: 30px;
+  --font-size32: 32px;
+  --font-size34: 34px;
+  --font-size36: 36px;
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  text-decoration: none;
 }
+
 div {
   background: #fff;
 }
@@ -137,6 +145,21 @@ header {
   margin: 0 auto;
 } */
 
+.main_header {
+  position: fixed;
+  z-index: 10;
+  background: transparent;
+  margin: 0 auto;
+  max-width: var(--max-width);
+  width: 100%;
+  text-align: right;
+  padding: 10px;
+  font-weight: 600;
+}
+.main_header a {
+  color: #fff;
+}
+
 /* 뷰포트 컨테이너: 600px 폭, 충분한 수직 스크롤을 위해 높이를 500px + 2400px = 2900px로 설정 */
 .viewport-container {
   position: relative;
@@ -160,78 +183,125 @@ header {
   width: 100vw;
   height: 100vh;
   display: flex;
-  align-items: center;
+  /* align-items: center; */
   justify-content: center;
-  font-size: 2rem;
-  background: #f0f0f0;
-  border-right: 1px solid #ccc;
-}
 
+  border-right: 1px solid #ccc;
+  background-image: url("../public/innovation8.jpg");
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+}
+.panel_background {
+  width: 100vw;
+  height: 80vh;
+  display: flex;
+  background: #00000070;
+  /* align-items: center; */
+  justify-content: center;
+}
 .main_box {
-  background: #acacac;
-  height: 100vh;
-  max-width: 70%;
-  width: 100%;
+  height: 80vh;
+  max-width: var(--max-width);
+
+  position: relative;
+  background: transparent;
+  /* backdrop-filter: blur(3px); */
 }
 .main_box em {
-  color: #f5b9e6;
+  color: #fff;
+  position: relative;
+  display: inline-block;
 }
 .main_box_top {
-  height: 30vh;
-  padding: 15px;
-  background: #fff;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-.main_box_top h2 {
-  font-size: var(--font-size20);
-  margin-bottom: 15px;
-  text-align: center;
-  font-weight: 600;
-}
-.main_box_top p {
-  width: 70%;
-  font-size: var(--font-size14);
-  line-height: 1.7;
-  text-align: center;
-  color: #acaeaf;
-  font-weight: 600;
-}
-.main_box_middle {
-  height: 40vh;
-  /* 
-  background: linear-gradient(
-    111deg,
-    rgb(247, 76, 193) 0%,
-    rgb(239, 150, 211, 0.3) 100%
-  );
-  backdrop-filter: blur(15px); */
+  height: 20vh;
+  background: transparent;
 
   display: flex;
   justify-content: center;
+  padding: 0 20px;
+}
+.main_box_middle {
+  padding: 0 20px;
+  height: 60vh;
+  padding: 15px;
+  background: transparent;
+  display: flex;
+  flex-direction: column;
+
+  align-items: start;
   position: relative;
 }
+.main_box_middle h2 {
+  font-size: var(--font-size34);
+  width: 320px;
+  margin-bottom: 15px;
+  margin-right: 10px;
+  font-weight: 600;
+  line-height: 1.5;
+
+  word-wrap: break-word; /* 긴 단어 자동 줄 바꿈 */
+  word-break: break-word; /* 단어가 너무 길면 강제로 줄 바꿈 */
+}
+.main_box_middle p {
+  margin-left: 35px;
+  max-width: 270px;
+  width: 100%;
+  font-size: var(--font-size14);
+  line-height: 2;
+
+  color: #fff;
+}
+
 .main_box_middle img {
   z-index: 2;
 }
-.main_box_middle-shadow {
+/* .main_box_middle-shadow {
   position: absolute;
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 390px;
-  /* 가까운 부분은 어두운 검정, 멀어지면 주황색 파스텔 느낌의 그라데이션 */
+  top: 0;
+  transform: translate(-50%);
+  width: 99%;
+  height: 100vh;
+
   background: linear-gradient(
     135deg,
     rgba(255, 115, 213, 0.7) 0%,
     rgba(235, 217, 238, 0.3) 100%
   );
   filter: blur(4px);
-  z-index: 1; /* 메인 카드 뒤에 배치 */
+  z-index: 1;
+} */
+
+.main_box_bottom {
+  /* background: linear-gradient(
+    135deg,
+    rgba(255, 115, 213, 0.7) 0%,
+    rgba(235, 217, 238, 0.3) 100%
+  ); */
+  background: #ffffff00;
+
+  backdrop-filter: blur(10px);
+  height: 20vh;
 }
+.main_box_middle button {
+  color: #000;
+  padding: 8px 50px;
+  background: var(--button-color);
+  border: 0;
+  border-radius: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+.main_box_middle .button_box {
+  background: transparent;
+  display: flex;
+  justify-content: right;
+  width: 100%;
+  padding: 8px 30px;
+}
+
 .card_benefit_sec1 {
   position: relative;
   background: #fff;

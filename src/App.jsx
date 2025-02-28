@@ -5,6 +5,11 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Benefit from "./pages/card/Benefit";
 import Mypage from "./pages/mypage/Mypage";
 import Main from "./Main";
+import Education from "./pages/education/Education";
+import Peoch from "./pages/peoch/Peoch";
+import Admin from "./pages/admin/Admin";
+import MyCard from "./pages/mypage/card/MyCard";
+import PositiveFactor from "./pages/education/PositiveFactor";
 
 function App() {
   return (
@@ -14,6 +19,12 @@ function App() {
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
           <Route path="/mypage" element={<Mypage />} />
+          <Route path="/education" element={<Education />} />
+          <Route path="/peoch" element={<Peoch />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/signup" element={<Admin />} />
+          <Route path="/mypage/card" element={<MyCard />} />
+          <Route path="/education/compare" element={<PositiveFactor />} />
         </Route>
       </Routes>
     </BrowserRouter>
