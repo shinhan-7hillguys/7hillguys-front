@@ -32,7 +32,7 @@ const Main = () => {
         pinSpacing: false, // ✅ 마지막 섹션이 미리 화면을 차지하는 문제 방지
         scrub: 1,
         start: "top top",
-        end: `+=${scrollEnd + viewportHeight * 0.02}`, // ✅ 스크롤 종료 후 추가 공간 확보
+        end: `+=${scrollEnd + viewportHeight * 0.04}`, // ✅ 스크롤 종료 후 추가 공간 확보
         invalidateOnRefresh: true,
       },
     });
@@ -47,7 +47,22 @@ const Main = () => {
       <div ref={containerRef} className="viewport-container">
         <div ref={scrollerRef} className="horizontal-scroller">
           <section className="panel">
-            <div className="main_box"></div>
+            <div className="main_box">
+              <div className="main_box_top">
+                <h2>같이 만드는 가치, 새로운 금융의 시작</h2>
+                <p>
+                  <em>Peoch</em>는 단순한 금융 서비스가 아닌,
+                  <em>개인의 미래 가능성</em>을 믿고 지원하는 새로운 금융
+                  {/* 모델입니다. 이 슬로건 은 Peoch가 사람들과 함께 가치를 만들어
+                  나간다는 의미를 담고 있습니다. */}
+                </p>
+              </div>
+              <div className="main_box_middle">
+                <img src="./sec1.png" alt="" />
+                <div className="main_box_middle-shadow"></div>
+              </div>
+              <div className="main_box_bottom"></div>
+            </div>
           </section>
           <section className="panel">Panel 2</section>
           <section className="panel">Panel 3</section>
