@@ -1,7 +1,7 @@
 import React from "react";
 
-function Singup() {
+function Signup() {
   return <div>의찬</div>;
 }
 
-export default Singup;
+export default Signup;
