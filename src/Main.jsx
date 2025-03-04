@@ -79,6 +79,12 @@ const Main = () => {
             <img src="./logo.png" alt="" width={30} height={30} />L o g i n
           </Link>
         </div>
+        <div className="auth-links">
+          <Link to="/login" className="login-button">
+            L o g i n
+          </Link>
+          <Link to="/signup" className="signup-button">  S i g n u p</Link>
+        </div>
       </div>
       <div ref={containerRef} className="viewport-container">
         <div ref={scrollerRef} className="horizontal-scroller">
