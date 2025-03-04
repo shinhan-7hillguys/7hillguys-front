@@ -10,7 +10,7 @@ import Peoch from "./pages/peoch/Peoch";
 import Admin from "./pages/admin/Admin";
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
-
+import Dashboard from "./pages/admin/dashboard";
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +25,7 @@ function App() {
           <Route path="/signup" element={<Admin />} />
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
+          <Route path="/dashboard" element={<Dashboard />} />
         </Route>
       </Routes>
     </BrowserRouter>
