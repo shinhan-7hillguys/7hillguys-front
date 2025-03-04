@@ -1,0 +1,160 @@
+/* login.css - 로그인 페이지 스타일 */
+
+/* 전체 컨테이너 */
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding-top: 10px;
+    background-color: white;
+}
+
+/* 로그인 박스 */
+.login-box {
+    background: #FEF7F7;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 300px;
+}
+
+/* 제목 */
+.login-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF4170;
+    margin-bottom: 20px;
+}
+
+/* 입력 필드 */
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #FFD4DE;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+/* 로그인 버튼 */
+.login-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #FEA1B8;
+    color: #FEF7F7;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-button:hover {
+    background-color: #F994AD;
+}
+
+/* 아이디찾기, 비밀번호 찾기 */
+.options {
+    display: flex;
+    justify-content: center;
+    gap: 90px;
+    margin-top: 15px;
+    font-size: 14px;
+    background: #FEF7F7;
+}
+
+.option-link {
+    color: #FF4170;
+    text-decoration: none;
+}
+
+.option-link:hover {
+    text-decoration: underline;
+}
+
+/* 회원가입 섹션 */
+.signup-box {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    background: #FEF7F7;
+}
+
+.signup-button {
+    display: inline-block;
+    width: 80%;
+    padding: 7px;
+    background-color: #FEA1B8;
+    color: #FEF7F7;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.signup-button:hover {
+    background-color: #F994AD;
+}
+
+/* 소셜 로그인 버튼 */
+.social-login {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.social-login button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.social-login img.social-logo {
+    width: 24px; /* 로고 크기 */
+    height: 24px;
+    margin-right: 10px; /* 텍스트와 간격 */
+}
+
+.kakao-login, .naver-login {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    color: #FEF7F7;
+}
+
+.kakao-login {
+    background-color: #FEE500;
+    color: #3C1E1E;
+}
+
+.naver-login {
+    background-color: #03C75A; /* 기존 */
+    color: white;
+    font-weight: bold;
+}
+
+.naver-login:hover {
+    background-color: #029F4F; /* 더 진한 녹색 */
+}
+
+.kakao-login:hover {
+    background-color: #E5D500;
+}
+
