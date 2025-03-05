@@ -6,12 +6,11 @@ import Benefit from "./pages/card/Benefit";
 import Mypage from "./pages/mypage/Mypage";
 import Main from "./Main";
 import Education from "./pages/education/Education";
-import Peoch from "./pages/peoch/Peoch";
-import Admin from "./pages/admin/Admin";
+import Peoch from "./pages/peoch/Peoch"; 
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
 import Singup from "./pages/user/Signup";
-
+import Dashboard from "./pages/admin/Dashboard";
 function App() {
   return (
     <BrowserRouter>
@@ -22,7 +21,7 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/education" element={<Education />} />
           <Route path="/peoch" element={<Peoch />} />
-          <Route path="/admin" element={<Admin />} />
+          <Route path="/admin" element={<Dashboard />} />
           <Route path="/signup" element={<Singup />} />
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
