@@ -19,12 +19,8 @@ const InvestmentSupport = () => {
   useEffect(() => {
     const fetchExpectedIncome = async () => {
       try {
-        const token = localStorage.getItem('token');
-        const response = await axios.get('http://localhost:8080/api/expectedincome/2', {
-                                     headers: {
-                                       Authorization: `Bearer ${token}`, // Authorization 헤더에 JWT 토큰 추가
-                                     },
-                                   });
+
+        const response = await axios.get('http://localhost:8080/api/expectedincome/2');
         const incomeData = response.data[0]; // 첫 번째 데이터를 사용
         const expectedIncome = JSON.parse(incomeData.expectedIncome); // JSON 문자열 파싱
 
