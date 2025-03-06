@@ -10,6 +10,7 @@ import Peoch from "./pages/peoch/Peoch";
 import Admin from "./pages/admin/Admin";
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
+import SignUp from "./pages/user/SignUp";
 
 /*user 디렉토리*/
 import User from "pages/user/User";
@@ -36,8 +37,10 @@ function App() {
           <Route path="/education" element={<Education />} />
           <Route path="/peoch" element={<Peoch />} />
           <Route path="/admin" element={<Admin />} />
+
           <Route path="/investReview" element={<Review />} />
           <Route path="/user" element={<User />} />
+
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
         </Route>

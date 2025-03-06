@@ -70,6 +70,7 @@
   margin: 0;
   box-sizing: border-box;
   text-decoration: none;
+  list-style: none;
 }
 
 div {
@@ -77,8 +78,11 @@ div {
 }
 .container {
   max-width: var(--max-width);
-  /* height: 100vh; */
-  background: #000;
+  height: 100vh;
+  /* background-image: radial-gradient(circle at top right, #fff4fb 0%, #f6cfea 100%); */
+  background-image: radial-gradient(circle at top right, #ff6ca2 -100%, #fcf4f4 100%);
+  /* background-image: radial-gradient(circle at top right, #ebbcf2 0%, #ffe7e7 100%); */
+  padding: 5px 0;
   margin: 0 auto;
 }
 
@@ -92,13 +96,18 @@ div {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  /* padding: 10px; */
+  
 }
 .header_bottom h2 {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 3px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
 }
 
 header {
@@ -112,6 +121,13 @@ header {
   align-items: center;
   justify-content: space-between;
   /* 헤더 하단 스타일 */
+  /* background: linear-gradient(
+    135deg,
+    rgba(255, 115, 213, 0.7) 0%,
+    rgba(235, 208, 240, 0.548) 100%
+  ); */
+  background: transparent;
+  backdrop-filter: blur(50px);
 }
 
 /* 사이드바 기본 스타일 */
@@ -145,187 +161,27 @@ header {
   margin: 0 auto;
 } */
 
-.main_header {
-  position: fixed;
-  z-index: 10;
-  background: transparent;
-  margin: 0 auto;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 10px;
-  font-weight: 600;
-}
-.main_header div {
-  width: var(--max-width);
-  background: transparent;
-  text-align: right;
-  padding-right: 10px;
-}
-.main_header div img {
-}
-.main_header a {
-  color: #fff;
-  display: inline-flex;
-  align-items: center;
-}
 
-/* 뷰포트 컨테이너: 600px 폭, 충분한 수직 스크롤을 위해 높이를 500px + 2400px = 2900px로 설정 */
-.viewport-container {
-  position: relative;
-  width: 100vw;
-  /* height: 2400px;  */
-  overflow-x: hidden; /* 가로 스크롤 숨김 */
-  overflow-y: auto; /* 세로 스크롤은 표시 */
-  margin: 0 auto;
-}
 
-/* horizontal-scroller: 5개의 패널을 가로로 배열 (총 3000px: 600px * 5) */
-.horizontal-scroller {
-  display: flex;
-  width: 500vw;
-  position: absolute;
-}
 
-/* 각 패널: 600px x 500px 크기로 중앙 정렬 */
-.panel {
-  flex-shrink: 0;
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  /* align-items: center; */
-  justify-content: center;
 
-  border-right: 1px solid #ccc;
-  background-image: url("../public/innovation8.jpg");
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-}
-.panel_background {
-  width: 100vw;
-  height: 80vh;
-  display: flex;
-  background: #00000070;
-  /* align-items: center; */
-  justify-content: center;
-}
-.main_box {
-  height: 80vh;
-  max-width: var(--max-width);
-  width: 100%;
-  position: relative;
-  background: transparent;
-  /* backdrop-filter: blur(3px); */
-}
-.main_box em {
-  color: #fff;
-  position: relative;
-  display: inline-block;
-}
-.main_box_top {
-  height: 20vh;
-  background: transparent;
 
-  display: flex;
-  justify-content: center;
-  padding: 0 20px;
-}
-.main_box_middle {
-  padding: 0 20px;
-  height: 60vh;
-  padding: 15px;
-  background: transparent;
-  display: flex;
-  flex-direction: column;
-
-  align-items: start;
-  position: relative;
-}
-.main_box_middle h2 {
-  font-size: var(--font-size34);
-  width: 320px;
-  margin-bottom: 15px;
-  margin-right: 10px;
-  font-weight: 600;
-  line-height: 1.5;
-
-  word-wrap: break-word; /* 긴 단어 자동 줄 바꿈 */
-  word-break: break-word; /* 단어가 너무 길면 강제로 줄 바꿈 */
-}
-.main_box_middle p {
-  margin-left: 35px;
-  max-width: 270px;
-  width: 100%;
-  font-size: var(--font-size14);
-  line-height: 2;
-
-  color: #fff;
-}
-
-.main_box_middle img {
-  z-index: 2;
-}
-/* .main_box_middle-shadow {
-  position: absolute;
-  left: 50%;
-  top: 0;
-  transform: translate(-50%);
-  width: 99%;
-  height: 100vh;
-
-  background: linear-gradient(
-    135deg,
-    rgba(255, 115, 213, 0.7) 0%,
-    rgba(235, 217, 238, 0.3) 100%
-  );
-  filter: blur(4px);
-  z-index: 1;
-} */
-
-.main_box_bottom {
-  /* background: linear-gradient(
-    135deg,
-    rgba(255, 115, 213, 0.7) 0%,
-    rgba(235, 217, 238, 0.3) 100%
-  ); */
-  background: #ffffff00;
-
-  backdrop-filter: blur(10px);
-  height: 20vh;
-}
-.main_box_middle button {
-  color: #000;
-  padding: 8px 50px;
-  background: var(--button-color);
-  border: 0;
-  border-radius: 10px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-}
-.main_box_middle .button_box {
-  background: transparent;
-  display: flex;
-  justify-content: right;
-  width: 100%;
-  padding: 8px 20px;
-}
 
 .card_benefit_sec1 {
   position: relative;
-  background: #fff;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 30px;
+  padding: 20px;
 }
 .card {
   box-shadow: 0 8px 12px -2px rgba(2, 2, 2, 0.3),
     /* 아래쪽 그림자 */ -2px 0 4px rgba(97, 97, 97, 0.3); /* 왼쪽 그림자 */
-  width: 280px;
-  height: 170px;
-  background: transparent; /* 혹은 원하는 배경색 */
+  width: 100%;
+  height: 180px;
+  border-radius: 20px;
+  background: url("../public/main66.png") no-repeat center center/ cover; /* 혹은 원하는 배경색 */
   z-index: 2; /* shadow보다 위에 배치 */
   /* 기타 스타일 (예: 테두리, 내부 패딩 등) */
 }
@@ -348,11 +204,60 @@ header {
   z-index: 1; /* 메인 카드 뒤에 배치 */
 }
 .card_benefit_sec2 {
-  background: #fff;
+  background: transparent;
   display: flex;
   justify-content: center;
   gap: 15px;
+  margin-bottom: 20px;
+  padding: 0 20px;
 }
-.card_benefit_sec3 {
-  background: #ffd2ff;
+.card_benefit_sec2 div {
+  background: linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%);
+  width: 33.3%;
+  height: 70px;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+.card_benefit_sec2 div img {
+  border-radius: 50px;
+}
+.card_benefit_sec3{
+  margin: 10px 20px;
+  height: 25vw;
+  display: flex;
+  border-radius: 20px;
+  background: linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%);
+  padding: 10px;
+  /* color:#fff; */
+}
+.card_benefit_sec3_left {
+  width: 40%;
+  background: transparent;
+}
+.card_benefit_sec3_right {
+  width: 60%;
+  background: transparent;
+}
+.card_benefit_sec4 {
+  background: #fffdfd64;
+}
+.card_benefit_sec4 li {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+.card_benefit_sec4 li div {
+  background: transparent;
+}
+.card_benefit_sec4 li p:nth-child(1) {
+  font-size: 18px;
+  font-weight: 600;
+}
+.card_benefit_sec4 li p:nth-child(2) {
+  color: #6d6666;
+  font-size: 14px;
 }
