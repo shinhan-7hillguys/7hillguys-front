@@ -11,6 +11,7 @@ import Admin from "./pages/admin/Admin";
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
 import SignUp from "./pages/user/SignUp";
+import BenefitCompare from "pages/card/BenefitCompare";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
         <Route path="/" element={<Main />} />
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
+          <Route path="/benefit/compare" element={<BenefitCompare />} />
+
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/education" element={<Education />} />
           <Route path="/peoch" element={<Peoch />} />
