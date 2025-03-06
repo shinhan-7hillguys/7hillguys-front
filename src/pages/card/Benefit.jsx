@@ -1,3 +1,4 @@
+import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import React from "react";
 
@@ -84,22 +85,33 @@ const Benefit = () => {
       </section>
       <section className="card_benefit_sec2">
         <div>
-          <div>★</div>
+           <ArrowUpOutlined style={{ fontSize: '30px' }} />
+          <span>add</span>
+        </div>
+        <div>
+        <ArrowDownOutlined style={{ fontSize: '30px' }} />
           <span>clear</span>
         </div>
         <div>
-          <div>★</div>
-          <span>clear</span>
+        <BarcodeOutlined style={{ fontSize: '30px' }}  />
+          <span>결제</span>
         </div>
-        <div
+        {/* <div
           className="applied-benefits"
           onClick={() => setIsModalOpen((prev) => !prev)}
         >
           <div>★</div>
           <span>my</span>
-        </div>
+        </div> */}
       </section>
       <section className="card_benefit_sec3">
+          <div className="card_benefit_sec3_left">
+            <p>총 할인 받은 금액</p>
+            <span>42,200</span>
+          </div>
+          <div className="card_benefit_sec3_right">그래프</div>
+      </section>
+      <section className="card_benefit_sec4">
         {benefits.map((benefit) => (
           <li
             key={benefit.id}
@@ -107,7 +119,12 @@ const Benefit = () => {
             onDragStart={(e) => handleDragStart(e, benefit)}
             className="benefit-item"
           >
-            {benefit.name} - {benefit.description}
+            <div>
+              <p>자격증 시험 응시료 10% 할인</p>
+              <p>국가공인 자격증 시험만 가능</p>
+            </div>
+            <div><p>$350</p></div>
+           
           </li>
         ))}
       </section>
