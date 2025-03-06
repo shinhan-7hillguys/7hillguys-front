@@ -10,7 +10,6 @@ import Peoch from "./pages/peoch/Peoch";
 import Admin from "./pages/admin/Admin";
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
-import SignUp from "./pages/user/SignUp";
 import BenefitCompare from "pages/card/BenefitCompare";
 
 /*user 디렉토리*/
