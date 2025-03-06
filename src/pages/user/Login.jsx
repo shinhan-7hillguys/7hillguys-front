@@ -33,9 +33,12 @@ function Login() {
 
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem("token", data.token); // 토큰 저장
+                if(!data.accessToken) throw new Error("JWT를 가져올 수 없음");
+                console.log("token값: " + data.accessToken);
+
+                localStorage.setItem("token", data.accessToken);
                 alert("로그인 성공!");
-                navigate("/"); // 로그인 성공 후 메인 페이지로 이동
+                navigate("/");
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || "로그인 실패");
