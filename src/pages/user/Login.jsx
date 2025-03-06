@@ -32,7 +32,7 @@ function Login() {
             });
 
             if (response.ok) {
-                const data = await response.json();
+                const data = await response.text();
                 localStorage.setItem("token", data.token); // 토큰 저장
                 alert("로그인 성공!");
                 navigate("/"); // 로그인 성공 후 메인 페이지로 이동

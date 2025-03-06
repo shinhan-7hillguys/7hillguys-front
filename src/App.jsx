@@ -10,25 +10,37 @@ import Peoch from "./pages/peoch/Peoch";
 import Admin from "./pages/admin/Admin";
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
-import Singup from "./pages/user/Signup";
+
+
+import Login from "pages/user/Login";
+import Signup from "pages/user/Signup";
+
+// /*투자 심사 및 결과*/
+// import Review from "investReview/Review";
+
 
 function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Main />} />
-        <Route element={<AppLayout />}>
-          <Route path="/card" element={<Benefit />} />
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/peoch" element={<Peoch />} />
-          <Route path="/admin" element={<Admin />} />
-          <Route path="/signup" element={<Singup />} />
-          <Route path="/mypage/card" element={<MyCard />} />
-          <Route path="/education/compare" element={<PositiveFactor />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Main/>}/>
+
+          {/* 로그인 & 회원가입 추가 */}
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/signup" element={<Signup/>}/>
+
+          <Route element={<AppLayout/>}>
+            <Route path="/card" element={<Benefit/>}/>
+            <Route path="/mypage" element={<Mypage/>}/>
+            <Route path="/education" element={<Education/>}/>
+            <Route path="/peoch" element={<Peoch/>}/>
+            <Route path="/admin" element={<Admin/>}/>
+            {/*<Route path="/investReview" element={<Review />} />*/}
+            <Route path="/mypage/card" element={<MyCard/>}/>
+            <Route path="/education/compare" element={<PositiveFactor/>}/>
+          </Route>
+        </Routes>
+      </BrowserRouter>
   );
 }
 

@@ -1,7 +1,12 @@
 import React from "react";
+import InvestmentSupport from "./amount/InvestmentSupport";
 
 const Peoch = () => {
-  return <div>종현</div>;
+    return (
+        <div>
+            <InvestmentSupport/>
+        </div>
+    );
 };
 
 export default Peoch;
