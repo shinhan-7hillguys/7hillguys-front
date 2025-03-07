@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-const AppLayout = ({ children }) => {
+
+const AppLayout = () => {
   // 사이드바 렌더링 여부
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
@@ -21,7 +22,9 @@ const AppLayout = ({ children }) => {
               Peoch
             </h2>
           </Link>
+
           
+
           {/* 햄버거 버튼: 클릭 시 토글 */}
           <img
             src="/menu.png"
@@ -78,7 +81,11 @@ const AppLayout = ({ children }) => {
               {" "}
               admin
             </Link>
-            <Link to="/signup" style={{ marginRight: "1rem" }}>
+            <Link to="/investReview" style={{ marginRight: "1rem" }}>
+              {" "}
+              investReview
+            </Link>
+            <Link to="/user" style={{ marginRight: "1rem" }}>
               {" "}
               의찬
             </Link>
