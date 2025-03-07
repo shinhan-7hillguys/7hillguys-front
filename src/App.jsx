@@ -18,7 +18,7 @@ import Login from "pages/user/Login";
 import SignUp from "pages/user/SignUp";
 
 /*투자 심사 및 결과*/
-import Review from "investReview/Review";
+// import Review from "investReview/Review";
 
 
 function App() {
@@ -40,7 +40,7 @@ function App() {
           <Route path="/peoch" element={<Peoch />} />
           <Route path="/admin" element={<Admin />} />
 
-          <Route path="/investReview" element={<Review />} />
+          {/* <Route path="/investReview" element={<Review />} /> */}
           <Route path="/user" element={<User />} />
 
           <Route path="/mypage/card" element={<MyCard />} />
