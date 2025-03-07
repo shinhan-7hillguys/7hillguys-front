@@ -29,13 +29,13 @@ const InfoText = styled.p`
 
 const HighlightText = styled.span`
     font-weight: bold;
-    color: #ff7f50;
+    color: var(--color-red);
 `;
 
 const Button = styled.button`
     margin-top: 20px;
     padding: 10px 20px;
-    background-color: #ff7f50;
+    background-color: var(--color-blue);
     color: #fff;
     border: none;
     border-radius: 5px;
@@ -43,7 +43,7 @@ const Button = styled.button`
     font-size: 16px;
 
     &:hover {
-        background-color: #ff5733;
+        background-color: var(--color-blue980);
         transition: background-color 0.3s ease-in-out;
     }
 `;
@@ -55,34 +55,30 @@ const ChartContainer = styled.div`
 const InvestmentTempAllowance = () => {
     const [data, setData] = useState(null);
     const [chartData, setChartData] = useState([]);
-    const [loading, setLoading] = useState(true); // 로딩 상태 관리
-    const [error, setError] = useState(null); // 에러 상태 관리
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchInvestmentDetails = async () => {
             try {
-                // 투자 데이터 가져오기
                 const responseDetails = await axios.get('http://localhost:8080/api/investment/tempallowance/6');
                 const investmentData = responseDetails.data;
-
                 setData(investmentData);
 
-                // incomes 배열에서 예상 소득 데이터 추출
                 if (investmentData.incomes && investmentData.incomes.length > 0) {
-                    const incomeObject = investmentData.incomes[0]; // 첫 번째 객체 추출
-                    const expectedIncomeJson = JSON.parse(incomeObject.expectedIncome); // JSON 문자열 파싱
+                    const incomeObject = investmentData.incomes[0];
+                    const expectedIncomeJson = JSON.parse(incomeObject.expectedIncome);
 
-                    // 그래프 데이터 생성
                     const graphData = Object.keys(expectedIncomeJson).map((year) => ({
                         name: `${year}세`,
                         예상소득: expectedIncomeJson[year] / 10000,
-                        환급금액:
-                            (expectedIncomeJson[year] * (investmentData.refundRate / 100)) / 10000,
+                        예상소득표시: `${(expectedIncomeJson[year] / 10000).toLocaleString()} 만원`,
+                        환급금액: (expectedIncomeJson[year] * (investmentData.refundRate / 100)) / 10000,
+                        환급금액표시: `${((expectedIncomeJson[year] * (investmentData.refundRate / 100)) / 10000).toLocaleString()} 만원`
                     }));
 
                     setChartData(graphData);
                 }
-
                 setLoading(false);
             } catch (err) {
                 console.error('데이터를 가져오는 중 에러 발생:', err);
@@ -109,7 +105,7 @@ const InvestmentTempAllowance = () => {
             <InfoText>
                 예상 생애 총소득 합계:
                 <HighlightText>
-                    {chartData.reduce((a, b) => a.예상소득 + b.예상소득, 0).toLocaleString()} 만원
+                    {chartData.reduce((a, b) => a + b.예상소득, 0).toLocaleString()} 만원
                 </HighlightText>
             </InfoText>
             <InfoText>
@@ -119,38 +115,21 @@ const InvestmentTempAllowance = () => {
                 환급 비율:<HighlightText> {(data.refundRate).toFixed(2)}%</HighlightText>
             </InfoText>
 
-            {/* 차트 렌더링 */}
             <ChartContainer>
                 <ResponsiveContainer width="100%" height={300}>
                     <AreaChart data={chartData} margin={{top: 10, right: 30, left: 0, bottom: 0}}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="name"/>
-                        {/* 동일한 y축 범위 설정 */}
-                        <YAxis domain={[0, Math.max(...chartData.map((d) => d.예상소득))]}/>
-                        <Tooltip/>
-                        {/* 예상 소득 그래프 */}
-                        <Area
-                            type="monotone"
-                            dataKey="예상소득"
-                            stackId="1"
-                            stroke="#8884d8"
-                            fill="#8884d8"
-                            dot={{r: 4}} // 각 데이터 포인트에 점 표시
-                        />
-                        {/* 환급 금액 그래프 */}
-                        <Area
-                            type="monotone"
-                            dataKey="환급금액"
-                            stackId="1"
-                            stroke="#82ca9d"
-                            fill="#82ca9d"
-                            dot={{r: 4}} // 각 데이터 포인트에 점 표시
-                        />
+                        <YAxis domain={[0, Math.max(...chartData.map((d) => d.예상소득)) * 1.1]}/>
+                        <Tooltip formatter={(value) => `${Number(value).toLocaleString()} 만원`}/>
+                        <Area type="monotone" dataKey="예상소득" stroke="var(--color-blue)" fill="var(--color-blue60)"
+                              dot={{r: 1.5}} name="예상 소득 (만원)"/>
+                        <Area type="monotone" dataKey="환급금액" stroke="var(--color-red)" fill="var(--color-red100)"
+                              dot={{r: 1.5}} name="환급 금액 (만원)"/>
                     </AreaChart>
                 </ResponsiveContainer>
             </ChartContainer>
 
-            {/* 버튼 */}
             <Button>한도 재선정 신청</Button>
         </Container>
     );
