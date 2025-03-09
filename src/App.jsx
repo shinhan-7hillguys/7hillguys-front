@@ -17,10 +17,11 @@ import BenefitCompare from "pages/card/BenefitCompare";
 import User from "pages/user/User";
 import Login from "pages/user/Login";
 import Signup from "pages/user/Signup";
+
+/*투자 심사 및 결과*/
+import Review from "pages/investReview/Review";
 import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowance";
 import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
-
-
 
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
 
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup/>}/>
+        <Route path="/signup" element={<Signup />} />
 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />

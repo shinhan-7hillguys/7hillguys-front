@@ -78,19 +78,17 @@ function Login() {
                     <Link to="/find-id" className="option-link">아이디 찾기</Link>
                     <Link to="/find-password" className="option-link">비밀번호 찾기</Link>
                 </div>
-                <div className="signup-box">
+                <div className="login-signup-box">
                     <p>아직 회원이 아니신가요?</p>
                     <Link to="/signup" className="signup-button">회원가입</Link>
                 </div>
                 <div className="social-login">
                     <button className="kakao-login">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg"
-                             alt="Kakao" className="social-logo" />
+
                         카카오톡으로 계속하기
                     </button>
                     <button className="naver-login">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Naver_Logotype.svg"
-                             alt="Naver" className="social-logo" />
+
                         네이버로 계속하기
                     </button>
                 </div>
