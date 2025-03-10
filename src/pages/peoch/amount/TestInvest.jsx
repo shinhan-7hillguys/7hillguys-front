@@ -53,13 +53,12 @@ const ChartContainer = styled.div`
 `;
 /*
 생애주기 소득말고 투자 받기로 한 금액 & 실제 사용한 금액 월별로
-이번달까지 투자 받기로 한 금액(투자 가능한 금액 * 진행률)
 진행률
-투자 받은 금액(카드 사용액의 합)
+투자 받은 금액
 
 
 그래프
-월 받기로 한 금액(이번달만 표시)(임시한도가 있을시 임시 한도로 설정)
+월 받기로 한 금액
 실제 사용한 금액
  */
 
@@ -141,7 +140,7 @@ const InvestmentTempAllowance = () => {
                 </ResponsiveContainer>
             </ChartContainer>
 
-            <Button>임시 한도 신청</Button>
+            <Button>한도 재선정 신청</Button>
         </Container>
     );
 };

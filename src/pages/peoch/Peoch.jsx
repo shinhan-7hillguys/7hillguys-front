@@ -35,6 +35,20 @@ const Peoch = () => {
         >
           투자 지원 금액 변경
         </button>
+          <button
+              onClick={() => navigate("/investment-support")}
+              style={{
+                  margin: "10px",
+                  padding: "10px 20px",
+                  backgroundColor: "#f4d03f",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "5px",
+                  cursor: "pointer",
+              }}
+          >
+              투자 받는 금액 신청/변경
+          </button>
       </div>
   );
 };
