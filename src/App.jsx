@@ -32,6 +32,8 @@ import Review from "pages/investReview/Review";
 import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowance";
 import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
  
+import SetInvestment from "./pages/peoch/amount/SetInvestment";
+
 function App() {
   return (
     <BrowserRouter>
@@ -57,7 +59,10 @@ function App() {
  
           <Route path="/investReview" element={<Review />} />
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
-          <Route path="/investment-support" element={<InvestmentSupport/>}/> 
+          <Route path="/investment-support" element={<InvestmentSupport/>}/>
+          <Route path="/SetInvestment" element={<SetInvestment/>}/>
+          <Route path="/admin" element={<Admin />} />
+
 
           <Route path="/user" element={<User />} />
 
