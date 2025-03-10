@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import Confetti from "react-confetti";
 import { useWindowSize } from "react-use";
 import styled from "styled-components";
-import "./Card.css";
+// import "./Card.css";
 import axios from "axios";
 
 // Styled Components
