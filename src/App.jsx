@@ -17,6 +17,9 @@ import BenefitCompare from "pages/card/BenefitCompare";
 import User from "pages/user/User";
 import Login from "pages/user/Login";
 import Signup from "pages/user/Signup";
+import SignUp from "pages/user/SignUp";
+import ResumeEdit from "./pages/education/ResumeEdit";
+import SalaryComparisonChart from "./pages/education/SalaryComparisonChart";
 
 /*투자 심사 및 결과*/
 import Review from "pages/investReview/Review";
@@ -40,6 +43,8 @@ function App() {
 
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/education" element={<Education />} />
+          <Route path="/ResumeEdit" element={<ResumeEdit />} />
+          <Route path="/SalaryComparisonChart" element={<SalaryComparisonChart />} />
           <Route path="/peoch" element={<Peoch />} />
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
           <Route path="/investment-support" element={<InvestmentSupport/>}/>
