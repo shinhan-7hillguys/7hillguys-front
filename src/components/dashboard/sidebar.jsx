@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import logo from '../image/peach.jpg';
+ 
 
 const SidebarContainer = styled.div`
   width: 240px; 
@@ -18,12 +18,13 @@ const LogoContainer = styled.div`
   flex-direction:column;
   align-items: center;
   margin-bottom: 30px;
+  background : inherit !important;
 `;
 
 const LogoIcon = styled.div`
-  width: 40px;
-  height: 40px;
-  background: url(${logo}) no-repeat center/cover; 
+  width: 100px;
+  height: 100px;
+  background: url('/logo.png') no-repeat;
   margin-bottom : 20px;
 `;
 
@@ -43,6 +44,7 @@ const SectionTitle = styled.div`
   color: #888;
   letter-spacing: 0.5px;
   text-transform: uppercase;
+  background-color: inherit !important;
 `;
 
 const MenuItem = styled.div`
@@ -78,14 +80,15 @@ const SubMenuContainer = styled.div`
   margin-left: 32px;
   margin-top: 4px;
   display: ${({ $isOpen }) => ($isOpen ? 'block' : 'none')};
+  background-color: inherit !important;
 `;
 
 const SubMenuItem = styled(Link)`
   display: flex;
   align-items: center;
   padding: 8px 0 10px 24px;
-  color: ${({ isSelected }) => (isSelected ? '#E5A0A0' : '#444')};
-  background-color: ${({ isSelected }) => (isSelected ? '#2C0202' : 'transparent')};
+  color: ${({ isSelected }) => (isSelected ? '#E5A0A0' : '#444')} !important;
+  background-color: ${({ isSelected }) => (isSelected ? '#2C0202' : 'transparent')} !important;
   transition: color 0.2s, background-color 0.5s;
   cursor: pointer;
 
@@ -117,8 +120,8 @@ const Sidebar = () => {
   return (
     <SidebarContainer> 
       <LogoContainer>
-        <LogoIcon />
-        <LogoText to="/">Peoch</LogoText>
+        <LogoIcon to="/admin"/>
+        <LogoText to="/admin">Peoch</LogoText>
       </LogoContainer>
  
       <SectionTitle>Menu</SectionTitle>
@@ -128,10 +131,10 @@ const Sidebar = () => {
         <Chevron $isOpen={dashboardOpen} />
       </MenuItem>
       <SubMenuContainer $isOpen={dashboardOpen}>
-        <SubMenuItem to="/">종합</SubMenuItem>
-        <SubMenuItem to="/dashboard/support">지원율</SubMenuItem>
-        <SubMenuItem to="/dashboard/payment">납부율</SubMenuItem>
-        <SubMenuItem to="/dashboard/group">그룹 통계</SubMenuItem>
+        <SubMenuItem to="/admin">종합</SubMenuItem>
+        <SubMenuItem to="/admin/dashboard/support">지원율</SubMenuItem>
+        <SubMenuItem to="/admin/dashboard/payment">납부율</SubMenuItem>
+        <SubMenuItem to="/admin/dashboard/group">그룹 통계</SubMenuItem>
       </SubMenuContainer>
 
     

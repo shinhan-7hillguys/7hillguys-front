@@ -12,6 +12,9 @@ import PositiveFactor from "./pages/education/PositiveFactor";
 import SignUp from "./pages/user/SignUp";
 import Dashboard from "./pages/admin/Dashboard";
 import UserMain from "./pages/peoch/Usermain";
+import Layout from "./components/dashboard/DashboardLayout";
+import SearchResults from "./pages/admin/searchresult";
+import Detail from "./pages/admin/Detail";
 
 function App() {
   return (
@@ -23,12 +26,16 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/education" element={<Education />} />
           <Route path="/peoch" element={<Peoch />} />
-          <Route path="/admin" element={<Dashboard />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
           <Route path="/user/dashboard" element={<UserMain />} />
         </Route>
+        <Route element={<Layout />}>
+          <Route path="/admin" element={<Dashboard />} /> 
+          <Route path="/admin/search/:query" element={<SearchResults />} />  
+          <Route path="/admin/user/detail/:id" element={<Detail />} />
+        </Route>  
       </Routes>
     </BrowserRouter>
   );

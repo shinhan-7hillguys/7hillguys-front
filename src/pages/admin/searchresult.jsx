@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
-import { dummyUsers } from '../dummyData';
+import { dummyUsers } from 'dummyData';
 
  
 const PageContainer = styled.div`
@@ -108,8 +108,7 @@ const UserSearchPage = () => {
   const [gender, setGender] = useState('');
   const [occupation, setOccupation] = useState('');
   const [salary, setSalary] = useState(0);
-
-  // dummyUsers를 사용하여 검색
+ 
   const filteredUsers = dummyUsers.filter(user => {
     return (
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -165,7 +164,7 @@ const UserSearchPage = () => {
               <UserItem key={user.id}>
                 <UserPhoto src={user.photo} alt={user.name} />
                 <UserInfo>
-                  <UserLink to={`/user/${user.id}`}>{user.name}</UserLink>
+                  <UserLink to={`/admin/user/detail/${user.id}`}>{user.name}</UserLink>
                   <UserDetailText>생년월일: {user.birth_date}</UserDetailText>
                   <UserDetailText>직업: {user.occupation}</UserDetailText>
                 </UserInfo>

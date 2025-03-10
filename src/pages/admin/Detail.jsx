@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import config from '../config';
-import ChartCard from '../components/dashboard/chartcard';
-import PieChartCard from '../components/dashboard/piechart';
-import Badge from '../components/dashboard/Badge';
-import { dummyUser, dummyUserProfile, dummyInvestment, dummyStatCategories, dummyDataMap } from '../dummyData';
+import config from 'config';
+import ChartCard from 'components/dashboard/chartcard';
+import PieChartCard from 'components/dashboard/piechart';
+import Badge from 'components/dashboard/Badge';
+import { dummyUser, dummyUserProfile, dummyInvestment, dummyStatCategories, dummyDataMap } from 'dummyData';
 
 const PageContainer = styled.div`
   padding: 24px;

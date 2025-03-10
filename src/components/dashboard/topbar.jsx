@@ -1,8 +1,7 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-import { AuthContext } from '../contexts/AuthContext';
-
+ 
 const TopbarContainer = styled.div`
   width: 100%;
   height: 64px;
@@ -49,8 +48,8 @@ const SearchButton = styled.button`
 `;
 
 const SearchIcon = styled.img`
-  width: 20px;
-  height: 20px;
+  width: 35px;
+  height: 35x;
   border: 1px solid black;
   padding: 7.5px;
   border-radius: 8px;
@@ -91,15 +90,14 @@ const LogoutButton = styled.button`
 const Topbar = () => {
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
-  const { user, logout } = useContext(AuthContext);
-
+ 
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
   };
 
   const handleSearchClick = () => {
     if (searchValue.trim()) {
-      navigate(`/search/${searchValue}`);
+      navigate(`/admin/search/${searchValue}`);
     }
   };
 
@@ -127,7 +125,7 @@ const Topbar = () => {
           />
         </SearchButton>
       </SearchContainer>
-      <UserProfile>
+    {/*   <UserProfile>
         {user ? (
           <>
             <UserName>{user.name}</UserName>
@@ -137,7 +135,7 @@ const Topbar = () => {
         ) : (
           <UserName onClick={() => navigate('/login')}>로그인</UserName>
         )}
-      </UserProfile>
+      </UserProfile> */}
     </TopbarContainer>
   );
 };
