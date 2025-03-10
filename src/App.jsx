@@ -11,6 +11,8 @@ import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
 import Singup from "./pages/user/Signup";
 import Dashboard from "./pages/admin/Dashboard";
+import UserMain from "./pages/peoch/Usermain";
+
 function App() {
   return (
     <BrowserRouter>
@@ -25,6 +27,7 @@ function App() {
           <Route path="/signup" element={<Singup />} />
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
+          <Route path="/user" element={<UserMain />} />
         </Route>
       </Routes>
     </BrowserRouter>

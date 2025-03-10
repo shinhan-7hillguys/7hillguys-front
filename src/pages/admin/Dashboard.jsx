@@ -4,10 +4,8 @@ import ChartCard from 'components/dashboard/chartcard';
 import PieChartCard from 'components/dashboard/piechart';
 import Badge from 'components/dashboard/Badge';
 import UserListCard from 'components/dashboard/UserListCard';
-import config from 'config';
-import dummyDataMap from 'dummyData';   
-import { getDashboardData } from 'api';  
- 
+import dummyDataMap from 'dummyData';
+
 const DashboardContainer = styled.div`
   flex: 1;
   padding: 24px;
@@ -136,12 +134,7 @@ const Dashboard = () => {
       setLoading(true);
       setError(null);
       try {
-        if (config.useDummyData) {  // 더미데이터 사용
-          setDashboardData(dummyDataMap[selectedStat][selectedPeriod]);
-        } else { // 실제 API 사용
-          const apiData = await getDashboardData(selectedStat, selectedPeriod);
-          setDashboardData(apiData);
-        }
+        setDashboardData(dummyDataMap[selectedStat][selectedPeriod]);
       } catch (err) {
         setError('데이터를 불러오는 데 실패했습니다.');
       } finally {

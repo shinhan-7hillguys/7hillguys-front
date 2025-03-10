@@ -9,7 +9,7 @@ function Login() {
         password: "",
     });
 
-    const navigate = useNavigate(); // 로그인 성공 시 페이지 이동을 위한 Hook
+    const navigate = useNavigate();  
 
     const handleChange = (e) => {
         const { name, value } = e.target;
