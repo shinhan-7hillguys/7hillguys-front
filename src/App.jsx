@@ -12,6 +12,7 @@ import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
 import BenefitCompare from "pages/card/BenefitCompare";
 
+
 /*user 디렉토리*/
 import User from "pages/user/User";
 import Login from "pages/user/Login";
@@ -19,6 +20,8 @@ import Signup from "pages/user/Signup";
 
 /*투자 심사 및 결과*/
 import Review from "pages/investReview/Review";
+import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowance";
+import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
 
 
 function App() {
@@ -38,9 +41,11 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/education" element={<Education />} />
           <Route path="/peoch" element={<Peoch />} />
+          <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
+          <Route path="/investment-support" element={<InvestmentSupport/>}/>
           <Route path="/admin" element={<Admin />} />
 
-          <Route path="/investReview" element={<Review />} />
+
           <Route path="/user" element={<User />} />
 
           <Route path="/mypage/card" element={<MyCard />} />
