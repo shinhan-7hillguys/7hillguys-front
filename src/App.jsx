@@ -10,6 +10,8 @@ import Peoch from "./pages/peoch/Peoch";
 import Admin from "./pages/admin/Admin";
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
+import Dashboard from "./pages/admin/dashboard";
+import Design from "./pages/card/design";
 import BenefitCompare from "pages/card/BenefitCompare";
 
 
@@ -56,6 +58,8 @@ function App() {
 
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/design" element={<Design />} />
         </Route>
       </Routes>
     </BrowserRouter>
