@@ -9,7 +9,7 @@ import Education from "./pages/education/Education";
 import Peoch from "./pages/peoch/Peoch"; 
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
-import Singup from "./pages/user/Signup";
+import SignUp from "./pages/user/SignUp";
 import Dashboard from "./pages/admin/Dashboard";
 import UserMain from "./pages/peoch/Usermain";
 
@@ -24,10 +24,10 @@ function App() {
           <Route path="/education" element={<Education />} />
           <Route path="/peoch" element={<Peoch />} />
           <Route path="/admin" element={<Dashboard />} />
-          <Route path="/signup" element={<Singup />} />
+          <Route path="/signup" element={<SignUp />} />
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
-          <Route path="/user" element={<UserMain />} />
+          <Route path="/user/dashboard" element={<UserMain />} />
         </Route>
       </Routes>
     </BrowserRouter>
