@@ -1,6 +1,7 @@
 :root {
   --bg-color: #df6e99;
-  --button-color: #df6e99;
+  --button-color: linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%);
+  --box-color: linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%);
   --color: #000;
   --max-width: 700px;
   --side-padding: 0 30px;
@@ -70,15 +71,19 @@
   margin: 0;
   box-sizing: border-box;
   text-decoration: none;
+  list-style: none;
 }
 
 div {
-  background: #fff;
+  background: transparent;
 }
 .container {
   max-width: var(--max-width);
-  /* height: 100vh; */
-  background: #000;
+  height: 100vh;
+  /* background-image: radial-gradient(circle at top right, #fff4fb 0%, #f6cfea 100%); */
+  background-image: radial-gradient(circle at top right, #ff6ca2 -100%, #fcf4f4 100%);
+  /* background-image: radial-gradient(circle at top right, #ebbcf2 0%, #ffe7e7 100%); */
+  /* padding: 5px 0; */
   margin: 0 auto;
 }
 
@@ -88,17 +93,22 @@ div {
   height: 40px;
 }
 .header_bottom {
-  height: 50px;
+  height: 7vh;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
+  /* padding: 10px; */
+  
 }
 .header_bottom h2 {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 3px;
+  font-weight: 600;
+  text-decoration: none;
+  color: #fff;
+  font-size: 20px;
 }
 
 header {
@@ -112,6 +122,13 @@ header {
   align-items: center;
   justify-content: space-between;
   /* 헤더 하단 스타일 */
+  /* background: linear-gradient(
+    135deg,
+    rgba(255, 115, 213, 0.7) 0%,
+    rgba(235, 208, 240, 0.548) 100%
+  ); */
+  background: transparent;
+  backdrop-filter: blur(50px);
 }
 
 /* 사이드바 기본 스타일 */
@@ -150,48 +167,3 @@ header {
 
 
 
-
-.card_benefit_sec1 {
-  position: relative;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 30px;
-}
-.card {
-  box-shadow: 0 8px 12px -2px rgba(2, 2, 2, 0.3),
-    /* 아래쪽 그림자 */ -2px 0 4px rgba(97, 97, 97, 0.3); /* 왼쪽 그림자 */
-  width: 280px;
-  height: 170px;
-  background: transparent; /* 혹은 원하는 배경색 */
-  z-index: 2; /* shadow보다 위에 배치 */
-  /* 기타 스타일 (예: 테두리, 내부 패딩 등) */
-}
-
-/* 그림자 역할을 하는 추가 요소 */
-.card-shadow {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  width: 290px;
-  height: 180px;
-  /* 가까운 부분은 어두운 검정, 멀어지면 주황색 파스텔 느낌의 그라데이션 */
-  background: linear-gradient(
-    135deg,
-    rgba(255, 115, 213, 0.7) 0%,
-    rgba(235, 217, 238, 0.3) 100%
-  );
-  filter: blur(4px);
-  z-index: 1; /* 메인 카드 뒤에 배치 */
-}
-.card_benefit_sec2 {
-  background: #fff;
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-}
-.card_benefit_sec3 {
-  background: #ffd2ff;
-}

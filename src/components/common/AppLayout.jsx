@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, Outlet } from "react-router-dom";
 
-const AppLayout = ({ children }) => {
+
+const AppLayout = () => {
   // 사이드바 렌더링 여부
   const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
@@ -13,7 +14,7 @@ const AppLayout = ({ children }) => {
   return (
     <div className="container">
       <header>
-        <div className="header_top"></div>
+        {/* <div className="header_top"></div> */}
         <div className="header_bottom">
           <Link to="/">
             <h2>
@@ -21,36 +22,9 @@ const AppLayout = ({ children }) => {
               Peoch
             </h2>
           </Link>
-          <nav>
-            <Link to="/card" style={{ marginRight: "1rem" }}>
-              Card
-            </Link>
-            <Link to="/mypage" style={{ marginRight: "1rem" }}>
-              My Page
-            </Link>
-            <Link to="/education" style={{ marginRight: "1rem" }}>
-              {" "}
-              education
-            </Link>
-            <Link to="/peoch" style={{ marginRight: "1rem" }}>
-              {" "}
-              Peoch
-            </Link>
-            <Link to="/admin" style={{ marginRight: "1rem" }}>
-              {" "}
-              admin
-            </Link>
-            <Link to="/signup" style={{ marginRight: "1rem" }}>
-              {" "}
-              의찬
-            </Link>
-            <Link to="/education/compare" style={{ marginRight: "1rem" }}>
-              민영
-            </Link>
-            <Link to="/mypage/card" style={{ marginRight: "1rem" }}>
-              시현
-            </Link>
-          </nav>
+
+          
+
           {/* 햄버거 버튼: 클릭 시 토글 */}
           <img
             src="/menu.png"
@@ -88,6 +62,40 @@ const AppLayout = ({ children }) => {
                 My Page
               </Link>
             </li>
+            <nav>
+            <Link to="/card" style={{ marginRight: "1rem" }}>
+              Card
+            </Link>
+            <Link to="/mypage" style={{ marginRight: "1rem" }}>
+              My Page
+            </Link>
+            <Link to="/education" style={{ marginRight: "1rem" }}>
+              {" "}
+              education
+            </Link>
+            <Link to="/peoch" style={{ marginRight: "1rem" }}>
+              {" "}
+              Peoch
+            </Link>
+            <Link to="/admin" style={{ marginRight: "1rem" }}>
+              {" "}
+              admin
+            </Link>
+            <Link to="/investReview" style={{ marginRight: "1rem" }}>
+              {" "}
+              investReview
+            </Link>
+            <Link to="/user" style={{ marginRight: "1rem" }}>
+              {" "}
+              의찬
+            </Link>
+            <Link to="/education/compare" style={{ marginRight: "1rem" }}>
+              민영
+            </Link>
+            <Link to="/mypage/card" style={{ marginRight: "1rem" }}>
+              시현
+            </Link>
+          </nav>
           </ul>
         </aside>
       )}
