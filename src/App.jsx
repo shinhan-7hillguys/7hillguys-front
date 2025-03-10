@@ -46,6 +46,7 @@ function App() {
           <Route path="/ResumeEdit" element={<ResumeEdit />} />
           <Route path="/SalaryComparisonChart" element={<SalaryComparisonChart />} />
           <Route path="/peoch" element={<Peoch />} />
+          <Route path="/investReview" element={<Review />} />
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
           <Route path="/investment-support" element={<InvestmentSupport/>}/>
           <Route path="/admin" element={<Admin />} />
