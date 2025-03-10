@@ -41,6 +41,7 @@ function App() {
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/education" element={<Education />} />
           <Route path="/peoch" element={<Peoch />} />
+          <Route path="/investReview" element={<Review />} />
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
           <Route path="/investment-support" element={<InvestmentSupport/>}/>
           <Route path="/admin" element={<Admin />} />
