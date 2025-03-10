@@ -33,9 +33,12 @@ function Login() {
 
             if (response.ok) {
                 const data = await response.json();
-                localStorage.setItem("token", data.token); // 토큰 저장
+                if(!data.accessToken) throw new Error("JWT를 가져올 수 없음");
+                console.log("token값: " + data.accessToken);
+
+                localStorage.setItem("token", data.accessToken);
                 alert("로그인 성공!");
-                navigate("/"); // 로그인 성공 후 메인 페이지로 이동
+                navigate("/");
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || "로그인 실패");
@@ -75,19 +78,17 @@ function Login() {
                     <Link to="/find-id" className="option-link">아이디 찾기</Link>
                     <Link to="/find-password" className="option-link">비밀번호 찾기</Link>
                 </div>
-                <div className="signup-box">
+                <div className="login-signup-box">
                     <p>아직 회원이 아니신가요?</p>
                     <Link to="/signup" className="signup-button">회원가입</Link>
                 </div>
                 <div className="social-login">
                     <button className="kakao-login">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/e/e3/KakaoTalk_logo.svg"
-                             alt="Kakao" className="social-logo" />
+
                         카카오톡으로 계속하기
                     </button>
                     <button className="naver-login">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/23/Naver_Logotype.svg"
-                             alt="Naver" className="social-logo" />
+
                         네이버로 계속하기
                     </button>
                 </div>
