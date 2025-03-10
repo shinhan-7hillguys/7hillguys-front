@@ -36,7 +36,7 @@ const Peoch = () => {
           투자 지원 금액 변경
         </button>
           <button
-              onClick={() => navigate("/investment-support")}
+              onClick={() => navigate("/setInvestment")}
               style={{
                   margin: "10px",
                   padding: "10px 20px",
