@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from "react-router-dom";
 import "styles/user/signup.css";
 
-function SignUp(props) {
+function Signup(props) {
     const [formData, setFormData] = React.useState({
         email: "",
         password: "",
@@ -108,4 +108,4 @@ function SignUp(props) {
     );
 }
 
-export default SignUp;
+export default Signup;
