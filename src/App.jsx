@@ -31,7 +31,6 @@ import SalaryComparisonChart from "./pages/education/SalaryComparisonChart";
 import Review from "pages/investReview/Review";
 import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowance";
 import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
- 
 import SetInvestment from "./pages/peoch/amount/SetInvestment";
 
 function App() {
