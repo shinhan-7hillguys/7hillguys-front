@@ -10,11 +10,10 @@ import Peoch from "./pages/peoch/Peoch";
 import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
  
-import Dashboard from "./pages/admin/Dashboard";
 import UserMain from "./pages/peoch/Usermain";
  
 import Dashboard from "./pages/admin/dashboard";
-import Design from "./pages/card/design";
+import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
 
