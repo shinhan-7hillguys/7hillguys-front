@@ -60,9 +60,7 @@ function App() {
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
           <Route path="/investment-support" element={<InvestmentSupport/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
-          <Route path="/admin" element={<Admin />} />
-
-
+ 
           <Route path="/user" element={<User />} />
 
           <Route path="/mypage/card" element={<MyCard />} />
