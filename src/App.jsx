@@ -12,7 +12,7 @@ import MyCard from "./pages/mypage/card/MyCard";
 import PositiveFactor from "./pages/education/PositiveFactor";
 import Dashboard from "./pages/admin/dashboard"; 
 import BenefitCompare from "pages/card/BenefitCompare";
-
+import CardDesignPage from "pages/card/CardDesignPage";
 
 /*user 디렉토리*/
 import User from "pages/user/User";
@@ -39,6 +39,7 @@ function App() {
 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
+          <Route path="/card/design" element={<CardDesignPage />} />
           <Route path="/benefit/compare" element={<BenefitCompare />} />
 
           <Route path="/mypage" element={<Mypage />} />
