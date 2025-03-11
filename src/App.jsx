@@ -24,6 +24,8 @@ import SalaryComparisonChart from "./pages/education/SalaryComparisonChart";
 import Review from "pages/investReview/Review";
 import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowance";
 import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
+import InvestmentStatusCheck from "pages/investResult/InvestmentStatusCheck";
+import ContractSigning from "pages/investResult/ContractSigning";
 
 
 function App() {
@@ -31,7 +33,6 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
-
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
@@ -45,7 +46,9 @@ function App() {
           <Route path="/ResumeEdit" element={<ResumeEdit />} />
           <Route path="/SalaryComparisonChart" element={<SalaryComparisonChart />} />
           <Route path="/peoch" element={<Peoch />} />
+          <Route path="/contract" element={<ContractSigning />} />
           <Route path="/investReview" element={<Review />} />
+          <Route path="/investment/status" element={<InvestmentStatusCheck />} />
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
           <Route path="/investment-support" element={<InvestmentSupport/>}/>
           <Route path="/admin" element={<Admin />} />
