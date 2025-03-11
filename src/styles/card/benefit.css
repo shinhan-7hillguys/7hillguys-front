@@ -59,7 +59,7 @@
     gap: 15px;
     margin-bottom: 20px;
     padding: 0 20px;
-    height: 10vh;
+    height: calc(10vh - 20px);
   }
   .card_benefit_sec2 div {
     background: var(--box-color);
@@ -76,12 +76,12 @@
     border-radius: 50px;
   }
   .card_benefit_sec3{
-    margin: 10px 20px;
-    height: 25vw;
+    height: 15vh;
     display: flex;
     border-radius: 20px;
     background: var(--box-color);
-    padding: 10px;
+    padding: 20px;
+    margin: 40px 15px 15px 15px;
     /* color:#fff; */
   }
   .card_benefit_sec3_left {
@@ -93,13 +93,20 @@
     background: transparent;
   }
   .card_benefit_sec4 {
-
-  }
-  .benefits-list {
     background: #fffdfd64;
-    height: calc( 50vh - 20px);
-    overflow: scroll;
+    height: 29vh;
+    overflow: auto; /* 스크롤 기능 유지 */
+    -ms-overflow-style: none;  /* IE, Edge에서 스크롤 바 숨김 */
+    scrollbar-width: none;  /* Firefox에서 스크롤 바 숨김 */
   }
+ 
+  .benefits-list {
+    
+}
+
+.card_benefit_sec4::-webkit-scrollbar {
+    display: none; /* Chrome, Safari에서 스크롤 바 숨김 */
+}
   .card_benefit_sec4 li {
     display: flex;
     justify-content: space-between;

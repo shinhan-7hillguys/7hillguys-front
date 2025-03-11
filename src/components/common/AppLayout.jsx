@@ -63,7 +63,7 @@ const AppLayout = () => {
               </Link>
             </li>
             <nav>
-            <Link to="/card" style={{ marginRight: "1rem" }}>
+            <Link to="/card/intro" style={{ marginRight: "1rem" }}>
               Card
             </Link>
             <Link to="/mypage" style={{ marginRight: "1rem" }}>

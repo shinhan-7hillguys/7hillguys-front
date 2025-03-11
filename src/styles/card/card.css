@@ -1,0 +1,39 @@
+.card_intro {
+    height: calc(100vh - 50px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #000;
+    justify-content: space-between;
+    padding: 20px 0 50px 0;
+}   
+
+.card_intro h1 {
+    font-weight: 600;
+    font-size: var(--font-size26);
+    margin-top: 50px;
+}
+
+.card_intro p {
+    font-weight: 600;
+    text-align: center;
+    padding: 5px;
+    font-size: var(--font-size18);
+}
+
+.intro_card {
+    width: 80%;
+    height: 30vh;
+    
+    background: #f98ac7;
+    border-radius: 20px;
+}
+.card_intro button {
+    width: 80%;
+    background: #DF6E99;
+    padding: 15px;
+    border: 0;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 10px;
+}
