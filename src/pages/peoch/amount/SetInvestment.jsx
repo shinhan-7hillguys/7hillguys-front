@@ -1,120 +1,177 @@
 import React, {useState, useEffect} from "react";
 import axios from "axios";
+import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from "recharts";
 import styled from "styled-components";
-import {
-    AreaChart,
-    Area,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    ResponsiveContainer,
-} from "recharts";
 
 const Container = styled.div`
     padding: 20px;
-    font-family: Arial, sans-serif;
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-`;
-
-const Header = styled.h1`
-    font-size: 24px;
+    max-width: 1200px;
+    margin: 20px auto;
 `;
 
 const SliderContainer = styled.div`
-    margin-top: 20px;
+    margin: 20px 0;
 `;
 
-const Label = styled.label`
-    font-size: 14px;
-`;
-
-const Slider = styled.input`
-    width: calc(100% - 20px);
-`;
-
-const ChartContainer = styled.div`
-    margin-top: 20px;
-`;
-
-const InvestmentTempAllowance = () => {
-    const [monthlySupport, setMonthlySupport] = useState(50); // 월 지원 금액 (단위 만원)
-    const [supportPeriod, setSupportPeriod] = useState(5); // 지원 기간 (단위 년)
-    const [inflationRate] = useState(2); // 물가 상승률 (%)
-    const [maxInvestment, setMaxInvestment] = useState(0); // 지원 가능 금액
+const InvestmentSimulator = () => {
+    const [monthlySupport, setMonthlySupport] = useState(50);
+    const [supportPeriod, setSupportPeriod] = useState(5);
+    const [refundRate, setRefundRate] = useState(0);
     const [chartData, setChartData] = useState([]);
+    const [expectedIncomes, setExpectedIncomes] = useState([]);
+    const [inflationRates, setInflationRates] = useState({});
+    const [maxInvestment, setMaxInvestment] = useState(0);
 
+    // 초기 데이터 로드
     useEffect(() => {
-        const fetchMaxInvestment = async () => {
+        const fetchInitialData = async () => {
             try {
-                const response = await axios.get(
-                    `/api/investment/max-investment/1?monthlySupport=${monthlySupport}&supportPeriod=${supportPeriod}&inflationRate=${inflationRate}`
-                );
-                setMaxInvestment(response.data);
+                const response = await axios.get("http://localhost:8080/api/investment/setamount/6");
+                const parsedIncomes = Object.entries(JSON.parse(response.data.expectedIncomes))
+                    .map(([age, income]) => ({age: parseInt(age), income}));
+
+                setExpectedIncomes(parsedIncomes);
+                setInflationRates(JSON.parse(response.data.inflationRate));
+                setMaxInvestment(response.data.maxInvestment);
             } catch (error) {
-                console.error("지원 가능 금액을 가져오는 중 오류 발생:", error);
+                console.error("초기 데이터 로드 실패:", error);
             }
         };
+        fetchInitialData();
+    }, []);
 
-        fetchMaxInvestment();
-    }, [monthlySupport, supportPeriod, inflationRate]);
+    // 환급률 조회 (100% 제한)
+    useEffect(() => {
+        const totalInvestment = monthlySupport * supportPeriod * 12 * 10000;
+        const fetchRefundRate = async () => {
+            try {
+                const response = await axios.post("http://localhost:8080/api/investment/refund-rate", {
+                    userId: 6,
+                    investAmount: totalInvestment
+                });
+                console.log(response);
+                setRefundRate(response.data);
+            } catch (error) {
+                console.error("환급 비율 조회 실패:", error);
+            }
+        };
+        if (totalInvestment > 0) fetchRefundRate();
+    }, [monthlySupport, supportPeriod]);
 
-    const calculateChartData = () => {
-        let currentIncome = maxInvestment;
-        const data = [];
-        for (let i = 1; i <= supportPeriod * 12; i++) {
-            currentIncome *= (1 + inflationRate / (100 * 12));
-            data.push({
-                name: `${i}개월`,
-                예상소득: Math.round(currentIncome),
-            });
-        }
-        setChartData(data);
+    // 최대값 동적 계산
+    const maxMonthlySupport = Math.floor(maxInvestment / (supportPeriod * 12 * 10000)) || 1;
+    const maxSupportPeriod = Math.min(10, Math.floor(maxInvestment / (monthlySupport * 12 * 10000)) || 1);
+
+
+    // 슬라이더 핸들러
+    const handleMonthlySupportChange = (value) => {
+        const newValue = Math.min(value, maxMonthlySupport);
+        setMonthlySupport(newValue);
     };
 
+    const handleSupportPeriodChange = (value) => {
+        const newValue = Math.min(value, maxSupportPeriod);
+        setSupportPeriod(newValue);
+    };
+
+    // 물가상승률 계산 로직
+    const getInflationRate = (period, rates) => {
+        const periods = Object.keys(rates).map(Number).sort((a, b) => a - b);
+        const validPeriods = periods.filter(p => p <= period);
+        return validPeriods.length > 0
+            ? rates[Math.max(...validPeriods)]
+            : rates[Math.max(...periods)];
+    };
+
+    // 차트 데이터 생성 (물가상승률 반영)
     useEffect(() => {
-        calculateChartData();
-    }, [maxInvestment]);
+        if (expectedIncomes.length > 0 && refundRate > 0) {
+            const newChartData = expectedIncomes.map(({age, income}) => ({
+                age,
+                expected: income,
+                refund: Math.round(income * refundRate / 100), // 예상 소득에 환급률 직접 적용
+                refundPercentage: (refundRate).toFixed(1) + "%" // 환급률 표시
+            }));
+            setChartData(newChartData);
+        }
+    }, [expectedIncomes, refundRate, monthlySupport, supportPeriod]);
 
     return (
         <Container>
-            <Header>투자 지원 금액 변경</Header>
+            <h2>생애주기 투자 시뮬레이션</h2>
+
             <SliderContainer>
-                <Label>월 지원 금액 (만원): {monthlySupport}</Label>
-                <Slider
-                    type="range"
-                    min="10"
-                    max="100"
-                    value={monthlySupport}
-                    onChange={(e) => setMonthlySupport(Number(e.target.value))}
-                />
+                <label>
+                    월 지원금: {monthlySupport}만원 (최대 {maxMonthlySupport}만원)
+                    <input
+                        type="range"
+                        min="10"
+                        max={maxMonthlySupport}
+                        value={monthlySupport}
+                        onChange={(e) => handleMonthlySupportChange(Number(e.target.value))}
+                        style={{width: "100%"}}
+                    />
+                </label>
             </SliderContainer>
+
             <SliderContainer>
-                <Label>지원 기간 (년): {supportPeriod}</Label>
-                <Slider
-                    type="range"
-                    min="1"
-                    max="10"
-                    value={supportPeriod}
-                    onChange={(e) => setSupportPeriod(Number(e.target.value))}
-                />
+                <label>
+                    지원 기간: {supportPeriod}년 (최대 {maxSupportPeriod}년)
+                    <input
+                        type="range"
+                        min="1"
+                        max={maxSupportPeriod > 10 ? 10 : maxSupportPeriod}
+                        value={supportPeriod}
+                        onChange={(e) => handleSupportPeriodChange(Number(e.target.value))}
+                        style={{width: "100%"}}
+                    />
+                </label>
             </SliderContainer>
-            <ChartContainer>
-                <ResponsiveContainer width="100%" height={300}>
+
+            <div style={{height: "500px"}}>
+                <ResponsiveContainer width="100%" height="100%">
                     <AreaChart data={chartData}>
                         <CartesianGrid strokeDasharray="3 3"/>
-                        <XAxis dataKey="name"/>
-                        <YAxis/>
-                        <Tooltip/>
-                        <Area type="monotone" dataKey="예상소득" stroke="#8884d8" fill="#8884d8"/>
+                        <XAxis dataKey="age" label={{value: "나이", position: "bottom"}}/>
+                        <YAxis
+                            label={{value: "금액 (만 원)", angle: -90, position: "insideLeft"}}
+                            tickFormatter={(value) => `${Math.round(value / 10000)}`}
+                        />
+                        <Tooltip
+                            formatter={(value) => `${value.toLocaleString()}원`}
+                            contentStyle={{backgroundColor: '#fff', boxShadow: '0 2px 4px rgba(0,0,0,0.1)'}}
+                        />
+                        <Area
+                            type="monotone"
+                            dataKey="expected"
+                            name="예상 소득"
+                            stroke="#4f46e5"
+                            fill="#818cf8"
+                            fillOpacity={0.2}
+                        />
+                        <Area
+                            type="monotone"
+                            dataKey="refund"
+                            name="환급 금액"
+                            stroke="#10b981"
+                            fill="#34d399"
+                            fillOpacity={0.2}
+                        />
                     </AreaChart>
                 </ResponsiveContainer>
-            </ChartContainer>
-            <p>지원 가능 금액: {maxInvestment.toLocaleString()} 원</p>
+            </div>
+
+            <div style={{marginTop: "20px", padding: "0px 20px"}}>
+                <h3>투자 정보</h3>
+                <p>총 투자금: {(monthlySupport * supportPeriod * 12 * 10000).toLocaleString()}원</p>
+                <p>환급 비율: {(refundRate).toFixed(1)}%</p>
+                <p>적용 물가 상승률: {getInflationRate(supportPeriod, inflationRates)}%</p>
+            </div>
         </Container>
     );
 };
 
-export default InvestmentTempAllowance;
+export default InvestmentSimulator;
