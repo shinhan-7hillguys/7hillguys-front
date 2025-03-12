@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import axios from 'axios';
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend} from 'recharts';
 import styled from 'styled-components';
+import {useNavigate} from "react-router-dom";
 
 // 기존 스타일 정의
 const Container = styled.div`
@@ -11,6 +12,7 @@ const Container = styled.div`
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     margin: 20px auto;
+    text-align: center;
 `;
 
 // 새로운 스타일 정의
@@ -93,31 +95,10 @@ const Button = styled.button`
     }
 `;
 
-const InvestmentExitUI = () => {
-    return (
-        <NewContainer>
-            <Title>카멜레온 카드로 절약한 금액</Title>
-            <MembershipInfo>
-                <Amount>61,000원</Amount>
-                <BenefitsList>
-                    <BenefitItem>혜택1 - 3,000원</BenefitItem>
-                    <BenefitItem>혜택2 - 40,000원</BenefitItem>
-                    <BenefitItem>혜택3 - 18,000원</BenefitItem>
-                </BenefitsList>
-            </MembershipInfo>
-            <ButtonsContainer>
-                <Button>내가 받고 있는 혜택 유지하기</Button>
-            </ButtonsContainer>
-            <SadIcon>😢</SadIcon>
-            <p>그래도 해지하시겠어요?</p>
-            <ButtonsContainer>
-                <Button>내가 받고 있는 혜택 포기하기</Button>
-            </ButtonsContainer>
-        </NewContainer>
-    );
-};
+
 
 const InvestmentExit = () => {
+    const navigate = useNavigate();
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -201,8 +182,27 @@ const InvestmentExit = () => {
                 <p>{(((totalLastIncome / totalFirstIncome - 1) * 100).toFixed(2))}%의 소득성장을 이루었습니다.</p>
             </div>
             {/* 새로운 컴포넌트 추가 */}
-            <InvestmentExitUI/>
+            {/*<InvestmentExitUI/>*/}
+            <Title>카멜레온 카드으로 절약한 금액</Title>
+            <MembershipInfo>
+                <Amount>61,000원</Amount>
+                <BenefitsList>
+                    <BenefitItem>혜택1 - 3,000원</BenefitItem>
+                    <BenefitItem>혜택2 - 40,000원</BenefitItem>
+                    <BenefitItem>혜택3 - 18,000원</BenefitItem>
+                </BenefitsList>
+            </MembershipInfo>
+            <ButtonsContainer>
+                <Button>내가 받고 있는 혜택 유지하기</Button>
+            </ButtonsContainer>
+            <SadIcon>😢</SadIcon>
+            <p>그래도 해지하시겠어요?</p>
 
+            <ButtonsContainer>
+                <Button type="button" onClick={() => navigate("/investmentReallyExit")}>
+                    내가 받고 있는 혜택 포기하기
+                </Button>
+            </ButtonsContainer>
 
         </Container>
     );

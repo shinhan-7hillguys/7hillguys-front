@@ -31,6 +31,7 @@ import Review from "pages/investReview/Review";
 import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowance";
 import InvestmentExit from "./pages/peoch/amount/InvestmentExit";
 import SetInvestment from "./pages/peoch/amount/SetInvestment";
+import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
 
 
 function App() {
@@ -60,6 +61,7 @@ function App() {
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
           <Route path="/investment-support" element={<InvestmentExit/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
+          <Route path="/investmentReallyExit" element={<InvestmentReallyExit/>}/>
  
           <Route path="/user" element={<User />} />
 

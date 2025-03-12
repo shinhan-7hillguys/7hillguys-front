@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import {useNavigate} from "react-router-dom";
 
 // 스타일 정의
 const Container = styled.div`
@@ -28,6 +29,7 @@ const Amount = styled.p`
     font-size: 36px;
     font-weight: bold;
     color: #E91E63; /* 핑크색 */
+    margin-bottom: 50px;
 `;
 
 const BenefitsList = styled.ul`
@@ -83,6 +85,7 @@ const Button = styled.button`
 
 // React 컴포넌트
 const InvestmentExitUI = () => {
+    const navigate = useNavigate();
     return (
         <Container>
             <Title>카멜레온 카드으로 절약한 금액</Title>
@@ -100,7 +103,9 @@ const InvestmentExitUI = () => {
 
             <ButtonsContainer>
                 <Button>내가 받고 있는 혜택 유지하기</Button>
-                <Button>내가 받고 있는 혜택 포기하기</Button>
+                <Button type="button" onClick={() => navigate("/investmentReallyExit")}>
+                    내가 받고 있는 혜택 포기하기
+                </Button>
             </ButtonsContainer>
         </Container>
     );
