@@ -19,7 +19,6 @@ import Dashboard from "./pages/admin/dashboard";
 import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
-
 /*user 디렉토리*/
 import User from "pages/user/User";
 import Login from "pages/user/Login";
@@ -30,8 +29,9 @@ import SalaryComparisonChart from "./pages/education/SalaryComparisonChart";
 /*투자 심사 및 결과*/
 import Review from "pages/investReview/Review";
 import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowance";
-import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
+import InvestmentExit from "./pages/peoch/amount/InvestmentExit";
 import SetInvestment from "./pages/peoch/amount/SetInvestment";
+
 
 function App() {
   return (
@@ -58,7 +58,7 @@ function App() {
  
           <Route path="/investReview" element={<Review />} />
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
-          <Route path="/investment-support" element={<InvestmentSupport/>}/>
+          <Route path="/investment-support" element={<InvestmentExit/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
  
           <Route path="/user" element={<User />} />
