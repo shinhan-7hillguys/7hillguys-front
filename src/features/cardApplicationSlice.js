@@ -2,27 +2,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
-// (선택) 최종 제출 시 서버에 카드 신청 요청하는 Thunk 예시
+// 사용자 정보를 가져오는 Thunk
+export const fetchUserInfo = createAsyncThunk(
+  "cardApplication/fetchUserInfo",
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:8080/card/userInfo", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      console.log(response);
+      return response.data; // 서버가 반환한 { name, phone, email, address }
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "사용자 정보를 가져오지 못했습니다.");
+    }
+  }
+);
+
+// 기존 카드 신청 Thunk (예시)
 export const submitCardApplication = createAsyncThunk(
   "cardApplication/submitCardApplication",
   async (_, { getState, rejectWithValue }) => {
     try {
       const state = getState().cardApplication;
-      // 여기서 서버에 API 요청하는 로직을 작성 (예: axios.post('/api/card/apply', state))
-      // // 실제로는 아래처럼 더미로 처리
-      // await new Promise((resolve) => setTimeout(resolve, 1000));
-
       const requestData = {
         englishName: `${state.englishName.lastName} ${state.englishName.firstName}`,
         pin: state.cardPin,
         cardDesign: state.cardDesign,
       };
-
-      const response = await axios.post("http://localhost:8080/card", requestData);
-      console.log(response)
-      // 성공 시 서버 응답을 return
+      const token = localStorage.getItem("token");
+      const response = await axios.post("http://localhost:8080/card", requestData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
       return response.data;
-
     } catch (error) {
       return rejectWithValue(error.response?.data || "카드 신청 중 에러가 발생했습니다.");
     }
@@ -30,89 +43,82 @@ export const submitCardApplication = createAsyncThunk(
 );
 
 const initialState = {
-  // 1) 카드 소개 페이지는 단순 안내용이므로 별도 상태 X
-  // 2) 약관 동의
+  // 약관 동의, 카드 디자인 등 기존 상태...
   termsAgreed: false,
-
-  // 3) 카드 디자인 선택
-  cardDesign: null, // 예: 'pink', 'blue', 'chameleon' 등
-
-  // 4) 본인 인증
+  cardDesign: null,
   identityVerified: false,
-  // 인증 과정에서 필요하다면 인증 토큰, 인증번호, 인증 시간 등 저장 가능
-
-  // 5) 기존 사용자 정보 (읽기 전용)
+  // 사용자 정보 (서버에서 받아올 예정)
   userInfo: {
-    name: "홍길동",
-    phone: "010-1234-5678",
-    email: "test@example.com",
-    address: "서울특별시 어딘가 123",
+    name: "",
+    phone: "",
+    email: "",
+    address: "",
   },
-
-  // 6) 영문 이름 입력
-  englishName: {
-    firstName: "",
-    lastName: "",
-  },
-
-  // 7) 카드 비밀번호
+  // 영문 이름, 카드 PIN, 지원 정보 등 기존 상태...
+  englishName: { firstName: "", lastName: "" },
   cardPin: "",
-
-  // 8) 최종 정보 확인 (지원기간, 총 금액, 매달 지원금액 등) - 여기서는 간단히 샘플
   supportPeriod: "2년",
-  totalAmount: 240000, // 예: 24만원
-  monthlyAmount: 10000, // 예: 월 1만원
-
+  totalAmount: 240000,
+  monthlyAmount: 10000,
   // 요청 상태
-  submitStatus: "idle", // "idle" | "loading" | "succeeded" | "failed"
+  submitStatus: "idle",
   error: null,
+  // 새로운 사용자 정보 요청 상태 (옵션)
+  userInfoStatus: "idle", // "idle" | "loading" | "succeeded" | "failed"
 };
 
 const cardApplicationSlice = createSlice({
   name: "cardApplication",
   initialState,
   reducers: {
-    // 약관 동의
     setTermsAgreed(state, action) {
-      state.termsAgreed = action.payload; // true/false
+      state.termsAgreed = action.payload;
     },
-    // 카드 디자인 선택
     setCardDesign(state, action) {
-      state.cardDesign = action.payload; // e.g. 'pink', 'blue', ...
+      state.cardDesign = action.payload;
     },
-    // 본인 인증 성공/실패
     setIdentityVerified(state, action) {
-      state.identityVerified = action.payload; // true/false
+      state.identityVerified = action.payload;
     },
-    // (기존 사용자 정보는 서버에서 가져온다고 가정하면, setUserInfo로 업데이트 가능)
     setEnglishName(state, action) {
-      state.englishName = action.payload; // { firstName, lastName }
+      state.englishName = action.payload;
     },
     setCardPin(state, action) {
       state.cardPin = action.payload;
     },
-    // 필요하면 지원기간, 총 금액, 월 지원금 등도 수정 가능
+    // 필요에 따라 지원 정보 업데이트 액션 추가
     setSupportInfo(state, action) {
       const { supportPeriod, totalAmount, monthlyAmount } = action.payload;
       state.supportPeriod = supportPeriod;
       state.totalAmount = totalAmount;
       state.monthlyAmount = monthlyAmount;
     },
-    // etc...
   },
   extraReducers: (builder) => {
     builder
+      // 카드 신청 관련 처리 (기존)
       .addCase(submitCardApplication.pending, (state) => {
         state.submitStatus = "loading";
         state.error = null;
       })
-      .addCase(submitCardApplication.fulfilled, (state, action) => {
+      .addCase(submitCardApplication.fulfilled, (state) => {
         state.submitStatus = "succeeded";
-        // action.payload => { success: true, message: "카드 신청 완료!" }
       })
       .addCase(submitCardApplication.rejected, (state, action) => {
         state.submitStatus = "failed";
-        state.error = action.payload; // "카드 신청 중 에러가 발생했습니다."
+        state.error = action.payload;
+      })
+      // 사용자 정보 가져오기 처리
+      .addCase(fetchUserInfo.pending, (state) => {
+        state.userInfoStatus = "loading";
+      })
+      .addCase(fetchUserInfo.fulfilled, (state, action) => {
+        state.userInfoStatus = "succeeded";
+        state.userInfo = action.payload; // { name, phone, email, address }
+      })
+      .addCase(fetchUserInfo.rejected, (state, action) => {
+        state.userInfoStatus = "failed";
+        state.error = action.payload;
       });
   },
 });

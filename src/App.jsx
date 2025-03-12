@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -17,7 +16,6 @@ import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
  
 import Dashboard from "./pages/admin/dashboard";
-import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
 // card 및 혜택
