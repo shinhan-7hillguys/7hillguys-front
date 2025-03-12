@@ -21,17 +21,23 @@ const InvestmentExit = () => {
     useEffect(() => {
         const fetchExpectedIncome = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/expectedincome/2', {
+                const response = await axios.get('http://localhost:8080/api/investment/exit/6', {
                     headers: {
-                        Authorization: `Bearer ${token}`
+                        Authorization: `Bearer ${token}`,
+                        "Content-Type": "application/json"
                     }
                 });
-                const incomeData = response.data[0];
-                const expectedIncome = JSON.parse(incomeData.expectedIncome);
+                const incomeData = response.data;
+                console.log(incomeData);
+                console.log(response);
+                const firstExpectedIncome = JSON.parse(incomeData.firstExpectedIncome);
+                const lastExpectedIncome = JSON.parse(incomeData.lastExpectedIncome);
 
-                const formattedData = Object.entries(expectedIncome).map(([year, income]) => ({
+                // 두 데이터를 병합하여 그래프 데이터 생성
+                const formattedData = Object.entries(firstExpectedIncome).map(([year, income]) => ({
                     year: `${year}년`,
-                    income: income / 10000
+                    firstIncome: income / 10000,
+                    lastIncome: lastExpectedIncome[year] ? lastExpectedIncome[year] / 10000 : null
                 }));
 
                 setChartData(formattedData);
@@ -49,7 +55,8 @@ const InvestmentExit = () => {
     if (loading) return <p>로딩 중...</p>;
     if (error) return <p>에러가 발생했습니다. 다시 시도해주세요.</p>;
 
-    const totalIncome = chartData.reduce((sum, item) => sum + item.income, 0);
+    const totalFirstIncome = chartData.reduce((sum, item) => sum + (item.firstIncome || 0), 0);
+    const totalLastIncome = chartData.reduce((sum, item) => sum + (item.lastIncome || 0), 0);
 
     return (
         <Container>
@@ -68,10 +75,18 @@ const InvestmentExit = () => {
                         <Legend/>
                         <Area
                             type="monotone"
-                            dataKey="income"
-                            name="예상 소득(만 원)"
-                            stroke="#E91E63"  // 진한 핑크색
-                            fill="#F48FB1"    // 연한 핑크색
+                            dataKey="firstIncome"
+                            name="첫 번째 예상 소득(만 원)"
+                            stroke="#E91E63"
+                            fill="#F48FB1"
+                            fillOpacity={0.5}
+                        />
+                        <Area
+                            type="monotone"
+                            dataKey="lastIncome"
+                            name="마지막 예상 소득(만 원)"
+                            stroke="#3F51B5"
+                            fill="#9FA8DA"
                             fillOpacity={0.5}
                         />
                     </AreaChart>
@@ -80,7 +95,8 @@ const InvestmentExit = () => {
 
             <div>
                 <h2>결과 정보</h2>
-                <p>총 예상 소득 합계: {(totalIncome * 10000).toLocaleString()} 원</p>
+                <p>첫 번째 총 예상 소득 합계: {(totalFirstIncome * 10000).toLocaleString()} 원</p>
+                <p>마지막 총 예상 소득 합계: {(totalLastIncome * 10000).toLocaleString()} 원</p>
             </div>
         </Container>
     );
