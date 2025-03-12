@@ -2,6 +2,7 @@ import React from "react";
  import { useNavigate } from "react-router-dom";
  import { useDispatch, useSelector } from "react-redux";
  import { setCardDesign } from "../../features/cardApplicationSlice";
+import NavigationHeader from "components/common/NavigationHeader";
  
  function CardDesignPage() {
    const navigate = useNavigate();
@@ -21,7 +22,8 @@ import React from "react";
    };
  
    return (
-     <div style={{ padding: 20 }}>
+     <div>
+      <NavigationHeader  />
        <h2>카드 디자인 선택</h2>
        <div>
          <button

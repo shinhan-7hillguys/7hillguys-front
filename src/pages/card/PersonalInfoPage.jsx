@@ -3,6 +3,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchUserInfo } from "../../features/cardApplicationSlice";
+import NavigationHeader from "components/common/NavigationHeader";
 
 function PersonalInfoPage() {
   const navigate = useNavigate();
@@ -19,13 +20,15 @@ function PersonalInfoPage() {
   };
 
   return (
-    <div style={{ padding: 20 }}>
-      <h2>사용자 정보 확인</h2>
+    <>
+      <NavigationHeader />
+      <div style={{ padding: 20 }}>
       {userInfoStatus === "loading" ? (
         <p>불러오는 중...</p>
       ) : (
-        <>
-          <div>
+        <div className="card_person">
+          <h2><em>{userInfo.name}</em> 님의 정보를 확인해주세요.</h2>
+          <div >
             <label>이름: </label>
             <input type="text" value={userInfo.name} readOnly />
           </div>
@@ -42,10 +45,15 @@ function PersonalInfoPage() {
             <input type="text" value={userInfo.address} readOnly />
           </div>
           <br />
-          <button onClick={handleNextClick}>다음 단계</button>
-        </>
+          <div className="btn_div">
+          <button className="card_btn" onClick={handleNextClick}>다음 단계</button>
+          </div>
+          
+        </div>
       )}
     </div>
+    </>
+  
   );
 }
 
