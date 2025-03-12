@@ -80,11 +80,18 @@ const InvestmentSimulator = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await axios.get("http://localhost:8080/api/investment/setamount/6");
-                const parsedIncomes = Object.entries(JSON.parse(response.data.expectedIncomes))
+                const token = localStorage.getItem("token");
+                const response = await axios.get('http://localhost:8080/api/investment/tempallowance/6', {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Bearer Token 추가
+                    }
+                });
+                console.log(response);
+                const parsedIncomes = Object.entries(JSON.parse(response.data.incomes[0].expectedIncome))
                     .map(([age, income]) => ({age: parseInt(age), income}));
-
+                console.log(parsedIncomes);
                 setExpectedIncomes(parsedIncomes);
+                console.log(response.data.inflationRate);
                 setInflationRates(JSON.parse(response.data.inflationRate));
                 setMaxInvestment(response.data.maxInvestment);
 
