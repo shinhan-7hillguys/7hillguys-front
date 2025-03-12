@@ -4,8 +4,8 @@
 .university-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start; /* 왼쪽 정렬 */
-    justify-content: flex-start; /* 상단 정렬 */
+    align-items: center; /* 왼쪽 정렬 */
+    justify-content: center; /* 상단 정렬 */
     height: 100vh;
     padding: 50px;
     background-color: #FFF7F7;
@@ -18,7 +18,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
-    width: 400px;
+    width: 100%;
 }
 
 /* 제목 */
@@ -36,7 +36,7 @@
     margin-bottom: 12px;
     border: 1px solid #FFD4DE;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     background-color: white;
 }
 
@@ -51,7 +51,7 @@
 
 /* 파일 업로드 라벨 */
 .file-upload-label {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     color: #333;
     width: 40%; /* 라벨 크기 조정 */
@@ -65,7 +65,7 @@
     border: none;
     padding: 8px 12px;
     border-radius: 5px;
-    font-size: 14px;
+    font-size: 9px;
     cursor: pointer;
     text-align: center;
     width: 30%;
@@ -82,7 +82,7 @@
 
 /* 파일명 표시 */
 .file-name {
-    font-size: 14px;
+    font-size: 12px;
     color: #666;
     margin-left: 10px;
     width: 40%;

@@ -57,7 +57,7 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
 
                 {/* 대학교 증명서 파일 업로드 */}
                 <div className="file-upload-wrapper">
-                    <label className="file-upload-label">대학교 증명서</label>
+                    <label className="file-upload-label">대학 증명서</label>
                     <label className="custom-file-upload">
                         파일 선택
                         <input
