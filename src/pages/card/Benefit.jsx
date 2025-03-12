@@ -1,7 +1,14 @@
 // src/pages/Benefit.jsx
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { addBenefit, removeBenefit, clearAddedBenefits, mergeBenefits } from "../../features/benefitSlice";
+import { 
+  addBenefit, 
+  clearAddedBenefits, 
+  mergeBenefits, 
+  fetchBenefits, 
+  deleteBenefit, 
+  applyBenefits 
+} from "../../features/benefitSlice";
 import { useNavigate } from "react-router-dom";
 import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined } from "@ant-design/icons";
 import "styles/card/benefit.css";
@@ -9,18 +16,21 @@ import "styles/card/benefit.css";
 const Benefit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  // Redux state: available, selected, and added 혜택을 가져옵니다.
-  const { availableBenefits, selectedBenefits, addedBenefits } = useSelector(
+  const { availableBenefits, appliedBenefits, addedBenefits, status, error } = useSelector(
     (state) => state.benefit
   );
+  
+  // 예시로, 카드 ID는 고정 (실제 프로젝트에서는 JWT 또는 다른 방식으로 결정)
+  const cardId = 16;
 
-  // 로컬 상태: 체크박스에서 선택한 혜택 ID들을 관리합니다.
   const [checkedBenefits, setCheckedBenefits] = useState([]);
-  // 카드 앞/뒷면 전환 상태 (My 혜택 모달을 열기 위한 상태)
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // 체크박스 선택/해제 핸들러
+  // 페이지 로드시 내 카드의 혜택 정보를 백엔드에서 가져옵니다.
+  useEffect(() => {
+    dispatch(fetchBenefits(cardId));
+  }, [dispatch, cardId]);
+
   const handleCheckboxChange = (benefitId, e) => {
     if (e.target.checked) {
       setCheckedBenefits((prev) => [...prev, benefitId]);
@@ -29,38 +39,28 @@ const Benefit = () => {
     }
   };
 
-  // add 버튼 클릭: 체크한 혜택을 availableBenefits에서 찾아 임시 추가 혜택(addedBenefits)에 추가하고, availableBenefits에서 제거합니다.
   const handleAdd = () => {
     if (checkedBenefits.length === 0) {
       alert("추가할 혜택을 선택하세요.");
       return;
     }
-    const currentTotal = selectedBenefits.length + addedBenefits.length;
-    // availableBenefits에서 체크된 항목들 찾기
+    // availableBenefits에서 체크된 혜택을 찾아 추가 혜택으로 dispatch
     const benefitsToAdd = availableBenefits.filter((b) =>
       checkedBenefits.includes(b.benefitId)
     );
-    if (currentTotal + benefitsToAdd.length > 3) {
-      alert("최대 3개의 혜택만 적용할 수 있습니다.");
-      return;
-    }
     if (benefitsToAdd.length === 0) return;
-    // 각 혜택을 Redux store에 추가
     benefitsToAdd.forEach((benefit) => {
       dispatch(addBenefit(benefit));
     });
-    // 체크된 혜택 ID 초기화
     setCheckedBenefits([]);
   };
 
-  // clear 버튼 클릭: 임시 추가된 혜택을 모두 제거하고 availableBenefits로 복원
   const handleClear = () => {
     if (addedBenefits.length === 0) return;
     dispatch(clearAddedBenefits());
     setCheckedBenefits([]);
   };
 
-  // 결제 버튼 클릭: 임시 추가 혜택을 기존 혜택에 병합 (결제 진행)
   const handlePayment = () => {
     if (addedBenefits.length === 0) {
       alert("결제할 혜택이 없습니다.");
@@ -69,33 +69,27 @@ const Benefit = () => {
     const benefitNames = addedBenefits.map((b) => b.name).join(", ");
     const confirmed = window.confirm(`다음 혜택들로 결제하시겠습니까?\n${benefitNames}`);
     if (confirmed) {
-      alert("결제 진행합니다.");
-      dispatch(mergeBenefits());
+      // 결제 시, 백엔드에 적용할 혜택 정보를 전송합니다.
+      dispatch(applyBenefits({ cardId, benefitIds: addedBenefits.map(b => b.benefitId) }));
+      alert("결제가 진행됩니다.");
     }
   };
 
-  // 기존 혜택 삭제 (선택된 혜택 제거)
+  // 기존 혜택 삭제 (적용된 혜택)
   const handleDeleteSelected = (benefitId) => {
-    if (window.confirm("정말 삭제 하시겠습니까?")) {
-      dispatch(removeBenefit({ benefitId, type: "selected" }));
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      dispatch(deleteBenefit(benefitId));
     }
   };
 
-  // 추가 혜택 삭제 (임시 추가 혜택 제거)
-  const handleDeleteAdded = (benefitId) => {
-    if (window.confirm("정말 삭제 하시겠습니까?")) {
-      dispatch(removeBenefit({ benefitId, type: "added" }));
-    }
-  };
-
-  // My 혜택 모달: 카드 뒷면에 기존 혜택과 임시 추가 혜택을 보여줍니다.
+  // My 혜택 모달 (카드 뒷면)
   const MyBenefitsModal = () => (
     <div className="card my-benefits">
       <div className="benefits-section">
         <h3>적용된 혜택</h3>
-        {selectedBenefits.length > 0 ? (
+        {appliedBenefits && appliedBenefits.length > 0 ? (
           <ul>
-            {selectedBenefits.map((b) => (
+            {appliedBenefits.map((b) => (
               <li key={b.benefitId} className="benefit-item">
                 <div className="benefit-info">
                   <strong>{b.name}</strong>: {b.description} (할인율: {b.discountRate}%)
@@ -112,16 +106,13 @@ const Benefit = () => {
       </div>
       <div className="benefits-section">
         <h3>추가된 혜택</h3>
-        {addedBenefits.length > 0 ? (
+        {addedBenefits && addedBenefits.length > 0 ? (
           <ul>
             {addedBenefits.map((b) => (
               <li key={b.benefitId} className="benefit-item">
                 <div className="benefit-info">
                   <strong>{b.name}</strong>: {b.description} (할인율: {b.discountRate}%)
                 </div>
-                <button className="delete-btn" onClick={() => handleDeleteAdded(b.benefitId)}>
-                  삭제
-                </button>
               </li>
             ))}
           </ul>
@@ -172,7 +163,6 @@ const Benefit = () => {
         </div>
       </section>
 
-      {/* 혜택 비교 페이지로 이동하는 섹션 */}
       <section
         className="card_benefit_sec3"
         onClick={() => navigate("/benefit/compare")}
@@ -181,10 +171,9 @@ const Benefit = () => {
         할인내역 비교
       </section>
 
-      {/* 사용 가능한 혜택 목록 */}
       <section className="card_benefit_sec4">
         <ul className="benefits-list">
-          {availableBenefits.map((b) => (
+          {availableBenefits && availableBenefits.map((b) => (
             <li key={b.benefitId} className="benefit-item">
               <label className="custom-checkbox">
                 <input
