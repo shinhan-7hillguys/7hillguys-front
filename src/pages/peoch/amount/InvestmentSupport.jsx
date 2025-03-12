@@ -14,13 +14,17 @@ const InvestmentSupport = () => {
 
     const [loading, setLoading] = useState(true); // 로딩 상태 관리
     const [error, setError] = useState(null); // 에러 상태 관리
-
+    const token = localStorage.getItem("token");
     // API 호출 및 데이터 처리
     useEffect(() => {
         const fetchExpectedIncome = async () => {
             try {
 
-                const response = await axios.get('http://localhost:8080/api/expectedincome/2');
+                const response = await axios.get('http://localhost:8080/api/expectedincome/2', {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Bearer Token 추가
+                    }
+                });
                 const incomeData = response.data[0]; // 첫 번째 데이터를 사용
                 const expectedIncome = JSON.parse(incomeData.expectedIncome); // JSON 문자열 파싱
 
