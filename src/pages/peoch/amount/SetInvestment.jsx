@@ -69,6 +69,7 @@ const SliderContainer = styled.div`
 `;
 
 const InvestmentSimulator = () => {
+    const token = localStorage.getItem("token");
     const [monthlySupport, setMonthlySupport] = useState(50);
     const [supportPeriod, setSupportPeriod] = useState(5);
     const [refundRate, setRefundRate] = useState(0);
@@ -80,20 +81,21 @@ const InvestmentSimulator = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const token = localStorage.getItem("token");
-                const response = await axios.get('http://localhost:8080/api/investment/tempallowance/6', {
+
+                const response = await axios.get('http://localhost:8080/api/investment/setamount/6', {
                     headers: {
                         Authorization: `Bearer ${token}` // Bearer Token 추가
                     }
                 });
                 console.log(response);
-                const parsedIncomes = Object.entries(JSON.parse(response.data.incomes[0].expectedIncome))
+                const parsedIncomes = Object.entries(JSON.parse(response.data.expectedIncomes))
                     .map(([age, income]) => ({age: parseInt(age), income}));
                 console.log(parsedIncomes);
                 setExpectedIncomes(parsedIncomes);
                 console.log(response.data.inflationRate);
                 setInflationRates(JSON.parse(response.data.inflationRate));
                 setMaxInvestment(response.data.maxInvestment);
+                console.log(maxInvestment);
 
                 // 초기 차트 데이터 설정 (환급 비율이 없으므로 refund 값은 0)
                 const initialChartData = parsedIncomes.map(({age, income}) => ({
@@ -108,33 +110,25 @@ const InvestmentSimulator = () => {
         };
         fetchInitialData();
     }, []);
-    // // 초기 데이터 로드
-    // useEffect(() => {
-    //     const fetchInitialData = async () => {
-    //         try {
-    //             const response = await axios.get("http://localhost:8080/api/investment/setamount/6");
-    //             const parsedIncomes = Object.entries(JSON.parse(response.data.expectedIncomes))
-    //                 .map(([age, income]) => ({age: parseInt(age), income}));
-    //
-    //             setExpectedIncomes(parsedIncomes);
-    //             setInflationRates(JSON.parse(response.data.inflationRate));
-    //             setMaxInvestment(response.data.maxInvestment);
-    //         } catch (error) {
-    //             console.error("초기 데이터 로드 실패:", error);
-    //         }
-    //     };
-    //     fetchInitialData();
-    // }, []);
+
 
     // 환급 비율 받아오기
     const fetchRefundRate = async () => {
         const totalInvestment = monthlySupport * supportPeriod * 12 * 10000;
         if (totalInvestment > 0) {
             try {
-                const response = await axios.post("http://localhost:8080/api/investment/refund-rate", {
+                const response = await axios.post(
+                    "http://localhost:8080/api/investment/refund-rate", {
+
                     userId: 6,
                     investAmount: totalInvestment,
-                });
+                    },
+                    {
+                        headers: {
+                            Authorization: `Bearer ${token}` // Bearer Token 추가
+                        }
+                    }
+                );
                 console.log(response);
                 setRefundRate(response.data);
             } catch (error) {
@@ -144,8 +138,8 @@ const InvestmentSimulator = () => {
     };
 
     // 슬라이더 최대값 만들기
-    const maxMonthlySupport = Math.floor(maxInvestment / (supportPeriod * 12 * 10000)) || 1;
-    const maxSupportPeriod = Math.min(10, Math.floor(maxInvestment / (monthlySupport * 12 * 10000)) || 1);
+    const maxMonthlySupport = Math.floor(maxInvestment / (supportPeriod * 12 * 10000), 1);
+    const maxSupportPeriod = Math.min(10, Math.floor(maxInvestment / (monthlySupport * 12 * 10000)) || 10);
     const totalRefundAmount = chartData.reduce((acc, item) => acc + item.refund, 0);
     console.log("총 환급 금액:", totalRefundAmount.toLocaleString());
 
