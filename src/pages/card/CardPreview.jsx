@@ -87,8 +87,7 @@ const layoutPresets = {
   const handleMouseMove = (e) => {
     if (!dragging.current) return;
     const deltaX = e.clientX - startRef.current.x;
-    const deltaY = e.clientY - startRef.current.y;
-    // 적당한 감쇠계수 적용 (예: 1/10)
+    const deltaY = e.clientY - startRef.current.y; 
     const newTiltX = Math.max(Math.min(deltaY / 5, 15), -15);
     const newTiltY = Math.max(Math.min(deltaX / 5, 15), -15);
     setTilt({ x: newTiltX, y: newTiltY });

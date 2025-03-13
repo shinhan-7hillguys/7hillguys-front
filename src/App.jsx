@@ -53,6 +53,7 @@ function App() {
 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
+          <Route path="/card/design" element={<CardDesignPage />} />
           <Route path="/benefit/compare" element={<BenefitCompare />} />
 
           <Route path="/mypage" element={<Mypage />} />
