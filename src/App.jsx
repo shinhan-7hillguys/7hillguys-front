@@ -44,10 +44,10 @@ import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowanc
 
 import InvestmentExit from "./pages/peoch/amount/InvestmentExit";
 
-import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
+// import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
 
 import InvestmentStatusCheck from "pages/investResult/InvestmentStatusCheck";
-import ContractSigning from "pages/investResult/ContractSigning";
+// import ContractSigning from "pages/investResult/ContractSigning";
 
 import SetInvestment from "./pages/peoch/amount/SetInvestment";
 import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
@@ -87,7 +87,7 @@ function App() {
           <Route path="/SalaryComparisonChart" element={<SalaryComparisonChart />} />
           <Route path="/peoch" element={<Peoch />} />
 
-          <Route path="/contract" element={<ContractSigning />} />
+          {/* <Route path="/contract" element={<ContractSigning />} /> */}
 
  
           <Route path="/admin" element={<Dashboard />} /> 

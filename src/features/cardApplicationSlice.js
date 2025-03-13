@@ -29,7 +29,7 @@ export const submitCardApplication = createAsyncThunk(
       const requestData = {
         englishName: `${state.englishName.lastName} ${state.englishName.firstName}`,
         pin: state.cardPin,
-        cardDesign: state.cardDesign,
+        cardDesign: state.cardDesign, // 이제 객체 형태로 포함됨
       };
       const token = localStorage.getItem("token");
       const response = await axios.post("http://localhost:8080/card", requestData, {
@@ -45,7 +45,13 @@ export const submitCardApplication = createAsyncThunk(
 const initialState = {
   // 약관 동의, 카드 디자인 등 기존 상태...
   termsAgreed: false,
-  cardDesign: null,
+  cardDesign: {
+    layoutId: "", // 숫자로 전달
+    username: "",
+    letterColor: "",
+    cardBackColor: "",
+    logoGrayscale: ""
+  },
   identityVerified: false,
   // 사용자 정보 (서버에서 받아올 예정)
   userInfo: {
@@ -75,6 +81,8 @@ const cardApplicationSlice = createSlice({
       state.termsAgreed = action.payload;
     },
     setCardDesign(state, action) {
+      console.log(state)
+      console.log(action)
       state.cardDesign = action.payload;
     },
     setIdentityVerified(state, action) {
