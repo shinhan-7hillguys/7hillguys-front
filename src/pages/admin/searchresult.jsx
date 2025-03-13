@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
+import styled from 'styled-components';
 import { Link, useParams } from 'react-router-dom';
 import { dummyUsers } from 'dummyData';
 
- 
 const PageContainer = styled.div`
   display: flex;
   align-items: flex-start;
@@ -13,12 +12,71 @@ const PageContainer = styled.div`
 `;
 
 const Sidebar = styled.div`
-  width: 250px;
+  width: 300px;
   padding: 24px;
   background-color: #fff;
-  border: 1px solid #eaeaea;
-  border-radius: 8px;
-  margin-right: 24px; 
+  border: 1px solid #eaeaea; 
+  margin-right: 12px; 
+`;
+
+const FilterRadioGroup = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+`;
+ 
+const CustomRadioLabel = styled.label`
+  display: inline-flex;
+  align-items: center;
+  position: relative;
+  padding-left: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  color: black;
+  user-select: none;
+`;
+
+const CustomRadioInput = styled.input`
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+
+  &:checked + span {
+    background-color: #ff7a9d;
+    border-color: #ff7a9d;
+  }
+
+  &:checked + span:after {
+    display: block;
+  }
+`;
+
+const CustomRadioSpan = styled.span`
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border: 2px solid #ff7a9d;
+  border-radius: 50%;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+
+  &:after {
+    content: "";
+    position: absolute;
+    display: none;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #fff;
+  }
 `;
 
 const ContentArea = styled.div`
@@ -30,36 +88,8 @@ const ContentArea = styled.div`
   box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
 `;
 
-const FilterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const FilterLabel = styled.label`
-  margin-bottom: 8px;
-  font-weight: bold;
-  color: #555;
-`;
-
-const FilterSelect = styled.select`
-  margin-bottom: 16px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-`;
-
-const FilterInput = styled.input`
-  margin-bottom: 16px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-`;
-
- 
-
 const UserList = styled.ul`
+  margin-top: 32px;
   list-style: none;
   padding: 0;
 `;
@@ -67,13 +97,15 @@ const UserList = styled.ul`
 const UserItem = styled.li`
   display: flex;
   align-items: center;
-  padding: 12px;
-  border: 1px solid #eaeaea;
+  padding: 16px;
+  border: 1px solid #ddd;
   border-radius: 8px;
-  margin-bottom: 12px;
-  transition: background-color 0.2s ease;
+  margin-bottom: 16px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   &:hover {
-    background-color: #f8f8f8;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -82,11 +114,13 @@ const UserPhoto = styled.img`
   height: 60px;
   border-radius: 50%;
   margin-right: 16px;
+  border: 2px solid #ddd;
 `;
 
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
+  flex: 1;
 `;
 
 const UserLink = styled(Link)`
@@ -94,6 +128,10 @@ const UserLink = styled(Link)`
   color: #333;
   font-size: 18px;
   font-weight: bold;
+  margin-bottom: 4px;
+  &:hover {
+    text-decoration: underline;
+  }
 `;
 
 const UserDetailText = styled.p`
@@ -102,13 +140,42 @@ const UserDetailText = styled.p`
   color: #666;
 `;
 
+const NoResultsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+  color: #666;
+`;
+
+const NoResultsImage = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-bottom: 16px;
+`;
+
+const FilterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const FilterLabel = styled.label`
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 32px;
+  color: #555;
+  margin-bottom: 32px;
+`;
+
 const UserSearchPage = () => {
   const { query } = useParams();
   const [searchQuery, setSearchQuery] = useState(query || '');
   const [gender, setGender] = useState('');
   const [occupation, setOccupation] = useState('');
   const [salary, setSalary] = useState(0);
- 
+
   const filteredUsers = dummyUsers.filter(user => {
     return (
       user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -127,37 +194,50 @@ const UserSearchPage = () => {
       <Sidebar>
         <FilterContainer>
           <FilterLabel>성별</FilterLabel>
-          <FilterSelect value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="">모두</option>
-            <option value="male">남성</option>
-            <option value="female">여성</option>
-          </FilterSelect>
-
-          <FilterLabel>직업</FilterLabel>
-          <FilterSelect value={occupation} onChange={(e) => setOccupation(e.target.value)}>
-            <option value="">모두</option>
-            <option value="developer">개발자</option>
-            <option value="designer">디자이너</option>
-            <option value="manager">매니저</option>
-          </FilterSelect>
-
-          <FilterLabel>연봉</FilterLabel>
-          <FilterInput
-            type="range" 
- 
-            min="0"
-            max="10000"
-            step="1000"
-            value={salary}
-            onChange={(e) => setSalary(Number(e.target.value))}
-          />
-          <div>연봉: {salary}만원 이상</div>
+          <FilterRadioGroup>
+            <CustomRadioLabel>
+              <CustomRadioInput
+                type="radio"
+                name="gender"
+                value=""
+                checked={gender === ''}
+                onChange={(e) => setGender(e.target.value)}
+              />
+              <CustomRadioSpan />
+              모두
+            </CustomRadioLabel>
+            <CustomRadioLabel>
+              <CustomRadioInput
+                type="radio"
+                name="gender"
+                value="male"
+                checked={gender === 'male'}
+                onChange={(e) => setGender(e.target.value)}
+              />
+              <CustomRadioSpan />
+              남성
+            </CustomRadioLabel>
+            <CustomRadioLabel>
+              <CustomRadioInput
+                type="radio"
+                name="gender"
+                value="female"
+                checked={gender === 'female'}
+                onChange={(e) => setGender(e.target.value)}
+              />
+              <CustomRadioSpan />
+              여성
+            </CustomRadioLabel>
+          </FilterRadioGroup>
         </FilterContainer>
       </Sidebar>
       <ContentArea>
-        <h2>검색 결과</h2>
+        <FilterLabel>검색 결과</FilterLabel>
         {filteredUsers.length === 0 ? (
-          <p>검색 조건에 맞는 사용자가 없습니다.</p>
+          <NoResultsContainer>
+            <NoResultsImage src="https://cdn-icons-png.flaticon.com/512/15/15457.png" alt="검색 결과 없음" />
+            <p>검색 결과가 없습니다.</p>
+          </NoResultsContainer>
         ) : (
           <UserList>
             {filteredUsers.map(user => (

@@ -18,8 +18,7 @@ import Detail from "./pages/admin/Detail";
 import Dashboard from "./pages/admin/Dashboard";
 import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
-
-/*user 디렉토리*/
+ 
 import User from "pages/user/User";
 import Login from "pages/user/Login";
 import Signup from "pages/user/Signup";

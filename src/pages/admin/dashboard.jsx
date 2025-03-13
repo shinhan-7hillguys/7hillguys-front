@@ -10,7 +10,7 @@ import { getDashboardData } from 'api';
 
 const DashboardContainer = styled.div`
   flex: 1;
-  padding: 24px;
+  padding: 24px; 
   overflow-y: auto;
   @media (max-width: 768px) {
     padding: 16px;
@@ -23,6 +23,7 @@ const StatsContainer = styled.div`
   margin-bottom: 24px;
   flex-wrap: wrap;  
   font-family: 'Pretendard', sans-serif;
+  margin-top : 24px;
 `;
 
 const StatBox = styled.div`

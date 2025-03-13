@@ -7,12 +7,14 @@ import { Outlet } from 'react-router-dom';
 const LayoutContainer = styled.div`
   display: flex;
   height: 100vh; 
-  background-color: #fbeaec;
+   
 `;
 
 const SidebarWrapper = styled.div`
   width: 240px; 
   flex-shrink: 0; 
+  background : #ffe9ec;
+  border-right: 2px solid #eaea; 
 `;
 
 const MainWrapper = styled.div`

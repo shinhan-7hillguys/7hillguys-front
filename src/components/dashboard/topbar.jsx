@@ -6,11 +6,11 @@ const TopbarContainer = styled.div`
   width: 100%;
   height: 64px;
   background-color: #ffffff;
-  border-bottom: 1px solid #eaeaea;
+  border-bottom: 1px solid lightgray;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 24px;
+  padding: 0 24px;  
 `;
 
 const SearchContainer = styled.div`
