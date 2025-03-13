@@ -43,35 +43,38 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
+        <Route element={<Layout />}>
+          <Route path="/admin" element={<Dashboard />} /> 
+          <Route path="/admin/search/:query" element={<SearchResults />} />  
+          <Route path="/admin/user/detail/:id" element={<Detail />} />
+        </Route>  
+
+        
+
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
           <Route path="/benefit/compare" element={<BenefitCompare />} />
-
+          
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/education" element={<Education />} />
           <Route path="/ResumeEdit" element={<ResumeEdit />} />
           <Route path="/SalaryComparisonChart" element={<SalaryComparisonChart />} />
           <Route path="/peoch" element={<Peoch />} />
  
-          <Route path="/admin" element={<Dashboard />} /> 
           <Route path="/user/dashboard" element={<UserMain />} />
- 
+          
           <Route path="/investReview" element={<Review />} />
           <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
           <Route path="/investment-support" element={<InvestmentSupport/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
  
           <Route path="/user" element={<User />} />
-
+          <Route path ="/card/design" element={<Design />} />
           <Route path="/mypage/card" element={<MyCard />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
-          <Route path="/user/dashboard" element={<UserMain />} />
+          
         </Route>
-        <Route element={<Layout />}>
-          <Route path="/admin" element={<Dashboard />} /> 
-          <Route path="/admin/search/:query" element={<SearchResults />} />  
-          <Route path="/admin/user/detail/:id" element={<Detail />} />
-        </Route>  
+       
       </Routes>
     </BrowserRouter>
   );

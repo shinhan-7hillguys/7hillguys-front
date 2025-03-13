@@ -171,6 +171,36 @@ function ReadOnlyField({ label, value, placeholder }) {
   );
 }
 
+// 모달 관련 스타일 정의
+const ApprovalModalOverlay = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+`;
+
+const ApprovalModalContent = styled.div`
+  background: #fff;
+  padding: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  min-width: 300px;
+  text-align: center;
+`;
+
+const ModalButtonContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 16px;
+`;
+
 const DetailPage = () => {
   const useDummyData = config.useDummyData;
 
@@ -181,10 +211,13 @@ const DetailPage = () => {
   const [dataMap, setDataMap] = useState(useDummyData ? dummyDataMap : {});
   const [currentData, setCurrentData] = useState({ barData: [], pieData: [] });
   const [selectedStat, setSelectedStat] = useState('remainingSupport');
-
   const [selectedPeriod, setSelectedPeriod] = useState('month');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // 모달 관련 state
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState(null); // 'approve' 또는 'reject'
 
   useEffect(() => {
     if (!useDummyData) {
@@ -236,6 +269,24 @@ const DetailPage = () => {
     year: '작년 대비',
   }[selectedPeriod];
 
+  // 승인/거절 처리 함수 (실제 로직 구현 시 API 호출 등 추가)
+  const handleConfirm = () => {
+    if (modalType === 'approve') {
+      console.log('사용자 승인 처리');
+      // 승인 처리 로직 추가
+    } else if (modalType === 'reject') {
+      console.log('사용자 거절 처리');
+      // 거절 처리 로직 추가
+    }
+    setModalOpen(false);
+    setModalType(null);
+  };
+
+  const handleCancel = () => {
+    setModalOpen(false);
+    setModalType(null);
+  };
+
   return (
     <PageContainer>
       <Section>
@@ -252,38 +303,15 @@ const DetailPage = () => {
           </UserInfo>
           <UserImagePlaceholder>사용자 이미지</UserImagePlaceholder>
         </InfoContainer>
-      </Section>
-
-      <Section>
-        <SectionTitle>사용자 프로필 정보</SectionTitle>
-        <ReadOnlyField label="대학/학과" value={profile.university} />
-        <ReadOnlyField label="고등학교 및 내신" value={profile.education_major} />
-        <ReadOnlyField label="자격증" value={profile.certification} />
-        <ReadOnlyField label="가족 상태" value={profile.family_status} />
-        <ReadOnlyField label="자산" value={profile.assets?.toLocaleString() + ' 원'} />
-        <ReadOnlyField label="범죄 기록" value={profile.criminal_record ? '있음' : '없음'} />
-        <ReadOnlyField label="건강 상태" value={profile.health_status} />
-        <ReadOnlyField label="성별" value={profile.gender ? '남성' : '여성'} />
-        <ReadOnlyField label="주소" value={profile.address} />
-        <ReadOnlyField label="정신 상태" value={profile.mental_status} />
-        <ReadOnlyField label="프로필 생성일" value={profile.created_at} />
-      </Section>
-
-      <Section>
-        <SectionTitle>투자 정보</SectionTitle>
-        <ReadOnlyField label="투자 ID" value={investment.grant_id} />
-        <ReadOnlyField label="예상 소득" value={investment.expected_income} />
-        <ReadOnlyField label="투자 시작일" value={investment.start_date} />
-        <ReadOnlyField label="투자 종료일" value={investment.end_date} />
-        <ReadOnlyField label="상태" value={investment.status} />
-        <ReadOnlyField label="원래 투자 금액" value={investment.original_invest_value?.toLocaleString() + ' 원'} />
-        <ReadOnlyField label="월 지원금" value={investment.monthly_allowance?.toLocaleString() + ' 원'} />
-        <ReadOnlyField label="상환 비율" value={investment.refund_rate + '%'} />
-        <ReadOnlyField label="최대 투자 가능 금액" value={investment.max_investment?.toLocaleString() + ' 원'} />
-        <ReadOnlyField label="운용 보수" value={investment.Field} placeholder="운용 보수" />
-        <ReadOnlyField label="사용한 지원금" value={investment.invest_value?.toLocaleString() + ' 원'} />
-        <ReadOnlyField label="임시 월 지원금" value={investment.temp_allowance?.toLocaleString() + ' 원'} />
-        <ReadOnlyField label="투자 생성일" value={investment.created_at} />
+        {/* 승인 및 거절 버튼 추가 */}
+        <div style={{ marginTop: '16px', display: 'flex', gap: '16px' }}>
+          <PeriodButton onClick={() => { setModalType('approve'); setModalOpen(true); }}>
+            심사 승인
+          </PeriodButton>
+          <PeriodButton onClick={() => { setModalType('reject'); setModalOpen(true); }}>
+            심사 거절
+          </PeriodButton>
+        </div>
       </Section>
 
       <Section>
@@ -341,6 +369,53 @@ const DetailPage = () => {
           <PieChartCard data={currentData.pieData} />
         </ChartsContainer>
       </Section>
+
+      <Section>
+        <SectionTitle>사용자 프로필 정보</SectionTitle>
+        <ReadOnlyField label="대학/학과" value={profile.university} />
+        <ReadOnlyField label="고등학교 및 내신" value={profile.education_major} />
+        <ReadOnlyField label="자격증" value={profile.certification} />
+        <ReadOnlyField label="가족 상태" value={profile.family_status} />
+        <ReadOnlyField label="자산" value={profile.assets?.toLocaleString() + ' 원'} />
+        <ReadOnlyField label="범죄 기록" value={profile.criminal_record ? '있음' : '없음'} />
+        <ReadOnlyField label="건강 상태" value={profile.health_status} />
+        <ReadOnlyField label="성별" value={profile.gender ? '남성' : '여성'} />
+        <ReadOnlyField label="주소" value={profile.address} />
+        <ReadOnlyField label="정신 상태" value={profile.mental_status} />
+        <ReadOnlyField label="프로필 생성일" value={profile.created_at} />
+      </Section>
+
+      <Section>
+        <SectionTitle>투자 정보</SectionTitle>
+        <ReadOnlyField label="투자 ID" value={investment.grant_id} />
+        <ReadOnlyField label="예상 소득" value={investment.expected_income} />
+        <ReadOnlyField label="투자 시작일" value={investment.start_date} />
+        <ReadOnlyField label="투자 종료일" value={investment.end_date} />
+        <ReadOnlyField label="상태" value={investment.status} />
+        <ReadOnlyField label="원래 투자 금액" value={investment.original_invest_value?.toLocaleString() + ' 원'} />
+        <ReadOnlyField label="월 지원금" value={investment.monthly_allowance?.toLocaleString() + ' 원'} />
+        <ReadOnlyField label="상환 비율" value={investment.refund_rate + '%'} />
+        <ReadOnlyField label="최대 투자 가능 금액" value={investment.max_investment?.toLocaleString() + ' 원'} />
+        <ReadOnlyField label="운용 보수" value={investment.Field} placeholder="운용 보수" />
+        <ReadOnlyField label="사용한 지원금" value={investment.invest_value?.toLocaleString() + ' 원'} />
+        <ReadOnlyField label="임시 월 지원금" value={investment.temp_allowance?.toLocaleString() + ' 원'} />
+        <ReadOnlyField label="투자 생성일" value={investment.created_at} />
+      </Section>
+
+      {/* 모달 컴포넌트 */}
+      {modalOpen && (
+        <ApprovalModalOverlay>
+          <ApprovalModalContent>
+            <h3>
+              {modalType === 'approve' ? '정말 승인하시겠습니까?' : '정말 거절하시겠습니까?'}
+            </h3>
+            <ModalButtonContainer>
+              <PeriodButton onClick={handleConfirm}>확인</PeriodButton>
+              <PeriodButton onClick={handleCancel}>취소</PeriodButton>
+            </ModalButtonContainer>
+          </ApprovalModalContent>
+        </ApprovalModalOverlay>
+      )}
     </PageContainer>
   );
 };

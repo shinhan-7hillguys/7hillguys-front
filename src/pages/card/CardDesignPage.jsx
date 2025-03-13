@@ -206,7 +206,7 @@ return (
             placeholder="JAMES KIM"
             value={cardName}
             onChange={(e) => setCardName(e.target.value.toUpperCase())}
-            style={{ display: "block", marginBottom: 10 }}
+            style={{ display: "block", margin: 10 }}
           />
           <HiddenInput type="text" placeholder="MM/YY" onChange={handleExpiryChange} />
           <HiddenInput type="text" placeholder="123" onChange={handleCvcChange} />

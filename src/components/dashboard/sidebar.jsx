@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 const SidebarContainer = styled.div`
   width: 240px; 
-  background-color: #f9f4f5; 
+  background-color: ##f8f4f5; 
   border-right: 1px solid #eaeaea;
   display: flex;
   flex-direction: column;

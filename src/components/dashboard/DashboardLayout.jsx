@@ -7,6 +7,7 @@ import { Outlet } from 'react-router-dom';
 const LayoutContainer = styled.div`
   display: flex;
   height: 100vh; 
+  background-color: #fbeaec;
 `;
 
 const SidebarWrapper = styled.div`
