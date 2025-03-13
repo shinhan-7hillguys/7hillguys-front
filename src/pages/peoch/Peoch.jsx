@@ -33,7 +33,7 @@ const Peoch = () => {
               cursor: "pointer",
             }}
         >
-          투자 지원 금액 변경
+            엑시트
         </button>
           <button
               onClick={() => navigate("/setInvestment")}
