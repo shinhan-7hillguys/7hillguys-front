@@ -18,7 +18,7 @@ function CardStatement() {
       const payload = JSON.parse(atob(token.split(".")[1])); // Base64 디코딩
       return { userId: payload.userId, token }; // userId와 token 반환
     } catch (error) {
-      console.error("🚨 JWT 파싱 오류:", error);
+      console.error("JWT 파싱 오류:", error);
       return null;
     }
   };
@@ -83,13 +83,13 @@ function CardStatement() {
       <h2 className="text-xl font-bold mb-4">카드 명세서</h2>
       <div className="mb-4">
         <p className="text-gray-600">
-          💳 남은 한도:{" "}
+          남은 한도:{" "}
           <span className="font-bold">
             {statement.monthlyAllowance - statement.monthlySpent} 원
           </span>
         </p>
         <p className="text-red-600">
-          💸 총 결제금액:{" "}
+          총 결제금액:{" "}
           <span className="font-bold">{statement.monthlySpent} 원</span>
         </p>
       </div>
@@ -121,13 +121,13 @@ function CardStatement() {
               {/* 결제 상태가 PENDING이면 할부 정보 표시 */}
               {tx.paymentStatus === "PENDING" && (
                 <p className="text-blue-500 text-sm">
-                  ⏳ 할부 {tx.installmentRound} / {tx.installmentMonth} 개월
+                  할부 {tx.installmentRound} / {tx.installmentMonth} 개월
                 </p>
               )}
               {/* 혜택으로 받은 할인 금액이 0보다 크면 표시 */}
               {tx.benefitDiscountAmount > 0 && (
                 <p className="text-green-600 text-sm">
-                  🎁 할인 적용: -{tx.benefitDiscountAmount} 원
+                  할인 적용: -{tx.benefitDiscountAmount} 원
                 </p>
               )}
               <p>--------------------</p>

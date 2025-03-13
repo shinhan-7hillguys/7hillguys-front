@@ -50,7 +50,6 @@ function App() {
         <Route path="/" element={<Main />} />
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
-        {/* <Route path="/signup" element={<SignUp />} /> */}
         <Route path="/signup" element={<Signup />} />
 
         <Route element={<AppLayout />}>
@@ -72,7 +71,6 @@ function App() {
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/user/dashboard" element={<UserMain />} />
 
-          {/* <Route path="/investReview" element={<Review />} /> */}
           <Route path="/investReview" element={<Review />} />
           <Route
             path="/investment/status"
