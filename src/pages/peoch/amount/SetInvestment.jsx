@@ -82,7 +82,7 @@ const InvestmentSimulator = () => {
         const fetchInitialData = async () => {
             try {
 
-                const response = await axios.get('http://localhost:8080/api/investment/setamount/6', {
+                const response = await axios.get('http://localhost:8080/api/investment/setamount', {
                     headers: {
                         Authorization: `Bearer ${token}` // Bearer Token 추가
                     }
@@ -118,17 +118,17 @@ const InvestmentSimulator = () => {
         if (totalInvestment > 0) {
             try {
                 const response = await axios.post(
-                    "http://localhost:8080/api/investment/refund-rate", {
-
-                    userId: 6,
-                    investAmount: totalInvestment,
+                    "http://localhost:8080/api/investment/refund-rate",
+                    {
+                        investAmount: totalInvestment
                     },
                     {
                         headers: {
-                            Authorization: `Bearer ${token}` // Bearer Token 추가
+                            Authorization: `Bearer ${token}`
                         }
                     }
                 );
+
                 console.log(response);
                 setRefundRate(response.data);
             } catch (error) {
