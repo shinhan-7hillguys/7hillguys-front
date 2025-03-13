@@ -8,18 +8,19 @@ import Main from "./Main";
 import Education from "./pages/education/Education";
 import Peoch from "./pages/peoch/Peoch";
 import Admin from "./pages/admin/Admin";
-import MyCard from "./pages/mypage/card/MyCard";
+import CardStatement from "pages/mypage/card/CardStatement";
+import BenefitStatement from "pages/mypage/card/BenefitStatement";
+import AllBenefitSearch from "pages/mypage/card/AllBenefitSearch";
 import PositiveFactor from "./pages/education/PositiveFactor";
 import BenefitCompare from "pages/card/BenefitCompare";
 
 /*user 디렉토리*/
 import User from "pages/user/User";
 import Login from "pages/user/Login";
-import SignUp from "pages/user/SignUp";
+// import SignUp from "pages/user/SignUp";
 
 /*투자 심사 및 결과*/
-import Review from "investReview/Review";
-
+// import Review from "investReview/Review";
 
 function App() {
   return (
@@ -29,7 +30,7 @@ function App() {
 
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<SignUp />} />
+        {/* <Route path="/signup" element={<SignUp />} /> */}
 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
@@ -40,10 +41,12 @@ function App() {
           <Route path="/peoch" element={<Peoch />} />
           <Route path="/admin" element={<Admin />} />
 
-          <Route path="/investReview" element={<Review />} />
+          {/* <Route path="/investReview" element={<Review />} /> */}
           <Route path="/user" element={<User />} />
 
-          <Route path="/mypage/card" element={<MyCard />} />
+          <Route path="/mypage/card" element={<CardStatement />} />
+          <Route path="/mypage/card" element={<BenefitStatement />} />
+          <Route path="/mypage/card" element={<AllBenefitSearch />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
         </Route>
       </Routes>
