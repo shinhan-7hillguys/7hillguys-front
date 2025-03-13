@@ -66,6 +66,7 @@ function App() {
 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
+
           <Route path="/card/intro" element={<CardIntroPage />} />
           <Route path="/card/terms" element={<TermsAgreementPage />} />
           <Route path="/card/design" element={<CardDesignPage />} />
@@ -75,6 +76,7 @@ function App() {
           <Route path="/card/pin" element={<CardPinPage />} />
           <Route path="/card/final" element={<FinalCheckPage />} />
         
+
 
 
 
