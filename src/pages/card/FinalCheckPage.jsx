@@ -3,9 +3,13 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { submitCardApplication } from "../../features/cardApplicationSlice";
 import NavigationHeader from "components/common/NavigationHeader";
+import { useLocation } from "react-router-dom";
 
 function FinalCheckPage() {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const { bgFile } = location.state || {};
+
   const {
     termsAgreed,
     cardDesign,
@@ -25,7 +29,8 @@ function FinalCheckPage() {
       alert("모든 절차가 완료되지 않았습니다.");
       return;
     }
-    dispatch(submitCardApplication());
+    // console.log(bgFile)
+    dispatch(submitCardApplication(bgFile));
   };
 
   return (
@@ -34,10 +39,10 @@ function FinalCheckPage() {
       <div className="final-check-container">
         <h2>최종 정보 확인</h2>
         <div className="final-info-form">
-          <div className="form-group">
+          {/* <div className="form-group">
             <label>디자인:</label>
             <input type="text" value={cardDesign || ""} readOnly />
-          </div>
+          </div> */}
           {/* <div className="form-group">
             <label>사용자명:</label>
             <input type="text" value={userInfo.name || ""} readOnly />

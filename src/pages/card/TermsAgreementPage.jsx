@@ -19,7 +19,7 @@ function TermsAgreementPage() {
       alert("약관에 동의해야 진행할 수 있습니다.");
       return;
     }
-    navigate("/card/design");
+    navigate("/card/identity");
   };
 
   return (

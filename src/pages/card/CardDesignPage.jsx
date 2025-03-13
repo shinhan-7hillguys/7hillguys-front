@@ -17,8 +17,14 @@ import {
   cardBackColorPresets,
 } from "./CardStyles";
 import CardPreview from "./CardPreview";
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { setCardDesign } from "features/cardApplicationSlice";
 
 function CardDesignPage() {
+  
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [cardNumber, setCardNumber] = useState("3497 9387 3498 1659");
   const [cardName, setCardName] = useState("NAME NAME");
   const [expiry, setExpiry] = useState("06/28");
@@ -48,6 +54,28 @@ function CardDesignPage() {
     cardBackColor: cardBackColor,
     logoGrayscale: logoGrayscale ? 1 : 0,
   };
+
+  const nextStepHandler = () => {
+    if (step < 2) {
+      // 아직 2단계 미만이면 단순히 단계를 증가시킵니다.
+      setStep((prevStep) => prevStep + 1);
+    } else {
+      // step이 2이면, 이제 리덕스에 데이터를 저장하고 최종 페이지로 이동합니다.
+      const cardDesignData = {
+        layoutId: layout,
+        username: cardName,
+        letterColor: cardFrontColor === "white" ? 0 : 1,
+        cardBackColor: cardBackColor,
+        logoGrayscale: logoGrayscale ? 1 : 0,
+      };
+      // Redux 스토어에 저장
+      dispatch(setCardDesign(cardDesignData));
+      // 추가로, 필요한 경우 이미지 파일도 함께 다음 페이지로 전달 (여기서는 React Router의 location.state 사용)
+      navigate("/card/final", { state: { bgFile } });
+    }
+  };
+  
+
 
   const handleCardBackColorChange = (color) => {
     setCardBackColor(color);
@@ -83,10 +111,10 @@ function CardDesignPage() {
       .catch((error) => console.error("POST 에러:", error));
   };
 
-  const nextStepHandler = () => {
-    if (step === 3) handleSubmit();
-    setStep((prev) => Math.min(prev + 1, 4));
-  };
+  // const nextStepHandler = () => {
+  //   if (step === 3) handleSubmit();
+  //   setStep((prev) => Math.min(prev + 1, 4));
+  // };
 
   const prevStep = () => setStep((prev) => Math.max(prev - 1, 1));
 

@@ -23,18 +23,37 @@ export const fetchUserInfo = createAsyncThunk(
 // 기존 카드 신청 Thunk (예시)
 export const submitCardApplication = createAsyncThunk(
   "cardApplication/submitCardApplication",
-  async (_, { getState, rejectWithValue }) => {
+  async (bgFile, { getState, rejectWithValue }) => {
     try {
       const state = getState().cardApplication;
       const requestData = {
         englishName: `${state.englishName.lastName} ${state.englishName.firstName}`,
         pin: state.cardPin,
-        cardDesign: state.cardDesign, // 이제 객체 형태로 포함됨
+        cardDesign: state.cardDesign, // 객체 형태 (예: { layoutId, username, letterColor, cardBackColor, logoGrayscale })
       };
+   
+      const formData = new FormData();
+      // 카드 디자인 정보를 JSON으로 직렬화해서 Blob으로 변환 후 추가
+      formData.append(
+        "cardDesignDTO",
+        new Blob([JSON.stringify(requestData.cardDesign)], { type: "application/json" })
+      );
+
+      formData.append("englishName", requestData.englishName);
+      formData.append("pin", requestData.pin);
+    
+      if (bgFile) {
+        formData.append("image", bgFile);
+      }
+  
       const token = localStorage.getItem("token");
-      const response = await axios.post("http://localhost:8080/card", requestData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.post("http://localhost:8080/card/insert", formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      console.log("결과:", response.data);
+
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "카드 신청 중 에러가 발생했습니다.");

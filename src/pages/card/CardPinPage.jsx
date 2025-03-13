@@ -51,7 +51,7 @@ function CardPinPage() {
     }
     // PIN이 일치하면 리덕스에 저장 후 다음 단계로 이동
     dispatch(setCardPin(pin));
-    navigate("/card/final");
+    navigate("/card/design");
   };
 
   // 4개의 동그라미 렌더링 (입력된 자릿수에 따라 'filled' 클래스 적용)
