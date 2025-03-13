@@ -84,7 +84,7 @@ const InvestmentReallyExit = () => {
             try {
                 console.log('데이터 요청 시작');
                 const res = await axios.get(
-                    `http://localhost:8080/api/investment/reallyexit/6`,
+                    `http://localhost:8080/api/investment/reallyexit`,
                     {
                         headers: {
                             Authorization: `Bearer ${token}`,
