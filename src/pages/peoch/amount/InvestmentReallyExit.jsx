@@ -82,7 +82,6 @@ const InvestmentReallyExit = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                console.log('데이터 요청 시작');
                 const res = await axios.get(
                     `http://localhost:8080/api/investment/reallyexit`,
                     {
@@ -92,7 +91,6 @@ const InvestmentReallyExit = () => {
                         },
                     }
                 );
-                console.log('응답 데이터:', res.data);
 
                 // 응답 데이터 설정
                 if (res.data && res.data.monthlyPayments) {
