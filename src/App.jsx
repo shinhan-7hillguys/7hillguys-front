@@ -32,8 +32,6 @@ import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowanc
 
 import InvestmentExit from "./pages/peoch/amount/InvestmentExit";
 
-// import InvestmentSupport from "./pages/peoch/amount/InvestmentSupport";
-
 import InvestmentStatusCheck from "pages/investResult/InvestmentStatusCheck";
 import ContractSigning from "pages/investResult/ContractSigning";
 
