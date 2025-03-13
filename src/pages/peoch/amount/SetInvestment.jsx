@@ -139,7 +139,7 @@ const InvestmentSimulator = () => {
 
     // 슬라이더 최대값 만들기
     const maxMonthlySupport = Math.floor(maxInvestment / (supportPeriod * 12 * 10000), 1);
-    const maxSupportPeriod = Math.min(10, Math.floor(maxInvestment / (monthlySupport * 12 * 10000)) || 10);
+    const maxSupportPeriod = Math.min(5, Math.floor(maxInvestment / (monthlySupport * 12 * 10000)) || 5);
     const totalRefundAmount = chartData.reduce((acc, item) => acc + item.refund, 0);
     console.log("총 환급 금액:", totalRefundAmount.toLocaleString());
 
@@ -205,7 +205,7 @@ const InvestmentSimulator = () => {
                     <StyledSlider
                         type="range"
                         min="1"
-                        max={maxSupportPeriod > 10 ? 10 : maxSupportPeriod}
+                        max={maxSupportPeriod > 5 ? 5 : maxSupportPeriod}
                         value={supportPeriod}
                         onChange={(e) => setSupportPeriod(Number(e.target.value))}
                         onMouseUp={fetchRefundRate}
