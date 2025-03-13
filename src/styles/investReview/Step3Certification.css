@@ -1,0 +1,182 @@
+/* Step3Certification.css - 자격증 정보 입력 페이지 스타일 */
+
+/* 전체 컨테이너 */
+.certification-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    height: 100vh;
+    padding: 50px;
+    background-color: #FFF7F7;
+}
+
+/* 입력 박스 */
+.certification-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 100%;
+}
+
+/* 제목 */
+.certification-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF4170;
+    margin-bottom: 20px;
+}
+
+/* 자격증 입력 영역 */
+.certification-item {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    background: #FEEFF0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 입력 필드 */
+.input-field {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #FFD4DE;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: white;
+}
+
+/* 자격증 입력 필드 & 삭제 버튼 */
+.certification-input-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+/* 삭제 버튼 */
+.delete-button {
+    background: none;
+    border: none;
+    font-size: 16px;
+    color: #FEA1B8;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.delete-button:hover {
+    color: #F57391;
+}
+
+/* 파일 업로드 컨테이너 */
+.file-upload-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 12px;
+}
+
+/* 파일 업로드 라벨 */
+.file-upload-label {
+    font-size: 12px;
+    font-weight: bold;
+    color: #333;
+    width: 40%;
+    text-align: left;
+}
+
+/* 파일 선택 버튼 */
+.custom-file-upload {
+    background-color: #FEA1B8;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    font-size: 8px;
+    cursor: pointer;
+    text-align: center;
+    width: 30%;
+}
+
+.custom-file-upload:hover {
+    background-color: #F994AD;
+}
+
+/* 기본 파일 선택 input 숨기기 */
+.file-upload {
+    display: none;
+}
+
+/* 파일명 표시 */
+.file-name {
+    font-size: 10px;
+    color: #666;
+    margin-left: 10px;
+    width: 40%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* 자격증 추가 버튼 */
+.certification-add-button {
+    width: 100%;
+    padding: 12px;
+    background-color: #FEA1B8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.certification-add-button:hover {
+    background-color: #F994AD;
+}
+
+/* 버튼 컨테이너 */
+.certification-button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+/* 이전 버튼 */
+.certification-prev-button {
+    padding: 12px;
+    background-color: #D3D3D3;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.certification-prev-button:hover {
+    background-color: #B0B0B0;
+}
+
+/* 다음 버튼 */
+.certification-next-button {
+    padding: 12px;
+    background-color: #FEA1B8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.certification-next-button:hover {
+    background-color: #F994AD;
+}
