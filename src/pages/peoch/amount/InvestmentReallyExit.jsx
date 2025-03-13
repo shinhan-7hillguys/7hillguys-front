@@ -47,6 +47,7 @@ const FooterText = styled.p`
     margin-top: 10px;
 `;
 
+
 const Button = styled.button`
     display: block;
     width: calc(100% - 40px);
