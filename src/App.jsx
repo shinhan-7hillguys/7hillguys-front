@@ -15,7 +15,7 @@ import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
  
-import Dashboard from "./pages/admin/dashboard";
+import Dashboard from "./pages/admin/Dashboard";
 import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
