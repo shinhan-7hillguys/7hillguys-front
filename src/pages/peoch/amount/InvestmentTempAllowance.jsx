@@ -68,14 +68,18 @@ const InvestmentTempAllowance = () => {
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         const fetchInvestmentDetails = async () => {
             try {
-                const responseDetails = await axios.get('http://localhost:8080/api/investment/tempallowance/6');
+                const responseDetails = await axios.get('http://localhost:8080/api/investment/tempallowance/6', {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Bearer Token 추가
+                    }
+                });
                 const investmentData = responseDetails.data;
                 setData(investmentData);
-
                 if (investmentData.incomes && investmentData.incomes.length > 0) {
                     const incomeObject = investmentData.incomes[0];
                     const expectedIncomeJson = JSON.parse(incomeObject.expectedIncome);
