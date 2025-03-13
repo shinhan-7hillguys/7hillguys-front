@@ -23,7 +23,7 @@ const AppLayout = () => {
             </h2>
           </Link>
 
-          
+
 
           {/* 햄버거 버튼: 클릭 시 토글 */}
           <img
@@ -83,7 +83,15 @@ const AppLayout = () => {
             </Link>
             <Link to="/investReview" style={{ marginRight: "1rem" }}>
               {" "}
-              investReview
+              투자심사신청
+            </Link>
+            <Link to="/investment/status" style={{ marginRight: "1rem" }}>
+              {" "}
+              심사결과조회
+            </Link>
+            <Link to="/contract" style={{ marginRight: "1rem" }}>
+              {" "}
+              계약서
             </Link>
             <Link to="/user" style={{ marginRight: "1rem" }}>
               {" "}

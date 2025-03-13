@@ -51,20 +51,35 @@ const Button = styled.button`
 const ChartContainer = styled.div`
     margin-top: 20px;
 `;
+/*
+생애주기 소득말고 투자 받기로 한 금액 & 실제 사용한 금액 월별로
+이번달까지 투자 받기로 한 금액(투자 가능한 금액 * 진행률)
+진행률
+투자 받은 금액(카드 사용액의 합)
+
+
+그래프
+월 받기로 한 금액(이번달만 표시)(임시한도가 있을시 임시 한도로 설정)
+실제 사용한 금액
+ */
 
 const InvestmentTempAllowance = () => {
     const [data, setData] = useState(null);
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const token = localStorage.getItem("token");
 
     useEffect(() => {
         const fetchInvestmentDetails = async () => {
             try {
-                const responseDetails = await axios.get('http://localhost:8080/api/investment/tempallowance/6');
+                const responseDetails = await axios.get('http://localhost:8080/api/investment/tempallowance/6', {
+                    headers: {
+                        Authorization: `Bearer ${token}` // Bearer Token 추가
+                    }
+                });
                 const investmentData = responseDetails.data;
                 setData(investmentData);
-
                 if (investmentData.incomes && investmentData.incomes.length > 0) {
                     const incomeObject = investmentData.incomes[0];
                     const expectedIncomeJson = JSON.parse(incomeObject.expectedIncome);
@@ -130,7 +145,7 @@ const InvestmentTempAllowance = () => {
                 </ResponsiveContainer>
             </ChartContainer>
 
-            <Button>한도 재선정 신청</Button>
+            <Button>임시 한도 신청</Button>
         </Container>
     );
 };

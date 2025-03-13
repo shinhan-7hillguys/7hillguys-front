@@ -1,224 +1,312 @@
-import { useState, useEffect } from "react";
-import styled from "styled-components";
- 
-const Container = styled.div`
-  padding: 16px;
-  background: #dedada;
-`;
+import React, { useState, useEffect } from 'react';
+import styled from 'styled-components';
+import ChartCard from 'components/dashboard/chartcard';
+import PieChartCard from 'components/dashboard/piechart';
+import Badge from 'components/dashboard/Badge';
+import UserListCard from 'components/dashboard/UserListCard';
+import config from 'config.js';
+import dummyDataMap from 'dummyData.js';   
+import { getDashboardData } from 'api';  
 
- 
-
-const UserInfo = styled.div`
-  margin-top: 16px;
-  background : #dedada;
-`;
-
-const Username = styled.h2`
-  font-size: 24px;
-  font-weight: bold;
-`;
-
-const Greeting = styled.p`
-  color: gray;
-`;
-
-const Card = styled.div`
-  background: white;
-  padding: 16px;
-  margin-top: 16px;
-  border-radius: 12px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  text-align: center;
-`;
-
-const FilterContainer = styled.div`
-  display: flex;
-  gap: 16px;
-  justify-content: center;
-  margin-top: 16px;
-  background-color: #dedada;
-  border-radius : 35px;
-`;
-
-const FilterGroup = styled.div`
-  display: flex;
-  border-radius: 24px;
-  
-`;
-
-const FilterButton = styled.button`
-  padding: 8px 16px;
-  background: none;        /* 배경색 제거 */
-  border: none;            /* 테두리 제거 */
-  font-weight: bold;
-  cursor: pointer;
-  color: ${(props) => (props.active ? "#f4a9c0" : "black")};
-  transition: color 0.3s ease;
-
-  &:not(:last-child) {
-    border-right: none;
+const DashboardContainer = styled.div`
+  flex: 1;
+  padding: 24px;
+  overflow-y: auto;
+  @media (max-width: 768px) {
+    padding: 16px;
   }
 `;
 
-const StatGrid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+const StatsContainer = styled.div`
+  display: flex;
   gap: 16px;
-  margin-top: 16px;
-  border-radius: 24px;
-
+  margin-bottom: 24px;
+  flex-wrap: wrap;  
+  font-family: 'Pretendard', sans-serif;
 `;
 
-const StatCard = styled(Card)`
+const StatBox = styled.div`
+  flex: 1;
+  min-width: 220px; 
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : '#fff')} !important;
+  border: 2px solid ${({ isSelected }) => (isSelected ? '#260086' : 'gray')};
+  border-radius: 8px;
+  padding: 16px;
   cursor: pointer;
-  border: ${(props) => (props.highlight ? "2px solid red" : "none")};
-  color: ${(props) => (props.highlight ? "red" : "black")};
-  transition: all 0.3s ease; /* 테두리, 글자색 변경 시 부드럽게 */
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+  }
+  font-family: 'Pretendard', sans-serif;
+  white-space :nowrap;
 `;
- 
 
-export default function MainPage() {
+const StatContentWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
+  transition: background-color 0.3s ease;
+`;
 
-  const [timeFilter, setTimeFilter] = useState("월"); 
-  const [typeFilter, setTypeFilter] = useState("나");
+const StatLeft = styled.div`
+  flex: 1;
+  display: flex;
+  align-items: center;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
+`;
 
-  const [selectedStat, setSelectedStat] = useState("납부율"); 
+const StatRight = styled.div`
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
+`;
 
-  const [usage, setUsage] = useState(382000);
-  const [percentages, setPercentages] = useState({ payRate: 23, support: 63, income: 29 });
-  const [lastMonthUsage, setLastMonthUsage] = useState(297000);
-  const [comparison, setComparison] = useState(13);
-  const [graphData, setGraphData] = useState([
-    { time: "00:00", sales: 50, revenue: 40, customers: 20 },
-    { time: "01:00", sales: 70, revenue: 50, customers: 30 },
-    { time: "02:00", sales: 80, revenue: 60, customers: 40 },
-  ]);
+const StatNumber = styled.p`
+  font-size: clamp(15px, 4vw, 20px);
+  font-weight: bold;
+  margin: 0;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
+  transition: background-color 0.3s ease;
+`;
+
+const ComparisonText = styled.p`
+  font-size: clamp(10px, 2vw, 12px);
+  margin: 0;
+  white-space: nowrap;
+  margin-left: 8px;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
+  transition: background-color 0.3s ease;
+`;
+
+const RowContainer = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-bottom: 24px;
+  & > * {
+    flex: 1;
+    min-width: 300px;
+  }
+`;
+
+const PeriodContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+  font-family: 'Pretendard', sans-serif;
+`;
+
+const PeriodButton = styled.button`
+  padding: 8px 16px;
+  border: 1px solid #eaeaea;
+  border-radius: 4px;
+  background-color: ${({ isSelected }) => (isSelected ? '#e08490' : '#fff')} !important;
+  color: ${({ isSelected }) => (isSelected ? '#fff' : '#444')};
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+  &:hover {
+    background-color: ${({ isSelected }) => (isSelected ? '#d76a80' : '#f0f0f0')} !important;
+  }
+  font-family: 'Pretendard', sans-serif;
+`; 
+
+const ChartsContainer = styled.div`
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap; 
+  border-radius: 16px;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  &:hover {
+    box-shadow: 0 14px 28px rgba(0,0,0,0.25), 3px 5px 5px rgba(0,0,0,0.22);
+  }
+  & > :first-child {
+    flex: 2;
+    min-width: 300px;
+  }
+  & > :last-child {
+    flex: 1;
+    min-width: 200px;
+    margin-bottom:20px;
+  }
+`;
+
+const Dashboard = () => { 
+  const [selectedStat, setSelectedStat] = useState('userCount');
+  const [selectedPeriod, setSelectedPeriod] = useState('week');
+  const [dashboardData, setDashboardData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const handleStatClick = (statKey) => {
+    setSelectedStat(statKey);
+  };
+
+  const handlePeriodClick = (periodKey) => {
+    setSelectedPeriod(periodKey);
+  };
+
+  const periodComparisonLabel = {
+    week: '지난 주 대비',
+    month: '지난 달 대비',
+    '6months': '지난 반기 대비',
+    year: '작년 대비',
+  }[selectedPeriod];
 
   useEffect(() => {
-  
-    if (timeFilter === "월" && typeFilter === "나" && selectedStat === "납부율") {
-      setUsage(382000);
-      setPercentages({ payRate: 23, support: 63, income: 29 });
-      setComparison(13);
-      setGraphData([
-        { time: "00:00", sales: 50, revenue: 40, customers: 20 },
-        { time: "01:00", sales: 70, revenue: 50, customers: 30 },
-        { time: "02:00", sales: 80, revenue: 60, customers: 40 },
-      ]);
-    } else if (timeFilter === "월" && typeFilter === "나" && selectedStat === "지원금") {
-      setUsage(400000);
-      setPercentages({ payRate: 18, support: 75, income: 29 });
-      setComparison(10);
-      setGraphData([
-        { time: "00:00", sales: 60, revenue: 50, customers: 30 },
-        { time: "01:00", sales: 80, revenue: 60, customers: 40 },
-        { time: "02:00", sales: 90, revenue: 70, customers: 50 },
-      ]);
-    } else if (timeFilter === "월" && typeFilter === "나" && selectedStat === "월 소득") {
-      setUsage(420000);
-      setPercentages({ payRate: 25, support: 50, income: 35 });
-      setComparison(7);
-      setGraphData([
-        { time: "00:00", sales: 55, revenue: 45, customers: 25 },
-        { time: "01:00", sales: 75, revenue: 55, customers: 35 },
-        { time: "02:00", sales: 95, revenue: 65, customers: 45 },
-      ]);
-    } 
-  }, [timeFilter, typeFilter, selectedStat]);
+    const fetchData = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        if (config.useDummyData) {
+          setDashboardData(dummyDataMap[selectedStat][selectedPeriod]);
+        } else {
+          const apiData = await getDashboardData(selectedStat, selectedPeriod);
+          setDashboardData(apiData);
+        }
+      } catch (err) {
+        setError('데이터를 불러오는 데 실패했습니다.');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [selectedStat, selectedPeriod]);
+
+  if (loading) return <DashboardContainer>로딩중...</DashboardContainer>;
+  if (error) return <DashboardContainer>{error}</DashboardContainer>;
+
+  const currentData = dashboardData;
 
   return (
-    <Container>
+    <DashboardContainer> 
+      <breadcrumbMaintitle>서비스 현황</breadcrumbMaintitle>
+      <StatsContainer>
+        <StatBox
+          onClick={() => handleStatClick('userCount')}
+          isSelected={selectedStat === 'userCount'}
+        >
+          <h3>사용자 수</h3>
+          <StatContentWrapper isSelected={selectedStat === 'userCount'}>
+            <StatLeft>
+              <StatNumber isSelected={selectedStat === 'userCount'}>
+                6,212,541 명
+              </StatNumber>
+              <ComparisonText isSelected={selectedStat === 'userCount'}>
+                {periodComparisonLabel}
+              </ComparisonText>
+            </StatLeft>
+            <StatRight>
+              <Badge change={3.2} />
+            </StatRight>
+          </StatContentWrapper>
+        </StatBox>
+     
+        <StatBox
+          onClick={() => handleStatClick('totalSignups')}
+          isSelected={selectedStat === 'totalSignups'}
+        >
+          <h3>총 가입 수치</h3>
+          <StatContentWrapper isSelected={selectedStat === 'totalSignups'}>
+            <StatLeft>
+              <StatNumber isSelected={selectedStat === 'totalSignups'}>
+                14,141,141 명
+              </StatNumber>
+              <ComparisonText isSelected={selectedStat === 'totalSignups'}>
+                {periodComparisonLabel}
+              </ComparisonText>
+            </StatLeft>
+            <StatRight>
+              <Badge change={-2.8} />
+            </StatRight>
+          </StatContentWrapper>
+        </StatBox>
 
-      <UserInfo>
-        <Username>000 님</Username>
-        <Greeting>안녕하세요!</Greeting>
-      </UserInfo>
+        <StatBox
+          onClick={() => handleStatClick('totalAmount')}
+          isSelected={selectedStat === 'totalAmount'}
+        >
+          <h3>총 거래 액</h3>
+          <StatContentWrapper isSelected={selectedStat === 'totalAmount'}>
+            <StatLeft>
+              <StatNumber isSelected={selectedStat === 'totalAmount'}>
+                34,615,527 원
+              </StatNumber>
+              <ComparisonText isSelected={selectedStat === 'totalAmount'}>
+                {periodComparisonLabel}
+              </ComparisonText>
+            </StatLeft>
+            <StatRight>
+              <Badge change={14.4} />
+            </StatRight>
+          </StatContentWrapper>
+        </StatBox>
 
-      <Card>
-        <h3>이번 달 이용액</h3>
-        <p style={{ fontSize: "24px", fontWeight: "bold" }}>
-          {usage.toLocaleString()} 원
-        </p>
-      </Card>
+        <StatBox
+          onClick={() => handleStatClick('revenue')}
+          isSelected={selectedStat === 'revenue'}
+        >
+          <h3>매출</h3>
+          <StatContentWrapper isSelected={selectedStat === 'revenue'}>
+            <StatLeft>
+              <StatNumber isSelected={selectedStat === 'revenue'}>
+                7,917,508 원
+              </StatNumber>
+              <ComparisonText isSelected={selectedStat === 'revenue'}>
+                {periodComparisonLabel}
+              </ComparisonText>
+            </StatLeft>
+            <StatRight>
+              <Badge change={3.2} />
+            </StatRight>
+          </StatContentWrapper>
+        </StatBox>
+      </StatsContainer>
+
+      <PeriodContainer>
+        <PeriodButton
+          onClick={() => handlePeriodClick('week')}
+          isSelected={selectedPeriod === 'week'}
+        >
+          주
+        </PeriodButton>
+        <PeriodButton
+          onClick={() => handlePeriodClick('month')}
+          isSelected={selectedPeriod === 'month'}
+        >
+          월
+        </PeriodButton>
+        <PeriodButton
+          onClick={() => handlePeriodClick('6months')}
+          isSelected={selectedPeriod === '6months'}
+        >
+          6개월
+        </PeriodButton>
+        <PeriodButton
+          onClick={() => handlePeriodClick('year')}
+          isSelected={selectedPeriod === 'year'}
+        >
+          연
+        </PeriodButton>
+      </PeriodContainer>
  
-      <FilterContainer>
-        <FilterGroup>
-          <FilterButton
-            active={timeFilter === "월"}
-            onClick={() => setTimeFilter("월")}
-          >
-            월
-          </FilterButton>
-          <FilterButton
-            active={timeFilter === "일"}
-            onClick={() => setTimeFilter("일")}
-          >
-            일
-          </FilterButton>
-          <FilterButton
-            active={timeFilter === "연"}
-            onClick={() => setTimeFilter("연")}
-          >
-            연
-          </FilterButton>
-        </FilterGroup>
-
-        <FilterGroup>
-          <FilterButton
-            active={typeFilter === "나"}
-            onClick={() => setTypeFilter("나")}
-          >
-            나
-          </FilterButton>
-          <FilterButton
-            active={typeFilter === "평균"}
-            onClick={() => setTypeFilter("평균")}
-          >
-            평균
-          </FilterButton>
-        </FilterGroup>
-      </FilterContainer>
- 
-      <StatGrid>
-        <StatCard
-          highlight={selectedStat === "납부율"}
-          onClick={() => setSelectedStat("납부율")}
-        >
-          <p>납부율</p>
-          <p style={{ fontSize: "20px", fontWeight: "bold" }}>
-            {percentages.payRate}%
-          </p>
-        </StatCard>
-        <StatCard
-          highlight={selectedStat === "지원금"}
-          onClick={() => setSelectedStat("지원금")}
-        >
-          <p>지원금</p>
-          <p style={{ fontSize: "20px", fontWeight: "bold" }}>
-            {percentages.support}%
-          </p>
-        </StatCard>
-        <StatCard
-          highlight={selectedStat === "월 소득"}
-          onClick={() => setSelectedStat("월 소득")}
-        >
-          <p>월 소득</p>
-          <p style={{ fontSize: "20px", fontWeight: "bold" }}>
-            {percentages.income}%
-          </p>
-        </StatCard>
-      </StatGrid>
-
-      <Card>
-        <p>
-          지난 달 이맘때에 비해{" "}
-          <span style={{ color: "red", fontWeight: "bold" }}>{comparison}%</span>{" "}
-          더 많이 사용했어요.
-        </p>
-        <p>지난 달 21일까지 사용액: {lastMonthUsage.toLocaleString()} 원</p>
-      </Card>
-
+      <ChartsContainer>
+        <ChartCard data={currentData.barData} name={selectedStat} />
+      </ChartsContainer> 
       
-    </Container>
+      <RowContainer>
+        <ChartsContainer>
+          <PieChartCard data={currentData.pieData} />
+        </ChartsContainer>
+        <ChartsContainer>
+          <UserListCard />
+        </ChartsContainer>
+      </RowContainer>
+    </DashboardContainer>
   );
-}
+};
+
+export default Dashboard;
