@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
+/* CSS 스타일 */
+import "styles/investResult/InvestmentStatusCheck.css";
+
 const InvestmentStatusCheck = () => {
     const [status, setStatus] = useState(null);
     const navigate = useNavigate();
@@ -43,49 +46,39 @@ const InvestmentStatusCheck = () => {
     }, []);
 
     return (
-        <div style={{ textAlign: "center", padding: "20px" }}>
+        <div className="investment-status-container">
             <h2>투자 심사 결과</h2>
 
             {status === "승인" && (
-                <div>
-                    <p style={{ color: "green", fontSize: "18px", fontWeight: "bold" }}>
-                        ✅ 승인됨! 다음 페이지로 이동합니다...
-                    </p>
+                <div className="status-box">
+                    <p className="approved"><span className="highlight">승인</span>되었습니다!<br/>
+                        버튼을 클릭해<br/>
+                        다음 페이지로 이동해주세요.</p>
                     <button
-                        onClick={() => navigate("/next-page")}
-                        style={{
-                            padding: "10px 20px",
-                            fontSize: "16px",
-                            backgroundColor: "green",
-                            color: "white",
-                            border: "none",
-                            cursor: "pointer",
-                            borderRadius: "5px",
-                            marginTop: "10px"
-                        }}
-                    >
+                        onClick={() => navigate("/next-page")} className="next-button">
                         다음 단계로 이동
                     </button>
                 </div>
             )}
 
             {status === "거절" && (
-                <div>
-                    <p style={{ color: "red", fontSize: "18px", fontWeight: "bold" }}>
-                        ❌ 승인이 거절되었습니다. 다시 재심사 신청해주세요!
-                    </p>
+                <div className="status-box">
+                    <p className="rejected">승인이 <span className="highlight">거절</span>되었습니다. 다시 <span className="highlight">재심사</span> 신청해주세요!</p>
                 </div>
             )}
 
             {status === "대기" && (
-                <div>
-                    <p style={{ color: "blue", fontSize: "18px", fontWeight: "bold" }}>
-                        ⏳ 승인 대기중입니다...
-                    </p>
+                <div className="status-box">
+                    <p className="pending">승인 <span className="highlight">대기</span>중입니다.</p>
+                    <div className="loading-dots">
+                        <span className="dot"></span>
+                        <span className="dot"></span>
+                        <span className="dot"></span>
+                    </div>
                 </div>
             )}
 
-            {!status && <p>🔍 심사 결과를 가져오는 중...</p>}
+            {!status && <p>심사 결과를 가져오는 중...</p>}
         </div>
     );
 };
