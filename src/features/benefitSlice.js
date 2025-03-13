@@ -8,9 +8,10 @@ export const fetchBenefits = createAsyncThunk(
   async (cardId, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:8080/card/benefits/${cardId}`, {
+      const response = await axios.get(`http://localhost:8080/benefit/card`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+      console.log(response)
       return response.data; // { availableBenefits, appliedBenefits }
     } catch (error) {
       return rejectWithValue(error.response?.data || "혜택 데이터를 가져오지 못했습니다.");
@@ -24,7 +25,7 @@ export const deleteBenefit = createAsyncThunk(
   async (benefitId, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.delete(`http://localhost:8080/card/benefits/${benefitId}`, {
+      const response = await axios.delete(`http://localhost:8080/benefit/${benefitId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       return benefitId; // 삭제된 혜택 ID 반환
