@@ -69,8 +69,8 @@ function App() {
 
           <Route path="/investReview" element={<Review />} />
           <Route path="/investment/status" element={<InvestmentStatusCheck />} />
-          <Route path="/investment-temp-allowance" element={<InvestmentTempAllowance/>}/>
-          <Route path="/investment-support" element={<InvestmentExit/>}/>
+          <Route path="/investTempAllowance" element={<InvestmentTempAllowance/>}/>
+          <Route path="/investSupport" element={<InvestmentExit/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
           <Route path="/investmentReallyExit" element={<InvestmentReallyExit/>}/>
  
