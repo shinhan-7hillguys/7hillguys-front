@@ -18,7 +18,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
-    width: 400px;
+    width: 100%;
 }
 
 /* 제목 */
@@ -97,7 +97,7 @@
     margin-bottom: 16px;
     border: 1px solid #FFD4DE;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
     background-color: white;
 }
 
@@ -117,7 +117,7 @@
     color: black;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 12px;
     cursor: pointer;
     width: 48%;
 }

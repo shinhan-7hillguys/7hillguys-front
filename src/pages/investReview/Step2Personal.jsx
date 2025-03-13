@@ -1,9 +1,42 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import "styles/investReview/Step2Personal.css";
 
 const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, handleBack }) => {
     const [familyCertificateFile, setFamilyCertificateFile] = useState("선택된 파일 없음");
     const [criminalRecordFile, setCriminalRecordFile] = useState("선택된 파일 없음");
+
+    useEffect(() => {
+        // 다음 주소 API 스크립트 동적 로드
+        const script = document.createElement("script");
+        script.src = "https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js";
+        script.async = true;
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+    }, []);
+
+    const handleSearchAddress = () => {
+        const container = document.getElementById("postcode-container");
+        container.style.display = "block"; // iframe을 보이도록 설정
+
+        const postcode = new window.daum.Postcode({
+            oncomplete: function (data) {
+                let fullAddress = data.address;
+                if (data.addressType === "R") {
+                    if (data.bname) fullAddress += ` (${data.bname})`;
+                }
+                setFormData((prev) => ({ ...prev, address: fullAddress }));
+
+                container.style.display = "none"; // 주소 선택 후 iframe 숨김
+            },
+            width: "100%", // iframe 가로 크기 설정
+            height: "400px", // iframe 세로 크기 설정
+        });
+
+        postcode.embed(container); // 기존 open() 대신 embed() 사용하여 iframe으로 렌더링
+    };
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
@@ -78,14 +111,32 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     </div>
                 </div>
 
-                <input
+                {/*<input
                     type="text"
                     name="address"
                     placeholder="주소"
                     value={formData.address || ""}
                     onChange={handleChange}
                     className="input-field"
-                />
+                />*/}
+
+                {/* 주소 입력 필드 */}
+                <div className="address-input-group">
+                    <input
+                        type="text"
+                        name="address"
+                        placeholder="주소를 검색하세요"
+                        value={formData.address || ""}
+                        readOnly
+                        className="input-field"
+                    />
+                    <button onClick={handleSearchAddress} className="address-search-btn">
+                        주소 검색
+                    </button>
+                </div>
+
+                {/* Daum 주소 API가 삽입될 div */}
+                <div id="postcode-container" style={{ width: "100%", height: "400px", display: "none" }}></div>
                 <input
                     type="number"
                     name="assets"
@@ -97,7 +148,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
 
                 {/* 결혼 여부 체크박스 */}
                 <div className="personal-checkbox-group">
-                    <p>결혼여부:</p>
+                    <p>결혼 여부:</p>
                     <input
                         type="checkbox"
                         name="familyStatus.married"
@@ -118,9 +169,9 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     className="input-field"
                 />
 
-                {/* 범죄 기록 체크박스 */}
+                {/* 해외여행 출국 가능 여부 체크박스 */}
                 <div className="personal-checkbox-group">
-                    <p>범죄여부:</p>
+                    <p>해외여행 출국:</p>
                     <input
                         type="checkbox"
                         name="criminalRecord"
@@ -128,7 +179,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                         onChange={handleChange}
                     />
                     <span className="personal-checkbox-label-text">
-                        {formData.criminalRecord ? "있음" : "없음"}
+                        {formData.criminalRecord ? "가능" : "불가능"}
                     </span>
                 </div>
 
@@ -142,9 +193,9 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     <span className="file-name">{familyCertificateFile}</span>
                 </div>
 
-                {/* 범죄 기록 증명서 업로드 */}
+                {/* 해외여행 출국 여부 증명서 업로드 */}
                 <div className="file-upload-wrapper">
-                    <label className="file-upload-label">범죄 기록 증명서</label>
+                    <label className="file-upload-label">출국 가능 여부 증명서</label>
                     <label className="custom-file-upload">
                         파일 선택
                         <input type="file" name="criminalRecordFile" onChange={(e) => handleFileSelect(e, setCriminalRecordFile)} className="file-upload" />
