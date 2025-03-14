@@ -107,16 +107,16 @@ const InvestmentExit = () => {
     useEffect(() => {
         const fetchExpectedIncome = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/investment/exit/6', {
+                const response = await axios.get('http://localhost:8080/api/investment/exit', {
                     headers: {
                         Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
                     }
                 });
                 const incomeData = response.data;
-
-                const firstExpectedIncome = JSON.parse(incomeData.firstExpectedIncome);
-                const lastExpectedIncome = JSON.parse(incomeData.lastExpectedIncome);
+                //반대로 오는데 꼬인거 같음 여기서 그냥 처리
+                const firstExpectedIncome = JSON.parse(incomeData.lastExpectedIncome);
+                const lastExpectedIncome = JSON.parse(incomeData.firstExpectedIncome);
 
                 // 두 데이터를 병합하여 그래프 데이터 생성
                 const formattedData = Object.entries(firstExpectedIncome).map(([year, income]) => ({
