@@ -1,0 +1,125 @@
+h1, p {
+    text-align: left;
+    margin-bottom: 10px;
+}
+h1{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.account-container, .history-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.register-button {
+    background-color: #ff99aa;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.account-list, .payment-list {
+    margin-top: 20px;
+}
+
+.account-item  {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #fff5f5;
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+}
+
+.payment-item {
+    background-color: #fff5f5;
+    margin-bottom: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.payment-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    background-color: #fff5f5;
+    cursor: pointer;
+    border-radius: 10px;
+    transition: background 0.3s ease-in-out;
+}
+
+.payment-label {
+    background-color: #fff5f5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.payment-details {
+    background: #fff5f5;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+.account-item.selected {
+    background: #ffccd6;
+}
+
+.bank-name {
+    font-weight: bold;
+    color: #ff6699;
+}
+
+.selectbutton {
+    background-color: #ff99aa;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 13px;
+    font-weight: bold;
+    border-radius: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    width: 80px;
+    height: 40px;
+    text-align: center;
+}
+
+.selectbutton:disabled {
+    background-color: #f5c6cb;
+    cursor: default;
+    color: #ffffff;
+}
+.button {
+    background-color: #ff99aa;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 45px;
+    text-align: center;
+    white-space: nowrap;
+}
+

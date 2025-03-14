@@ -159,8 +159,7 @@ const UserSearchPage = () => {
     const params = {};
     if (name.trim()) params.name = name;
     if (gender) params.gender = gender;
-    if (birthYear) {
-      // 입력받은 연도를 기준으로 1월 1일부터 12월 31일까지의 범위를 생성
+    if (birthYear) { 
       params.startDate = `${birthYear}-01-01`;
       params.endDate = `${birthYear}-12-31`;
     }
@@ -207,9 +206,9 @@ const UserSearchPage = () => {
         ) : (
           <UserList>
             {filteredUsers.map(user => (
-              <UserItem key={user.id}> 
+              <UserItem key={user.userId}> 
                 <UserInfo>
-                  <UserLink to={`/admin/user/detail/${user.id}`}>{user.name}</UserLink>
+                  <UserLink to={`/admin/user/detail/${user.userId}`}>{user.name}</UserLink>
                   <UserDetailText>생년월일: {user.birthdate}</UserDetailText>
                   <UserDetailText>핸드폰: {formatPhoneNumber(user.phone)}</UserDetailText>
                   <UserDetailText>e-mail: {user.email}</UserDetailText>
