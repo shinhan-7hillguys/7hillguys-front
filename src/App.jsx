@@ -39,9 +39,10 @@ import SetInvestment from "./pages/peoch/amount/SetInvestment";
 import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
 
 /* 마이페이지 카드 */
-import CardStatement from "pages/mypage/card/CardStatement";
-import BenefitStatement from "pages/mypage/card/BenefitStatement";
-import AllBenefitSearch from "pages/mypage/card/AllBenefitSearch";
+import CardStatement from "./pages/mypage/card/CardStatement";
+import BenefitStatement from "./pages/mypage/card/BenefitStatement";
+import AllBenefitSearch from "./pages/mypage/card/AllBenefitSearch";
+import PaymentTest from "./pages/mypage/card/PaymentTest";
 
 function App() {
   return (
@@ -89,9 +90,19 @@ function App() {
 
           <Route path="/user" element={<User />} />
 
-          <Route path="/mypage/card" element={<CardStatement />} />
-          <Route path="/mypage/card" element={<BenefitStatement />} />
-          <Route path="/mypage/card" element={<AllBenefitSearch />} />
+          <Route
+            path="/mypage/card/CardStatement"
+            element={<CardStatement />}
+          />
+          <Route
+            path="/mypage/card/BenefitStatement"
+            element={<BenefitStatement />}
+          />
+          <Route
+            path="/mypage/card/AllBenefitSearch"
+            element={<AllBenefitSearch />}
+          />
+          <Route path="/mypage/card/PaymentTest" element={<PaymentTest />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
           <Route path="/user/dashboard" element={<UserMain />} />
         </Route>
