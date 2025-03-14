@@ -1,0 +1,19 @@
+.badge {
+    display: inline-block;
+    padding: 0.5em 0.5em;
+    border-radius: 999px;
+    font-size: 0.6em;
+    font-weight: bold;
+    text-align: center;
+    color: white;
+    text-transform: uppercase;  
+    
+}
+
+.badge.increase {
+    background-color: #039855;   
+}
+
+.badge.decrease {
+    background-color: #f44336;  
+}

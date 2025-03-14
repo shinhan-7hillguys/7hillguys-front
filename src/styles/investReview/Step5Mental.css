@@ -1,0 +1,117 @@
+/* 전체 컨테이너 */
+.mental-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    padding: 40px;
+    background-color: #FFF7F7;
+}
+
+/* 평가 박스 */
+.mental-box {
+    background: white;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: left;
+    width: 100%;
+}
+
+/* 제목 */
+.mental-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #FF4170;
+    margin-bottom: 15px;
+}
+
+/* 질문 박스 */
+.mental-question {
+    background: #FEEFF0;
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 12px;
+}
+
+/* 질문 텍스트 */
+.mental-question h3 {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+/* 라디오 버튼 그룹 */
+.radio-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+/* 라디오 버튼 스타일 */
+.radio-group input[type="radio"] {
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #FEA1B8;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    background-color: white;
+    transition: background-color 0.2s ease-in-out;
+}
+
+/* 선택된 라디오 버튼 스타일 */
+.radio-group input[type="radio"]:checked {
+    background-color: #FEA1B8;
+}
+
+/* 라벨 텍스트 */
+.radio-label {
+    font-size: 14px;
+    color: #333;
+}
+
+/* 버튼 컨테이너 */
+.mental-button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+/* 이전 버튼 */
+.mental-prev-button {
+    padding: 12px;
+    background-color: #D3D3D3;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.mental-prev-button:hover {
+    background-color: #B0B0B0;
+}
+
+/* 다음 버튼 */
+.mental-next-button {
+    padding: 12px;
+    background-color: #FEA1B8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.mental-next-button:hover {
+    background-color: #F994AD;
+}

@@ -1,0 +1,217 @@
+
+.main_header {
+    position: fixed;
+    z-index: 10;
+    background: transparent;
+    margin: 0 auto;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    font-weight: 600;
+  }
+  .main_header div {
+    width: var(--max-width);
+    background: transparent;
+    text-align: right;
+    padding-right: 10px;
+  }
+  .main_header div img {
+  }
+  .main_header a {
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  /* 뷰포트 컨테이너: 600px 폭, 충분한 수직 스크롤을 위해 높이를 500px + 2400px = 2900px로 설정 */
+  .viewport-container {
+    position: relative;
+    width: 100vw;
+    /* height: 2400px;  */
+    overflow-x: hidden; /* 가로 스크롤 숨김 */
+    overflow-y: auto; /* 세로 스크롤은 표시 */
+    margin: 0 auto;
+  }
+  
+  /* horizontal-scroller: 5개의 패널을 가로로 배열 (총 3000px: 600px * 5) */
+  .horizontal-scroller {
+    display: flex;
+    width: 500vw;
+    position: absolute;
+  }
+  
+  /* 각 패널: 600px x 500px 크기로 중앙 정렬 */
+  .panel {
+    background: #f4b0b0;
+    width: 100vw;
+    height: 100vh;
+    /* display: flex;
+    justify-content: center; */
+    /* flex-shrink: 0; */
+    position: relative;
+    border-right: 1px solid #ccc;
+    /* background-image: url("../public/innovation8.jpg");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat; */
+  }
+  .panel .main_intro {
+    background: transparent;
+    position: relative;
+    padding: 0 20px;
+  }
+  .panel .main_intro .p1 {
+    padding: 80px 0 0 0;
+    font-size: 40px;
+    font-weight: 800;
+    color: #fff;
+    
+
+  }
+  .panel .main_intro .p2 {
+    position: absolute;
+    bottom: 65px;
+    font-size: 30px;
+    font-weight: 700;
+    color: #7e7e7e;
+  }
+  .panel .main_intro .p2 em {
+    /* position: absolute; */
+    top: -10px;
+    color: #000;
+  }
+  .panel .main_intro h2 {
+    font-size: 80px;
+    font-weight: 500;
+    padding: 10px 0 0 0;
+    color: #fb6aac;
+  }
+  .scroll_btn {
+    border: 0;
+    padding: 10px 30px;
+    margin: 20px 20px;
+    background: #ff8f8f;
+    border-radius: 10px;
+  }
+
+  .main_intro2 {
+    position: relative;
+    background:transparent;
+    z-index: 10;
+    display: flex;
+    flex-direction: row-reverse;
+    margin-top: 50px;
+
+  }
+  .main_intro2_top h2 {
+    font-size: 30px;
+    color: #fe0098;
+  }
+  .main_intro2_top {
+    background:transparent;
+    color:#fff;
+    font-weight: 600;
+    width: 350px;
+    /* text-align: center; */
+    padding: 10px 20px;
+  }
+  .main_intro2_top p {
+    line-height: 2;
+    margin-top: 30px;
+  }
+/*   
+
+  .main_img1 {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    background: url("../public/main22.png") no-repeat center center/ cover;
+    width: 130px;
+    height: 130px;
+    z-index: 5;
+}
+
+.main_img2 {
+    position: absolute;
+    right: 115px;
+    bottom: 0;
+    background: url("../public/main33.png") no-repeat center center/ cover;
+    width: 145px;
+    height: 130px;
+    z-index: 4;
+}
+.main_img3 {
+    position: absolute;
+    right: 0px;
+    bottom: 130px;
+    background: url("../public/main44.png") no-repeat center center/ cover;
+    width: 130px;
+    height: 130px;
+    z-index: 3;
+}
+.main_img4 {
+    position: absolute;
+    right: 110px;
+    bottom: 120px;
+    background: url("../public/main66.png") no-repeat center center/ cover;
+    width: 130px;
+    height: 150px;
+    z-index: 2;
+}
+.main_img5 {
+    position: absolute;
+    right: 0px;
+    bottom: 240px;
+    background: url("../public/main55.png") no-repeat center center/ cover;
+    width: 130px;
+    height: 130px;
+    z-index: 1;
+} */
+
+  .main_img1 {
+    position: absolute;
+    right: 20px;
+    bottom: 0px;
+    background: url("../public/main22.png") no-repeat center center/ cover;
+    width: 150px;
+    height: 150px;
+    z-index: 5;
+}
+
+.main_img2 {
+    position: absolute;
+    right: 145px;
+    bottom: 40px;
+    background: url("../public/main33.png") no-repeat center center/ cover;
+    width: 150px;
+    height: 150px;
+    z-index: 4;
+}
+.main_img3 {
+    position: absolute;
+    right: 0px;
+    bottom: 130px;
+    background: url("../public/main44.png") no-repeat center center/ cover;
+    width: 180px;
+    height: 150px;
+    z-index: 3;
+}
+.main_img4 {
+    position: absolute;
+    right: 140px;
+    bottom: 120px;
+    background: url("../public/main66.png") no-repeat center center/ cover;
+    width: 180px;
+    height: 150px;
+    z-index: 2;
+}
+.main_img5 {
+    position: absolute;
+    right: 50px;
+    bottom: 240px;
+    background: url("../public/main55.png") no-repeat center center/ cover;
+    width: 180px;
+    height: 130px;
+    z-index: 1;
+}
