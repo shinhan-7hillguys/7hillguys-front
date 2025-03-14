@@ -11,28 +11,22 @@ const InvestmentStatusCheck = () => {
     useEffect(() => {
         const checkStatus = async () => {
             try {
-                const token = localStorage.getItem("token"); // JWT 가져오기
-                console.log("✅ [프론트] 저장된 JWT 토큰:", token);
-
-                if (!token) {
-                    console.error("❌ [프론트] 토큰이 없습니다.");
-                    return;
-                }
+                console.log("✅ [프론트] 투자 심사 상태 조회 요청");
 
                 const response = await fetch("http://localhost:8080/api/investment/status", {
                     method: "GET",
+                    credentials: "include", // ✅ 쿠키 자동 포함
                     headers: {
-                        "Authorization": `Bearer ${token}`,
                         "Accept": "application/json",
-                        "Content-Type": "application/json",
-                    },
+                        "Content-Type": "application/json"
+                    }
                 });
 
                 if (!response.ok) {
                     throw new Error(`서버 요청 실패: ${response.status}`);
                 }
 
-                const result = await response.text(); // 🔍 백엔드 응답을 텍스트로 받음
+                const result = await response.text();
                 console.log("✅ [프론트] 서버 응답 값:", result);
 
                 setStatus(result.trim() === "승인" || result.trim() === "거절" ? result.trim() : "대기");
@@ -55,7 +49,7 @@ const InvestmentStatusCheck = () => {
                         버튼을 클릭해<br/>
                         다음 페이지로 이동해주세요.</p>
                     <button
-                        onClick={() => navigate("/next-page")} className="next-button">
+                        onClick={() => navigate("/SetInvestment")} className="next-button">
                         다음 단계로 이동
                     </button>
                 </div>
