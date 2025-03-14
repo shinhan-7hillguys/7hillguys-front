@@ -22,7 +22,7 @@ const Peoch = () => {
           임시 한도 신청
         </button>
         <button
-            onClick={() => navigate("/investSupport")}
+            onClick={() => navigate("/investExit")}
             style={{
               margin: "10px",
               padding: "10px 20px",
