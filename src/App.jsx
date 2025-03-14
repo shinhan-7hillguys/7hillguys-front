@@ -46,7 +46,9 @@ import InvestmentTempAllowance from "./pages/peoch/amount/InvestmentTempAllowanc
 import InvestmentExit from "./pages/peoch/amount/InvestmentExit";
 
 import InvestmentStatusCheck from "pages/investResult/InvestmentStatusCheck";
-// import ContractSigning from "pages/investResult/ContractSigning";
+import ContractSigning from "pages/investResult/ContractSigning";
+import ContractPreview from "pages/investResult/ContractPreview";
+
 
 import SetInvestment from "./pages/peoch/amount/SetInvestment";
 import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
@@ -95,9 +97,12 @@ function App() {
           />
           <Route path="/peoch" element={<Peoch />} />
 
-          {/* <Route path="/contract" element={<ContractSigning />} /> */}
+
+          <Route path="/contract" element={<ContractSigning />} />
+          <Route path="/contract-preview" element={<ContractPreview />} />
 
 
+          <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/user/dashboard" element={<UserMain />} />
 
