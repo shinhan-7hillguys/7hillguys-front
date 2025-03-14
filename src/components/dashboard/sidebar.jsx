@@ -4,13 +4,11 @@ import { Link } from 'react-router-dom';
  
 
 const SidebarContainer = styled.div`
-  width: 240px; 
-  background-color: #f9f4f5; 
-  border-right: 1px solid #eaeaea;
+  width: 240px;   
   display: flex;
   flex-direction: column;
   padding: 24px;
-  font-family: 'Noto Sans KR', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif; 
 `;
 
 const LogoContainer = styled.div`
@@ -127,7 +125,7 @@ const Sidebar = () => {
       <SectionTitle>Menu</SectionTitle>
             <MenuItem onClick={toggleDashboard}>
         <MenuIcon src="https://png.pngtree.com/png-vector/20230302/ourmid/pngtree-dashboard-line-icon-vector-png-image_6626604.png" />
-        <MenuLabel>대시보드</MenuLabel> 
+        <MenuLabel>서비스 관리</MenuLabel> 
         <Chevron $isOpen={dashboardOpen} />
       </MenuItem>
       <SubMenuContainer $isOpen={dashboardOpen}>
