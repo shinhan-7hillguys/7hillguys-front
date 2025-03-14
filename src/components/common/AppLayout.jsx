@@ -110,10 +110,16 @@ const AppLayout = () => {
                 혜택명세서
               </Link>
               <Link
-                to="/mypage/cardAllBenefitSearch"
+                to="/mypage/card/AllBenefitSearch"
                 style={{ marginRight: "1rem" }}
               >
                 전체 혜택 조회
+              </Link>
+              <Link
+                to="/mypage/card/PaymentTest"
+                style={{ marginRight: "1rem" }}
+              >
+                카드 결제 테스트
               </Link>
             </nav>
           </ul>
