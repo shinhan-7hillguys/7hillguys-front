@@ -164,7 +164,6 @@ const Review = () => {
                     method: "GET",
                     credentials: "include",
                     headers: {
-                        "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
                 });
@@ -217,11 +216,9 @@ const Review = () => {
                     mentalStatus: Number(formData.mentalStatus) || 0,
                 };
 
-                const token = localStorage.getItem("token");
                 const textResponse = await fetch("http://localhost:8080/api/review/save", {
                     method: "POST",
                     headers: {
-                        "Authorization": `Bearer ${token}`,
                         "Content-Type": "application/json",
                     },
                     credentials: "include",
@@ -247,9 +244,6 @@ const Review = () => {
                 const fileResponse = await fetch("http://localhost:8080/api/review/file", {
                     method: "POST",
                     credentials: "include",
-                    headers: {
-                        "Authorization": `Bearer ${token}`,
-                    },
                     body: fileFormData,
                 });
                 if (!fileResponse.ok) throw new Error("파일 업로드 실패");
