@@ -3,12 +3,6 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 function CardStatement() {
-  const [statement, setStatement] = useState({
-    monthlyAllowance: 0,
-    monthlySpent: 0,
-    statementList: [],
-  });
-
   // JWT에서 userId 추출하는 함수
   const getUserIdFromToken = () => {
     const token = localStorage.getItem("token"); // JWT 가져오기
@@ -28,15 +22,30 @@ function CardStatement() {
   const userId = userData?.userId;
   const token = userData?.token;
 
+  const [statement, setStatement] = useState({
+    monthlyAllowance: 0,
+    monthlySpent: 0,
+    statementList: [],
+  });
+
   // 현재 연도와 월 가져오기 (기본값 설정)
   const now = new Date();
   const currentYear = now.getFullYear();
   const [selectedMonth, setSelectedMonth] = useState(now.getMonth() + 1); // 기본값: 현재 월
   const yearMonth = `${currentYear}-${String(selectedMonth).padStart(2, "0")}`;
 
+  // 날짜 형식 변환 (xxxx.xx.xx)
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0"); // 2자리 유지
+    const day = String(date.getDate()).padStart(2, "0"); // 2자리 유지
+    return `${year}.${month}.${day}`;
+  };
+
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/card/statement/${userId}`, {
+      .get(`http://localhost:8080/card/cardStatement/${userId}`, {
         params: { yearMonth },
         headers: {
           Authorization: `Bearer ${token}`,
@@ -48,17 +57,7 @@ function CardStatement() {
       .catch((error) => {
         console.error("Error fetching card statement:", error);
       });
-  }, [yearMonth]);
-
-  useEffect(() => {}, [statement]);
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0"); // 2자리 유지
-    const day = String(date.getDate()).padStart(2, "0"); // 2자리 유지
-    return `${year}.${month}.${day}`;
-  };
+  }, [yearMonth]); // yearMonth가 변경될 때마다 실행
 
   return (
     <div className="p-4 bg-white shadow-md rounded-lg">
