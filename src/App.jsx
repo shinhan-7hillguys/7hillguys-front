@@ -9,13 +9,7 @@ import Education from "./pages/education/Education";
 import Peoch from "./pages/peoch/Peoch";
 
 import PositiveFactor from "./pages/education/PositiveFactor";
-import Account from "./pages/account/Account";
-import AccountRegister from "./pages/account/AccountRegister";
-import AccountOther from "./pages/account/AccountOther";
-import AccountCheck from "./pages/account/AccountCheck";
-import Bill from "./pages/account/Bill";
-import Calculation from "./pages/account/Calculation";
-import CalculationResult from "./pages/account/CalculationResult";
+
 
 import UserMain from "./pages/peoch/Usermain";
 import Layout from "./components/dashboard/DashboardLayout";
@@ -49,6 +43,16 @@ import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
 import CardStatement from "pages/mypage/card/CardStatement";
 import BenefitStatement from "pages/mypage/card/BenefitStatement";
 import AllBenefitSearch from "pages/mypage/card/AllBenefitSearch";
+
+/* 계좌 */
+import Account from "./pages/account/Account";
+import AccountRegister from "./pages/account/AccountRegister";
+import AccountOther from "./pages/account/AccountOther";
+import AccountCheck from "./pages/account/AccountCheck";
+import Bill from "./pages/account/Bill";
+import Calculation from "./pages/account/Calculation";
+import CalculationResult from "./pages/account/CalculationResult";
+import PositiveFactors from "./pages/account/PositiveFactors";
 
 function App() {
   return (
@@ -100,6 +104,9 @@ function App() {
           <Route path="/mypage/card" element={<BenefitStatement />} />
           <Route path="/mypage/card" element={<AllBenefitSearch />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
+          <Route path="/user/dashboard" element={<UserMain />} />
+
+
           <Route path="/account" element={<Account />} />
           <Route path="/account/agree" element={<AccountRegister />} />
           <Route path="/account/other" element={<AccountOther />} />
@@ -107,13 +114,14 @@ function App() {
           <Route path="/account/bill" element={<Bill />} />
           <Route path="/account/calculation" element={<Calculation />} />
           <Route path="/account/calculationResult" element={<CalculationResult />} />
-          <Route path="/user/dashboard" element={<UserMain />} />
+          <Route path="/account/positive" element={<PositiveFactors />} />
         </Route>
         <Route element={<Layout />}>
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/search/:query" element={<SearchResults />} />
           <Route path="/admin/user/detail/:id" element={<Detail />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
