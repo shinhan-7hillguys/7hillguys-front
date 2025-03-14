@@ -154,7 +154,7 @@ const InvestmentReallyExit = () => {
                 </HighlightText>
                 을 투자 받으셨습니다.
                 <br/>
-                {totalAmount?.toLocaleString() || '0'}원 + 각종 비용 ={' '}
+                {totalAmount?.toLocaleString() || '0'}원 + 해지 수수료 ={' '}
                 <HighlightText>
                     {adjustedAmount?.toLocaleString() || '0'}원
                 </HighlightText>
