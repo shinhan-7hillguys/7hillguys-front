@@ -94,8 +94,7 @@ function App() {
             element={<InvestmentReallyExit />}
           />
 
-          <Route path="/user" element={<User />} />
-          <Route path ="/card/design" element={<Design />} />
+          <Route path="/user" element={<User />} /> 
           <Route path="/mypage/card" element={<CardStatement />} />
           <Route path="/mypage/card" element={<BenefitStatement />} />
           <Route path="/mypage/card" element={<AllBenefitSearch />} />

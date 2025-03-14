@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
-import { dummyUsers } from 'dummyData';
+import { Link, useParams, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import config from 'config';
 
 const PageContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  padding: 24px; 
+  padding: 24px;
   background-color: #f5f5f5;
   min-height: 100vh;
 `;
@@ -15,77 +16,36 @@ const Sidebar = styled.div`
   width: 300px;
   padding: 24px;
   background-color: #fff;
-  border: 1px solid #eaeaea; 
-  margin-right: 12px; 
-`;
-
-const FilterRadioGroup = styled.div`
-  display: flex;
-  gap: 16px;
-  margin-bottom: 16px;
+  border: 1px solid #eaeaea;
+  margin-right: 12px;
 `;
  
-const CustomRadioLabel = styled.label`
-  display: inline-flex;
-  align-items: center;
-  position: relative;
-  padding-left: 30px;
-  cursor: pointer;
-  font-weight: bold;
-  color: black;
-  user-select: none;
+
+const NameInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 `;
 
-const CustomRadioInput = styled.input`
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-
-  &:checked + span {
-    background-color: #ff7a9d;
-    border-color: #ff7a9d;
-  }
-
-  &:checked + span:after {
-    display: block;
-  }
+const YearInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 `;
-
-const CustomRadioSpan = styled.span`
-  position: absolute;
-  left: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  height: 20px;
-  width: 20px;
-  background-color: #fff;
-  border: 2px solid #ff7a9d;
-  border-radius: 50%;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
-
-  &:after {
-    content: "";
-    position: absolute;
-    display: none;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    background: #fff;
-  }
-`;
-
+ 
 const ContentArea = styled.div`
   flex: 1;
   padding: 24px;
   background-color: #fff;
   border: 1px solid #eaeaea;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 `;
 
 const UserList = styled.ul`
@@ -108,15 +68,7 @@ const UserItem = styled.li`
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
 `;
-
-const UserPhoto = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-right: 16px;
-  border: 2px solid #ddd;
-`;
-
+ 
 const UserInfo = styled.div`
   display: flex;
   flex-direction: column;
@@ -169,66 +121,80 @@ const FilterLabel = styled.label`
   margin-bottom: 32px;
 `;
 
+const FilterButton = styled.button`
+  padding: 8px 16px;
+  background-color: #ff7a9d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+`;
+
+const formatPhoneNumber = (phoneNumber) => {
+  if (!phoneNumber) return ""; 
+  return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+};
+
+
 const UserSearchPage = () => {
   const { query } = useParams();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(query || '');
   const [gender, setGender] = useState('');
-  const [occupation, setOccupation] = useState('');
-  const [salary, setSalary] = useState(0);
+  const [name, setName] = useState('');
+  const [birthYear, setBirthYear] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
-  const filteredUsers = dummyUsers.filter(user => {
-    return (
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (gender ? user.gender === gender : true) &&
-      (occupation ? user.occupation === occupation : true) &&
-      user.salary >= salary
-    );
-  });
+  useEffect(() => {
+    if (location.state && location.state.searchResults) {
+      setFilteredUsers(location.state.searchResults);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     setSearchQuery(query || '');
   }, [query]);
 
+  const handleFilterSearch = () => {
+    const params = {};
+    if (name.trim()) params.name = name;
+    if (gender) params.gender = gender;
+    if (birthYear) {
+      // 입력받은 연도를 기준으로 1월 1일부터 12월 31일까지의 범위를 생성
+      params.startDate = `${birthYear}-01-01`;
+      params.endDate = `${birthYear}-12-31`;
+    }
+
+    axios.get(`${config.apiBaseUrl}/api/user/search/advanced`, { params })
+      .then(response => {
+        setFilteredUsers(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching filtered users:', error);
+      });
+  };
+
   return (
     <PageContainer>
       <Sidebar>
         <FilterContainer>
-          <FilterLabel>성별</FilterLabel>
-          <FilterRadioGroup>
-            <CustomRadioLabel>
-              <CustomRadioInput
-                type="radio"
-                name="gender"
-                value=""
-                checked={gender === ''}
-                onChange={(e) => setGender(e.target.value)}
-              />
-              <CustomRadioSpan />
-              모두
-            </CustomRadioLabel>
-            <CustomRadioLabel>
-              <CustomRadioInput
-                type="radio"
-                name="gender"
-                value="male"
-                checked={gender === 'male'}
-                onChange={(e) => setGender(e.target.value)}
-              />
-              <CustomRadioSpan />
-              남성
-            </CustomRadioLabel>
-            <CustomRadioLabel>
-              <CustomRadioInput
-                type="radio"
-                name="gender"
-                value="female"
-                checked={gender === 'female'}
-                onChange={(e) => setGender(e.target.value)}
-              />
-              <CustomRadioSpan />
-              여성
-            </CustomRadioLabel>
-          </FilterRadioGroup>
+          <FilterLabel>이름</FilterLabel>
+          <NameInput
+            type="text"
+            placeholder="이름 입력"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+ 
+          <FilterLabel>출생 연도</FilterLabel>
+          <YearInput
+            type="number"
+            placeholder="예) 2000"
+            value={birthYear}
+            onChange={(e) => setBirthYear(e.target.value)}
+          />
+
+          <FilterButton onClick={handleFilterSearch}>검색</FilterButton>
         </FilterContainer>
       </Sidebar>
       <ContentArea>
@@ -241,12 +207,12 @@ const UserSearchPage = () => {
         ) : (
           <UserList>
             {filteredUsers.map(user => (
-              <UserItem key={user.id}>
-                <UserPhoto src={user.photo} alt={user.name} />
+              <UserItem key={user.id}> 
                 <UserInfo>
                   <UserLink to={`/admin/user/detail/${user.id}`}>{user.name}</UserLink>
-                  <UserDetailText>생년월일: {user.birth_date}</UserDetailText>
-                  <UserDetailText>직업: {user.occupation}</UserDetailText>
+                  <UserDetailText>생년월일: {user.birthdate}</UserDetailText>
+                  <UserDetailText>핸드폰: {formatPhoneNumber(user.phone)}</UserDetailText>
+                  <UserDetailText>e-mail: {user.email}</UserDetailText>
                 </UserInfo>
               </UserItem>
             ))}

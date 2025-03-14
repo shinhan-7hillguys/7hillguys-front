@@ -1,7 +1,9 @@
-import React, { useState, useContext } from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
- 
+import axios from 'axios';
+import config from 'config';
+
 const TopbarContainer = styled.div`
   width: 100%;
   height: 64px;
@@ -37,71 +39,63 @@ const SearchButton = styled.button`
   border: none;
   cursor: pointer;
   margin-left: 8px;
-  padding: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: black;
-  &:hover {
-    color: #e08490;
-  }
 `;
 
 const SearchIcon = styled.img`
   width: 35px;
-  height: 35x;
+  height: 35px;
   border: 1px solid black;
   padding: 7.5px;
   border-radius: 8px;
   background-color: #ffffff;
 `;
 
-const UserProfile = styled.div`
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-`;
+const getUserIdFromToken = () => {
+  const token = localStorage.getItem("token"); // JWT 가져오기
+  if (!token) return null;
 
-const UserName = styled.span`
-  margin-right: 8px;
-  transition: color 0.2s;
-    &:hover {
-    color: #e08490;
+  try {
+      const payload = JSON.parse(atob(token.split(".")[1])); // Base64 디코딩
+      return { userId: payload.userId, token }; // userId와 token 반환
+  } catch (error) {
+      console.error("🚨 JWT 파싱 오류:", error);
+      return null;
   }
-`;
-
-const UserAvatar = styled.div`
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #e08490;
-`;
-
-const LogoutButton = styled.button`
-  margin-left: 16px;
-  padding: 6px 12px;
-  background-color: #e08490;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-`;
+};
 
 const Topbar = () => {
   const [searchValue, setSearchValue] = useState('');
   const navigate = useNavigate();
- 
+
   const handleSearchChange = (e) => {
     setSearchValue(e.target.value);
   };
 
-  const handleSearchClick = () => {
-    if (searchValue.trim()) {
-      navigate(`/admin/search/${searchValue}`);
-    }
-  };
+  const handleSearchClick = async () => {
+    
+    const userData = getUserIdFromToken(); 
+    const token = userData?.token; 
+      console.log("aa", {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+    })
+      if (searchValue.trim()) {
+        try {
+          const response = await axios.get(`${config.apiBaseUrl}/api/user/search`, {
+            params: { query: searchValue},
+            headers: {
+              'Authorization': `Bearer ${token}`,
+              'Content-Type': 'application/json',
+          },
+          }); 
+          const searchResults = response.data;
+          navigate(`/admin/search/${searchValue}`, { state: { searchResults } });
+        } catch (error) {
+          console.error('Error fetching  search results:', error);
+        }
+      }
+    };
 
-  // 엔터 키 감지
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearchClick();
@@ -116,26 +110,12 @@ const Topbar = () => {
           placeholder="사용자 검색..."
           value={searchValue}
           onChange={handleSearchChange}
-          onKeyDown={handleKeyDown}  
+          onKeyDown={handleKeyDown}
         />
         <SearchButton onClick={handleSearchClick}>
-          <SearchIcon
-            src="https://cdn-icons-png.flaticon.com/128/54/54481.png"
-            alt="Search"
-          />
+          <SearchIcon src="https://cdn-icons-png.flaticon.com/128/54/54481.png" alt="Search" />
         </SearchButton>
       </SearchContainer>
-    {/*   <UserProfile>
-        {user ? (
-          <>
-            <UserName>{user.name}</UserName>
-            <UserAvatar />
-            <LogoutButton onClick={logout}>로그아웃</LogoutButton>
-          </>
-        ) : (
-          <UserName onClick={() => navigate('/login')}>로그인</UserName>
-        )}
-      </UserProfile> */}
     </TopbarContainer>
   );
 };
