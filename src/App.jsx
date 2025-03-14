@@ -43,6 +43,8 @@ import CardStatement from "./pages/mypage/card/CardStatement";
 import BenefitStatement from "./pages/mypage/card/BenefitStatement";
 import AllBenefitSearch from "./pages/mypage/card/AllBenefitSearch";
 import PaymentTest from "./pages/mypage/card/PaymentTest";
+import ResumeDetail from "./pages/education/ResumeDetail";
+import StartScreen from "./pages/education/StartScreen";
 
 function App() {
   return (
@@ -64,13 +66,11 @@ function App() {
           <Route path="/card/design" element={<Design />} />
           <Route path="/benefit/compare" element={<BenefitCompare />} />
 
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/ResumeEdit" element={<ResumeEdit />} />
-          <Route
-            path="/SalaryComparisonChart"
-            element={<SalaryComparisonChart />}
-          />
+          <Route path="/education" element={<StartScreen />} />
+          <Route path="/education/ResumeEdit" element={<ResumeEdit />} />
+          <Route path="/education/myeducation" element={<Education />} />
+          <Route path="/education/SalaryComparisonChart" element={<SalaryComparisonChart />} />
+          <Route path="/education/resume-detail/:id" element={<ResumeDetail />} />
           <Route path="/peoch" element={<Peoch />} />
 
           <Route path="/contract" element={<ContractSigning />} />
