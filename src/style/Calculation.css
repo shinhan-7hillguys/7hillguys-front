@@ -1,0 +1,73 @@
+.calculation-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.calculation-container .content {
+    background-color: #fff5f5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.calculation-container .title {
+    font-size: 25px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    text-align: left;
+}
+
+.calculation-container .amount-box {
+    background-color: #fff5f5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.calculation-container .amount {
+    font-size: 32px;
+    font-weight: bold;
+    color: #ff6699;
+    margin-bottom: 25px;
+}
+
+.calculation-container .description {
+    text-align: left;
+    margin-bottom: 15px;
+}
+
+.calculation-container .details {
+    background-color: #fff5f5;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+.calculation-container .details p {
+    text-align: left;
+    margin: 5px 0;
+}
+
+.calculation-container .details .date {
+    font-weight: bold;
+    margin-left: 5px;
+}
+
+.calculation-container .calculate-btn {
+    background-color: #ff99aa;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.calculation-container .calculate-btn:hover {
+    background-color: #ff6688;
+}

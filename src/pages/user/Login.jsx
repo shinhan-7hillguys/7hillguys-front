@@ -29,14 +29,10 @@ function Login() {
                     "Content-Type": "application/json",
                 },
                 body: JSON.stringify(formData),
+                credentials: "include",
             });
 
             if (response.ok) {
-                const data = await response.json();
-                if(!data.accessToken) throw new Error("JWT를 가져올 수 없음");
-                console.log("token값: " + data.accessToken);
-
-                localStorage.setItem("token", data.accessToken);
                 alert("로그인 성공!");
                 navigate("/");
             } else {
