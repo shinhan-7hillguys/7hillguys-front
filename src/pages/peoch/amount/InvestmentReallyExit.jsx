@@ -85,12 +85,13 @@ const InvestmentReallyExit = () => {
                 const res = await axios.get(
                     `http://localhost:8080/api/investment/reallyexit`,
                     {
+                        withCredentials: true,
                         headers: {
-                            Authorization: `Bearer ${token}`,
                             'Content-Type': 'application/json',
                         },
                     }
                 );
+
 
                 // 응답 데이터 설정
                 if (res.data && res.data.monthlyPayments) {

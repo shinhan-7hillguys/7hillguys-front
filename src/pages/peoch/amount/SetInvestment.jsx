@@ -83,19 +83,17 @@ const InvestmentSimulator = () => {
             try {
 
                 const response = await axios.get('http://localhost:8080/api/investment/setamount', {
+                    withCredentials: true,
                     headers: {
-                        Authorization: `Bearer ${token}` // Bearer Token 추가
+                        'Content-Type': 'application/json'
                     }
                 });
-                console.log(response);
+
                 const parsedIncomes = Object.entries(JSON.parse(response.data.expectedIncomes))
                     .map(([age, income]) => ({age: parseInt(age), income}));
-                console.log(parsedIncomes);
                 setExpectedIncomes(parsedIncomes);
-                console.log(response.data.inflationRate);
                 setInflationRates(JSON.parse(response.data.inflationRate));
                 setMaxInvestment(response.data.maxInvestment);
-                console.log(maxInvestment);
 
                 // 초기 차트 데이터 설정 (환급 비율이 없으므로 refund 값은 0)
                 const initialChartData = parsedIncomes.map(({age, income}) => ({

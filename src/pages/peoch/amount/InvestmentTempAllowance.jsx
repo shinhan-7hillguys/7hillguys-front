@@ -122,8 +122,12 @@ const InvestmentTempAllowance = () => {
         const fetchInvestmentDetails = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/investment/tempallowance', {
-                    headers: {Authorization: `Bearer ${token}`}
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 });
+
                 const investmentData = response.data;
                 setData(investmentData);
 
@@ -192,7 +196,12 @@ const InvestmentTempAllowance = () => {
 
             <Button onClick={() => axios.post("http://localhost:8080/api/investment/applytempallowance",
                 {amount: sliderValue},
-                {headers: {Authorization: `Bearer ${token}`}}
+                {
+                    withCredentials: true,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                }
             )
                 .then(response => {
                     console.log(response.data);
@@ -202,6 +211,7 @@ const InvestmentTempAllowance = () => {
                     console.error('Error:', error.response ? error.response.data : 'Network error');
                 })
             }>임시 한도 신청</Button>
+
 
         </Container>
     );

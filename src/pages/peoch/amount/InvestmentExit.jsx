@@ -108,11 +108,12 @@ const InvestmentExit = () => {
         const fetchExpectedIncome = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/investment/exit', {
+                    withCredentials: true,
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
                     }
                 });
+
                 const incomeData = response.data;
                 //반대로 오는데 꼬인거 같음 여기서 그냥 처리
                 const firstExpectedIncome = JSON.parse(incomeData.lastExpectedIncome);
