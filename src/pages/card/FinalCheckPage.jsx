@@ -43,7 +43,7 @@ function FinalCheckPage() {
             <label>디자인:</label>
             <input type="text" value={cardDesign || ""} readOnly />
           </div> */}
-          {/* <div className="form-group">
+          {/* <div className="form-group">  
             <label>사용자명:</label>
             <input type="text" value={userInfo.name || ""} readOnly />
           </div> */}

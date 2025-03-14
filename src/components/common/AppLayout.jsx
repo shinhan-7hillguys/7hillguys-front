@@ -64,6 +64,9 @@ const AppLayout = () => {
               <Link to="/card" style={{ marginRight: "1rem" }}>
                 Card
               </Link>
+              <Link to="/card/intro" style={{ marginRight: "1rem" }}>
+                Card
+              </Link>
               <Link to="/mypage" style={{ marginRight: "1rem" }}>
                 My Page
               </Link>

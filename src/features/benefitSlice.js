@@ -5,12 +5,9 @@ import axios from "axios";
 // 1. 내 카드에 대한 혜택 데이터 가져오기
 export const fetchBenefits = createAsyncThunk(
   "benefit/fetchBenefits",
-  async (cardId, { rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.get(`http://localhost:8080/benefit/card`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(`/benefit/card`);
       console.log(response)
       return response.data; // { availableBenefits, appliedBenefits }
     } catch (error) {
@@ -18,16 +15,14 @@ export const fetchBenefits = createAsyncThunk(
     }
   }
 );
-
-// 2. 적용된 혜택 삭제
+// src/features/benefitSlice.js
 export const deleteBenefit = createAsyncThunk(
   "benefit/deleteBenefit",
-  async (benefitId, { rejectWithValue }) => {
+  async ({ benefitId, cardId }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
-      const response = await axios.delete(`http://localhost:8080/benefit/${benefitId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      // 카드 정보가 필요하다면, 쿼리 파라미터로 전달하거나 요청 본문에 포함할 수 있습니다.
+      // HTTP DELETE 요청은 본문 전달을 지원하지 않는 경우도 있으므로, 여기서는 쿼리 파라미터 사용 예시:
+      const response = await axios.delete(`http://localhost:8080/benefit/${benefitId}?cardId=${cardId}`);
       return benefitId; // 삭제된 혜택 ID 반환
     } catch (error) {
       return rejectWithValue(error.response?.data || "혜택 삭제에 실패했습니다.");
@@ -42,9 +37,8 @@ export const applyBenefits = createAsyncThunk(
     try {
       const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:8080/card/benefits",
+        "http://localhost:8080/benefit/apply",
         { cardId, benefitIds },
-        { headers: { Authorization: `Bearer ${token}` } }
       );
       return response.data;
     } catch (error) {
@@ -57,6 +51,7 @@ const initialState = {
   availableBenefits: [],
   appliedBenefits: [],
   addedBenefits: [],
+  card: null,
   status: "idle", // "idle" | "loading" | "succeeded" | "failed"
   error: null,
 };
@@ -84,46 +79,45 @@ const benefitSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      // fetchBenefits 처리
-      .addCase(fetchBenefits.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(fetchBenefits.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        state.availableBenefits = action.payload.availableBenefits;
-        state.appliedBenefits = action.payload.appliedBenefits;
-      })
-      .addCase(fetchBenefits.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      })
-      // deleteBenefit 처리
-      .addCase(deleteBenefit.fulfilled, (state, action) => {
-        // action.payload는 삭제된 benefitId
-        state.appliedBenefits = state.appliedBenefits.filter(
-          (b) => b.benefitId !== action.payload
-        );
-      })
-      .addCase(deleteBenefit.rejected, (state, action) => {
-        state.error = action.payload;
-      })
-      // applyBenefits 처리
-      .addCase(applyBenefits.pending, (state) => {
-        state.status = "loading";
-        state.error = null;
-      })
-      .addCase(applyBenefits.fulfilled, (state, action) => {
-        state.status = "succeeded";
-        // 실제 적용 후 서버에서 반환한 결과에 따라 처리 (예: 새롭게 적용된 혜택 목록 업데이트)
-        // 여기서는 단순히 merge로 처리
-        state.appliedBenefits = state.appliedBenefits.concat(state.addedBenefits);
-        state.addedBenefits = [];
-      })
-      .addCase(applyBenefits.rejected, (state, action) => {
-        state.status = "failed";
-        state.error = action.payload;
-      });
+    // fetchBenefits 처리: 카드 정보와 혜택 데이터를 저장
+    .addCase(fetchBenefits.pending, (state) => {
+      state.status = "loading";
+      state.error = null;
+    })
+    .addCase(fetchBenefits.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.availableBenefits = action.payload.availableBenefits;
+      state.appliedBenefits = action.payload.appliedBenefits;
+      state.card = action.payload.card; // 카드 전체 정보 저장
+    })
+    .addCase(fetchBenefits.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    })
+    // deleteBenefit 처리
+    .addCase(deleteBenefit.fulfilled, (state, action) => {
+      state.appliedBenefits = state.appliedBenefits.filter(
+        (b) => b.benefitId !== action.payload
+      );
+    })
+    .addCase(deleteBenefit.rejected, (state, action) => {
+      state.error = action.payload;
+    })
+    // applyBenefits 처리
+    .addCase(applyBenefits.pending, (state) => {
+      state.status = "loading";
+      state.error = null;
+    })
+    .addCase(applyBenefits.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      // 실제 적용 후 서버 반환 결과에 따라 업데이트할 수 있음.
+      state.appliedBenefits = state.appliedBenefits.concat(state.addedBenefits);
+      state.addedBenefits = [];
+    })
+    .addCase(applyBenefits.rejected, (state, action) => {
+      state.status = "failed";
+      state.error = action.payload;
+    });
   },
 });
 

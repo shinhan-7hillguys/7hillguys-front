@@ -12,24 +12,26 @@ import {
 import { useNavigate } from "react-router-dom";
 import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined } from "@ant-design/icons";
 import "styles/card/benefit.css";
+import CardPreview from "./CardPreview";
 
 const Benefit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { availableBenefits, appliedBenefits, addedBenefits, status, error } = useSelector(
+  const { availableBenefits, appliedBenefits, addedBenefits, status, error, card } = useSelector(
     (state) => state.benefit
   );
   
-  // 예시로, 카드 ID는 고정 (실제 프로젝트에서는 JWT 또는 다른 방식으로 결정)
-  const cardId = 16;
+  // 더 이상 고정된 cardId 사용하지 않고, Redux에 저장된 카드 정보를 사용합니다.
+  // card가 아직 null일 수 있으므로 안전하게 처리합니다.
+  const cardId = card ? card.cardId : null;
 
   const [checkedBenefits, setCheckedBenefits] = useState([]);
   const [isFlipped, setIsFlipped] = useState(false);
 
-  // 페이지 로드시 내 카드의 혜택 정보를 백엔드에서 가져옵니다.
+  // 페이지 로드시, 내 카드에 대한 혜택 및 카드 정보를 백엔드에서 가져옵니다.
   useEffect(() => {
-    dispatch(fetchBenefits(cardId));
-  }, [dispatch, cardId]);
+    dispatch(fetchBenefits());
+  }, [dispatch]);
 
   const handleCheckboxChange = (benefitId, e) => {
     if (e.target.checked) {
@@ -44,7 +46,7 @@ const Benefit = () => {
       alert("추가할 혜택을 선택하세요.");
       return;
     }
-    // availableBenefits에서 체크된 혜택을 찾아 추가 혜택으로 dispatch
+    // availableBenefits에서 체크된 혜택들을 찾아 추가 혜택으로 dispatch
     const benefitsToAdd = availableBenefits.filter((b) =>
       checkedBenefits.includes(b.benefitId)
     );
@@ -66,65 +68,75 @@ const Benefit = () => {
       alert("결제할 혜택이 없습니다.");
       return;
     }
+    if (!cardId) {
+      alert("카드 정보가 없습니다.");
+      return;
+    }
     const benefitNames = addedBenefits.map((b) => b.name).join(", ");
     const confirmed = window.confirm(`다음 혜택들로 결제하시겠습니까?\n${benefitNames}`);
     if (confirmed) {
-      // 결제 시, 백엔드에 적용할 혜택 정보를 전송합니다.
+      // 결제 시, Redux에 저장된 cardId와 선택된 혜택 ID들을 백엔드에 전송합니다.
       dispatch(applyBenefits({ cardId, benefitIds: addedBenefits.map(b => b.benefitId) }));
       alert("결제가 진행됩니다.");
     }
   };
+// src/pages/Benefit.jsx
+const handleDeleteSelected = (benefitId) => {
+  if (window.confirm("정말 삭제하시겠습니까?")) {
+    // 객체로 benefitId와 cardId를 전달합니다.
+    dispatch(deleteBenefit({ benefitId, cardId }));
+  }
+};
 
-  // 기존 혜택 삭제 (적용된 혜택)
-  const handleDeleteSelected = (benefitId) => {
-    if (window.confirm("정말 삭제하시겠습니까?")) {
-      dispatch(deleteBenefit(benefitId));
-    }
-  };
+  const filteredAvailableBenefits = availableBenefits.filter((benefit) =>
+    // appliedBenefits는 보통 { benefit: { benefitId, ... } } 형태로 저장됨
+    !appliedBenefits.some((applied) => applied.benefit.benefitId === benefit.benefitId)
+  );
+  
 
   // My 혜택 모달 (카드 뒷면)
-  const MyBenefitsModal = () => (
-    <div className="card my-benefits">
-      <div className="benefits-section">
-        <h3>적용된 혜택</h3>
-        {appliedBenefits && appliedBenefits.length > 0 ? (
-          <ul>
-            {appliedBenefits.map((b) => (
-              <li key={b.benefitId} className="benefit-item">
-                <div className="benefit-info">
-                  <strong>{b.name}</strong>: {b.description} (할인율: {b.discountRate}%)
-                </div>
-                <button className="delete-btn" onClick={() => handleDeleteSelected(b.benefitId)}>
-                  삭제
-                </button>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>적용된 혜택이 없습니다.</p>
-        )}
-      </div>
-      <div className="benefits-section">
-        <h3>추가된 혜택</h3>
-        {addedBenefits && addedBenefits.length > 0 ? (
-          <ul>
-            {addedBenefits.map((b) => (
-              <li key={b.benefitId} className="benefit-item">
-                <div className="benefit-info">
-                  <strong>{b.name}</strong>: {b.description} (할인율: {b.discountRate}%)
-                </div>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          <p>추가된 혜택이 없습니다.</p>
-        )}
-      </div>
-      <button className="back-btn" onClick={() => setIsFlipped(false)}>
-        뒤로가기
-      </button>
-    </div>
-  );
+  // const MyBenefitsModal = () => (
+  //   <div className="card my-benefits">
+  //     <div className="benefits-section">
+  //       <h3>적용된 혜택</h3>
+  //       {appliedBenefits && appliedBenefits.length > 0 ? (
+  //         <ul>
+  //           {appliedBenefits.map((b) => (
+  //             <li key={b.benefitId} className="benefit-item">
+  //               <div className="benefit-info">
+  //                 <strong>{b.name}</strong>: {b.description} (할인율: {b.discountRate}%)
+  //               </div>
+  //               <button className="delete-btn" onClick={() => handleDeleteSelected(b.benefitId)}>
+  //                 삭제
+  //               </button>
+  //             </li>
+  //           ))}
+  //         </ul>
+  //       ) : (
+  //         <p>적용된 혜택이 없습니다.</p>
+  //       )}
+  //     </div>
+  //     <div className="benefits-section">
+  //       <h3>추가된 혜택</h3>
+  //       {addedBenefits && addedBenefits.length > 0 ? (
+  //         <ul>
+  //           {addedBenefits.map((b) => (
+  //             <li key={b.benefitId} className="benefit-item">
+  //               <div className="benefit-info">
+  //                 <strong>{b.name}</strong>: {b.description} (할인율: {b.discountRate}%)
+  //               </div>
+  //             </li>
+  //           ))}
+  //         </ul>
+  //       ) : (
+  //         <p>추가된 혜택이 없습니다.</p>
+  //       )}
+  //     </div>
+  //     <button className="back-btn" onClick={() => setIsFlipped(false)}>
+  //       뒤로가기
+  //     </button>
+  //   </div>
+  // );
 
   return (
     <>
@@ -142,7 +154,7 @@ const Benefit = () => {
             </div>
             {/* Back: 적용된 혜택과 추가 혜택 모달 */}
             <div className="back">
-              <MyBenefitsModal />
+              {/* <MyBenefitsModal /> */}
             </div>
           </div>
         </div>
@@ -159,41 +171,81 @@ const Benefit = () => {
         </div>
         <div className="action-btn" onClick={handlePayment}>
           <BarcodeOutlined style={{ fontSize: "30px" }} />
-          <span>결제</span>
+          <span>구독</span>
+        </div>
+        <div className="action-btn" onClick={() => navigate("/benefit/compare")}>
+          <BarcodeOutlined style={{ fontSize: "30px" }} />
+          <span>비교</span>
         </div>
       </section>
 
       <section
         className="card_benefit_sec3"
-        onClick={() => navigate("/benefit/compare")}
+        
         style={{ cursor: "pointer" }}
       >
-        할인내역 비교
+        <div className="my-benefits">
+          <div className="benefits-section">
+            <h3>기존 혜택</h3>
+            {appliedBenefits && appliedBenefits.length > 0 ? (
+              <ul>
+                {appliedBenefits.map((b) => (
+                  <li key={b.benefit.benefitId} className="benefit-item">
+                    <div className="benefit-info">
+                      <strong>{b.benefit.name}</strong>: {b.benefit.discountRate}% 
+                    </div>
+                    <button className="benefit_remove_btn" onClick={() => handleDeleteSelected(b.benefit.benefitId)}>
+                      취소
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>혜택이 없습니다.</p>
+            )}
+          </div>
+          <div className="benefits-section">
+            <h3>추가 혜택</h3>
+            {addedBenefits && addedBenefits.length > 0 ? (
+              <ul>
+                {addedBenefits.map((b) => (
+                  <li key={b.benefitId} className="benefit-item2">
+                    <div className="benefit-info2">
+                      <strong>{b.name}</strong>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>혜택이 없습니다.</p>
+            )}
+          </div>
+        </div>
       </section>
 
       <section className="card_benefit_sec4">
-        <ul className="benefits-list">
-          {availableBenefits && availableBenefits.map((b) => (
-            <li key={b.benefitId} className="benefit-item">
-              <label className="custom-checkbox">
-                <input
-                  type="checkbox"
-                  checked={checkedBenefits.includes(b.benefitId)}
-                  onChange={(e) => handleCheckboxChange(b.benefitId, e)}
-                />
-                <span className="checkmark"></span>
-              </label>
-              <div className="benefit-info">
-                <p className="benefit-name">{b.name}</p>
-                <p className="benefit-desc">{b.description}</p>
-              </div>
-              <div className="benefit-price">
-                <p>{b.price}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </section>
+  <ul className="benefits-list">
+    {filteredAvailableBenefits && filteredAvailableBenefits.map((b) => (
+      <li key={b.benefitId} className="benefit-item">
+        <label className="custom-checkbox">
+          <input
+            type="checkbox"
+            checked={checkedBenefits.includes(b.benefitId)}
+            onChange={(e) => handleCheckboxChange(b.benefitId, e)}
+          />
+          <span className="checkmark"></span>
+        </label>
+        <div className="benefit-info">
+          <p className="benefit-name">{b.name}</p>
+          <p className="benefit-desc">{b.description}</p>
+        </div>
+        <div className="benefit-price">
+          <p>{b.fee}</p>
+        </div>
+      </li>
+    ))}
+  </ul>
+</section>
     </>
   );
 };

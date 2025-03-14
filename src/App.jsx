@@ -1,6 +1,7 @@
 import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import axios from "axios";
 
 import Mypage from "./pages/mypage/Mypage";
 import Main from "./Main";
@@ -16,7 +17,7 @@ import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
 
-import Dashboard from "./pages/admin/dashboard";
+// import Dashboard from "./pages/admin/dashboard";
 import BenefitCompare from "pages/card/BenefitCompare";
 
 
@@ -59,7 +60,11 @@ import BenefitStatement from "pages/mypage/card/BenefitStatement";
 import AllBenefitSearch from "pages/mypage/card/AllBenefitSearch";
 
 
+
 function App() {
+  axios.defaults.withCredentials = true;
+  // (선택 사항) 기본 URL 설정
+  axios.defaults.baseURL = "http://localhost:8080";
   return (
     <BrowserRouter>
       <Routes>
@@ -102,8 +107,7 @@ function App() {
           <Route path="/contract-preview" element={<ContractPreview />} />
 
 
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin" element={<Dashboard />} />
+          {/* <Route path="/admin" element={<Dashboard />} /> */}
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
@@ -131,7 +135,7 @@ function App() {
           {/* <Route path="/user/dashboard" element={<UserMain />} /> */}
         </Route>
         <Route element={<Layout />}>
-          <Route path="/admin" element={<Dashboard />} />
+          {/* <Route path="/admin" element={<Dashboard />} /> */}
           <Route path="/admin/search/:query" element={<SearchResults />} />
           <Route path="/admin/user/detail/:id" element={<Detail />} />
         </Route>
