@@ -1,0 +1,103 @@
+h1, p {
+    text-align: left;
+    margin-bottom: 10px;
+}
+h1{
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 10px;
+}
+.checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.checkbox input {
+    display: none;
+}
+
+.checkmark {
+    width: 24px;
+    height: 24px;
+    border: 2px solid #ddd;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 8px;
+    transition: all 0.2s ease-in-out;
+}
+
+.checkmark::after {
+    content: "✔";
+    font-size: 16px;
+    color: white;
+    display: none;
+}
+
+.checkbox input:checked + .checkmark {
+    background-color: #ff6699;
+    border-color: #ff6699;
+}
+
+.checkbox input:checked + .checkmark::after {
+    display: block;
+}
+
+.agreement-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.agreement-container label{
+    margin-left: 8px;
+}
+
+.button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+.button {
+    background-color: #ff99aa;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    width: 200px;
+}
+
+.button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+.next-button {
+    background-color: #ff99aa;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+}
+.next-button:disabled {
+    background-color: #f5c6cb;
+    cursor: default;
+    color: #ffffff;
+}
