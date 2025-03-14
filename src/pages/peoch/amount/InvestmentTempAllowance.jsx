@@ -1,4 +1,5 @@
 import React, {useState, useEffect} from 'react';
+import {useNavigate} from 'react-router-dom';
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer} from 'recharts';
 import styled from 'styled-components';
 import axios from 'axios';
@@ -108,6 +109,7 @@ const SliderLabel = styled.div`
 `;
 
 const InvestmentTempAllowance = () => {
+    const navigate = useNavigate();
     const [data, setData] = useState(null);
     const [chartData, setChartData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -188,7 +190,19 @@ const InvestmentTempAllowance = () => {
                 </SliderLabel>
             </SliderContainer>
 
-            <Button>임시 한도 신청</Button>
+            <Button onClick={() => axios.post("http://localhost:8080/api/investment/applytempallowance",
+                {amount: sliderValue},
+                {headers: {Authorization: `Bearer ${token}`}}
+            )
+                .then(response => {
+                    console.log(response.data);
+                    navigate('/'); // 성공 시 메인 페이지로 이동
+                })
+                .catch(error => {
+                    console.error('Error:', error.response ? error.response.data : 'Network error');
+                })
+            }>임시 한도 신청</Button>
+
         </Container>
     );
 };
