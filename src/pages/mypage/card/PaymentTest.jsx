@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import starbucks from "image/starbucks.png";
+import megacoffee from "image/megacoffee.png";
 
 function PaymentTest() {
   // JWT에서 userId 추출하는 함수
@@ -61,11 +63,7 @@ function PaymentTest() {
       <div className="grid grid-cols-2 gap-4">
         {/* 혜택 적용 가능 상품 */}
         <div className="p-4 border rounded-lg text-center shadow-sm">
-          <img
-            src="./images/starbucks.png"
-            alt="스타벅스"
-            className="mx-auto h-16 mb-2"
-          />
+          <img src={starbucks} alt="스타벅스" className="mx-auto h-16 mb-2" />
           <h2 className="text-lg font-bold">스타벅스 (혜택 O)</h2>
           <p className="text-gray-700">30,000원 결제</p>
           <button
@@ -78,11 +76,7 @@ function PaymentTest() {
 
         {/* 혜택 적용 불가 상품 */}
         <div className="p-4 border rounded-lg text-center shadow-sm">
-          <img
-            src="/images/megacoffee.png"
-            alt="메가커피"
-            className="mx-auto h-16 mb-2"
-          />
+          <img src={megacoffee} alt="메가커피" className="mx-auto h-16 mb-2" />
           <h2 className="text-lg font-bold">메가커피 (혜택 X)</h2>
           <p className="text-gray-700">30,000원 결제</p>
           <button
