@@ -117,13 +117,31 @@ const InvestmentReallyExit = () => {
         fetchData(); // 함수 호출
     }, [token]);
 
+
     // 서비스 해지 처리
     const handleExit = () => {
         if (window.confirm('정말로 서비스를 해지하시겠습니까?')) {
-            alert('서비스가 해지되었습니다.');
-            navigate('/dashboard');
+            axios.post('http://localhost:8080/api/investment/reallyexit', {}, {
+                withCredentials: true,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(response => {
+                    if (response.data && response.data.success) {
+                        alert('서비스가 성공적으로 해지되었습니다.');
+                        navigate('/dashboard');
+                    } else {
+                        alert('서비스 해지에 실패했습니다: ' + (response.data.message || '알 수 없는 오류'));
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('서비스 해지 중 오류가 발생했습니다: ' + (error.response?.data?.message || '서버 연결 오류'));
+                });
         }
     };
+
 
     return (
         <PageContainer>

@@ -12,6 +12,7 @@ const Container = styled.div`
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     margin: 20px auto;
+
     text-align: center;
 `;
 
@@ -36,12 +37,15 @@ const MembershipInfo = styled.div`
     border-radius: 10px;
     padding: 20px;
     margin-top: 20px;
+    text-align: center;
+
 `;
 
 const Amount = styled.p`
     font-size: 36px;
     font-weight: bold;
     color: #E91E63; /* 핑크색 */
+
 `;
 
 const BenefitsList = styled.ul`
