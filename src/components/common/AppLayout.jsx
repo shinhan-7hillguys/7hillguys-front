@@ -60,7 +60,11 @@ const AppLayout = () => {
               </Link>
             </li>
             <nav>
+
               <Link to="/card" style={{ marginRight: "1rem" }}>
+                Card
+              </Link>
+              <Link to="/card/intro" style={{ marginRight: "1rem" }}>
                 Card
               </Link>
               <Link to="/mypage" style={{ marginRight: "1rem" }}>
@@ -122,6 +126,7 @@ const AppLayout = () => {
                 카드 결제 테스트
               </Link>
             </nav>
+
           </ul>
         </aside>
       )}
