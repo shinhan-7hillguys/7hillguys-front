@@ -1,0 +1,78 @@
+/* Step6Submit.css - 최종 제출페이지 */
+
+/* 전체 컨테이너 */
+.submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 40px;
+    background-color: #FFF7F7;
+}
+
+/* 제출 박스 */
+.submit-box {
+    background: white;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+}
+
+/* 제목 */
+.submit-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #FF4170;
+    margin-bottom: 15px;
+}
+
+/* 설명 텍스트 */
+.submit-text {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+/* 버튼 컨테이너 */
+.submit-button-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+/* 이전 버튼 */
+.submit-prev-button {
+    padding: 12px;
+    background-color: #D3D3D3;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.submit-prev-button:hover {
+    background-color: #B0B0B0;
+}
+
+/* 제출 버튼 */
+.submit-next-button {
+    padding: 12px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 18px;
+    cursor: pointer;
+    width: 48%;
+}
+
+.submit-next-button:hover {
+    background-color: #45A049;
+}

@@ -1,0 +1,83 @@
+/* ContractPreview.css - 서명된 계약서 미리보기 페이지 */
+
+/* 전체 컨테이너 */
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 40px;
+    background-color: #FFF7F7;
+}
+
+/* 제목 스타일 */
+.preview-title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #FF4170;
+    margin-bottom: 20px;
+}
+
+/* 계약서 미리보기 iframe */
+.preview-iframe {
+    width: 90%;
+    height: 60vh;
+    max-height: 500px;
+    border: 2px solid #FEA1B8;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media screen and (max-width: 600px) {
+    .preview-object {
+        width: 100%;
+        height: 70vh;
+    }
+}
+
+/* 버튼 컨테이너 */
+.preview-button-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+/* 공통 버튼 스타일 */
+.preview-button {
+    padding: 12px 20px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background 0.3s ease-in-out;
+}
+
+/* PDF 다운로드 버튼 */
+.download-button {
+    background-color: #FEA1B8;
+    color: white;
+}
+
+.download-button:hover {
+    background-color: #F994AD;
+}
+
+/* 홈 이동 버튼 */
+.home-button {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.home-button:hover {
+    background-color: #45A049;
+}
+
+/* 오류 메시지 */
+.preview-error {
+    font-size: 18px;
+    font-weight: bold;
+    color: red;
+}
