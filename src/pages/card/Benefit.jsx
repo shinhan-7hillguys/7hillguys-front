@@ -1,5 +1,5 @@
 // src/pages/Benefit.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { 
   addBenefit, 
@@ -28,19 +28,12 @@ const Benefit = () => {
   const [checkedBenefits, setCheckedBenefits] = useState([]);
   const [isFlipped, setIsFlipped] = useState(false);
 
-  
-  const filteredAvailableBenefits = availableBenefits.filter((benefit) =>
-    // appliedBenefits는 보통 { benefit: { benefitId, ... } } 형태로 저장됨
-  !appliedBenefits.some((applied) => applied.myBenefitId.benefitId === benefit.benefitId)
-  // 2) checkedBenefits에도 들어있지 않을 때만 필터 통과
-  && !addedBenefits.some((checked) => checked.benefitId === benefit.benefitId)
 
-  );
 
   // 페이지 로드시, 내 카드에 대한 혜택 및 카드 정보를 백엔드에서 가져옵니다.
   useEffect(() => {
     dispatch(fetchBenefits());
-  }, [dispatch, filteredAvailableBenefits]);
+  }, [dispatch]);
 
   const handleCheckboxChange = (benefitId, e) => {
     if (e.target.checked) {
@@ -99,7 +92,19 @@ const handleDeleteSelected = (benefitId) => {
   }
 };
 
-  
+    
+const filteredAvailableBenefits = useMemo(() => {
+  console.log("filteredAvailableBenefits 재계산", appliedBenefits);
+
+  return availableBenefits.filter(
+    (benefit) =>
+      !appliedBenefits.some(
+        (applied) => applied.myBenefitId.benefitId === benefit.benefitId
+      ) &&
+      !addedBenefits.some((checked) => checked.benefitId === benefit.benefitId)
+  );
+}, [availableBenefits, appliedBenefits, addedBenefits]);
+
 
   // My 혜택 모달 (카드 뒷면)
   // const MyBenefitsModal = () => (
