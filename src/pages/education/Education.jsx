@@ -42,43 +42,43 @@ const Education = () => {
   const companyList = [
     {
       id: 1,
-      name: "쿠팡",
-      closingDate: "2023.12.31",
-      recruit: "프론트엔드 개발자",
-      salary: 5200, // 쿠팡 평균 연봉(천원)
-      averageData: [7, 5, 4, 6, 5],
+      name: "금융결제원",
+      closingDate: "2025.3.26",
+      recruit: "전산직",
+      salary: "6,816",
+      averageData: [8, 10, 4, 4, 6],
     },
     {
       id: 2,
-      name: "네이버",
-      closingDate: "2023.11.15",
-      recruit: "AI 연구원",
-      salary: 5500, // 네이버 평균 연봉(천원)
-      averageData: [8, 7, 5, 7, 6],
+      name: "SK 하이닉스",
+      closingDate: "2025.3.28",
+      recruit: "IT",
+      salary: "6,951",
+      averageData: [10, 6, 0, 6, 6],
     },
     {
       id: 3,
-      name: "카카오",
-      closingDate: "2023.12.01",
-      recruit: "백엔드 엔지니어",
-      salary: 5300, // 카카오 평균 연봉(천원)
-      averageData: [6, 6, 6, 6, 6],
+      name: "롯데캐피탈",
+      closingDate: "2025.3.30",
+      recruit: "IT개발/운영",
+      salary: "5,408",
+      averageData: [8, 6, 0, 2, 6],
     },
     {
       id: 4,
-      name: "토스",
-      closingDate: "2023.10.30",
-      recruit: "안드로이드 개발자",
-      salary: 5000, // 토스 평균 연봉(천원)
-      averageData: [7, 6, 5, 5, 7],
+      name: "LG CNS",
+      closingDate: "2025.3.31",
+      recruit: "DX Engineer",
+      salary: "6,819",
+      averageData: [8, 8, 2, 2, 6],
     },
     {
       id: 5,
-      name: "배달의민족",
-      closingDate: "2023.09.20",
-      recruit: "UI/UX 디자이너",
-      salary: 4800, // 배달의민족 평균 연봉(천원)
-      averageData: [5, 6, 7, 4, 6],
+      name: "한화시스템/ICT",
+      closingDate: "2025.03.31",
+      recruit: "서비스개발/운영",
+      salary: "5,783", // 배달의민족 평균 연봉(천원)
+      averageData: [8, 6, 2, 2, 6],
     },
   ];
 

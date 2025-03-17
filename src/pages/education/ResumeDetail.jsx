@@ -1,13 +1,12 @@
-// ResumeDetail.jsx
 import React from "react";
 import { useParams, useLocation, useNavigate } from "react-router-dom";
 
 const ResumeDetail = () => {
-    const { id } = useParams();
+    const { id } = useParams(); // id는 URL 파라미터로 받아옴
     const location = useLocation();
     const navigate = useNavigate();
 
-    // Get the resume object passed in state
+    // SalaryComparisonChart에서 state로 전달한 자소서 객체
     const resume = location.state;
 
     if (!resume) {
