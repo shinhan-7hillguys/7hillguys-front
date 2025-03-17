@@ -251,12 +251,10 @@ const ModalButtonContainer = styled.div`
   margin-top: 16px;
 `;
 const DetailPage = () => {
-  // URL에서 userid 파라미터 추출 (예: /admin/user/detail/:userid)
   const { userid } = useParams();
   console.log("받은 userid:", userid);
- 
+
   const [userInfo, setUserInfo] = useState({});
- 
   const [statCategories, setStatCategories] = useState({});
   const [dataMap, setDataMap] = useState({});
   const [currentData, setCurrentData] = useState({ barData: [], pieData: [] });
@@ -266,14 +264,13 @@ const DetailPage = () => {
   const [error, setError] = useState(null);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(null); // 'approve' 또는 'reject'
+  const [modalType, setModalType] = useState(null);
   const [resultModalOpen, setResultModalOpen] = useState(false);
   const [resultModalMessage, setResultModalMessage] = useState("");
 
   const topSectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
 
-  // API 호출: /api/user/info에서 모든 데이터를 받아옴
   useEffect(() => {
     if (userid) {
       axios.get(`/api/user/info?userid=${userid}`, { withCredentials: true })
@@ -281,22 +278,6 @@ const DetailPage = () => {
           console.log("전체 응답:", response);
           console.log("응답 데이터:", response.data);
           setUserInfo(response.data);
-          // 예상 필드 체크
-          const expectedKeys = [
-            "userId", "name", "email", "birthDate", "phone", "address", "role", "createdAt",
-            "grantId", "expectedIncome", "startDate", "endDate", "status", "originalInvestValue",
-            "monthlyAllowance", "refundRate", "maxInvestment", "field", "investValue", "tempAllowance", "investmentCreatedAt",
-            "userProfileId", "universityInfo", "studentCard", "certification", "familyStatus", "assets",
-            "criminalRecord", "healthStatus", "gender", "profileAddress", "mentalStatus", "profileCreatedAt", "profileUpdatedAt"
-          ];
-          const missing = expectedKeys.filter(key => !response.data.hasOwnProperty(key) || response.data[key] == null);
-          if (missing.length > 0) {
-            console.log("누락된 필드:", missing);
-          }
-          const extra = Object.keys(response.data).filter(key => !expectedKeys.includes(key));
-          if (extra.length > 0) {
-            console.log("예상에 없는 추가 필드:", extra);
-          }
         })
         .catch(err => console.error("userInfo 조회 실패:", err));
     }
@@ -346,7 +327,6 @@ const DetailPage = () => {
     year: '작년 대비',
   }[selectedPeriod];
 
-  // 승인/거절 처리 함수: 결과 메시지를 모달에 표시
   const handleConfirm = async () => {
     let resultMessage = "";
     if (modalType === 'approve') {
@@ -370,7 +350,13 @@ const DetailPage = () => {
     setModalType(null);
     setResultModalMessage(resultMessage);
     setResultModalOpen(true);
+  
+    // 2초 후 페이지 새로고침
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
+  
 
   const handleCancel = () => {
     setModalOpen(false);
@@ -389,24 +375,32 @@ const DetailPage = () => {
     }
   };
 
-  // 프로필 정보 JSON 파싱
+  const parseJSONField = (jsonStr, defaultValue = {}) => {
+    try {
+      return JSON.parse(jsonStr) || defaultValue;
+    } catch (error) {
+      console.error("JSON 파싱 실패:", error);
+      return defaultValue;
+    }
+  };
+
   const universityData = parseJSONField(userInfo.universityInfo);
   const highSchoolData = parseJSONField(userInfo.studentCard);
   const certificationData = parseJSONField(userInfo.certification, []);
   const familyData = parseJSONField(userInfo.familyStatus);
 
-  const universityName = universityData.universityName || "없음";
-  const major = universityData.major || "없음";
+  const universityName = universityData?.universityName || "없음";
+  const major = universityData?.major || "없음";
 
-  const highSchool = highSchoolData.highSchool || "없음";
-  const transcript = highSchoolData.score || "없음";
+  const highSchool = highSchoolData?.highSchool || "없음";
+  const transcript = highSchoolData?.score || "없음";
 
   const certifications = Array.isArray(certificationData)
     ? certificationData.join(", ")
     : certificationData.toString() || "없음";
 
-  const marriageStatus = familyData.marriageStatus || "없음";
-  const children = familyData.children != null ? familyData.children.toString() : "없음";
+  const marriageStatus = familyData?.marriageStatus || "없음";
+  const children = familyData?.children != null ? familyData.children.toString() : "없음";
 
   return (
     <PageContainer>
@@ -424,8 +418,7 @@ const DetailPage = () => {
               <ReadOnlyField label="가입일" value={userInfo.createdAt} />
             </UserInfo>
           </InfoContainer>
-          {/* 투자 정보의 상태가 '승인' 또는 '거절'이면 버튼이 보이지 않음 */}
-          {!(userInfo.status === "승인" || userInfo.status === "거절") && (
+          {userInfo.status === "대기" && (
             <div style={{ marginTop: '16px', display: 'flex', gap: '16px', justifyContent: 'center' }}>
               <ApproveButton onClick={() => { setModalType('approve'); setModalOpen(true); }}>
                 심사 승인
@@ -435,6 +428,7 @@ const DetailPage = () => {
               </RejectButton>
             </div>
           )}
+
         </Section>
 
         <Section>
@@ -495,15 +489,11 @@ const DetailPage = () => {
 
         <Section>
           <SectionTitle>사용자 프로필 정보</SectionTitle>
-          {/* 대학/학과 정보 분리 */}
           <ReadOnlyField label="대학" value={universityName} />
           <ReadOnlyField label="학과" value={major} />
-          {/* 고등학교 및 내신 분리 */}
           <ReadOnlyField label="고등학교" value={highSchool} />
           <ReadOnlyField label="내신" value={transcript} />
-          {/* 자격증 (여러 개일 경우 콤마로 구분) */}
           <ReadOnlyField label="자격증" value={certifications} />
-          {/* 가족 상태: 결혼상태와 자녀 분리 */}
           <ReadOnlyField label="결혼상태" value={marriageStatus} />
           <ReadOnlyField label="자녀" value={children} />
           <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />
@@ -518,7 +508,6 @@ const DetailPage = () => {
         <Section>
           <SectionTitle>투자 정보</SectionTitle>
           <ReadOnlyField label="투자 ID" value={userInfo.grantId} />
-          {/* 예상 소득 항목은 표시하지 않음 */}
           <ReadOnlyField label="투자 시작일" value={userInfo.startDate} />
           <ReadOnlyField label="투자 종료일" value={userInfo.endDate} />
           <ReadOnlyField label="상태" value={userInfo.status} />
@@ -533,7 +522,6 @@ const DetailPage = () => {
         </Section>
         <Section ref={bottomSectionRef}></Section>
 
-        {/* 승인/거절 확인 모달 */}
         {modalOpen && (
           <ApprovalModalOverlay>
             <ApprovalModalContent>
@@ -548,7 +536,6 @@ const DetailPage = () => {
           </ApprovalModalOverlay>
         )}
 
-        {/* 처리 결과 모달 */}
         {resultModalOpen && (
           <ApprovalModalOverlay>
             <ApprovalModalContent>
@@ -566,5 +553,5 @@ const DetailPage = () => {
     </PageContainer>
   );
 };
- 
+
 export default DetailPage;
