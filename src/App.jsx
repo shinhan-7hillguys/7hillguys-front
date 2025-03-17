@@ -32,7 +32,7 @@ import EnglishNamePage from "pages/card/EnglishNamePage";
 import CardPinPage from "pages/card/CardPinPage";
 import FinalCheckPage from "pages/card/FinalCheckPage";
 
-import Dashboard from "./pages/admin/Dashboard";
+// import Dashboard from "./pages/admin/Dashboard";
 import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
