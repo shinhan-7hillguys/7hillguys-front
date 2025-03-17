@@ -10,16 +10,16 @@ import Peoch from "./pages/peoch/Peoch";
 
 import PositiveFactor from "./pages/education/PositiveFactor";
 
+
 import UserMain from "./pages/peoch/Usermain";
 import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
 
-import Dashboard from "./pages/admin/dashboard";
+import Dashboard from "./pages/admin/Dashboard";
 import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
-/*user 디렉토리*/
 import User from "pages/user/User";
 import Login from "pages/user/Login";
 import Signup from "pages/user/Signup";
@@ -40,9 +40,20 @@ import SetInvestment from "./pages/peoch/amount/SetInvestment";
 import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
 
 /* 마이페이지 카드 */
-import CardStatement from "pages/mypage/card/CardStatement";
-import BenefitStatement from "pages/mypage/card/BenefitStatement";
-import AllBenefitSearch from "pages/mypage/card/AllBenefitSearch";
+import CardStatement from "./pages/mypage/card/CardStatement";
+import BenefitStatement from "./pages/mypage/card/BenefitStatement";
+import AllBenefitSearch from "./pages/mypage/card/AllBenefitSearch";
+import PaymentTest from "./pages/mypage/card/PaymentTest";
+
+/* 계좌 */
+import Account from "./pages/account/Account";
+import AccountRegister from "./pages/account/AccountRegister";
+import AccountOther from "./pages/account/AccountOther";
+import AccountCheck from "./pages/account/AccountCheck";
+import Bill from "./pages/account/Bill";
+import Calculation from "./pages/account/Calculation";
+import CalculationResult from "./pages/account/CalculationResult";
+import PositiveFactors from "./pages/account/PositiveFactors";
 
 function App() {
   return (
@@ -52,7 +63,7 @@ function App() {
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
+ 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
           <Route path="/card/design" element={<Design />} />
@@ -69,9 +80,7 @@ function App() {
 
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
-
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin" element={<Dashboard />} />
+ 
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
@@ -91,18 +100,37 @@ function App() {
           />
 
           <Route path="/user" element={<User />} />
-
-          <Route path="/mypage/card" element={<CardStatement />} />
-          <Route path="/mypage/card" element={<BenefitStatement />} />
-          <Route path="/mypage/card" element={<AllBenefitSearch />} />
+          <Route
+            path="/mypage/card/CardStatement"
+            element={<CardStatement />}
+          />
+          <Route
+            path="/mypage/card/BenefitStatement"
+            element={<BenefitStatement />}
+          />
+          <Route
+            path="/mypage/card/AllBenefitSearch"
+            element={<AllBenefitSearch />}
+          />
+          <Route path="/mypage/card/PaymentTest" element={<PaymentTest />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
-          <Route path="/user/dashboard" element={<UserMain />} />
+ 
+          <Route path="/account" element={<Account />} />
+          <Route path="/account/agree" element={<AccountRegister />} />
+          <Route path="/account/other" element={<AccountOther />} />
+          <Route path="/account/check" element={<AccountCheck />} />
+          <Route path="/account/bill" element={<Bill />} />
+          <Route path="/account/calculation" element={<Calculation />} />
+          <Route path="/account/calculationResult" element={<CalculationResult />} />
+          <Route path="/account/positive" element={<PositiveFactors />} />
+
         </Route>
         <Route element={<Layout />}>
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/search/:query" element={<SearchResults />} />
           <Route path="/admin/user/detail/:id" element={<Detail />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
