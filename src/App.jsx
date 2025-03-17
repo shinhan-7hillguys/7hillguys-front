@@ -1,3 +1,5 @@
+
+import { useState } from "react";
 import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -36,6 +38,7 @@ import Dashboard from "./pages/admin/Dashboard";
 import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
+/*user 디렉토리*/
 import User from "pages/user/User";
 import Login from "pages/user/Login";
 import Signup from "pages/user/Signup";
@@ -71,6 +74,7 @@ import Bill from "./pages/account/Bill";
 import Calculation from "./pages/account/Calculation";
 import CalculationResult from "./pages/account/CalculationResult";
 import PositiveFactors from "./pages/account/PositiveFactors";
+import ContractPreview from "./pages/investResult/ContractPreview";
 
 
 
@@ -119,6 +123,8 @@ function App() {
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
 
+          <Route path="/admin" element={<Dashboard />} />
+
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
@@ -159,7 +165,6 @@ function App() {
           <Route path="/mypage/card/PaymentTest" element={<PaymentTest />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
 
- 
           <Route path="/account" element={<Account />} />
           <Route path="/account/agree" element={<AccountRegister />} />
           <Route path="/account/other" element={<AccountOther />} />
@@ -168,8 +173,6 @@ function App() {
           <Route path="/account/calculation" element={<Calculation />} />
           <Route path="/account/calculationResult" element={<CalculationResult />} />
           <Route path="/account/positive" element={<PositiveFactors />} />
-
-
         </Route>
         <Route element={<Layout />}>
           {/* <Route path="/admin" element={<Dashboard />} /> */}
