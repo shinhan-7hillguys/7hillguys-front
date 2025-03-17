@@ -167,3 +167,27 @@ header {
 
 
 
+/* src/components/NavigationHeader.css */
+.navigation-header {
+  width: 100%;
+  text-align: right;
+  background-color: transparent;
+  /* position: sticky; */
+  /* top: 0; */
+  /* z-index: 1000; */
+}
+
+.nav-btn {
+  width: 70px;
+  background-color: transparent;
+  color: #000;
+  border: none;
+  padding: 0 16px 8px 0;
+  font-size: 18px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* .nav-btn:hover {
+  background-color: #43a047;
+} */
