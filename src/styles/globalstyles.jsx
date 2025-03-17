@@ -20,7 +20,7 @@ export const GlobalStyle = createGlobalStyle`
     display: flex;
     font-size: 32px;
     font-weight: bold;
-    padding-bottom : 30px;
+    padding-bottom : 30px; 
   }
   a {
     text-decoration: none;

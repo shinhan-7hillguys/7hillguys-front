@@ -1,33 +1,111 @@
 import React, { useState, useEffect } from 'react';
-import styled, { keyframes } from 'styled-components';
-import { Link, useParams } from 'react-router-dom';
-import { dummyUsers } from 'dummyData';
+import styled from 'styled-components';
+import { Link, useParams, useLocation } from 'react-router-dom';
+import axios from 'axios';
+import config from 'config';
 
- 
 const PageContainer = styled.div`
   display: flex;
   align-items: flex-start;
-  padding: 24px; 
+  padding: 24px;
   background-color: #f5f5f5;
   min-height: 100vh;
 `;
 
 const Sidebar = styled.div`
-  width: 250px;
+  width: 300px;
   padding: 24px;
   background-color: #fff;
   border: 1px solid #eaeaea;
-  border-radius: 8px;
-  margin-right: 24px; 
+  margin-right: 12px;
+`;
+ 
+
+const NameInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
 `;
 
+const YearInput = styled.input`
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 16px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+`;
+ 
 const ContentArea = styled.div`
   flex: 1;
   padding: 24px;
   background-color: #fff;
   border: 1px solid #eaeaea;
   border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1); 
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+`;
+
+const UserList = styled.ul`
+  margin-top: 32px;
+  list-style: none;
+  padding: 0;
+`;
+
+const UserItem = styled.li`
+  display: flex;
+  align-items: center;
+  padding: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  &:hover {
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+`;
+ 
+const UserInfo = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+`;
+
+const UserLink = styled(Link)`
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  &:hover {
+    text-decoration: underline;
+  }
+`;
+
+const UserDetailText = styled.p`
+  margin: 4px 0;
+  font-size: 14px;
+  color: #666;
+`;
+
+const NoResultsContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+  text-align: center;
+  color: #666;
+`;
+
+const NoResultsImage = styled.img`
+  width: 100px;
+  height: 100px;
+  margin-bottom: 16px;
 `;
 
 const FilterContainer = styled.div`
@@ -38,135 +116,102 @@ const FilterContainer = styled.div`
 const FilterLabel = styled.label`
   margin-bottom: 8px;
   font-weight: bold;
+  font-size: 32px;
   color: #555;
+  margin-bottom: 32px;
 `;
 
-const FilterSelect = styled.select`
-  margin-bottom: 16px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ddd;
+const FilterButton = styled.button`
+  padding: 8px 16px;
+  background-color: #ff7a9d;
+  color: white;
+  border: none;
   border-radius: 4px;
+  cursor: pointer;
 `;
 
-const FilterInput = styled.input`
-  margin-bottom: 16px;
-  padding: 8px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-`;
+const formatPhoneNumber = (phoneNumber) => {
+  if (!phoneNumber) return ""; 
+  return phoneNumber.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
+};
 
- 
-
-const UserList = styled.ul`
-  list-style: none;
-  padding: 0;
-`;
-
-const UserItem = styled.li`
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  border: 1px solid #eaeaea;
-  border-radius: 8px;
-  margin-bottom: 12px;
-  transition: background-color 0.2s ease;
-  &:hover {
-    background-color: #f8f8f8;
-  }
-`;
-
-const UserPhoto = styled.img`
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  margin-right: 16px;
-`;
-
-const UserInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
-
-const UserLink = styled(Link)`
-  text-decoration: none;
-  color: #333;
-  font-size: 18px;
-  font-weight: bold;
-`;
-
-const UserDetailText = styled.p`
-  margin: 4px 0;
-  font-size: 14px;
-  color: #666;
-`;
 
 const UserSearchPage = () => {
   const { query } = useParams();
+  const location = useLocation();
   const [searchQuery, setSearchQuery] = useState(query || '');
   const [gender, setGender] = useState('');
-  const [occupation, setOccupation] = useState('');
-  const [salary, setSalary] = useState(0);
- 
-  const filteredUsers = dummyUsers.filter(user => {
-    return (
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) &&
-      (gender ? user.gender === gender : true) &&
-      (occupation ? user.occupation === occupation : true) &&
-      user.salary >= salary
-    );
-  });
+  const [name, setName] = useState('');
+  const [birthYear, setBirthYear] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState([]);
+
+  useEffect(() => {
+    if (location.state && location.state.searchResults) {
+      setFilteredUsers(location.state.searchResults);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     setSearchQuery(query || '');
   }, [query]);
 
+  const handleFilterSearch = () => {
+    const params = {};
+    if (name.trim()) params.name = name;
+    if (gender) params.gender = gender;
+    if (birthYear) { 
+      params.startDate = `${birthYear}-01-01`;
+      params.endDate = `${birthYear}-12-31`;
+    }
+
+    axios.get(`${config.apiBaseUrl}/api/user/search/advanced`, { params })
+      .then(response => {
+        setFilteredUsers(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching filtered users:', error);
+      });
+  };
+
   return (
     <PageContainer>
       <Sidebar>
         <FilterContainer>
-          <FilterLabel>성별</FilterLabel>
-          <FilterSelect value={gender} onChange={(e) => setGender(e.target.value)}>
-            <option value="">모두</option>
-            <option value="male">남성</option>
-            <option value="female">여성</option>
-          </FilterSelect>
-
-          <FilterLabel>직업</FilterLabel>
-          <FilterSelect value={occupation} onChange={(e) => setOccupation(e.target.value)}>
-            <option value="">모두</option>
-            <option value="developer">개발자</option>
-            <option value="designer">디자이너</option>
-            <option value="manager">매니저</option>
-          </FilterSelect>
-
-          <FilterLabel>연봉</FilterLabel>
-          <FilterInput
-            type="range" 
- 
-            min="0"
-            max="10000"
-            step="1000"
-            value={salary}
-            onChange={(e) => setSalary(Number(e.target.value))}
+          <FilterLabel>이름</FilterLabel>
+          <NameInput
+            type="text"
+            placeholder="이름 입력"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
           />
-          <div>연봉: {salary}만원 이상</div>
+ 
+          <FilterLabel>출생 연도</FilterLabel>
+          <YearInput
+            type="number"
+            placeholder="예) 2000"
+            value={birthYear}
+            onChange={(e) => setBirthYear(e.target.value)}
+          />
+
+          <FilterButton onClick={handleFilterSearch}>검색</FilterButton>
         </FilterContainer>
       </Sidebar>
       <ContentArea>
-        <h2>검색 결과</h2>
+        <FilterLabel>검색 결과</FilterLabel>
         {filteredUsers.length === 0 ? (
-          <p>검색 조건에 맞는 사용자가 없습니다.</p>
+          <NoResultsContainer>
+            <NoResultsImage src="https://cdn-icons-png.flaticon.com/512/15/15457.png" alt="검색 결과 없음" />
+            <p>검색 결과가 없습니다.</p>
+          </NoResultsContainer>
         ) : (
           <UserList>
             {filteredUsers.map(user => (
-              <UserItem key={user.id}>
-                <UserPhoto src={user.photo} alt={user.name} />
+              <UserItem key={user.userId}> 
                 <UserInfo>
-                  <UserLink to={`/admin/user/detail/${user.id}`}>{user.name}</UserLink>
-                  <UserDetailText>생년월일: {user.birth_date}</UserDetailText>
-                  <UserDetailText>직업: {user.occupation}</UserDetailText>
+                  <UserLink to={`/admin/user/detail/${user.userId}`}>{user.name}</UserLink>
+                  <UserDetailText>생년월일: {user.birthdate}</UserDetailText>
+                  <UserDetailText>핸드폰: {formatPhoneNumber(user.phone)}</UserDetailText>
+                  <UserDetailText>e-mail: {user.email}</UserDetailText>
                 </UserInfo>
               </UserItem>
             ))}
