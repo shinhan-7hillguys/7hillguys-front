@@ -121,7 +121,7 @@ const InvestmentTempAllowance = () => {
     useEffect(() => {
         const fetchInvestmentDetails = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/investment/tempallowance', {
+                const response = await axios.get('api/investment/tempallowance', {
                     withCredentials: true,
                     headers: {
                         'Content-Type': 'application/json'
@@ -194,7 +194,7 @@ const InvestmentTempAllowance = () => {
                 </SliderLabel>
             </SliderContainer>
 
-            <Button onClick={() => axios.post("http://localhost:8080/api/investment/applytempallowance",
+            <Button onClick={() => axios.post("api/investment/applytempallowance",
                 {amount: sliderValue},
                 {
                     withCredentials: true,

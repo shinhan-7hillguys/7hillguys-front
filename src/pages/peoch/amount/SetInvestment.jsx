@@ -101,7 +101,7 @@ const InvestmentSimulator = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/investment/setamount', {
+                const response = await axios.get('api/investment/setamount', {
                     withCredentials: true,
                     headers: {
                         'Content-Type': 'application/json'
@@ -126,7 +126,7 @@ const InvestmentSimulator = () => {
                 const initialTotalInvestment = monthlySupport * supportPeriod * 12 * 10000;
                 if (initialTotalInvestment > 0) {
                     const refundResponse = await axios.post(
-                        "http://localhost:8080/api/investment/refund-rate",
+                        "api/investment/refund-rate",
                         {
                             investAmount: initialTotalInvestment
                         },
@@ -152,7 +152,7 @@ const InvestmentSimulator = () => {
         if (totalInvestment > 0) {
             try {
                 const response = await axios.post(
-                    "http://localhost:8080/api/investment/refund-rate",
+                    "api/investment/refund-rate",
                     {
                         investAmount: totalInvestment
                     },
@@ -181,7 +181,7 @@ const InvestmentSimulator = () => {
             const totalInvestment = monthlySupport * supportPeriod * 12 * 10000;
 
             await axios.post(
-                "http://localhost:8080/api/investment/setamount",
+                "api/investment/setamount",
                 {
                     monthlyAmount: monthlySupport * 10000,
                     period: supportPeriod,
