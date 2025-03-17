@@ -65,9 +65,9 @@ const benefitSlice = createSlice({
     addBenefit: (state, action) => {
       // 예시: addBenefit 로직
       state.addedBenefits.push(action.payload);
-      state.availableBenefits = state.availableBenefits.filter(
-        (benefit) => benefit.benefitId !== action.payload.benefitId
-      );
+      // state.availableBenefits = state.availableBenefits.filter(
+      //   (benefit) => benefit.benefitId !== action.payload.benefitId
+      // );
     },
     clearAddedBenefits: (state) => {
       state.availableBenefits = state.availableBenefits.concat(state.addedBenefits);
