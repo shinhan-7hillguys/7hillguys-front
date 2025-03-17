@@ -17,6 +17,7 @@
     "gsap": "^3.12.7",
     "html2canvas": "^1.4.1",
     "project_2": "file:",
+    "rc-slider": "^11.1.8",
     "react": "^19.0.0",
     "react-apexcharts": "^1.7.0",
     "react-calendar": "^5.1.0",
@@ -60,5 +61,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "autoprefixer": "^10.4.21",
+    "postcss": "^8.5.3",
+    "tailwindcss": "^4.0.14"
   }
 }

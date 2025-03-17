@@ -71,13 +71,7 @@ function App() {
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-
-        <Route element={<Layout />}>
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin/search/:query" element={<SearchResults />} />
-          <Route path="/admin/user/detail/:id" element={<Detail />} />
-        </Route>
-
+ 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
           <Route path="/card/design" element={<Design />} />
@@ -96,9 +90,16 @@ function App() {
           <Route path="/contract-preview" element={<ContractPreview />} />
 
           <Route path="/admin" element={<Dashboard />} />
+
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
+          <Route path="/investment/status" element={<InvestmentStatusCheck />} />
+          <Route path="/investTempAllowance" element={<InvestmentTempAllowance/>}/>
+          <Route path="/investExit" element={<InvestmentExit/>}/>
+          <Route path="/SetInvestment" element={<SetInvestment/>}/>
+          <Route path="/investmentReallyExit" element={<InvestmentReallyExit/>}/>
+ 
           <Route
             path="/investment/status"
             element={<InvestmentStatusCheck />}
@@ -129,7 +130,6 @@ function App() {
           />
           <Route path="/mypage/card/PaymentTest" element={<PaymentTest />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
-          <Route path="/user/dashboard" element={<UserMain />} />
 
 
           <Route path="/account" element={<Account />} />

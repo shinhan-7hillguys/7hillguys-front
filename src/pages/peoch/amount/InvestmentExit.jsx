@@ -12,6 +12,7 @@ const Container = styled.div`
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     max-width: 1200px;
     margin: 20px auto;
+
     text-align: center;
 `;
 
@@ -36,12 +37,15 @@ const MembershipInfo = styled.div`
     border-radius: 10px;
     padding: 20px;
     margin-top: 20px;
+    text-align: center;
+
 `;
 
 const Amount = styled.p`
     font-size: 36px;
     font-weight: bold;
     color: #E91E63; /* 핑크색 */
+
 `;
 
 const BenefitsList = styled.ul`
@@ -108,11 +112,12 @@ const InvestmentExit = () => {
         const fetchExpectedIncome = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/api/investment/exit', {
+                    withCredentials: true,
                     headers: {
-                        Authorization: `Bearer ${token}`,
                         "Content-Type": "application/json"
                     }
                 });
+
                 const incomeData = response.data;
                 //반대로 오는데 꼬인거 같음 여기서 그냥 처리
                 const firstExpectedIncome = JSON.parse(incomeData.lastExpectedIncome);
@@ -124,7 +129,6 @@ const InvestmentExit = () => {
                     firstIncome: income / 10000,
                     lastIncome: lastExpectedIncome[year] ? lastExpectedIncome[year] / 10000 : null
                 }));
-
                 setChartData(formattedData);
                 setLoading(false);
             } catch (err) {
@@ -138,7 +142,7 @@ const InvestmentExit = () => {
     }, []);
 
     if (loading) return <p>로딩 중...</p>;
-    if (error) return <p>에러가 발생했습니다. 다시 시도해주세요.</p>;
+    if (error) return <p>예상 소득금액 산출중입니다. 최대 3분정도 소요될 수 있습니다.</p>;
 
     const totalFirstIncome = chartData.reduce((sum, item) => sum + (item.firstIncome || 0), 0);
     const totalLastIncome = chartData.reduce((sum, item) => sum + (item.lastIncome || 0), 0);
@@ -193,7 +197,7 @@ const InvestmentExit = () => {
                 </BenefitsList>
             </MembershipInfo>
             <ButtonsContainer>
-                <Button>내가 받고 있는 혜택 유지하기</Button>
+                <Button onClick={() => navigate("/")}>내가 받고 있는 혜택 유지하기</Button>
             </ButtonsContainer>
             <SadIcon>😢</SadIcon>
             <p>그래도 해지하시겠어요?</p>
