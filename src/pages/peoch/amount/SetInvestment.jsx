@@ -205,8 +205,8 @@ const InvestmentSimulator = () => {
     };
 
     // 슬라이더 최대값 계산
-    const maxMonthlySupport = Math.floor(maxInvestment / (supportPeriod * 12 * 10000)) || 100;
-    const maxSupportPeriod = Math.min(5, Math.floor(maxInvestment / (monthlySupport * 12 * 10000)) || 5);
+    const maxMonthlySupport = Math.min(150, Math.floor(maxInvestment / (supportPeriod * 12 * 10000)) || 150);
+    const maxSupportPeriod = Math.min(8, Math.floor(maxInvestment / (monthlySupport * 12 * 10000)) || 8);
 
     // 물가상승률 계산 로직
     const getInflationRate = (period, rates) => {
@@ -234,44 +234,18 @@ const InvestmentSimulator = () => {
         <Container>
             <h2>생애주기 투자 시뮬레이션</h2>
 
-            <SliderContainer>
-                <SliderValue>월 지원금: {monthlySupport}만원</SliderValue>
-                <Slider
-                    min={10}
-                    max={maxMonthlySupport}
-                    value={monthlySupport}
-                    onChange={setMonthlySupport}
-                    onAfterChange={handleSliderAfterChange}
-                />
-                <SliderLabel>
-                    <span>10만원</span>
-                    <span>{maxMonthlySupport}만원</span>
-                </SliderLabel>
-            </SliderContainer>
-
-            <SliderContainer>
-                <SliderValue>지원 기간: {supportPeriod}년</SliderValue>
-                <Slider
-                    min={1}
-                    max={maxSupportPeriod > 5 ? 5 : maxSupportPeriod}
-                    value={supportPeriod}
-                    onChange={setSupportPeriod}
-                    onAfterChange={handleSliderAfterChange}
-                />
-                <SliderLabel>
-                    <span>1년</span>
-                    <span>{maxSupportPeriod > 5 ? 5 : maxSupportPeriod}년</span>
-                </SliderLabel>
-            </SliderContainer>
-
-            <div style={{height: "500px"}}>
+            <div style={{height: "400px"}}>
                 <ResponsiveContainer width="100%" height="100%">
-                    <AreaChart data={chartData}>
+                    <AreaChart data={chartData}
+                               margin={{top: 40, right: 30, left: 30, bottom: 40}}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="age" label={{value: "나이", position: "bottom"}}/>
                         <YAxis
-                            label={{value: "금액 (만 원)", angle: -90, position: "insideLeft"}}
-                            tickFormatter={(value) => `${Math.round(value / 10000)}`}
+                            label={{
+                                value: "금액 (만 원)", angle: 0, position: "top", offset: 10,
+                                dy: -10
+                            }}
+                            tickFormatter={(value) => `${Math.round(value / 10000).toLocaleString()}`}
                         />
                         <Tooltip
                             formatter={(value) => `${value.toLocaleString()}원`}
@@ -296,12 +270,42 @@ const InvestmentSimulator = () => {
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
+            <SliderContainer>
+                <SliderValue>월 지원금: {monthlySupport}만원</SliderValue>
+                <Slider
+                    min={10}
+                    max={maxMonthlySupport}
+                    value={monthlySupport}
+                    onChange={setMonthlySupport}
+                    onAfterChange={handleSliderAfterChange}
+                />
+                <SliderLabel>
+                    <span>10만원</span>
+                    <span>{maxMonthlySupport}만원</span>
+                </SliderLabel>
+            </SliderContainer>
+
+            <SliderContainer>
+                <SliderValue>지원 기간: {supportPeriod}년</SliderValue>
+                <Slider
+                    min={1}
+                    max={maxSupportPeriod > 8 ? 8 : maxSupportPeriod}
+                    value={supportPeriod}
+                    onChange={setSupportPeriod}
+                    onAfterChange={handleSliderAfterChange}
+                />
+                <SliderLabel>
+                    <span>1년</span>
+                    <span>{maxSupportPeriod > 8 ? 8 : maxSupportPeriod}년</span>
+                </SliderLabel>
+            </SliderContainer>
+
 
             <div style={{marginTop: "20px", padding: "0px 20px"}}>
                 <h3>투자 정보</h3>
                 <p>총 투자금: {(monthlySupport * supportPeriod * 12 * 10000).toLocaleString()}원</p>
                 <p>환급 비율: {(refundRate).toFixed(1)}%</p>
-                <p>적용 물가 상승률: {getInflationRate(supportPeriod, inflationRates)}%</p>
+                <p>장기 금리 기반 할인율: {getInflationRate(supportPeriod, inflationRates)}%</p>
             </div>
 
             {/* 신청하기 버튼 추가 */}
