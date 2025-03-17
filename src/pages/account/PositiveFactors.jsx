@@ -1,52 +1,202 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import {
     BarChart,
     Bar,
     XAxis,
     YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend
+    ResponsiveContainer
 } from 'recharts';
 
-const data = [
-    { name: '학점', myScore: 3.2, avgScore: 3.0 },
-    { name: '어학', myScore: 750, avgScore: 700 },
-    { name: '인턴', myScore: 1, avgScore: 1.5 },
-    { name: '자격증', myScore: 2, avgScore: 3 },
-];
+axios.defaults.withCredentials = true;
 
-function PositiveFactors() {
-    return (
-        <div style={{ padding: '20px' }}>
-            <h1>나 vs 전공 평균</h1>
-            <BarChart
-                width={1000}         // 차트 너비
-                height={500}        // 차트 높이
-                data={data}         // 데이터
-                layout="vertical"   // 가로 막대차트 설정
-                margin={{ top: 20, right: 30, left: 20, bottom: 20 }}
+function PositiveFactors2() {
+    const [user, setUser] = useState(null);
+    const [profileData, setProfileData] = useState(null);
+    const [error, setError] = useState("");
+
+    useEffect(() => {
+        axios.get('/api/auth/user', {
+            withCredentials: true,
+            headers: {
+                "Content-Type": "application/json"
+            }
+        })
+            .then((res) => {
+                setUser(res.data);
+            })
+            .catch((err) => {
+                console.error(err);
+                setError("사용자 정보를 불러올 수 없습니다.");
+            });
+    }, []);
+
+    useEffect(() => {
+        if (user && user.userId) {
+            axios.get(`/api/userprofiles2?userId=${user.userId}`)
+                .then((res) => {
+                    console.log("profileData:", res.data);
+                    setProfileData(res.data);
+                })
+                .catch((err) => {
+                    console.error(err);
+                    setError("user_profiles2 데이터를 불러올 수 없습니다.");
+                });
+        }
+    }, [user]);
+
+    if (error) {
+        return <div style={styles.error}>{error}</div>;
+    }
+    if (!user) {
+        return <div style={styles.error}>로그인이 필요한 서비스입니다.</div>;
+    }
+    if (!profileData) {
+        return <div style={styles.loading}>로딩 중...</div>;
+    }
+
+    const gradeObj = JSON.parse(profileData.grade);
+    const languageObj = JSON.parse(profileData.languageScore);
+
+    const chartData = [
+        {
+            name: "학점",
+            value: parseFloat(gradeObj.gpa),
+            max: parseFloat(gradeObj.maxGpa) || 4.5,
+            avg: 3.2, // 더미 평균
+        },
+        {
+            name: "어학",
+            value: parseFloat(languageObj.score),
+            max: 990,
+            avg: 700, // 더미 평균
+        },
+        {
+            name: "인턴",
+            value: 1,
+            max: 5,
+            avg: 2, // 더미 평균
+        },
+        {
+            name: "자격증",
+            value: 1,
+            max: 10,
+            avg: 3, // 더미 평균
+        },
+    ];
+
+
+    const renderCustomLabel = (props) => {
+        const { x, y, width, value } = props;
+        return (
+            <text
+                x={x + width + 5}
+                y={y + 10}
+                fill="#555"
+                fontSize={14}
+                fontWeight="bold"
             >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" />
-                <YAxis dataKey="name" type="category" />
-                <Tooltip />
-                <Legend />
-                <Bar
-                    dataKey="myScore"
-                    fill="#8884d8"
-                    animationDuration={50}
-                    animationEasing="ease-out"
-                />
-                <Bar
-                    dataKey="avgScore"
-                    fill="#82ca9d"
-                    animationDuration={30}
-                    animationEasing="ease-out"
-                />
-            </BarChart>
+                {value}
+            </text>
+        );
+    };
+
+    return (
+        <div style={styles.container}>
+            <h1 style={styles.title}>긍정 요인 시각화</h1>
+            <p> 내 직군 : 컴퓨터공학</p>
+
+            {chartData.map((item) => (
+                <div key={item.name} style={styles.chartBox}>
+                    <div style={styles.labelTop}>
+                        <span style={styles.itemTitle}>{item.name}</span>
+                        <span style={styles.itemScore}>
+                내 점수 : {item.value} / 평균 : {item.avg}
+                            {(item.name === '학점' || item.name === '어학') && ` / 만점 : ${item.max}`}
+            </span>
+                    </div>
+
+                    <div style={{ width: 300, height: 60 }}>
+                        <ResponsiveContainer>
+                            <BarChart
+                                layout="vertical"
+                                data={[{ category: item.name, score: item.value,  avg: item.avg  }]}
+                                margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
+                            >
+                                <XAxis type="number" hide domain={[0, item.max]} />
+                                <YAxis dataKey="category" type="category" hide />
+
+                                <defs>
+                                    <linearGradient id="barColor" x1="0" y1="0" x2="1" y2="0">
+                                        <stop offset="0%" stopColor="#82ca9d" />
+                                        <stop offset="100%" stopColor="#a0e4b6" />
+                                    </linearGradient>
+                                </defs>
+
+                                <Bar
+                                    dataKey="score"
+                                    fill="url(#barColor)"
+                                    barSize={20}
+                                    radius={[10, 10, 10, 10]}
+                                    label={renderCustomLabel}
+                                />
+                                <Bar
+                                    dataKey="avg"
+                                    fill="#8884d8"
+                                    barSize={20}
+                                    radius={[10, 10, 10, 10]}
+                                    label={{ position: "right", fill: "#000", fontSize: 14 }}
+                                />
+                            </BarChart>
+                        </ResponsiveContainer>
+                    </div>
+                </div>
+            ))}
         </div>
     );
 }
 
-export default PositiveFactors;
+const styles = {
+    container: {
+        maxWidth: 400,
+        margin: "0 auto",
+        padding: "20px",
+        fontFamily: "'Noto Sans KR', sans-serif",
+        color: "#333",
+    },
+    title: {
+        fontSize: "22px",
+        fontWeight: "bold",
+        textAlign: "center",
+        marginBottom: "30px",
+    },
+    chartBox: {
+        backgroundColor: "#fff",
+        borderRadius: "8px",
+        padding: "15px",
+        marginBottom: "20px",
+        boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+    },
+    labelTop: {
+        display: "flex",
+        justifyContent: "space-between",
+        marginBottom: "5px",
+    },
+    itemTitle: {
+        fontSize: "16px",
+        fontWeight: "bold",
+    },
+    itemScore: {
+        fontSize: "14px",
+        color: "#666",
+    },
+    error: {
+        color: "red",
+        padding: "20px",
+    },
+    loading: {
+        padding: "20px",
+    },
+};
+
+export default PositiveFactors2;

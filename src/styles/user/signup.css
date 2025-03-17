@@ -33,7 +33,7 @@
     margin: 8px 0;
     border: 1px solid #FFD4DE;
     border-radius: 5px;
-    font-size: 16px;
+    font-size: 14px;
 }
 
 /* 입력 필드 포커스 효과 */
@@ -66,6 +66,58 @@
     color: #666;
     text-align: left;
     margin-top: -5px;
+}
+
+/* 주소 입력 그룹 */
+.address-input-group {
+    display: flex;
+    align-items: flex-end; /* 하단 맞춤 유지 */
+    gap: 8px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+/* 주소 입력 필드 스타일 (다른 입력 필드와 일치) */
+.address-input-group .input-field {
+    flex: 1;
+    padding: 12px;
+    height: 40px;
+    margin: 8px 0; /* 다른 input-field와 동일하게 설정 */
+    box-sizing: border-box;
+    background-color: white; /* 배경색 통일 */
+    font-size: 14px; /* 폰트 크기도 맞춤 */
+    display: block;
+    border: 1px solid #FFD4DE; /* 테두리 통일 */
+    border-radius: 5px; /* 모서리 둥글게 통일 */
+}
+
+/* 주소 검색 버튼 스타일 (입력 필드와 높이 통일) */
+.address-search-btn {
+    padding: 12px 16px; /* 다른 버튼과 동일한 패딩 적용 */
+    height: auto; /* 높이를 auto로 설정해서 자연스럽게 맞춤 */
+    background-color: #FEA1B8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.address-search-btn:hover {
+    background-color: #F994AD;
+}
+
+/* Daum 주소 API iframe 컨테이너 스타일 유지 */
+#postcode-container {
+    margin-bottom: 16px;
+    border: 1px solid #FFD4DE;
+    border-radius: 5px;
+    overflow: hidden;
 }
 
 /* 약관 동의 체크박스 */

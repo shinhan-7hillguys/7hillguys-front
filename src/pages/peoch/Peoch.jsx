@@ -8,7 +8,7 @@ const Peoch = () => {
       <div style={{textAlign: "center", marginTop: "50px"}}>
         <h1>종현</h1>
         <button
-            onClick={() => navigate("/investment-temp-allowance")}
+            onClick={() => navigate("/investTempAllowance")}
             style={{
               margin: "10px",
               padding: "10px 20px",
@@ -22,7 +22,7 @@ const Peoch = () => {
           임시 한도 신청
         </button>
         <button
-            onClick={() => navigate("/investment-support")}
+            onClick={() => navigate("/investExit")}
             style={{
               margin: "10px",
               padding: "10px 20px",
