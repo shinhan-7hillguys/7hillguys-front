@@ -17,7 +17,7 @@ import CardPreview from "./CardPreview";
 const Benefit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { availableBenefits, appliedBenefits, addedBenefits, status, error, card } = useSelector(
+  const { availableBenefits, appliedBenefits, addedBenefits,  status, error, card } = useSelector(
     (state) => state.benefit
   );
   
@@ -28,10 +28,19 @@ const Benefit = () => {
   const [checkedBenefits, setCheckedBenefits] = useState([]);
   const [isFlipped, setIsFlipped] = useState(false);
 
+  
+  const filteredAvailableBenefits = availableBenefits.filter((benefit) =>
+    // appliedBenefits는 보통 { benefit: { benefitId, ... } } 형태로 저장됨
+  !appliedBenefits.some((applied) => applied.myBenefitId.benefitId === benefit.benefitId)
+  // 2) checkedBenefits에도 들어있지 않을 때만 필터 통과
+  && !addedBenefits.some((checked) => checked.benefitId === benefit.benefitId)
+
+  );
+
   // 페이지 로드시, 내 카드에 대한 혜택 및 카드 정보를 백엔드에서 가져옵니다.
   useEffect(() => {
     dispatch(fetchBenefits());
-  }, [dispatch]);
+  }, [dispatch, filteredAvailableBenefits]);
 
   const handleCheckboxChange = (benefitId, e) => {
     if (e.target.checked) {
@@ -42,7 +51,8 @@ const Benefit = () => {
   };
 
   const handleAdd = () => {
-    if(checkedBenefits.length + appliedBenefits.length > 3) return alert("최대 3개 초과");
+    console.log(addedBenefits.length, appliedBenefits.length )
+    if(addedBenefits.length + 1 + appliedBenefits.length > 3) return alert("최대 3개 초과");
     if (checkedBenefits.length === 0) {
       alert("추가할 혜택을 선택하세요.");
       return;
@@ -88,13 +98,6 @@ const handleDeleteSelected = (benefitId) => {
     dispatch(deleteBenefit({ benefitId, cardId }));
   }
 };
-  const filteredAvailableBenefits = availableBenefits.filter((benefit) =>
-    // appliedBenefits는 보통 { benefit: { benefitId, ... } } 형태로 저장됨
-  !appliedBenefits.some((applied) => applied.myBenefitId.benefitId === benefit.benefitId)
-  // 2) checkedBenefits에도 들어있지 않을 때만 필터 통과
-  && !addedBenefits.some((checked) => checked.benefitId === benefit.benefitId)
-
-  );
 
   
 
