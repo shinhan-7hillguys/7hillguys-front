@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -13,7 +14,6 @@ import PositiveFactor from "./pages/education/PositiveFactor";
 
 
 import UserMain from "./pages/peoch/Usermain";
-
 import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
@@ -50,8 +50,6 @@ import InvestmentExit from "./pages/peoch/amount/InvestmentExit";
 
 import InvestmentStatusCheck from "pages/investResult/InvestmentStatusCheck";
 import ContractSigning from "pages/investResult/ContractSigning";
-import ContractPreview from "pages/investResult/ContractPreview";
-
 
 import SetInvestment from "./pages/peoch/amount/SetInvestment";
 import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
@@ -61,6 +59,8 @@ import CardStatement from "./pages/mypage/card/CardStatement";
 import BenefitStatement from "./pages/mypage/card/BenefitStatement";
 import AllBenefitSearch from "./pages/mypage/card/AllBenefitSearch";
 import PaymentTest from "./pages/mypage/card/PaymentTest";
+import ResumeDetail from "./pages/education/ResumeDetail";
+import StartScreen from "./pages/education/StartScreen";
 
 /* 계좌 */
 import Account from "./pages/account/Account";
@@ -71,6 +71,7 @@ import Bill from "./pages/account/Bill";
 import Calculation from "./pages/account/Calculation";
 import CalculationResult from "./pages/account/CalculationResult";
 import PositiveFactors from "./pages/account/PositiveFactors";
+import ContractPreview from "./pages/investResult/ContractPreview";
 
 
 
@@ -85,7 +86,13 @@ function App() {
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
- 
+
+        <Route element={<Layout />}>
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/search/:query" element={<SearchResults />} />
+          <Route path="/admin/user/detail/:id" element={<Detail />} />
+        </Route>
+
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
 
@@ -97,7 +104,7 @@ function App() {
           <Route path="/card/english-name" element={<EnglishNamePage />} />
           <Route path="/card/pin" element={<CardPinPage />} />
           <Route path="/card/final" element={<FinalCheckPage />} />
-        
+
 
 
 
@@ -106,19 +113,18 @@ function App() {
 
           <Route path="/benefit/compare" element={<BenefitCompare />} />
 
-          <Route path="/mypage" element={<Mypage />} />
-          <Route path="/education" element={<Education />} />
-          <Route path="/ResumeEdit" element={<ResumeEdit />} />
-          <Route
-            path="/SalaryComparisonChart"
-            element={<SalaryComparisonChart />}
-          />
+          <Route path="/education" element={<StartScreen />} />
+          <Route path="/education/ResumeEdit" element={<ResumeEdit />} />
+          <Route path="/education/myeducation" element={<Education />} />
+          <Route path="/education/SalaryComparisonChart" element={<SalaryComparisonChart />} />
+          <Route path="/education/resume-detail/:id" element={<ResumeDetail />} />
           <Route path="/peoch" element={<Peoch />} />
-
 
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
 
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin" element={<Dashboard />} />
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
@@ -127,7 +133,7 @@ function App() {
           <Route path="/investExit" element={<InvestmentExit/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
           <Route path="/investmentReallyExit" element={<InvestmentReallyExit/>}/>
- 
+
           <Route
             path="/investment/status"
             element={<InvestmentStatusCheck />}
@@ -159,7 +165,6 @@ function App() {
           <Route path="/mypage/card/PaymentTest" element={<PaymentTest />} />
           <Route path="/education/compare" element={<PositiveFactor />} />
 
- 
           <Route path="/account" element={<Account />} />
           <Route path="/account/agree" element={<AccountRegister />} />
           <Route path="/account/other" element={<AccountOther />} />
@@ -168,8 +173,6 @@ function App() {
           <Route path="/account/calculation" element={<Calculation />} />
           <Route path="/account/calculationResult" element={<CalculationResult />} />
           <Route path="/account/positive" element={<PositiveFactors />} />
-
-
         </Route>
         <Route element={<Layout />}>
           {/* <Route path="/admin" element={<Dashboard />} /> */}
