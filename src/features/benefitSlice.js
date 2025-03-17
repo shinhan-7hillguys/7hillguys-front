@@ -100,7 +100,7 @@ const benefitSlice = createSlice({
       console.log(state, action)
       state.appliedBenefits = state.appliedBenefits.filter(
         (b) => b.myBenefitId.benefitId !== action.payload
-      );
+      ); 
     })
     .addCase(deleteBenefit.rejected, (state, action) => {
       state.error = action.payload;

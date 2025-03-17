@@ -2,24 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 function BenefitStatement() {
-  // JWT에서 userId 추출하는 함수
-  const getUserIdFromToken = () => {
-    const token = localStorage.getItem("token");
-    if (!token) return null;
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1]));
-      return { userId: payload.userId, token };
-    } catch (error) {
-      console.error("JWT 파싱 오류:", error);
-      return null;
-    }
-  };
-
-  // JWT에서 userId와 token 가져오기
-  const userData = getUserIdFromToken();
-  const userId = userData?.userId;
-  const token = userData?.token;
-
   const [statement, setStatement] = useState({
     userName: "",
     totalBenefitDiscount: 0,
@@ -43,10 +25,11 @@ function BenefitStatement() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/card/benefitStatement/${userId}`, {
+      .get("http://localhost:8080/card/benefitStatement", {
+        withCredentials: true,
         params: { yearMonth },
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       })
       .then((response) => {
