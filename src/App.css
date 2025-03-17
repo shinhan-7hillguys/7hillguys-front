@@ -87,11 +87,14 @@ div {
   /* background-image: radial-gradient(circle at top right, #ebbcf2 0%, #ffe7e7 100%); */
   /* padding: 5px 0; */
   margin: 0 auto;
+
+
 }
 .container2 {
-  width: 100%;
   min-height: 93vh;
+  margin-top: 20px;
   height: 100%;
+  width: 100%;
   background: #fffeff;
   border-radius: 30px 30px 0 0;
   
