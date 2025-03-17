@@ -2,25 +2,6 @@ import React, { useEffect, useState, useMemo } from "react";
 import axios from "axios";
 
 function CardStatement() {
-  // JWT에서 userId 추출하는 함수
-  const getUserIdFromToken = () => {
-    const token = localStorage.getItem("token"); // JWT 가져오기
-    if (!token) return null;
-
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1])); // Base64 디코딩
-      return { userId: payload.userId, token }; // userId와 token 반환
-    } catch (error) {
-      console.error("JWT 파싱 오류:", error);
-      return null;
-    }
-  };
-
-  // JWT에서 userId와 token 가져오기
-  const userData = getUserIdFromToken();
-  const userId = userData?.userId;
-  const token = userData?.token;
-
   const [statement, setStatement] = useState({
     monthlyAllowance: 0,
     monthlySpent: 0,
@@ -44,10 +25,11 @@ function CardStatement() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8080/card/cardStatement/${userId}`, {
+      .get("http://localhost:8080/card/cardStatement", {
+        withCredentials: true,
         params: { yearMonth },
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
         },
       })
       .then((response) => {
