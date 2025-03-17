@@ -12,6 +12,7 @@ import Peoch from "./pages/peoch/Peoch";
 
 import PositiveFactor from "./pages/education/PositiveFactor";
 
+
 import UserMain from "./pages/peoch/Usermain";
 import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
@@ -36,6 +37,7 @@ import InvestmentExit from "./pages/peoch/amount/InvestmentExit";
 
 import InvestmentStatusCheck from "pages/investResult/InvestmentStatusCheck";
 import ContractSigning from "pages/investResult/ContractSigning";
+import ContractPreview from "pages/investResult/ContractPreview";
 
 import SetInvestment from "./pages/peoch/amount/SetInvestment";
 import InvestmentReallyExit from "./pages/peoch/amount/InvestmentReallyExit";
@@ -70,6 +72,11 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
 
+        <Route element={<Layout />}>
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin/search/:query" element={<SearchResults />} />
+          <Route path="/admin/user/detail/:id" element={<Detail />} />
+        </Route>
 
         <Route element={<AppLayout />}>
           <Route path="/card" element={<Benefit />} />
@@ -88,6 +95,8 @@ function App() {
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
 
+          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
           <Route
@@ -137,6 +146,7 @@ function App() {
           <Route path="/admin/search/:query" element={<SearchResults />} />
           <Route path="/admin/user/detail/:id" element={<Detail />} />
         </Route>
+
       </Routes>
     </BrowserRouter>
   );
