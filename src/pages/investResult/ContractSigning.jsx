@@ -42,21 +42,32 @@ const ContractSigning = () => {
             return;
         }
 
-        const response = await fetch("http://localhost:8080/api/contract/sign", {
-            method: "POST",
-            credentials: "include",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ base64Signature: signature }),
-        });
+        try {
+            const response = await fetch("http://localhost:8080/api/contract/sign", {
+                method: "POST",
+                credentials: "include",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ base64Signature: signature }),
+            });
 
-        if (response.ok) {
+            if (!response.ok) {
+                throw new Error(`서명 제출 실패: ${response.status} ${response.statusText}`);
+            }
+
             const blob = await response.blob();
-            const pdfUrl = window.URL.createObjectURL(blob); // ✅ PDF URL 생성
-            navigate("/contract-preview", { state: { pdfUrl } }); // ✅ 미리보기 페이지로 이동
-        } else {
-            alert("서명 제출 실패");
+            const reader = new FileReader();
+
+            reader.onloadend = () => {
+                const pdfDataUrl = reader.result; // ✅ Data URL 변환
+                navigate("/contract-preview", { state: { pdfUrl: pdfDataUrl } }); // ✅ 미리보기 페이지로 이동
+            };
+
+            reader.readAsDataURL(blob);
+        } catch (error) {
+            console.error("🚨 계약서 제출 중 오류 발생:", error);
+            alert("서명 제출 실패! 서버 상태를 확인하세요.");
         }
     };
 
