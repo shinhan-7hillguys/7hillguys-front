@@ -94,8 +94,20 @@ const AppLayout = () => {
                 {" "}
                 의찬
               </Link>
-              <Link to="/education/compare" style={{ marginRight: "1rem" }}>
-                민영
+              <Link to="/account" style={{ marginRight: "1rem" }}>
+                계좌목록
+              </Link>
+              <Link to="/account/check" style={{ marginRight: "1rem" }}>
+                납부내역조회
+              </Link>
+              <Link to="/account/calculation" style={{ marginRight: "1rem" }}>
+                산정
+              </Link>
+              <Link to="/account/positive" style={{ marginRight: "1rem" }}>
+                긍정효과
+              </Link>
+              <Link to="/account/bill" style={{ marginRight: "1rem" }}>
+                청구서
               </Link>
               <Link
                 to="/mypage/card/CardStatement"
