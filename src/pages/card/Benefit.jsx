@@ -42,6 +42,7 @@ const Benefit = () => {
   };
 
   const handleAdd = () => {
+    if(checkedBenefits.length + appliedBenefits.length > 3) return alert("최대 3개 초과");
     if (checkedBenefits.length === 0) {
       alert("추가할 혜택을 선택하세요.");
       return;
@@ -87,11 +88,14 @@ const handleDeleteSelected = (benefitId) => {
     dispatch(deleteBenefit({ benefitId, cardId }));
   }
 };
-
   const filteredAvailableBenefits = availableBenefits.filter((benefit) =>
     // appliedBenefits는 보통 { benefit: { benefitId, ... } } 형태로 저장됨
-    !appliedBenefits.some((applied) => applied.benefit.benefitId === benefit.benefitId)
+  !appliedBenefits.some((applied) => applied.myBenefitId.benefitId === benefit.benefitId)
+  // 2) checkedBenefits에도 들어있지 않을 때만 필터 통과
+  && !addedBenefits.some((checked) => checked.benefitId === benefit.benefitId)
+
   );
+
   
 
   // My 혜택 모달 (카드 뒷면)

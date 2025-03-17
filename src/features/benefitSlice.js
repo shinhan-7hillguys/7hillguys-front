@@ -40,6 +40,7 @@ export const applyBenefits = createAsyncThunk(
         "http://localhost:8080/benefit/apply",
         { cardId, benefitIds },
       );
+      console.log(response)
       return response.data;
     } catch (error) {
       return rejectWithValue(error.response?.data || "혜택 적용에 실패했습니다.");
@@ -96,8 +97,9 @@ const benefitSlice = createSlice({
     })
     // deleteBenefit 처리
     .addCase(deleteBenefit.fulfilled, (state, action) => {
+      console.log(state, action)
       state.appliedBenefits = state.appliedBenefits.filter(
-        (b) => b.benefitId !== action.payload
+        (b) => b.myBenefitId.benefitId !== action.payload
       );
     })
     .addCase(deleteBenefit.rejected, (state, action) => {
@@ -110,8 +112,23 @@ const benefitSlice = createSlice({
     })
     .addCase(applyBenefits.fulfilled, (state, action) => {
       state.status = "succeeded";
-      // 실제 적용 후 서버 반환 결과에 따라 업데이트할 수 있음.
-      state.appliedBenefits = state.appliedBenefits.concat(state.addedBenefits);
+      // 새로운 데이터가 평탄한 구조라면, UI에서 기대하는 중첩 구조로 변환
+      const transformed = state.addedBenefits.map(item => ({
+        benefit: {
+          benefitId: item.benefitId,
+          name: item.name,
+          description: item.description,
+          fee: item.fee,
+          discountRate: item.discountRate,
+        },
+        myBenefitId:{
+          benefitId:item.benefitId,
+        },
+        // 필요하다면 myBenefitId나 card 등 다른 정보도 추가합니다.
+        status: item.status,
+        usedCount: item.usedCount
+      }));
+      state.appliedBenefits = state.appliedBenefits.concat(transformed);
       state.addedBenefits = [];
     })
     .addCase(applyBenefits.rejected, (state, action) => {
