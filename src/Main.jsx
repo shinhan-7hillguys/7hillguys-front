@@ -160,7 +160,7 @@ const Main = () => {
     <div className="main">
       <div className="main_header">
         <div>
-          <Link to="/mypage">
+          <Link to="/user/dashboard">
             <img src="./logo.png" alt="" width={30} height={30} />
             L o g i n
           </Link>

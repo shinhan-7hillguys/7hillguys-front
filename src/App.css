@@ -1,5 +1,6 @@
 :root {
   --bg-color: #df6e99;
+  /*버튼 컬러 통일*/
   --button-color: linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%);
   --box-color: linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%);
   --color: #000;
