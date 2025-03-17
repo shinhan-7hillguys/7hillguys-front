@@ -17,7 +17,7 @@ import CardPreview from "./CardPreview";
 const Benefit = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { availableBenefits, appliedBenefits, addedBenefits, status, error, card } = useSelector(
+  const { availableBenefits, appliedBenefits, addedBenefits,  status, error, card } = useSelector(
     (state) => state.benefit
   );
   
@@ -42,7 +42,8 @@ const Benefit = () => {
   };
 
   const handleAdd = () => {
-    if(checkedBenefits.length + appliedBenefits.length > 3) return alert("최대 3개 초과");
+    console.log(addedBenefits.length, appliedBenefits.length )
+    if(addedBenefits.length + 1 + appliedBenefits.length > 3) return alert("최대 3개 초과");
     if (checkedBenefits.length === 0) {
       alert("추가할 혜택을 선택하세요.");
       return;
