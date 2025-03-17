@@ -56,8 +56,12 @@ import Bill from "./pages/account/Bill";
 import Calculation from "./pages/account/Calculation";
 import CalculationResult from "./pages/account/CalculationResult";
 import PositiveFactors from "./pages/account/PositiveFactors";
+import axios from "axios";
 
 function App() {
+  axios.defaults.withCredentials = true;
+  // (선택 사항) 기본 URL 설정
+  axios.defaults.baseURL = "http://localhost:8080";
   return (
     <BrowserRouter>
       <Routes>

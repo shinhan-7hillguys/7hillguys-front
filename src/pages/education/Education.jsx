@@ -25,9 +25,7 @@ const CompanyCard = ({ company, onMouseEnter, onMouseLeave, onClick }) => {
         <h3 style={{ margin: "0 0 4px", fontSize: "16px", fontWeight: "bold" }}>
           {company.name}
         </h3>
-        <p style={{ margin: 0, fontSize: "12px" }}>
-          마감일: {company.closingDate}
-        </p>
+        <p style={{ margin: 0, fontSize: "12px" }}>마감일: {company.closingDate}</p>
         <p style={{ margin: "4px 0 10px", fontSize: "12px" }}>
           모집공고: {company.recruit}
         </p>
@@ -40,13 +38,14 @@ const Education = () => {
   const [userProfile, setUserProfile] = useState(null);
   const [hoveredCompany, setHoveredCompany] = useState(null);
 
-  // 회사 데이터 예시 (5개)
+  // 추천 회사 데이터 (salary 필드 추가)
   const companyList = [
     {
       id: 1,
       name: "쿠팡",
       closingDate: "2023.12.31",
       recruit: "프론트엔드 개발자",
+      salary: 5200, // 쿠팡 평균 연봉(천원)
       averageData: [7, 5, 4, 6, 5],
     },
     {
@@ -54,6 +53,7 @@ const Education = () => {
       name: "네이버",
       closingDate: "2023.11.15",
       recruit: "AI 연구원",
+      salary: 5500, // 네이버 평균 연봉(천원)
       averageData: [8, 7, 5, 7, 6],
     },
     {
@@ -61,6 +61,7 @@ const Education = () => {
       name: "카카오",
       closingDate: "2023.12.01",
       recruit: "백엔드 엔지니어",
+      salary: 5300, // 카카오 평균 연봉(천원)
       averageData: [6, 6, 6, 6, 6],
     },
     {
@@ -68,6 +69,7 @@ const Education = () => {
       name: "토스",
       closingDate: "2023.10.30",
       recruit: "안드로이드 개발자",
+      salary: 5000, // 토스 평균 연봉(천원)
       averageData: [7, 6, 5, 5, 7],
     },
     {
@@ -75,48 +77,65 @@ const Education = () => {
       name: "배달의민족",
       closingDate: "2023.09.20",
       recruit: "UI/UX 디자이너",
+      salary: 4800, // 배달의민족 평균 연봉(천원)
       averageData: [5, 6, 7, 4, 6],
     },
   ];
 
-  // userId 2의 데이터를 GET
+  // userProfile 데이터 GET
   useEffect(() => {
     axios
-        .get("http://localhost:8080/api/myspecs")
+        .get("/api/myspecs")
         .then((res) => setUserProfile(res.data))
-        .catch((err) =>
-            console.error("Error fetching user profile:", err)
-        );
+        .catch((err) => console.error("Error fetching user profile:", err));
   }, []);
 
   // ResumeEdit에서 저장한 모든 질문의 답변은 객체 형태로 저장됨
   const answersObj =
       userProfile && userProfile.letter ? JSON.parse(userProfile.letter) : {};
 
-  // 각 답변의 길이가 350자 이상일 때만 카운트
+  // 각 답변의 길이가 350자 이상일 때만 카운트하여 자소서 점수를 계산
   const answeredCount = Object.values(answersObj).filter(
       (ans) => ans && ans.trim().length >= 350
   ).length;
   const letterScore = Math.min(answeredCount * 2, 10);
 
-  // 어학점수는 배열로 저장되어 있다고 가정 (첫 번째 항목 사용)
+  // 어학점수: 배열로 저장되었다고 가정 (첫 번째 항목 사용)
   const languageArr =
       userProfile && userProfile.languageScore
           ? JSON.parse(userProfile.languageScore)
           : [];
   const languageObj = languageArr.length > 0 ? languageArr[0] : {};
   let langScore = 0;
-  if (languageObj.score && languageObj.exam === "TOEIC") {
-    const score = parseInt(languageObj.score);
-    if (score >= 900) langScore = 10;
-    else if (score >= 850) langScore = 8;
-    else if (score >= 800) langScore = 6;
-    else if (score >= 750) langScore = 4;
-    else if (score >= 700) langScore = 2;
-    else langScore = 0;
+  if (languageObj.score) {
+    if (languageObj.exam === "TOEIC") {
+      const score = parseInt(languageObj.score);
+      if (score >= 900) langScore = 10;
+      else if (score >= 850) langScore = 8;
+      else if (score >= 800) langScore = 6;
+      else if (score >= 750) langScore = 4;
+      else if (score >= 700) langScore = 2;
+      else langScore = 0;
+    } else if (languageObj.exam === "OPIC") {
+      const opicScore = languageObj.score.toUpperCase();
+      if (opicScore === "AL") langScore = 10;
+      else if (opicScore === "IH") langScore = 8;
+      else if (opicScore === "IM") langScore = 6;
+      else if (opicScore === "IL") langScore = 4;
+      else if (opicScore === "NH") langScore = 2;
+      else langScore = 0;
+    } else if (languageObj.exam === "TOEFL") {
+      const score = parseInt(languageObj.score);
+      if (score >= 117) langScore = 10;
+      else if (score >= 111) langScore = 8;
+      else if (score >= 98) langScore = 6;
+      else if (score >= 84) langScore = 4;
+      else if (score >= 79) langScore = 2;
+      else langScore = 0;
+    }
   }
 
-  // 자격증: 유효한 항목만 카운트 (name이 채워진 항목)
+  // 자격증: 유효한 항목만 카운트
   const certificationsRaw =
       userProfile && userProfile.certification
           ? JSON.parse(userProfile.certification)
@@ -126,13 +145,11 @@ const Education = () => {
   );
   const certScore = Math.min(validCertifications.length * 2, 10);
 
-  // 인턴경험: 저장된 데이터가 배열이 아닐 경우를 대비하여 처리
+  // 인턴경험: 데이터가 배열이 아닐 경우를 대비하여 처리
   let internshipsRaw = [];
   if (userProfile && userProfile.internship) {
     const parsedIntern = JSON.parse(userProfile.internship);
-    internshipsRaw = Array.isArray(parsedIntern)
-        ? parsedIntern
-        : [parsedIntern];
+    internshipsRaw = Array.isArray(parsedIntern) ? parsedIntern : [parsedIntern];
   }
   const validInternships = internshipsRaw.filter((intern) => {
     if (intern.category && intern.place) {
@@ -177,14 +194,17 @@ const Education = () => {
     company: hoveredCompany ? hoveredCompany.averageData[idx] : 0,
   }));
 
+  // 추천 회사 카드 클릭 시 선택한 회사 정보를 state로 보내서 SalaryComparisonChart로 이동
+  const handleCompanyClick = (company) => {
+    navigate("/education/SalaryComparisonChart", { state: { company } });
+  };
+
+  // "수정" 버튼 클릭 시 ResumeEdit 페이지로 이동
   const handleResumeUpdate = () => {
     navigate("/education/ResumeEdit");
   };
 
-  const handleCompanyClick = () => {
-    navigate("/education/SalaryComparisonChart");
-  };
-
+  // 슬라이더 옵션
   const sliderSettings = {
     dots: true,
     infinite: true,
@@ -244,23 +264,33 @@ const Education = () => {
               <div style={abilityInfoStyle}>
                 <ul style={listStyle}>
                   <li style={listItemStyle}>
-                    <span style={{ ...bulletStyle, backgroundColor: "#66ccff" }}></span>
+                  <span
+                      style={{ ...bulletStyle, backgroundColor: "#66ccff" }}
+                  ></span>
                     자소서: {answeredCount}개
                   </li>
                   <li style={listItemStyle}>
-                    <span style={{ ...bulletStyle, backgroundColor: "#df6e99" }}></span>
+                  <span
+                      style={{ ...bulletStyle, backgroundColor: "#df6e99" }}
+                  ></span>
                     어학점수: {languageObj.score || "없음"}
                   </li>
                   <li style={listItemStyle}>
-                    <span style={{ ...bulletStyle, backgroundColor: "#ffcc00" }}></span>
+                  <span
+                      style={{ ...bulletStyle, backgroundColor: "#ffcc00" }}
+                  ></span>
                     자격증: {validCertifications.length}개
                   </li>
                   <li style={listItemStyle}>
-                    <span style={{ ...bulletStyle, backgroundColor: "#5fbf92" }}></span>
+                  <span
+                      style={{ ...bulletStyle, backgroundColor: "#5fbf92" }}
+                  ></span>
                     인턴: {validInternships.length}회
                   </li>
                   <li style={listItemStyle}>
-                    <span style={{ ...bulletStyle, backgroundColor: "#9966ff" }}></span>
+                  <span
+                      style={{ ...bulletStyle, backgroundColor: "#9966ff" }}
+                  ></span>
                     학점: {gradeObj.gpa || "N/A"}
                   </li>
                 </ul>
@@ -288,7 +318,7 @@ const Education = () => {
                           setHoveredCompany(c);
                         }}
                         onMouseLeave={() => setHoveredCompany(null)}
-                        onClick={handleCompanyClick}
+                        onClick={() => handleCompanyClick(company)}
                     />
                   </div>
               ))}
@@ -367,8 +397,8 @@ const abilityInfoStyle = {
 };
 
 const listStyle = {
-  margin: 0,
-  padding: 15,
+  margin: 7,
+  padding: 10,
   listStyle: "none",
   fontSize: "12px",
   fontWeight: "bold",
