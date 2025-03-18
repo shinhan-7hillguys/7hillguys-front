@@ -20,11 +20,8 @@ const {
     // 컴포넌트가 마운트되면 사용자 정보를 서버에서 가져옴
     if (!termsAgreed) {
       navigate("/card/terms");
-    } else if (!englishName || !englishName.firstName || !englishName.lastName) {
-      navigate("/card/english-name");
-    } else if (!cardPin) {
-      navigate("/card/pin");
     }
+
     dispatch(fetchUserInfo());
   }, [termsAgreed, englishName, cardPin, navigate,dispatch]);
 
