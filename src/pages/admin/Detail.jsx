@@ -175,7 +175,9 @@ const FieldLabel = styled.label`
   font-weight: bold;
   color: #555;
   margin-bottom: 6px;
+  display: block;
 `;
+
 
 const FieldInput = styled.input`
   background-color: #f7f7f7;
@@ -238,6 +240,17 @@ const ModalButtonContainer = styled.div`
   margin-top: 16px;
 `;
 
+const CertificationBadge = styled.span`
+  display: inline-block;
+  background-color: #e08490;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 16px;
+  margin-top : 10px;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  font-size: 14px;
+`;
 const DetailPage = () => {
   const { userid } = useParams(); 
 
@@ -267,6 +280,7 @@ const DetailPage = () => {
       axios.get(`/api/user/info?userid=${userid}`, { withCredentials: true })
         .then(response => {
           setUserInfo(response.data);
+          console.log(response.data);
         })
         .catch(err => console.error("userInfo 조회 실패:", err));
     }
@@ -438,8 +452,7 @@ const DetailPage = () => {
       bottomSectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
-  // JSON 파싱 헬퍼 함수 (중복 사용 시 제거 가능)
+ 
   const parseJSONField = (jsonStr, defaultValue = {}) => {
     try {
       return JSON.parse(jsonStr) || defaultValue;
@@ -448,18 +461,17 @@ const DetailPage = () => {
       return defaultValue;
     }
   };
-
-  // 사용자 프로필 정보 파싱
+ 
   const universityData = parseJSONField(userInfo.universityInfo);
   const highSchoolData = parseJSONField(userInfo.studentCard);
   const certificationData = parseJSONField(userInfo.certification, []);
   const familyData = parseJSONField(userInfo.familyStatus);
 
-  const universityName = universityData?.universityName || "없음";
-  const major = universityData?.major || "없음";
+  const universityName = universityData?.name || "없음";
+  const major = universityData?.degree || "없음";
 
-  const highSchool = highSchoolData?.highSchool || "없음";
-  const transcript = highSchoolData?.score || "없음";
+  const highSchool = highSchoolData?.highschool || "없음";
+  const transcript = highSchoolData?.gpa || "없음";
 
   const certifications = Array.isArray(certificationData)
     ? certificationData.join(", ")
@@ -468,6 +480,17 @@ const DetailPage = () => {
   const marriageStatus = familyData?.marriageStatus || "없음";
   const children = familyData?.children != null ? familyData.children.toString() : "없음";
 
+  let certificationsArray = [];
+  
+    if (Array.isArray(certificationData)) {
+      certificationsArray = certificationData.map(cert => 
+        typeof cert === 'object' && cert.certificate ? cert.certificate : cert
+      );
+    } else if (typeof certificationData === 'object' && certificationData !== null) {
+      certificationsArray = [certificationData.certificate];
+    } else if (certificationData) {
+      certificationsArray = [certificationData.toString()];
+    }
   return (
     <PageContainer>
       <ContentWrapper>
@@ -482,7 +505,7 @@ const DetailPage = () => {
               <ReadOnlyField label="전화번호" value={userInfo.phone} />
               <ReadOnlyField label="주소" value={userInfo.address} />
               <ReadOnlyField label="역할" value={userInfo.role} />
-              <ReadOnlyField label="가입일" value={userInfo.createdAt} />
+              <ReadOnlyField label="가입일" value={formatDateTime(userInfo.createdAt)} />
             </UserInfo>
           </InfoContainer>
           {userInfo.status === "대기" && (
@@ -555,9 +578,9 @@ const DetailPage = () => {
         </Section>
  
         <Section>
-          <SectionTitle>예상 가치 및 수익</SectionTitle>
+          <SectionTitle >예상 가치 및 수익</SectionTitle>
           <StatBoxesContainer>
-            <StatBox>
+            <StatBox style = {{marginBottom: '30px'}}>
               <StatTitleText>예상 가치</StatTitleText>
               <StatNumber>
                 {expectedValue !== null 
@@ -568,27 +591,37 @@ const DetailPage = () => {
           </StatBoxesContainer>
           <ChartsContainer> 
             <LineChartCard data={expectedIncomeChartData} name="예상 수익" currentAge={currentAge} />
-            <PieChartCard data={expectedIncomeChartData} />
+             
           </ChartsContainer>
         </Section>
- 
         <Section>
-          <SectionTitle>사용자 프로필 정보</SectionTitle>
-          <ReadOnlyField label="대학" value={universityName} />
-          <ReadOnlyField label="학과" value={major} />
-          <ReadOnlyField label="고등학교" value={highSchool} />
-          <ReadOnlyField label="내신" value={transcript} />
-          <ReadOnlyField label="자격증" value={certifications} />
-          <ReadOnlyField label="결혼상태" value={marriageStatus} />
-          <ReadOnlyField label="자녀" value={children} />
-          <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />
-          <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '있음' : null} />
-          <ReadOnlyField label="건강 상태" value={userInfo.healthStatus} />
-          <ReadOnlyField label="성별" value={userInfo.gender != null ? (userInfo.gender ? '여성' : '남성') : null} />
-          <ReadOnlyField label="주소" value={userInfo.profileAddress} />
-          <ReadOnlyField label="정신 상태" value={userInfo.mentalStatus} />
-          <ReadOnlyField label="프로필 생성일" value={formatDateTime(userInfo.profileCreatedAt)} />
-        </Section>
+  <SectionTitle>사용자 프로필 정보</SectionTitle>
+  <ReadOnlyField label="대학" value={universityName} />
+  <ReadOnlyField label="학과" value={major} />
+  <ReadOnlyField label="고등학교" value={highSchool} />
+  <ReadOnlyField label="내신" value={transcript} />
+  <div style={{ marginBottom: '16px' }}>
+    <FieldLabel>자격증</FieldLabel>
+    <div>
+      {certificationsArray.length > 0 ? (
+        certificationsArray.map((cert, idx) => (
+          <CertificationBadge key={idx}>{cert}</CertificationBadge>
+        ))
+      ) : (
+        <span>없음</span>
+      )}
+    </div>
+  </div>
+  <ReadOnlyField label="결혼상태" value={marriageStatus} />
+  <ReadOnlyField label="자녀" value={children} />
+  <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />
+  <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '없음' : null} />
+  <ReadOnlyField label="건강 상태" value={userInfo.healthStatus} />
+  <ReadOnlyField label="성별" value={userInfo.gender != null ? (userInfo.gender ? '여성' : '남성') : null} />
+  <ReadOnlyField label="정신 상태" value={userInfo.mentalStatus} />
+  <ReadOnlyField label="프로필 생성일" value={formatDateTime(userInfo.profileCreatedAt)} />
+</Section>
+
 
         {/* 투자 정보 섹션 */}
         <Section>
@@ -607,7 +640,8 @@ const DetailPage = () => {
           <ReadOnlyField label="투자 생성일" value={userInfo.investmentCreatedAt} />
         </Section>
 
-        <Section ref={bottomSectionRef}></Section>
+        <Section ref={bottomSectionRef} style={{ height: 0, overflow: 'hidden', margin: 0, padding: 0 }}></Section>
+
 
         {/* 모달 영역 */}
         {modalOpen && (
