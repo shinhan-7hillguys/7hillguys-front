@@ -22,7 +22,7 @@ function PersonalInfoPage() {
   return (
     <>
       <NavigationHeader />
-      <div style={{ padding: 20 }}>
+      <div >
       {userInfoStatus === "loading" ? (
         <p>불러오는 중...</p>
       ) : (
@@ -44,7 +44,7 @@ function PersonalInfoPage() {
             <label>주소: </label>
             <input type="text" value={userInfo.address} readOnly />
           </div>
-          <br />
+ 
           <div className="btn_div">
           <button className="card_btn" onClick={handleNextClick}>다음 단계</button>
           </div>

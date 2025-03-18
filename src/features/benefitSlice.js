@@ -35,7 +35,6 @@ export const applyBenefits = createAsyncThunk(
   "benefit/applyBenefits",
   async ({ cardId, benefitIds }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post(
           "/benefit/apply",
         { cardId, benefitIds },
