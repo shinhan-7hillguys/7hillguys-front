@@ -25,7 +25,8 @@ function FinalCheckPage() {
   } = useSelector((state) => state.cardApplication);
 
   const handleSubmit = () => {
-    if (!termsAgreed || !identityVerified || !cardPin) {
+    // if (!termsAgreed || !identityVerified || !cardPin) {
+    if (!termsAgreed || !cardPin) {
       alert("모든 절차가 완료되지 않았습니다.");
       return;
     }

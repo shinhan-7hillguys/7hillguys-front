@@ -10,35 +10,7 @@ const PageContainer = styled.div`
   padding: 24px;
   background-color: #f5f5f5;
   min-height: 100vh;
-`;
-
-const Sidebar = styled.div`
-  width: 300px;
-  padding: 24px;
-  background-color: #fff;
-  border: 1px solid #eaeaea;
-  margin-right: 12px;
-`;
- 
-
-const NameInput = styled.input`
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-`;
-
-const YearInput = styled.input`
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 16px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 14px;
-`;
- 
+`; 
 const ContentArea = styled.div`
   flex: 1;
   padding: 24px;
@@ -108,10 +80,7 @@ const NoResultsImage = styled.img`
   margin-bottom: 16px;
 `;
 
-const FilterContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+ 
 
 const FilterLabel = styled.label`
   margin-bottom: 8px;
@@ -120,15 +89,7 @@ const FilterLabel = styled.label`
   color: #555;
   margin-bottom: 32px;
 `;
-
-const FilterButton = styled.button`
-  padding: 8px 16px;
-  background-color: #ff7a9d;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-`;
+ 
 
 const formatPhoneNumber = (phoneNumber) => {
   if (!phoneNumber) return ""; 
@@ -175,27 +136,7 @@ const UserSearchPage = () => {
 
   return (
     <PageContainer>
-      <Sidebar>
-        <FilterContainer>
-          <FilterLabel>이름</FilterLabel>
-          <NameInput
-            type="text"
-            placeholder="이름 입력"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
  
-          <FilterLabel>출생 연도</FilterLabel>
-          <YearInput
-            type="number"
-            placeholder="예) 2000"
-            value={birthYear}
-            onChange={(e) => setBirthYear(e.target.value)}
-          />
-
-          <FilterButton onClick={handleFilterSearch}>검색</FilterButton>
-        </FilterContainer>
-      </Sidebar>
       <ContentArea>
         <FilterLabel>검색 결과</FilterLabel>
         {filteredUsers.length === 0 ? (

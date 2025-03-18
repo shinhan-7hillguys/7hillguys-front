@@ -142,7 +142,10 @@ const AppLayout = () => {
           </ul>
         </aside>
       )}
+      <div className="container2">
       <Outlet />
+      </div>
+    
     </div>
   );
 };

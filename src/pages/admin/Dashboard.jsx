@@ -5,8 +5,8 @@ import PieChartCard from 'components/dashboard/piechart';
 import Badge from 'components/dashboard/Badge';
 import UserListCard from 'components/dashboard/UserListCard';
 import config from 'config.js';
-import dummyDataMap from 'dummyData.js';   
-import { getDashboardData } from 'api';  
+import dummyDataMap from 'dummyData.js';
+import { getDashboardData } from 'api';
 
 const DashboardContainer = styled.div`
   flex: 1;
@@ -21,13 +21,13 @@ const StatsContainer = styled.div`
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
-  flex-wrap: wrap;  
+  flex-wrap: wrap;
   font-family: 'Pretendard', sans-serif;
 `;
 
 const StatBox = styled.div`
   flex: 1;
-  min-width: 220px; 
+  min-width: 220px;
   background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : '#fff')} !important;
   border: 2px solid ${({ isSelected }) => (isSelected ? '#260086' : 'gray')};
   border-radius: 8px;
@@ -111,12 +111,12 @@ const PeriodButton = styled.button`
     background-color: ${({ isSelected }) => (isSelected ? '#d76a80' : '#f0f0f0')} !important;
   }
   font-family: 'Pretendard', sans-serif;
-`; 
+`;
 
 const ChartsContainer = styled.div`
   display: flex;
   gap: 16px;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
   border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   &:hover {
@@ -133,7 +133,7 @@ const ChartsContainer = styled.div`
   }
 `;
 
-const Dashboard = () => { 
+const Dashboard = () => {
   const [selectedStat, setSelectedStat] = useState('userCount');
   const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [dashboardData, setDashboardData] = useState(null);
@@ -182,130 +182,130 @@ const Dashboard = () => {
   const currentData = dashboardData;
 
   return (
-    <DashboardContainer> 
-      <breadcrumbMaintitle>서비스 현황</breadcrumbMaintitle>
-      <StatsContainer>
-        <StatBox
-          onClick={() => handleStatClick('userCount')}
-          isSelected={selectedStat === 'userCount'}
-        >
-          <h3>사용자 수</h3>
-          <StatContentWrapper isSelected={selectedStat === 'userCount'}>
-            <StatLeft>
-              <StatNumber isSelected={selectedStat === 'userCount'}>
-                6,212,541 명
-              </StatNumber>
-              <ComparisonText isSelected={selectedStat === 'userCount'}>
-                {periodComparisonLabel}
-              </ComparisonText>
-            </StatLeft>
-            <StatRight>
-              <Badge change={3.2} />
-            </StatRight>
-          </StatContentWrapper>
-        </StatBox>
-     
-        <StatBox
-          onClick={() => handleStatClick('totalSignups')}
-          isSelected={selectedStat === 'totalSignups'}
-        >
-          <h3>총 가입 수치</h3>
-          <StatContentWrapper isSelected={selectedStat === 'totalSignups'}>
-            <StatLeft>
-              <StatNumber isSelected={selectedStat === 'totalSignups'}>
-                14,141,141 명
-              </StatNumber>
-              <ComparisonText isSelected={selectedStat === 'totalSignups'}>
-                {periodComparisonLabel}
-              </ComparisonText>
-            </StatLeft>
-            <StatRight>
-              <Badge change={-2.8} />
-            </StatRight>
-          </StatContentWrapper>
-        </StatBox>
+      <DashboardContainer>
+        <breadcrumbMaintitle>서비스 현황</breadcrumbMaintitle>
+        <StatsContainer>
+          <StatBox
+              onClick={() => handleStatClick('userCount')}
+              isSelected={selectedStat === 'userCount'}
+          >
+            <h3>사용자 수</h3>
+            <StatContentWrapper isSelected={selectedStat === 'userCount'}>
+              <StatLeft>
+                <StatNumber isSelected={selectedStat === 'userCount'}>
+                  6,212,541 명
+                </StatNumber>
+                <ComparisonText isSelected={selectedStat === 'userCount'}>
+                  {periodComparisonLabel}
+                </ComparisonText>
+              </StatLeft>
+              <StatRight>
+                <Badge change={3.2} />
+              </StatRight>
+            </StatContentWrapper>
+          </StatBox>
 
-        <StatBox
-          onClick={() => handleStatClick('totalAmount')}
-          isSelected={selectedStat === 'totalAmount'}
-        >
-          <h3>총 거래 액</h3>
-          <StatContentWrapper isSelected={selectedStat === 'totalAmount'}>
-            <StatLeft>
-              <StatNumber isSelected={selectedStat === 'totalAmount'}>
-                34,615,527 원
-              </StatNumber>
-              <ComparisonText isSelected={selectedStat === 'totalAmount'}>
-                {periodComparisonLabel}
-              </ComparisonText>
-            </StatLeft>
-            <StatRight>
-              <Badge change={14.4} />
-            </StatRight>
-          </StatContentWrapper>
-        </StatBox>
+          <StatBox
+              onClick={() => handleStatClick('totalSignups')}
+              isSelected={selectedStat === 'totalSignups'}
+          >
+            <h3>총 가입 수치</h3>
+            <StatContentWrapper isSelected={selectedStat === 'totalSignups'}>
+              <StatLeft>
+                <StatNumber isSelected={selectedStat === 'totalSignups'}>
+                  14,141,141 명
+                </StatNumber>
+                <ComparisonText isSelected={selectedStat === 'totalSignups'}>
+                  {periodComparisonLabel}
+                </ComparisonText>
+              </StatLeft>
+              <StatRight>
+                <Badge change={-2.8} />
+              </StatRight>
+            </StatContentWrapper>
+          </StatBox>
 
-        <StatBox
-          onClick={() => handleStatClick('revenue')}
-          isSelected={selectedStat === 'revenue'}
-        >
-          <h3>매출</h3>
-          <StatContentWrapper isSelected={selectedStat === 'revenue'}>
-            <StatLeft>
-              <StatNumber isSelected={selectedStat === 'revenue'}>
-                7,917,508 원
-              </StatNumber>
-              <ComparisonText isSelected={selectedStat === 'revenue'}>
-                {periodComparisonLabel}
-              </ComparisonText>
-            </StatLeft>
-            <StatRight>
-              <Badge change={3.2} />
-            </StatRight>
-          </StatContentWrapper>
-        </StatBox>
-      </StatsContainer>
+          <StatBox
+              onClick={() => handleStatClick('totalAmount')}
+              isSelected={selectedStat === 'totalAmount'}
+          >
+            <h3>총 거래 액</h3>
+            <StatContentWrapper isSelected={selectedStat === 'totalAmount'}>
+              <StatLeft>
+                <StatNumber isSelected={selectedStat === 'totalAmount'}>
+                  34,615,527 원
+                </StatNumber>
+                <ComparisonText isSelected={selectedStat === 'totalAmount'}>
+                  {periodComparisonLabel}
+                </ComparisonText>
+              </StatLeft>
+              <StatRight>
+                <Badge change={14.4} />
+              </StatRight>
+            </StatContentWrapper>
+          </StatBox>
 
-      <PeriodContainer>
-        <PeriodButton
-          onClick={() => handlePeriodClick('week')}
-          isSelected={selectedPeriod === 'week'}
-        >
-          주
-        </PeriodButton>
-        <PeriodButton
-          onClick={() => handlePeriodClick('month')}
-          isSelected={selectedPeriod === 'month'}
-        >
-          월
-        </PeriodButton>
-        <PeriodButton
-          onClick={() => handlePeriodClick('6months')}
-          isSelected={selectedPeriod === '6months'}
-        >
-          6개월
-        </PeriodButton>
-        <PeriodButton 
-          onClick={() => handlePeriodClick('year')}
-          isSelected={selectedPeriod === 'year'}
-        >
-          연
-        </PeriodButton>
-      </PeriodContainer>
- 
-      <ChartsContainer>
-        <ChartCard data={currentData.barData} name={selectedStat} />
-      </ChartsContainer> 
-      
-      <RowContainer>
+          <StatBox
+              onClick={() => handleStatClick('revenue')}
+              isSelected={selectedStat === 'revenue'}
+          >
+            <h3>매출</h3>
+            <StatContentWrapper isSelected={selectedStat === 'revenue'}>
+              <StatLeft>
+                <StatNumber isSelected={selectedStat === 'revenue'}>
+                  7,917,508 원
+                </StatNumber>
+                <ComparisonText isSelected={selectedStat === 'revenue'}>
+                  {periodComparisonLabel}
+                </ComparisonText>
+              </StatLeft>
+              <StatRight>
+                <Badge change={3.2} />
+              </StatRight>
+            </StatContentWrapper>
+          </StatBox>
+        </StatsContainer>
+
+        <PeriodContainer>
+          <PeriodButton
+              onClick={() => handlePeriodClick('week')}
+              isSelected={selectedPeriod === 'week'}
+          >
+            주
+          </PeriodButton>
+          <PeriodButton
+              onClick={() => handlePeriodClick('month')}
+              isSelected={selectedPeriod === 'month'}
+          >
+            월
+          </PeriodButton>
+          <PeriodButton
+              onClick={() => handlePeriodClick('6months')}
+              isSelected={selectedPeriod === '6months'}
+          >
+            6개월
+          </PeriodButton>
+          <PeriodButton
+              onClick={() => handlePeriodClick('year')}
+              isSelected={selectedPeriod === 'year'}
+          >
+            연
+          </PeriodButton>
+        </PeriodContainer>
+
         <ChartsContainer>
-          <PieChartCard data={currentData.pieData} />
+          <ChartCard data={currentData.barData} name={selectedStat} />
         </ChartsContainer>
-        <ChartsContainer>
-          <UserListCard />
-        </ChartsContainer>
-      </RowContainer>
-    </DashboardContainer>
+
+        <RowContainer>
+          <ChartsContainer>
+            <PieChartCard data={currentData.pieData} />
+          </ChartsContainer>
+          <ChartsContainer>
+            <UserListCard />
+          </ChartsContainer>
+        </RowContainer>
+      </DashboardContainer>
   );
 };
 
