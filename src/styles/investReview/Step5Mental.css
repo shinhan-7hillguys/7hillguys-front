@@ -1,16 +1,5 @@
 /* Step5Mental.css - 성실도 설문 페이지*/
 
-/* 전체 컨테이너 */
-.mental-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 중앙 정렬 */
-    justify-content: flex-start; /* 헤더와 밀착 */
-    height: 100vh; /* 화면 전체를 차지 */
-    width: 100vw;
-    background-color: #FFF7F7;
-    padding: 0; /* 여백 제거 */
-}
 
 /* 🔹 평가 박스 (전체 높이를 채우도록 설정) */
 .mental-box {
@@ -22,6 +11,7 @@
     width: 100%;
     max-width: 900px;
     height: 100%; /* 부모 컨테이너에 맞게 전체 높이 확장 */
+    overflow: auto;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -32,7 +22,7 @@
 .mental-title {
     font-size: 22px;
     font-weight: bold;
-    color: #FF4170;
+    color: black;
     margin-bottom: 15px;
 }
 
