@@ -181,6 +181,19 @@ const Main = () => {
 
     return (
         <div className="main" ref={containerRef}>
+            <div className="main_header">
+                <div>
+                    <Link to="/mypage">
+                        <img src="./logo.png" alt="" width={30} height={30}/>L o g i n
+                    </Link>
+                </div>
+                <div className="auth-links">
+                    <Link to="/login" className="login-button">
+                        L o g i n
+                    </Link>
+                    <Link to="/signup" className="signup-button">S i g n u p</Link>
+                </div>
+            </div>
             {/* 첫 번째 섹션 - 인트로 */}
             <section className="vertical-section intro-section">
                 <div className="main_intro">
