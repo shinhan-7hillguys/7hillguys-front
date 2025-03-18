@@ -75,7 +75,14 @@ const Benefit = () => {
 
   // 페이지 로드시, 내 카드에 대한 혜택 및 카드 정보를 백엔드에서 가져옵니다.
   useEffect(() => {
-    dispatch(fetchBenefits());
+   
+      dispatch(fetchBenefits())
+      .unwrap()
+      .catch((error) => {
+        alert("카드 신청 후 이용 부탁드립니다.");
+        navigate("/card/intro");
+      });
+
 
 
   }, [dispatch]);
