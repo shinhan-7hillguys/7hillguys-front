@@ -4,21 +4,28 @@
 .personal-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    height: 100vh;
-    padding: 50px;
+    align-items: center; /* 중앙 정렬 */
+    justify-content: flex-start; /* 헤더와 밀착 */
+    height: 100vh; /* 화면 전체를 차지 */
+    width: 100vw;
     background-color: #FFF7F7;
+    padding: 0; /* 여백 제거 */
 }
 
-/* 입력 박스 */
+/* 🔹 입력 박스 (전체 높이를 채우도록 설정) */
 .personal-box {
     background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
     width: 100%;
+    max-width: 900px;
+    height: 100%; /* 부모 컨테이너에 맞게 전체 높이 확장 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 /* 제목 */
@@ -62,6 +69,13 @@
 /* 선택된 라디오 버튼 스타일 */
 .personal-radio-group input[type="radio"]:checked {
     background-color: #FEA1B8;
+}
+
+.personal-checkbox-group p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
 }
 
 /* 체크박스 그룹 */
