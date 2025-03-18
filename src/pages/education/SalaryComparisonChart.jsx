@@ -39,7 +39,7 @@ const SalaryComparisonChart = () => {
             {
                 label: "연봉 (단위: 만원)",
                 data: [mySalary, devSalary, companySalary],
-                backgroundColor: ["#4A7856", "#8884d8", "#df6e99"],
+                backgroundColor: ["#8884d8", "#ff99aa", "#82ca9d"],
                 borderWidth: 2,
                 borderRadius: 18,
             },
@@ -192,7 +192,7 @@ const SalaryComparisonChart = () => {
             <div style={chartContainerStyle}>
                 <h3 style={chartTitleStyle}>연봉 비교</h3>
                 <p style={chartSubTextStyle}>
-                    내 연봉, 개발자 평균 연봉, {selectedCompany ? selectedCompany.name : "네이버"} 평균 연봉 비교
+                    내 연봉, 개발자 평균 연봉, {selectedCompany ? selectedCompany.name : "네이버"} 평균 연봉 비교(만 원)
                 </p>
                 <Bar data={data} options={options} />
                 {/*<button onClick={() => navigate(-1)} style={backButtonStyle}>*/}

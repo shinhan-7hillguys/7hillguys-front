@@ -25,8 +25,8 @@ const CompanyCard = ({ company, onMouseEnter, onMouseLeave, onClick }) => {
         <h3 style={{ margin: "0 0 4px", fontSize: "16px", fontWeight: "bold" }}>
           {company.name}
         </h3>
-        <p style={{ margin: 0, fontSize: "12px" }}>마감일: {company.closingDate}</p>
-        <p style={{ margin: "4px 0 10px", fontSize: "12px" }}>
+        <p style={{ margin: 0, fontSize: "12px" ,textAlign:"center"}}>마감일: {company.closingDate}</p>
+        <p style={{ margin: "4px 0 10px", fontSize: "12px" ,textAlign:"center"}}>
           모집공고: {company.recruit}
         </p>
       </div>
@@ -184,8 +184,8 @@ const Education = () => {
   // RadarChart 데이터 구성 (회사 평균 데이터도 포함)
   const chartData = [
     { subject: "자소서", user: letterScore },
-    { subject: "어학점수", user: langScore },
     { subject: "자격증", user: certScore },
+    { subject: "어학점수", user: langScore },
     { subject: "인턴경험", user: internScore },
     { subject: "학점", user: gradeScore },
   ];
@@ -202,6 +202,11 @@ const Education = () => {
   // "수정" 버튼 클릭 시 ResumeEdit 페이지로 이동
   const handleResumeUpdate = () => {
     navigate("/education/ResumeEdit");
+  };
+
+  // (L) "직군 평균" 버튼 클릭 -> 예시로 /education/JobAverage 라고 가정
+  const handleJobAverage = () => {
+    navigate("/account/positive");
   };
 
   // 슬라이더 옵션
@@ -226,12 +231,12 @@ const Education = () => {
             <div style={chartWrapperStyle}>
               <RadarChart
                   cx="50%"
-                  cy="55%"
+                  cy="45%"
                   outerRadius="100%"
                   width={350}
                   height={300}
                   data={extendedChartData}
-                  margin={{ top: 10, right: 20, bottom: 20, left: 20 }}
+                  margin={{ top: -10, right: 20, bottom: 20, left: 20 }}
               >
                 <PolarGrid />
                 <PolarAngleAxis
@@ -295,9 +300,15 @@ const Education = () => {
                   </li>
                 </ul>
               </div>
-              <button style={updateButtonStyle} onClick={handleResumeUpdate}>
-                수정
-              </button>
+              {/* (N) "수정" 버튼 + "직군 평균" 버튼 */}
+              <div style={buttonRowStyle}>
+                <button style={jobAverageButtonStyle} onClick={handleJobAverage}>
+                  직군 비교
+                </button>
+                <button style={updateButtonStyle} onClick={handleResumeUpdate}>
+                  수정
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -430,16 +441,18 @@ const bulletStyle = {
   marginRight: "8px",
 };
 
+// (2) "수정" 버튼 스타일
 const updateButtonStyle = {
-  padding: "8px 12px",
+  padding: "8px 10px",
   fontSize: "13px",
   backgroundColor: "#ff99aa",
   color: "#fff",
   border: "none",
   borderRadius: "16px",
   cursor: "pointer",
-  width: "60%",
-  alignSelf: "flex-end",
+  // minWidth: "80%",       // 제거
+  alignSelf: "flex-end", // 제거
+  whiteSpace: "nowrap",     // 한 줄로 유지
 };
 
 const companySectionStyle = {
@@ -462,6 +475,14 @@ const slideItemStyle = {
   boxSizing: "border-box",
   pointerEvents: "auto",
 };
+// (1) 버튼 컨테이너 스타일
+const buttonRowStyle = {
+  display: "flex",
+  gap: "8px",
+  marginTop: "5px",
+  justifyContent: "flex-start", // 왼쪽 정렬
+  flexWrap: "nowrap",           // 버튼이 줄바꿈되지 않도록
+};
 
 const companyCardStyle = {
   background: "#fff5f5",
@@ -472,6 +493,13 @@ const companyCardStyle = {
   position: "relative",
   cursor: "pointer",
   pointerEvents: "auto",
+  textAlign: "center",
+};
+
+
+const jobAverageButtonStyle = {
+  ...updateButtonStyle,
+  backgroundColor: "#ff99aa", // "직군 평균" 버튼은 색상만 조금 다르게 예시
 };
 
 const CustomUnderlinedTick = ({ x, y, payload, textAnchor }) => (
