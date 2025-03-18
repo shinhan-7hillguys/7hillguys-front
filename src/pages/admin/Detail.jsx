@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
+import { useParams } from 'react-router-dom';
 import config from 'config';
 import ChartCard from 'components/dashboard/chartcard';
 import PieChartCard from 'components/dashboard/piechart';
 import Badge from 'components/dashboard/Badge';
-import { dummyUser, dummyUserProfile, dummyInvestment, dummyStatCategories, dummyDataMap } from 'dummyData';
+import axios from 'axios';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -44,7 +45,7 @@ const Section = styled.div`
   border-radius: 8px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   padding: 20px;
-  margin-bottom: 24px; 
+  margin-bottom: 24px;
 `;
 
 const SectionTitle = styled.h2`
@@ -57,7 +58,7 @@ const SectionTitle = styled.h2`
 
 const InfoContainer = styled.div`
   display: flex;
-  gap: 16px;  
+  gap: 16px;
 `;
 
 const UserInfo = styled.div`
@@ -141,12 +142,12 @@ const ApproveButton = styled.button`
   padding: 8px 16px;
   border: 1px solid #dddddd;
   border-radius: 4px;
-  background-color: #eaeaea;  
+  background-color: #eaeaea;
   color: black;
   cursor: pointer;
   transition: background-color 0.2s ease;
   &:hover {
-    background-color: #4CAF50;  
+    background-color: #4CAF50;
   }
 `;
 
@@ -154,12 +155,12 @@ const RejectButton = styled.button`
   padding: 8px 16px;
   border: 1px solid #dddddd;
   border-radius: 4px;
-  background-color: #eaeaea; 
+  background-color: #eaeaea;
   color: black;
   cursor: pointer;
   transition: background-color 0.2s ease;
   &:hover {
-    background-color: #f44336;  
+    background-color: #f44336;
   }
 `;
 
@@ -176,6 +177,7 @@ const FieldLabel = styled.label`
   margin-bottom: 6px;
 `;
 
+// ReadOnlyField: 값이 없으면 "없음"으로 표시
 const FieldInput = styled.input`
   background-color: #f7f7f7;
   border: 1px solid #ddd;
@@ -192,10 +194,32 @@ function ReadOnlyField({ label, value, placeholder }) {
   return (
     <FieldContainer>
       <FieldLabel>{label}</FieldLabel>
-      <FieldInput type="text" value={value || ''} placeholder={placeholder} readOnly />
+      <FieldInput type="text" value={value || "없음"} placeholder={placeholder} readOnly />
     </FieldContainer>
   );
 }
+
+// 날짜 포맷 함수: 초 이하 없이 "YYYY년 M월 D일 H시 m분" 형태로 포맷팅
+const formatDateTime = (dateStr) => {
+  if (!dateStr) return "없음";
+  const date = new Date(dateStr);
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+  const hour = date.getHours();
+  const minute = date.getMinutes();
+  return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+};
+
+// JSON 파싱 헬퍼 함수
+const parseJSONField = (jsonStr, defaultValue = {}) => {
+  try {
+    return JSON.parse(jsonStr);
+  } catch (error) {
+    console.error("JSON 파싱 에러:", error);
+    return defaultValue;
+  }
+};
 
 // 모달 관련 스타일 정의
 const ApprovalModalOverlay = styled.div`
@@ -226,34 +250,38 @@ const ModalButtonContainer = styled.div`
   gap: 16px;
   margin-top: 16px;
 `;
-
 const DetailPage = () => {
-  const useDummyData = config.useDummyData;
+  const { userid } = useParams();
+  console.log("받은 userid:", userid);
 
-  const [user, setUser] = useState(useDummyData ? dummyUser : {});
-  const [profile, setProfile] = useState(useDummyData ? dummyUserProfile : {});
-  const [investment, setInvestment] = useState(useDummyData ? dummyInvestment : {});
-  const [statCategories, setStatCategories] = useState(useDummyData ? dummyStatCategories : {});
-  const [dataMap, setDataMap] = useState(useDummyData ? dummyDataMap : {});
+  const [userInfo, setUserInfo] = useState({});
+  const [statCategories, setStatCategories] = useState({});
+  const [dataMap, setDataMap] = useState({});
   const [currentData, setCurrentData] = useState({ barData: [], pieData: [] });
   const [selectedStat, setSelectedStat] = useState('remainingSupport');
   const [selectedPeriod, setSelectedPeriod] = useState('month');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // 모달 관련 state
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalType, setModalType] = useState(null); // 'approve' 또는 'reject'
+  const [modalType, setModalType] = useState(null);
+  const [resultModalOpen, setResultModalOpen] = useState(false);
+  const [resultModalMessage, setResultModalMessage] = useState("");
 
-  // 스크롤 이동할 섹션에 대한 ref 추가
   const topSectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
 
   useEffect(() => {
-    if (!useDummyData) {
-      // API 호출 로직 구현...
+    if (userid) {
+      axios.get(`/api/user/info?userid=${userid}`, { withCredentials: true })
+        .then(response => {
+          console.log("전체 응답:", response);
+          console.log("응답 데이터:", response.data);
+          setUserInfo(response.data);
+        })
+        .catch(err => console.error("userInfo 조회 실패:", err));
     }
-  }, [useDummyData]);
+  }, [userid]);
 
   useEffect(() => {
     if (dataMap[selectedStat] && dataMap[selectedStat][selectedPeriod]) {
@@ -299,25 +327,42 @@ const DetailPage = () => {
     year: '작년 대비',
   }[selectedPeriod];
 
-  // 승인/거절 처리 함수
-  const handleConfirm = () => {
+  const handleConfirm = async () => {
+    let resultMessage = "";
     if (modalType === 'approve') {
       console.log('사용자 승인 처리');
-      // 승인 처리 로직 추가
+      try {
+        const response = await axios.post('/api/investment/approve', {}, { withCredentials: true });
+        resultMessage = "승인 처리 완료: " + (response.data.message || "처리 성공");
+      } catch (error) {
+        resultMessage = "승인 처리 실패: " + (error.response?.data?.message || error.message);
+      }
     } else if (modalType === 'reject') {
       console.log('사용자 거절 처리');
-      // 거절 처리 로직 추가
+      try {
+        const response = await axios.post('/api/investment/reject', {}, { withCredentials: true });
+        resultMessage = "거절 처리 완료: " + (response.data.message || "처리 성공");
+      } catch (error) {
+        resultMessage = "거절 처리 실패: " + (error.response?.data?.message || error.message);
+      }
     }
     setModalOpen(false);
     setModalType(null);
+    setResultModalMessage(resultMessage);
+    setResultModalOpen(true);
+  
+    // 2초 후 페이지 새로고침
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   };
+  
 
   const handleCancel = () => {
     setModalOpen(false);
     setModalType(null);
   };
 
-  // 스크롤 함수 수정: 각 섹션의 ref로 이동
   const scrollToTop = () => {
     if (topSectionRef.current) {
       topSectionRef.current.scrollIntoView({ behavior: 'smooth' });
@@ -330,6 +375,33 @@ const DetailPage = () => {
     }
   };
 
+  const parseJSONField = (jsonStr, defaultValue = {}) => {
+    try {
+      return JSON.parse(jsonStr) || defaultValue;
+    } catch (error) {
+      console.error("JSON 파싱 실패:", error);
+      return defaultValue;
+    }
+  };
+
+  const universityData = parseJSONField(userInfo.universityInfo);
+  const highSchoolData = parseJSONField(userInfo.studentCard);
+  const certificationData = parseJSONField(userInfo.certification, []);
+  const familyData = parseJSONField(userInfo.familyStatus);
+
+  const universityName = universityData?.universityName || "없음";
+  const major = universityData?.major || "없음";
+
+  const highSchool = highSchoolData?.highSchool || "없음";
+  const transcript = highSchoolData?.score || "없음";
+
+  const certifications = Array.isArray(certificationData)
+    ? certificationData.join(", ")
+    : certificationData.toString() || "없음";
+
+  const marriageStatus = familyData?.marriageStatus || "없음";
+  const children = familyData?.children != null ? familyData.children.toString() : "없음";
+
   return (
     <PageContainer>
       <ContentWrapper>
@@ -337,23 +409,26 @@ const DetailPage = () => {
           <SectionTitle>기본 사용자 정보</SectionTitle>
           <InfoContainer>
             <UserInfo>
-              <ReadOnlyField label="이름" value={user.name} />
-              <ReadOnlyField label="이메일" value={user.email} />
-              <ReadOnlyField label="생년월일" value={user.birth_date} />
-              <ReadOnlyField label="전화번호" value={user.phone} />
-              <ReadOnlyField label="주소" value={user.address} />
-              <ReadOnlyField label="역할" value={user.role} />
-              <ReadOnlyField label="가입일" value={user.created_at} />
+              <ReadOnlyField label="이름" value={userInfo.name} />
+              <ReadOnlyField label="이메일" value={userInfo.email} />
+              <ReadOnlyField label="생년월일" value={userInfo.birthDate} />
+              <ReadOnlyField label="전화번호" value={userInfo.phone} />
+              <ReadOnlyField label="주소" value={userInfo.address} />
+              <ReadOnlyField label="역할" value={userInfo.role} />
+              <ReadOnlyField label="가입일" value={userInfo.createdAt} />
             </UserInfo>
           </InfoContainer>
-          <div style={{ marginTop: '16px', display: 'flex', gap: '16px', justifyContent: 'center' }}>
-            <ApproveButton onClick={() => { setModalType('approve'); setModalOpen(true); }}>
-              심사 승인
-            </ApproveButton>
-            <RejectButton onClick={() => { setModalType('reject'); setModalOpen(true); }}>
-              심사 거절
-            </RejectButton>
-          </div>
+          {userInfo.status === "대기" && (
+            <div style={{ marginTop: '16px', display: 'flex', gap: '16px', justifyContent: 'center' }}>
+              <ApproveButton onClick={() => { setModalType('approve'); setModalOpen(true); }}>
+                심사 승인
+              </ApproveButton>
+              <RejectButton onClick={() => { setModalType('reject'); setModalOpen(true); }}>
+                심사 거절
+              </RejectButton>
+            </div>
+          )}
+
         </Section>
 
         <Section>
@@ -361,7 +436,7 @@ const DetailPage = () => {
           <StatBoxesContainer>
             {Object.entries(statCategories).map(([key, label]) => (
               <StatBox
-                key={key} 
+                key={key}
                 onClick={() => setSelectedStat(key)}
                 $isSelected={selectedStat === key}
               >
@@ -414,37 +489,39 @@ const DetailPage = () => {
 
         <Section>
           <SectionTitle>사용자 프로필 정보</SectionTitle>
-          <ReadOnlyField label="대학/학과" value={profile.university} />
-          <ReadOnlyField label="고등학교 및 내신" value={profile.education_major} />
-          <ReadOnlyField label="자격증" value={profile.certification} />
-          <ReadOnlyField label="가족 상태" value={profile.family_status} />
-          <ReadOnlyField label="자산" value={profile.assets?.toLocaleString() + ' 원'} />
-          <ReadOnlyField label="범죄 기록" value={profile.criminal_record ? '있음' : '없음'} />
-          <ReadOnlyField label="건강 상태" value={profile.health_status} />
-          <ReadOnlyField label="성별" value={profile.gender ? '남성' : '여성'} />
-          <ReadOnlyField label="주소" value={profile.address} />
-          <ReadOnlyField label="정신 상태" value={profile.mental_status} />
-          <ReadOnlyField label="프로필 생성일" value={profile.created_at} />
+          <ReadOnlyField label="대학" value={universityName} />
+          <ReadOnlyField label="학과" value={major} />
+          <ReadOnlyField label="고등학교" value={highSchool} />
+          <ReadOnlyField label="내신" value={transcript} />
+          <ReadOnlyField label="자격증" value={certifications} />
+          <ReadOnlyField label="결혼상태" value={marriageStatus} />
+          <ReadOnlyField label="자녀" value={children} />
+          <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '있음' : null} />
+          <ReadOnlyField label="건강 상태" value={userInfo.healthStatus} />
+          <ReadOnlyField label="성별" value={userInfo.gender != null ? (userInfo.gender ? '여성' : '남성') : null} />
+          <ReadOnlyField label="주소" value={userInfo.profileAddress} />
+          <ReadOnlyField label="정신 상태" value={userInfo.mentalStatus} />
+          <ReadOnlyField label="프로필 생성일" value={formatDateTime(userInfo.profileCreatedAt)} />
         </Section>
 
-        <Section  >
+        <Section>
           <SectionTitle>투자 정보</SectionTitle>
-          <ReadOnlyField label="투자 ID" value={investment.grant_id} />
-          <ReadOnlyField label="예상 소득" value={investment.expected_income} />
-          <ReadOnlyField label="투자 시작일" value={investment.start_date} />
-          <ReadOnlyField label="투자 종료일" value={investment.end_date} />
-          <ReadOnlyField label="상태" value={investment.status} />
-          <ReadOnlyField label="원래 투자 금액" value={investment.original_invest_value?.toLocaleString() + ' 원'} />
-          <ReadOnlyField label="월 지원금" value={investment.monthly_allowance?.toLocaleString() + ' 원'} />
-          <ReadOnlyField label="상환 비율" value={investment.refund_rate + '%'} />
-          <ReadOnlyField label="최대 투자 가능 금액" value={investment.max_investment?.toLocaleString() + ' 원'} />
-          <ReadOnlyField label="운용 보수" value={investment.Field} placeholder="운용 보수" />
-          <ReadOnlyField label="사용한 지원금" value={investment.invest_value?.toLocaleString() + ' 원'} />
-          <ReadOnlyField label="임시 월 지원금" value={investment.temp_allowance?.toLocaleString() + ' 원'} />
-          <ReadOnlyField label="투자 생성일" value={investment.created_at} />
+          <ReadOnlyField label="투자 ID" value={userInfo.grantId} />
+          <ReadOnlyField label="투자 시작일" value={userInfo.startDate} />
+          <ReadOnlyField label="투자 종료일" value={userInfo.endDate} />
+          <ReadOnlyField label="상태" value={userInfo.status} />
+          <ReadOnlyField label="원래 투자 금액" value={userInfo.originalInvestValue ? userInfo.originalInvestValue.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="월 지원금" value={userInfo.monthlyAllowance ? userInfo.monthlyAllowance.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="상환 비율" value={userInfo.refundRate ? userInfo.refundRate + '%' : null} />
+          <ReadOnlyField label="최대 투자 가능 금액" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="운용 보수" value={userInfo.field} placeholder="운용 보수" />
+          <ReadOnlyField label="사용한 지원금" value={userInfo.investValue ? userInfo.investValue.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="임시 월 지원금" value={userInfo.tempAllowance ? userInfo.tempAllowance.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="투자 생성일" value={userInfo.investmentCreatedAt} />
         </Section>
-            <Section ref={bottomSectionRef}></Section>
-        {/* 모달 컴포넌트 */}
+        <Section ref={bottomSectionRef}></Section>
+
         {modalOpen && (
           <ApprovalModalOverlay>
             <ApprovalModalContent>
@@ -458,9 +535,19 @@ const DetailPage = () => {
             </ApprovalModalContent>
           </ApprovalModalOverlay>
         )}
+
+        {resultModalOpen && (
+          <ApprovalModalOverlay>
+            <ApprovalModalContent>
+              <h3>{resultModalMessage}</h3>
+              <ModalButtonContainer>
+                <PeriodButton onClick={() => setResultModalOpen(false)}>닫기</PeriodButton>
+              </ModalButtonContainer>
+            </ApprovalModalContent>
+          </ApprovalModalOverlay>
+        )}
       </ContentWrapper>
 
-      {/* 위/아래 화살표 버튼 */}
       <ScrollButtonUp onClick={scrollToTop}>↑</ScrollButtonUp>
       <ScrollButton onClick={scrollToBottom}>↓</ScrollButton>
     </PageContainer>

@@ -134,9 +134,9 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                         주소 검색
                     </button>
                 </div>
-
                 {/* Daum 주소 API가 삽입될 div */}
                 <div id="postcode-container" style={{ width: "100%", height: "400px", display: "none" }}></div>
+
                 <input
                     type="number"
                     name="assets"

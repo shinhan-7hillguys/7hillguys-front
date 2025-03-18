@@ -1,26 +1,9 @@
 import React, { useState } from "react";
 import axios from "axios";
+import starbucks from "image/starbucks.png";
+import megacoffee from "image/megacoffee.png";
 
 function PaymentTest() {
-  // JWT에서 userId 추출하는 함수
-  const getUserIdFromToken = () => {
-    const token = localStorage.getItem("token"); // JWT 가져오기
-    if (!token) return null;
-
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1])); // Base64 디코딩
-      return { userId: payload.userId, token }; // userId와 token 반환
-    } catch (error) {
-      console.error("JWT 파싱 오류:", error);
-      return null;
-    }
-  };
-
-  // JWT에서 userId와 token 가져오기
-  const userData = getUserIdFromToken();
-  const userId = userData?.userId;
-  const token = userData?.token;
-
   const [responseMessage, setResponseMessage] = useState("");
 
   // 결제 요청 함수
@@ -33,11 +16,7 @@ function PaymentTest() {
     };
 
     axios
-      .post("http://localhost:8080/payment/paymentRequest", requestData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      .post("http://localhost:8080/payment/paymentRequest", requestData, {})
       .then((response) => {
         const { success, message, code } = response.data;
 
@@ -61,11 +40,7 @@ function PaymentTest() {
       <div className="grid grid-cols-2 gap-4">
         {/* 혜택 적용 가능 상품 */}
         <div className="p-4 border rounded-lg text-center shadow-sm">
-          <img
-            src="./images/starbucks.png"
-            alt="스타벅스"
-            className="mx-auto h-16 mb-2"
-          />
+          <img src={starbucks} alt="스타벅스" className="mx-auto h-16 mb-2" />
           <h2 className="text-lg font-bold">스타벅스 (혜택 O)</h2>
           <p className="text-gray-700">30,000원 결제</p>
           <button
@@ -78,11 +53,7 @@ function PaymentTest() {
 
         {/* 혜택 적용 불가 상품 */}
         <div className="p-4 border rounded-lg text-center shadow-sm">
-          <img
-            src="/images/megacoffee.png"
-            alt="메가커피"
-            className="mx-auto h-16 mb-2"
-          />
+          <img src={megacoffee} alt="메가커피" className="mx-auto h-16 mb-2" />
           <h2 className="text-lg font-bold">메가커피 (혜택 X)</h2>
           <p className="text-gray-700">30,000원 결제</p>
           <button

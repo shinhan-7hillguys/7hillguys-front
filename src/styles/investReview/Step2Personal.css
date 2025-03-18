@@ -37,6 +37,15 @@
     margin-bottom: 16px; /* 성별 버튼과 입력 칸 간격 추가 */
 }
 
+.personal-radio-options {
+    display: flex;
+    align-items: center;
+    gap: 5px; /* 라디오 버튼과 텍스트 간의 간격 설정 */
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: bold;
+}
+
 /* 라디오 버튼 기본 스타일 */
 .personal-radio-group input[type="radio"] {
     appearance: none;
