@@ -273,7 +273,7 @@ const Education = () => {
                   <span
                       style={{ ...bulletStyle, backgroundColor: "#df6e99" }}
                   ></span>
-                    어학점수: {languageObj.score || "없음"}
+                    어학점수: {languageObj.score || "0"}
                   </li>
                   <li style={listItemStyle}>
                   <span
@@ -398,7 +398,7 @@ const abilityInfoStyle = {
 
 const listStyle = {
   margin: 7,
-  padding: 10,
+  padding: 6,
   listStyle: "none",
   fontSize: "12px",
   fontWeight: "bold",
@@ -407,7 +407,7 @@ const listStyle = {
 const listItemStyle = {
   display: "flex",
   alignItems: "center",
-  padding: "14px 0",
+  padding: "12px 0",
   borderBottom: "2px solid #8884d8",
 };
 
