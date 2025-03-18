@@ -69,14 +69,14 @@ const BenefitCompare = () => {
     });
     const effectiveDiscountRate = matchingBenefit?.discountRate ?? matchingBenefit?.benefit?.discountRate ?? 0;
 
-    console.log(effectiveDiscountRate)
+    console.log(txn.store.category)
     // 새로운 결제 금액 계산:
     // newFinal = originalAmount * (1 - effectiveDiscountRate/100)
     const newFinal = txn.originalAmount * (1 - effectiveDiscountRate / 100);
 
     // 그룹화: 거래의 category를 키로 사용합니다.
-    if (!acc[txn.category]) {
-      acc[txn.category] = {
+    if (!acc[txn.store.category]) {
+      acc[txn.store.category] = {
         category: txn.store.category,
         originalAmount: 0,
         finalAmount: 0,
@@ -84,10 +84,10 @@ const BenefitCompare = () => {
         discountAmount: 0,
       };
     }
-    acc[txn.category].originalAmount += txn.originalAmount;
-    acc[txn.category].finalAmount += txn.finalAmount;
-    acc[txn.category].newFinal += newFinal;
-    acc[txn.category].discountAmount += txn.originalAmount - newFinal;
+    acc[txn.store.category].originalAmount += txn.originalAmount;
+    acc[txn.store.category].finalAmount += txn.finalAmount;
+    acc[txn.store.category].newFinal += newFinal;
+    acc[txn.store.category].discountAmount += txn.originalAmount - newFinal;
     return acc;
   }, {});
   const computedData = Object.values(aggregatedData);

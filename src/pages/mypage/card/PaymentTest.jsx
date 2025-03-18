@@ -4,25 +4,6 @@ import starbucks from "image/starbucks.png";
 import megacoffee from "image/megacoffee.png";
 
 function PaymentTest() {
-  // JWT에서 userId 추출하는 함수
-  const getUserIdFromToken = () => {
-    const token = localStorage.getItem("token"); // JWT 가져오기
-    if (!token) return null;
-
-    try {
-      const payload = JSON.parse(atob(token.split(".")[1])); // Base64 디코딩
-      return { userId: payload.userId, token }; // userId와 token 반환
-    } catch (error) {
-      console.error("JWT 파싱 오류:", error);
-      return null;
-    }
-  };
-
-  // JWT에서 userId와 token 가져오기
-  const userData = getUserIdFromToken();
-  const userId = userData?.userId;
-  const token = userData?.token;
-
   const [responseMessage, setResponseMessage] = useState("");
 
   // 결제 요청 함수
@@ -35,11 +16,7 @@ function PaymentTest() {
     };
 
     axios
-      .post("http://localhost:8080/payment/paymentRequest", requestData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+        .post("/payment/paymentRequest", requestData, {})
       .then((response) => {
         const { success, message, code } = response.data;
 

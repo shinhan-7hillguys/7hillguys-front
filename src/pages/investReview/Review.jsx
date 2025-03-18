@@ -155,7 +155,7 @@ const Review = () => {
             try {
                 const token = localStorage.getItem("token");
                 console.log(token);
-                const response = await fetch("http://localhost:8080/api/auth/user", {
+                const response = await fetch("/api/auth/user", {
                     method: "GET",
                     credentials: "include",
                     headers: {
@@ -211,7 +211,7 @@ const Review = () => {
                     mentalStatus: Number(formData.mentalStatus) || 0,
                 };
 
-                const textResponse = await fetch("http://localhost:8080/api/review/save", {
+                const textResponse = await fetch("/api/review/save", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -236,7 +236,7 @@ const Review = () => {
                     }
                 });
                 console.log("업로드될 FormData내용: ", [...fileFormData.entries()]);
-                const fileResponse = await fetch("http://localhost:8080/api/review/file", {
+                const fileResponse = await fetch("/api/review/file", {
                     method: "POST",
                     credentials: "include",
                     body: fileFormData,
