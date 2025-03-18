@@ -29,8 +29,7 @@ const TopbarWrapper = styled.div`
 `;
 
 const ContentWrapper = styled.div`
-  flex: 1;
-  overflow: auto; 
+  flex: 1; 
   
 `;
 
