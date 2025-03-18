@@ -12,7 +12,7 @@ const ContractSigning = () => {
 
     // 📌 계약서 내용 불러오기 (쿠키 포함)
     useEffect(() => {
-        fetch("http://localhost:8080/api/contract/template", {
+        fetch("/api/contract/template", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -43,7 +43,7 @@ const ContractSigning = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8080/api/contract/sign", {
+            const response = await fetch("/api/contract/sign", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -78,7 +78,7 @@ const ContractSigning = () => {
             {/* 계약서 내용 표시 */}
             {contract ? (
                 <div className="contract-box">
-                    <h3>{contract.title}</h3>
+                    <h4>{contract.title}</h4>
                     <p className="contract-content">{contract.investmentDetails}</p>
                     <h4 className="contract-section">상환 조건</h4>
                     <p className="contract-content">{contract.repaymentTerms}</p>

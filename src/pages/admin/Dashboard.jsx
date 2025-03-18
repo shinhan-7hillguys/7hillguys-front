@@ -285,7 +285,7 @@ const Dashboard = () => {
         >
           6개월
         </PeriodButton>
-        <PeriodButton 
+        <PeriodButton
           onClick={() => handlePeriodClick('year')}
           isSelected={selectedPeriod === 'year'}
         >

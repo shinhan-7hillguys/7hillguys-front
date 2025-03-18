@@ -7,9 +7,6 @@ import Step4Health from "pages/investReview/Step4Health";
 import Step5Mental from "pages/investReview/Step5Mental";
 import Step6Submit from "pages/investReview/Step6Submit";
 
-/*CSS파일*/
-import 'styles/investReview/Review.css';
-
 // 심리/인성 검사 문항
 const mentalQuestions = [
     { id: "M1", text: "나는 스트레스 상황에서 침착함을 유지한다." },
@@ -158,7 +155,7 @@ const Review = () => {
             try {
                 const token = localStorage.getItem("token");
                 console.log(token);
-                const response = await fetch("http://localhost:8080/api/auth/user", {
+                const response = await fetch("/api/auth/user", {
                     method: "GET",
                     credentials: "include",
                     headers: {
@@ -214,7 +211,7 @@ const Review = () => {
                     mentalStatus: Number(formData.mentalStatus) || 0,
                 };
 
-                const textResponse = await fetch("http://localhost:8080/api/review/save", {
+                const textResponse = await fetch("/api/review/save", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -239,7 +236,7 @@ const Review = () => {
                     }
                 });
                 console.log("업로드될 FormData내용: ", [...fileFormData.entries()]);
-                const fileResponse = await fetch("http://localhost:8080/api/review/file", {
+                const fileResponse = await fetch("/api/review/file", {
                     method: "POST",
                     credentials: "include",
                     body: fileFormData,
@@ -275,7 +272,7 @@ const Review = () => {
     };
 
     return (
-        <div className="p-6 border rounded-lg w-96 mx-auto mt-10">
+        <div className="investReview-container">
             {step === 1 && (
                 <Step1University
                     formData={formData}

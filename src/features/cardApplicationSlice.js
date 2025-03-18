@@ -8,7 +8,7 @@ export const fetchUserInfo = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("http://localhost:8080/card/userInfo", {
+      const response = await axios.get("/card/userInfo", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -19,6 +19,23 @@ export const fetchUserInfo = createAsyncThunk(
     }
   }
 );
+
+export const fetchUserCardInfo = createAsyncThunk(
+  "cardApplication/fetchUserCardInfo", // 고유한 타입 문자열 사용
+  async (_, { rejectWithValue }) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:8080/card/cardInfo");
+      console.log(response);
+      return response.data; // 서버가 반환한 { cardRegistered: true/false }
+    } catch (error) {
+      return rejectWithValue(
+        error.response?.data || "카드 정보를 가져오지 못했습니다."
+      );
+    }
+  }
+);
+
 
 // 기존 카드 신청 Thunk (예시)
 export const submitCardApplication = createAsyncThunk(
@@ -47,7 +64,7 @@ export const submitCardApplication = createAsyncThunk(
       }
   
       const token = localStorage.getItem("token");
-      const response = await axios.post("http://localhost:8080/card/insert", formData, {
+      const response = await axios.post("/card/insert", formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -90,6 +107,8 @@ const initialState = {
   error: null,
   // 새로운 사용자 정보 요청 상태 (옵션)
   userInfoStatus: "idle", // "idle" | "loading" | "succeeded" | "failed"
+  cardRegistered: false,
+
 };
 
 const cardApplicationSlice = createSlice({
@@ -100,8 +119,8 @@ const cardApplicationSlice = createSlice({
       state.termsAgreed = action.payload;
     },
     setCardDesign(state, action) {
-      console.log(state)
-      console.log(action)
+      console.log(state);
+      console.log(action);
       state.cardDesign = action.payload;
     },
     setIdentityVerified(state, action) {
@@ -113,7 +132,6 @@ const cardApplicationSlice = createSlice({
     setCardPin(state, action) {
       state.cardPin = action.payload;
     },
-    // 필요에 따라 지원 정보 업데이트 액션 추가
     setSupportInfo(state, action) {
       const { supportPeriod, totalAmount, monthlyAmount } = action.payload;
       state.supportPeriod = supportPeriod;
@@ -145,6 +163,17 @@ const cardApplicationSlice = createSlice({
       })
       .addCase(fetchUserInfo.rejected, (state, action) => {
         state.userInfoStatus = "failed";
+        state.error = action.payload;
+      })
+      // 카드 등록 여부 가져오기 처리 (fetchUserCardInfo)
+      .addCase(fetchUserCardInfo.pending, (state) => {
+        // 필요 시 별도 상태 업데이트 (예: cardInfoStatus)
+      })
+      .addCase(fetchUserCardInfo.fulfilled, (state, action) => {
+        // 응답으로 { cardRegistered: true/false }를 받는다고 가정
+        state.cardRegistered = action.payload.cardRegistered;
+      })
+      .addCase(fetchUserCardInfo.rejected, (state, action) => {
         state.error = action.payload;
       });
   },

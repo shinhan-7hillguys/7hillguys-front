@@ -3,18 +3,16 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { submitCardApplication } from "../../features/cardApplicationSlice";
 import NavigationHeader from "components/common/NavigationHeader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function FinalCheckPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const { bgFile } = location.state || {};
 
   const {
     termsAgreed,
-    cardDesign,
-    identityVerified,
-    userInfo,
     englishName,
     cardPin,
     supportPeriod,
@@ -25,12 +23,14 @@ function FinalCheckPage() {
   } = useSelector((state) => state.cardApplication);
 
   const handleSubmit = () => {
-    if (!termsAgreed || !identityVerified || !cardPin) {
+    // if (!termsAgreed || !identityVerified || !cardPin) {
+    if (!termsAgreed || !cardPin) {
       alert("모든 절차가 완료되지 않았습니다.");
       return;
     }
     // console.log(bgFile)
     dispatch(submitCardApplication(bgFile));
+    navigate("/user/dashboard");
   };
 
   return (

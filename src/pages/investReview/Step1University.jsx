@@ -22,6 +22,7 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
             <div className="university-box">
                 <h2 className="university-title">학교 정보 입력</h2>
 
+                <label className="input-label">대학교 이름</label>
                 <input
                     type="text"
                     name="universityInfo.universityName"
@@ -30,6 +31,7 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
                     onChange={handleChange}
                     className="input-field"
                 />
+                <label className="input-label">학과</label>
                 <input
                     type="text"
                     name="universityInfo.major"
@@ -38,6 +40,7 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
                     onChange={handleChange}
                     className="input-field"
                 />
+                <label className="input-label">고등학교</label>
                 <input
                     type="text"
                     name="studentCard.highscool"
@@ -46,6 +49,7 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
                     onChange={handleChange}
                     className="input-field"
                 />
+                <label className="input-label">내신성적</label>
                 <input
                     type="text"
                     name="studentCard.highscoolGPA"
@@ -72,7 +76,7 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
 
                 {/* 고등학교 생활기록부 파일 업로드 */}
                 <div className="file-upload-wrapper">
-                    <label className="file-upload-label">고등학교 생활기록부</label>
+                    <label className="file-upload-label">생활기록부</label>
                     <label className="custom-file-upload">
                         파일 선택
                         <input

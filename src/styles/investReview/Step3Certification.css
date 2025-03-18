@@ -4,11 +4,12 @@
 .certification-container {
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    height: 100vh;
-    padding: 50px;
+    align-items: center; /* 중앙 정렬 */
+    justify-content: flex-start; /* 헤더와 밀착 */
+    height: 100vh; /* 화면 전체를 차지 */
+    width: 100vw;
     background-color: #FFF7F7;
+    padding: 0; /* 여백 제거 */
 }
 
 /* 입력 박스 */

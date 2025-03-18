@@ -40,18 +40,18 @@ const pageWrapperStyle = {
     boxSizing: "border-box",
     fontFamily: "Pretendard, sans-serif",
     // Education의 그라데이션 배경과 동일하게 설정
-    background:
-        "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%)",
+    // background:
+    //     "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235, 217, 238, 0.3) 100%)",
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
 };
 
 const initialContainerStyle = {
-    background: "rgba(255,255,255,0.6)", // 반투명 흰색 배경
+    // background: "#fff5f5",
     padding: "40px",
     borderRadius: "20px",
-    boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
+    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
     textAlign: "center",
 };
 
@@ -71,7 +71,7 @@ const registerButtonStyle = {
     padding: "12px 24px",
     fontSize: "16px",
     fontWeight: "bold",
-    backgroundColor: "#df6e99",
+    backgroundColor: "#ff99aa",
     color: "#fff",
     border: "none",
     borderRadius: "10px",

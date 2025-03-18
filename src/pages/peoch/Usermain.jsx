@@ -62,6 +62,7 @@ const UsageAmount = styled.p`
   margin: 8px 0 0;
   font-size: 28px;
   font-weight: bold;
+  white-space : nowrap;
 `;
 
 const FilterRow = styled.div`
@@ -128,9 +129,13 @@ const StatValue = styled.span`
 `;
 
 const ArrowIcon = styled.span`
-  color: ${(props) => (props.isUp ? "#f95f89" : "#3d8bfd")};
+  color: ${(props) => {
+    if (!props.isSelected) return "#000000";
+    return props.isUp ? "#f95f89" : "#3d8bfd";
+  }};
   font-size: 18px;
 `;
+
 
 const InfoCard = styled.div`
   background: #ffffff;
@@ -145,14 +150,15 @@ const ChartCard = styled(InfoCard)`
   height: 300px;
 `;
 
-/* --- 메인 컴포넌트 --- */
-export default function MainPage() {
+export default function MainPage() { 
   // 필터 상태
-  const [timeFilter, setTimeFilter] = useState("월");
-  const [typeFilter, setTypeFilter] = useState("나");
-  const [selectedStat, setSelectedStat] = useState("납부율");
+  const [timeFilter, setTimeFilter] = useState("월"); // "주", "월", "연"
+  const [typeFilter, setTypeFilter] = useState("나"); // "나" 또는 "평균"
+  const [selectedStat, setSelectedStat] = useState("사용액"); // "납부율", "지원금", "사용액" 중 하나
 
-  // API를 통해 받아올 상태들
+  const [userId, setUserId] = useState(null);
+
+  // 기존 상태들 (예: 차트 데이터 등)
   const [usage, setUsage] = useState(0);
   const [lastMonthUsage, setLastMonthUsage] = useState(0);
   const [comparison, setComparison] = useState(0);
@@ -162,131 +168,252 @@ export default function MainPage() {
     "월소득": { percentageDiff: 0, dailyUsage: {} },
   });
   const [graphData, setGraphData] = useState([]);
- 
-  const fetchDashboardData = async () => {
-    try {
-      const response = await axios.get("/dashboard", {
-        params: { timeFilter, typeFilter },
-      }); 
-      const data = response.data;
-      setUsage(data.usage);
-      setLastMonthUsage(data.lastMonthUsage);
-      setComparison(data.comparison);
-      setChartData(data.chart);
 
-      const currentStatKey = selectedStat === "월 소득" ? "월소득" : selectedStat;
-      const currentMetric = data.chart[currentStatKey];
-      if (currentMetric && currentMetric.dailyUsage) {
-        const convertedGraphData = Object.entries(currentMetric.dailyUsage).map(
-          ([day, amount]) => ({
-            day: `${day}일`,
-            amount,
-          })
-        );
-        setGraphData(convertedGraphData);
-      } else {
-        setGraphData([]);
-      }
+  // 사용자 정보 (여기서는 userName, 실제로 userId도 필요하면 별도 관리)
+  const [userName, setUserName] = useState("");
+
+  const getUserName = async () => {
+    try {
+      const response = await axios.get("/api/auth/userId", {
+        withCredentials: true,
+      }); 
+      setUserName(response.data.name); 
     } catch (error) {
-      console.error("API 데이터를 불러오는데 실패했습니다.", error);
+      console.error("사용자 정보를 불러오는데 실패했습니다.", error);
     }
   };
+  const getUserId = async () =>{
+    try{
+      const response = await axios.get("/api/auth/user",{
+        withCredentials : true,
+      });
+      setUserId(response.data.userId); 
+    }catch (error){
+      console.error("사용자 정보를 불러오는데 실패했습니다.", error);
+    } 
+  }
 
   useEffect(() => {
-    fetchDashboardData();
-  }, [timeFilter, typeFilter, selectedStat]);
+    getUserName();
+    getUserId();
+  }, []);
+ 
+  const [dashboardData, setDashboardData] = useState(null);
 
+  const getDashboardData = async () => {
+    try {  
+      const today = new Date().toISOString().split("T")[0];
+      const response = await axios.get(`/card/cardData`, {
+        params: { date: today },
+        withCredentials: true,
+      });
+      console.log(response.data);
+      setDashboardData(response.data); 
+    } catch (error) {
+      console.error("대시보드 데이터를 불러오는데 실패했습니다.", error);
+    }
+  };
+  
+  useEffect(() => {
+    if (userName) {
+      getDashboardData();
+    }
+  }, [userName]);
+
+  // 선택된 필터(기간, 그룹)에 따라 현재 사용액과 이전 사용액을 반환하는 함수
+  const getCurrentUsage = () => {
+    if (!dashboardData) return { current: 0, previous: 0 };
+
+    if (typeFilter === "나") {
+      if (timeFilter === "주") {
+        return { current: dashboardData.weekCurrent, previous: dashboardData.weekPrevious };
+      } else if (timeFilter === "월") {
+        return { current: dashboardData.monthCurrent, previous: dashboardData.monthPrevious };
+      } else if (timeFilter === "연") {
+        return { current: dashboardData.yearCurrent, previous: dashboardData.yearPrevious };
+      }
+    } else if (typeFilter === "평균") {
+      if (timeFilter === "주") {
+        return { current: dashboardData.avgWeekCurrent, previous: dashboardData.avgWeekPrevious };
+      } else if (timeFilter === "월") {
+        return { current: dashboardData.avgMonthCurrent, previous: dashboardData.avgMonthPrevious };
+      } else if (timeFilter === "연") {
+        return { current: dashboardData.avgYearCurrent, previous: dashboardData.avgYearPrevious };
+      }
+    }
+    return { current: 0, previous: 0 };
+  };
+
+  // 사용액 비교 % 계산 함수
+  const getUsageDiff = () => {
+    const { current, previous } = getCurrentUsage();
+    if (previous === 0) return 0;
+    return ((current - previous) / previous) * 100;
+  };
+ 
   const getUsageTitle = () => {
     if (timeFilter === "월") return "이번 달 이용액";
     if (timeFilter === "주") return "이번 주 이용액";
     if (timeFilter === "연") return "이번 연 이용액";
     return "이용액";
   };
+ 
+ const getInfoText = () => {
+  if (!dashboardData) return <p>로딩 중...</p>;
 
-  const getInfoText = () => {
-    if (typeFilter === "나") {
-      return (
-        <>
-          <p>
-            지난 달 {new Date().getDate()}일 기준으로{" "}
-            <span style={{ color: "#f95f89", fontWeight: "bold" }}>
-              {comparison > 0 ? `+${comparison}%` : `${comparison}%`}
-            </span>{" "}
-            {comparison > 0 ? "더 많이" : "덜"} 사용했어요.
-          </p>
-          <p>
-            지난 달 사용액:{" "}
-            <strong style={{ fontWeight: "bold" }}>
-              {lastMonthUsage.toLocaleString()}
-            </strong>{" "}
-            원
-          </p>
-        </>
-      );
+  const diff = getUsageDiff();
+  let periodLabel = "";
+  let previousPeriodLabel = "";
+  let previousUsage = 0;
+
+  if (typeFilter === "나") {
+    if (timeFilter === "주") {
+      periodLabel = "지난 주 기준으로";
+      previousPeriodLabel = "지난 주";
+      previousUsage = dashboardData.weekPrevious;
+    } else if (timeFilter === "월") {
+      periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
+      previousPeriodLabel = "지난 달";
+      previousUsage = dashboardData.monthPrevious;
+    } else if (timeFilter === "연") {
+      periodLabel = "지난 해 기준으로";
+      previousPeriodLabel = "지난 해";
+      previousUsage = dashboardData.yearPrevious;
+    }
+    return (
+      <>
+        <p>
+          {periodLabel}{" "}
+          <span style={{ color: diff < 0 ? "#3d8bfd" : "#f95f89", fontWeight: "bold" }}>
+            {diff > 0 ? `+${diff.toFixed(1)}%` : `${diff.toFixed(1)}%`}
+          </span>{" "}
+          {diff > 0 ? "더 많이" : "덜"} 사용했어요.
+        </p>
+        <p>
+          {previousPeriodLabel} 사용액:{" "}
+          <strong style={{ fontWeight: "bold", color: "#f95f89" }}>
+            {previousUsage.toLocaleString()}
+          </strong>{" "}
+          원
+        </p>
+      </>
+    );
+  } else {
+    if (timeFilter === "주") {
+      periodLabel = "지난 주 기준으로";
+      previousPeriodLabel = "지난 주";
+      previousUsage = dashboardData.avgWeekPrevious;
+    } else if (timeFilter === "월") {
+      periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
+      previousPeriodLabel = "지난 달";
+      previousUsage = dashboardData.avgMonthPrevious;
+    } else if (timeFilter === "연") {
+      periodLabel = "지난 해 기준으로";
+      previousPeriodLabel = "지난 해";
+      previousUsage = dashboardData.avgYearPrevious;
     }
     return (
       <p>
         그룹 평균 대비 내 사용액은{" "}
-        <strong style={{ fontWeight: "bold" }}>
-          {lastMonthUsage.toLocaleString()}
+        <strong style={{ fontWeight: "bold", color: "#f95f89" }}>
+          {previousUsage.toLocaleString()}
         </strong>{" "}
-        원이며, {comparison}% 차이가 있습니다.
+        원이며,{" "}
+        <span style={{ color: diff < 0 ? "#3d8bfd" : "#f95f89", fontWeight: "bold" }}>
+          {diff.toFixed(1)}%
+        </span>{" "}
+        차이가 있습니다.
       </p>
     );
-  };
-
-  const getArrowIcon = (diff) => {
-    if (diff > 0) return <ArrowIcon isUp>{<FaArrowUp />}</ArrowIcon>;
-    if (diff < 0) return <ArrowIcon>{<FaArrowDown />}</ArrowIcon>;
+  }
+};
+  
+  
+ 
+  const getArrowIcon = (diff, isSelected) => {
+    if (diff > 0) return <ArrowIcon isUp isSelected={isSelected}>{<FaArrowUp />}</ArrowIcon>;
+    if (diff < 0) return <ArrowIcon isSelected={isSelected}>{<FaArrowDown />}</ArrowIcon>;
     return null;
   };
-
+   
   const renderStatBox = (title) => {
-    const chartKey = title === "월 소득" ? "월소득" : title;
-    const diff = chartData[chartKey]?.percentageDiff || 0;
+    let diff = 0;
+    if (title === "사용액") {
+      diff = getUsageDiff();
+    } else {
+      const chartKey = title === "월 소득" ? "월소득" : title;
+      diff = chartData[chartKey]?.percentageDiff || 0;
+    } 
+    const statValueColor = diff < 0 ? "#3d8bfd" : "#f95f89";
+  
     return (
       <StatBox highlight={selectedStat === title} onClick={() => setSelectedStat(title)}>
         <StatTitle>{title}</StatTitle>
         <StatValueRow>
-          {getArrowIcon(diff)}
-          <StatValue>{`${Math.abs(diff)}%`}</StatValue>
+          {getArrowIcon(diff, selectedStat === title)}
+          <StatValue style={{ color: statValueColor }}>{`${Math.abs(diff).toFixed(1)}%`}</StatValue>
         </StatValueRow>
       </StatBox>
     );
   };
-
+  
+  
+  
   return (
     <PageContainer>
       <HeaderRow>
         <SquareUsageCard>
           <UserInfo>
-            <Username>000 님</Username>
+            <Username>{userName} 님</Username>
             <Greeting>안녕하세요!</Greeting>
           </UserInfo>
         </SquareUsageCard>
         <SquareUsageCard>
           <UsageTitle>{getUsageTitle()}</UsageTitle>
-          <UsageAmount>{usage.toLocaleString()} 원</UsageAmount>
+          {/* selectedStat이 "사용액"이면 dashboardData의 현재 사용액을, 아니라면 기존 usage 값을 표시 */}
+          <UsageAmount>
+            {selectedStat === "사용액"
+              ? dashboardData
+                ? getCurrentUsage().current.toLocaleString()
+                : "로딩 중..."
+              : usage.toLocaleString()}{" "}
+            원
+          </UsageAmount>
         </SquareUsageCard>
       </HeaderRow>
 
       <FilterRow>
         <FilterGroup>
-          <FilterButton active={timeFilter === "일"} onClick={() => setTimeFilter("일")}>
-            일
+          <FilterButton
+            active={timeFilter === "주"}
+            onClick={() => setTimeFilter("주")}
+          >
+            주
           </FilterButton>
-          <FilterButton active={timeFilter === "월"} onClick={() => setTimeFilter("월")}>
+          <FilterButton
+            active={timeFilter === "월"}
+            onClick={() => setTimeFilter("월")}
+          >
             월
           </FilterButton>
-          <FilterButton active={timeFilter === "연"} onClick={() => setTimeFilter("연")}>
+          <FilterButton
+            active={timeFilter === "연"}
+            onClick={() => setTimeFilter("연")}
+          >
             연
           </FilterButton>
         </FilterGroup>
         <FilterGroup>
-          <FilterButton active={typeFilter === "나"} onClick={() => setTypeFilter("나")}>
+          <FilterButton
+            active={typeFilter === "나"}
+            onClick={() => setTypeFilter("나")}
+          >
             나
           </FilterButton>
-          <FilterButton active={typeFilter === "평균"} onClick={() => setTypeFilter("평균")}>
+          <FilterButton
+            active={typeFilter === "평균"}
+            onClick={() => setTypeFilter("평균")}
+          >
             평균
           </FilterButton>
         </FilterGroup>
@@ -295,7 +422,7 @@ export default function MainPage() {
       <StatContainer>
         {renderStatBox("납부율")}
         {renderStatBox("지원금")}
-        {renderStatBox("월 소득")}
+        {renderStatBox("사용액")}
       </StatContainer>
 
       <InfoCard>{getInfoText()}</InfoCard>

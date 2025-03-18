@@ -104,7 +104,7 @@ function CardDesignPage() {
     formData.append("cardDesignDTO", new Blob([JSON.stringify(cardDesign)], { type: "application/json" }));
 
     axios
-      .post("http://localhost:8080/api/card/design/insert", formData, {
+        .post("/api/card/design/insert", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })
       .then((response) => console.log("결과:", response.data))

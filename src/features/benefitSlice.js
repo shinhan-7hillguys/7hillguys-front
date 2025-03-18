@@ -22,7 +22,7 @@ export const deleteBenefit = createAsyncThunk(
     try {
       // 카드 정보가 필요하다면, 쿼리 파라미터로 전달하거나 요청 본문에 포함할 수 있습니다.
       // HTTP DELETE 요청은 본문 전달을 지원하지 않는 경우도 있으므로, 여기서는 쿼리 파라미터 사용 예시:
-      const response = await axios.delete(`http://localhost:8080/benefit/${benefitId}?cardId=${cardId}`);
+      const response = await axios.delete(`/benefit/${benefitId}?cardId=${cardId}`);
       return benefitId; // 삭제된 혜택 ID 반환
     } catch (error) {
       return rejectWithValue(error.response?.data || "혜택 삭제에 실패했습니다.");
@@ -35,9 +35,8 @@ export const applyBenefits = createAsyncThunk(
   "benefit/applyBenefits",
   async ({ cardId, benefitIds }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
       const response = await axios.post(
-        "http://localhost:8080/benefit/apply",
+          "/benefit/apply",
         { cardId, benefitIds },
       );
       console.log(response)
@@ -65,9 +64,9 @@ const benefitSlice = createSlice({
     addBenefit: (state, action) => {
       // 예시: addBenefit 로직
       state.addedBenefits.push(action.payload);
-      state.availableBenefits = state.availableBenefits.filter(
-        (benefit) => benefit.benefitId !== action.payload.benefitId
-      );
+      // state.availableBenefits = state.availableBenefits.filter(
+      //   (benefit) => benefit.benefitId !== action.payload.benefitId
+      // );
     },
     clearAddedBenefits: (state) => {
       state.availableBenefits = state.availableBenefits.concat(state.addedBenefits);
@@ -100,7 +99,7 @@ const benefitSlice = createSlice({
       console.log(state, action)
       state.appliedBenefits = state.appliedBenefits.filter(
         (b) => b.myBenefitId.benefitId !== action.payload
-      );
+      ); 
     })
     .addCase(deleteBenefit.rejected, (state, action) => {
       state.error = action.payload;
