@@ -4,15 +4,14 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
 const SidebarContainer = styled.div`
-  width: 90%;
-  padding: 16px;
-  background-color: #fdf0f1; /* 핑크 톤 배경 */
-  position: fixed;
+  position: fixed; /* or 'sticky' */
   top: 0;
   right: 0;
-  height: 100%;
-  overflow-y: auto;
-  font-family: 'Noto Sans KR', sans-serif;
+  width: 90%;  
+  height: 100vh;  
+  background-color: #fff; 
+  z-index: 1000;  
+  overflow-y: auto;  
 `;
 
 const GridContainer = styled.div`
