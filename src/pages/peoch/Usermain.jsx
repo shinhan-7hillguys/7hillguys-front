@@ -203,10 +203,11 @@ export default function MainPage() {
   const getDashboardData = async () => {
     try {  
       const today = new Date().toISOString().split("T")[0];
-      const response = await axios.get(`/card/cardData/${userId}`, {
+      const response = await axios.get(`/card/cardData`, {
         params: { date: today },
         withCredentials: true,
       });
+      console.log(response.data);
       setDashboardData(response.data); 
     } catch (error) {
       console.error("대시보드 데이터를 불러오는데 실패했습니다.", error);
