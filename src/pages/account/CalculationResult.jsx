@@ -1,13 +1,28 @@
 import React from 'react';
 import "../../style/Calculation.css";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function CalculationResult() {
+    const location = useLocation();
+    const navigate = useNavigate();
+    const { calculatedAmount } = location.state || {};
+
+    if (calculatedAmount === undefined) {
+        return (
+            <div className="calculation-container">
+                <h1>납부 금액 산정 결과</h1>
+                <p>계산된 결과가 없습니다. 다시 시도해 주세요.</p>
+                <button className="close-btn" onClick={() => navigate(-1)}>뒤로가기</button>
+            </div>
+        );
+    }
+
     return (
         <div className="calculation-container">
             <h1>납부 금액 산정 결과</h1>
-            <p>홍길동 님의 산정 금액은 다음과 같습니다.</p>
+            <p>산정된 납부 금액은 다음과 같습니다.</p>
             <div className="amount-box">
-                <h2>50,000,000원</h2>
+                <h2>{calculatedAmount.toLocaleString()}원</h2>
             </div>
 
             <div className="details">
@@ -17,10 +32,10 @@ function CalculationResult() {
             </div>
 
             <p className="notice">
-                일괄 납부가 가능하며, 일괄 납부를 할 경우 계약은 종료됩니다.
+                일괄 납부가 가능하며, 일괄 납부 시 계약이 종료됩니다.
             </p>
 
-            <button className="close-btn">닫기</button>
+            <button className="close-btn" onClick={() => navigate("/")}>닫기</button>
         </div>
     );
 }

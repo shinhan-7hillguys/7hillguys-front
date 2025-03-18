@@ -25,11 +25,9 @@ const healthQuestions = [
 ];
 
 const radioOptions = [
-    { label: " 아주나쁨", value: 1 },
-    { label: " 나쁨", value: 2 },
+    { label: " 나쁨", value: 1 },
     { label: " 보통", value: 3 },
-    { label: " 좋음", value: 4 },
-    { label: " 아주좋음", value: 5 },
+    { label: " 좋음", value: 5 },
 ];
 
 const Review = () => {

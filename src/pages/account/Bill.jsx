@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import "../../style/Bill.css";
 
-// 1) react-calendar 라이브러리 import
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 
