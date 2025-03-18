@@ -5,6 +5,8 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
     const [familyCertificateFile, setFamilyCertificateFile] = useState("선택된 파일 없음");
     const [criminalRecordFile, setCriminalRecordFile] = useState("선택된 파일 없음");
 
+    const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
+
     useEffect(() => {
         // 다음 주소 API 스크립트 동적 로드
         const script = document.createElement("script");
@@ -18,24 +20,27 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
     }, []);
 
     const handleSearchAddress = () => {
-        const container = document.getElementById("postcode-container");
-        container.style.display = "block"; // iframe을 보이도록 설정
+        setIsPostcodeVisible((prev) => !prev); // 버튼 클릭 시 토글
 
-        const postcode = new window.daum.Postcode({
-            oncomplete: function (data) {
-                let fullAddress = data.address;
-                if (data.addressType === "R") {
-                    if (data.bname) fullAddress += ` (${data.bname})`;
-                }
-                setFormData((prev) => ({ ...prev, address: fullAddress }));
+        if (!isPostcodeVisible) {
+            setTimeout(() => {
+                const postcode = new window.daum.Postcode({
+                    oncomplete: function (data) {
+                        let fullAddress = data.address;
+                        if (data.addressType === "R" && data.bname) {
+                            fullAddress += ` (${data.bname})`;
+                        }
+                        setFormData((prev) => ({ ...prev, address: fullAddress }));
 
-                container.style.display = "none"; // 주소 선택 후 iframe 숨김
-            },
-            width: "100%", // iframe 가로 크기 설정
-            height: "400px", // iframe 세로 크기 설정
-        });
+                        setIsPostcodeVisible(false); // 주소 선택 후 창 닫기
+                    },
+                    width: "100%",
+                    height: "400px",
+                });
 
-        postcode.embed(container); // 기존 open() 대신 embed() 사용하여 iframe으로 렌더링
+                postcode.embed(document.getElementById("postcode-container"));
+            }, 0);
+        }
     };
 
     const handleChange = (e) => {
@@ -120,6 +125,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     className="input-field"
                 />*/}
 
+                <label className="input-label">주소</label>
                 {/* 주소 입력 필드 */}
                 <div className="address-input-group">
                     <input
@@ -135,8 +141,9 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     </button>
                 </div>
                 {/* Daum 주소 API가 삽입될 div */}
-                <div id="postcode-container" style={{ width: "100%", height: "400px", display: "none" }}></div>
+                <div id="postcode-container" style={{ width: "100%", height: "400px", display: isPostcodeVisible ? "block" : "none" }}></div>
 
+                <label className="input-label">자산</label>
                 <input
                     type="number"
                     name="assets"
@@ -160,6 +167,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     </span>
                 </div>
 
+                <label className="input-label">자녀수</label>
                 <input
                     type="number"
                     name="familyStatus.children"
@@ -179,7 +187,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                         onChange={handleChange}
                     />
                     <span className="personal-checkbox-label-text">
-                        {formData.criminalRecord ? "가능" : "불가능"}
+                        {formData.criminalRecord ? "불가능" : "가능"}
                     </span>
                 </div>
 
