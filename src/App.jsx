@@ -32,7 +32,7 @@ import EnglishNamePage from "pages/card/EnglishNamePage";
 import CardPinPage from "pages/card/CardPinPage";
 import FinalCheckPage from "pages/card/FinalCheckPage";
 
-import Dashboard from "./pages/admin/Dashboard";
+import dashboard from "./pages/admin/dashboard";
 import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
@@ -88,7 +88,7 @@ function App() {
         <Route path="/signup" element={<Signup />} />
 
         <Route element={<Layout />}>
-          <Route path="/admin" element={<Dashboard />} />
+          <Route path="/admin" element={<dashboard />} />
           <Route path="/admin/search/:query" element={<SearchResults />} />
           <Route path="/admin/user/detail/:id" element={<Detail />} />
         </Route>
@@ -123,8 +123,6 @@ function App() {
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
 
-          <Route path="/admin" element={<Dashboard />} />
-          <Route path="/admin" element={<Dashboard />} />
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
