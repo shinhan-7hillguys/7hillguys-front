@@ -34,6 +34,11 @@
         width: 100%;
         height: 70vh;
     }
+
+    .preview-object label {
+        color: #FF4170;
+        font-size: 18px;
+    }
 }
 
 /* 버튼 컨테이너 */
