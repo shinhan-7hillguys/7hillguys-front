@@ -13,6 +13,48 @@ import { useNavigate } from "react-router-dom";
 import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined } from "@ant-design/icons";
 import "styles/card/benefit.css";
 import CardPreview from "./CardPreview";
+import {
+  CardContainer,
+  CardStyled,
+  CardFront,
+  CardBack,
+  Chip,
+  CardLogo,
+  NumberLabel,
+  NameLabel,
+  ExpiryLabel,
+  BlackStrip,
+  CVCLabel,
+  SignatureLabel,
+  SignatureLine,
+} from "./CardStyles";
+import styled from "styled-components";
+
+const layoutPresets = {
+  "1": {
+    number: { bottom: "60px", left: "20px", fontSize: "20px", letterSpacing: "2px", position: "absolute" },
+    chip: { top: "30px", left: "20px", width: "50px", height: "40px", position: "absolute" },
+    logo: { top: "20px", right: "20px", width: "60px", position: "absolute" },
+    name: { bottom: "20px", left: "20px", fontSize: "16px", position: "absolute" },
+    expiry: { bottom: "20px", right: "20px", fontSize: "16px", position: "absolute" },
+    signature: { bottom: "120px", left: "20px", fontSize: "14px", position: "absolute" },
+    signatureLine: { bottom: "90px", left: "20px", width: "50%", height: "2px", backgroundColor: "lightgray", position: "absolute" },
+    cvc: { bottom: "20px", right: "20px", fontSize: "16px", position: "absolute" },
+  },
+  "2": {
+    chip: { top: "30px", left: "20px", width: "50px", height: "40px", position: "absolute" },
+    logo: { top: "20px", right: "20px", width: "60px", position: "absolute" },
+    numberBack: { top: "80px", left: "150px", fontSize: "20px", letterSpacing: "2px", whiteSpace: "pre-wrap", writingMode: "sideways-lr", transform: "rotate(180deg)", position: "absolute" },
+    nameBack: { top: "90px", left: "100px", fontSize: "14px", writingMode: "sideways-lr", transform: "rotate(180deg)", position: "absolute" },
+    expiryBack: { top: "90px", left: "305px", fontSize: "16px", writingMode: "sideways-lr", transform: "rotate(180deg)", position: "absolute" },
+    signature: { top: "10px", left: "60px", fontSize: "14px", writingMode: "sideways-lr", transform: "rotate(180deg)", position: "absolute" },
+    signatureLine: { top: "100px", left: "-40px", width: "35%", height: "2px", backgroundColor: "rgb(89 89 89)", writingMode: "sideways-lr", transform: "rotate(270deg)", position: "absolute" },
+    cvc: { top: "120px", left: "-100px", fontSize: "16px", writingMode: "sideways-lr", transform: "rotate(180deg)", position: "absolute" },
+  },
+};
+
+
+
 
 const Benefit = () => {
   const dispatch = useDispatch();
@@ -20,7 +62,7 @@ const Benefit = () => {
   const { availableBenefits, appliedBenefits, addedBenefits,  status, error, card } = useSelector(
     (state) => state.benefit
   );
-  
+ 
   // 더 이상 고정된 cardId 사용하지 않고, Redux에 저장된 카드 정보를 사용합니다.
   // card가 아직 null일 수 있으므로 안전하게 처리합니다.
   const cardId = card ? card.cardId : null;
@@ -28,11 +70,14 @@ const Benefit = () => {
   const [checkedBenefits, setCheckedBenefits] = useState([]);
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const currentLayout = layoutPresets[card?.cardDesigns[0]?.layoutId] || layoutPresets["1"];
 
 
   // 페이지 로드시, 내 카드에 대한 혜택 및 카드 정보를 백엔드에서 가져옵니다.
   useEffect(() => {
     dispatch(fetchBenefits());
+
+
   }, [dispatch]);
 
   const handleCheckboxChange = (benefitId, e) => {
@@ -149,11 +194,34 @@ const filteredAvailableBenefits = useMemo(() => {
   //     </button>
   //   </div>
   // );
-
+console.log("card : ", card)
   return (
     <>
       <section className="card_benefit_sec1">
-        <div></div>
+        <div>
+          {/* 백컬러 프론트로 바꾸고 이미지 url */}
+            <CardFront style={{ position: "relative" }}
+ $cardFrontColor={card?.cardDesigns[0]?.cardBackColor}>
+                    <Chip style={card?.cardDesigns[0]?.layoutId === "2" ? currentLayout.chip : layoutPresets["1"].chip}>
+                      <svg role="img" viewBox="0 0 100 100" aria-label="Chip">
+                        <use href="#chip-lines" />
+                      </svg>
+                    </Chip>
+                    <CardLogo
+                      src="https://simey-credit-card.netlify.app/img/logos/master.svg"
+                      alt="card logo"
+                      style={card?.cardDesigns[0]?.layoutId === "2" ? currentLayout.logo : layoutPresets["1"].logo}
+                      $logoGrayscale={card?.cardDesigns[0]?.logoGrayscale}
+                    />
+                    {card?.cardDesigns[0]?.layoutId == "1" && (
+                      <>
+                        <NumberLabel style={layoutPresets["1"].number}>{card?.cardNumber}</NumberLabel>
+                        <NameLabel style={layoutPresets["1"].name}>{card?.cardName}</NameLabel>
+                        <ExpiryLabel style={layoutPresets["1"].expiry}>{card?.expirationDate}</ExpiryLabel>
+                      </>
+                    )}
+                  </CardFront>
+        </div>
       </section>
 
       <section className="card_benefit_sec2">

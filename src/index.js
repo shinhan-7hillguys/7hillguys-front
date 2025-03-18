@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './app/store';
+// ResizeObserver 에러 무시를 위한 전역 에러 핸들러 추가
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
