@@ -107,12 +107,15 @@ div {
   height: 40px;
 }
 .header_bottom {
-  height: 8vh;
+  height: 9vh;
+  background: transparent;
+  backdrop-filter: blur(50px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   /* padding: 10px; */
-  padding: 10px;
+  padding: 15px;
+  
 }
 .header_bottom h2 {
   display: flex;
@@ -131,19 +134,6 @@ header {
   /* 헤더 스타일 */
 }
 
-.header_bottom {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  /* 헤더 하단 스타일 */
-  /* background: linear-gradient(
-    135deg,
-    rgba(255, 115, 213, 0.7) 0%,
-    rgba(235, 208, 240, 0.548) 100%
-  ); */
-  background: transparent;
-  backdrop-filter: blur(50px);
-}
 
 /* 사이드바 기본 스타일 */
 .sidebar {

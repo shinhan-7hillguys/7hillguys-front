@@ -50,10 +50,10 @@
     height: 40vh;
     width: 100%;
   }
-  .card_benefit_sec1 div {
+  .card_benefit_sec1 > div {
     background: #f0c1de;
-    width: 95%;
-    height: 75%;
+    width: 350px;
+    height: 200px;
     border-radius: 20px;
   }
   .card {
