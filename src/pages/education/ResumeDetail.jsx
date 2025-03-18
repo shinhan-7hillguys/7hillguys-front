@@ -28,9 +28,9 @@ const ResumeDetail = () => {
             <p style={detailSubTitleStyle}>{resume.type}</p>
             <hr />
             <p style={detailTextStyle}>{resume.detail}</p>
-            <button onClick={() => navigate(-1)} style={backButtonStyle}>
-                뒤로가기
-            </button>
+            {/*<button onClick={() => navigate(-1)} style={backButtonStyle}>*/}
+            {/*    뒤로가기*/}
+            {/*</button>*/}
         </div>
     );
 };
@@ -41,19 +41,19 @@ export default ResumeDetail;
 const detailContainerStyle = {
     width: "90%",
     maxWidth: "700px",
-    margin: "30px auto",
+    margin: "20px auto",
     padding: "20px",
-    background:
-        "linear-gradient(191deg, rgba(255,247,252,0.7) 0%, rgba(235,217,238,0.3) 100%)",
+    // background:
+    //     "linear-gradient(191deg, rgba(255,247,252,0.7) 0%, rgba(235,217,238,0.3) 100%)",
     borderRadius: "10px",
-    boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
+    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
     fontFamily: "Pretendard, sans-serif",
 };
 
 const detailTitleStyle = {
     fontSize: "1.4rem",
     fontWeight: "bold",
-    marginBottom: "10px",
+    marginBottom: "30px",
 };
 
 const detailSubTitleStyle = {
