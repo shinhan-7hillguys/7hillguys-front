@@ -6,7 +6,7 @@ function AllBenefitSearch() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/card/allBenefitSearch", {
+        .get("/card/allBenefitSearch", {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",

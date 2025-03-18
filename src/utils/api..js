@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080/api"; // 백엔드 API 기본 URL
+const API_BASE_URL = "http://localhost:8080"; // 백엔드 API 기본 URL
 
 export const apiRequest = async (endpoint, options = {}) => {
     const defaultHeaders = {
