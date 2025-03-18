@@ -149,6 +149,12 @@
     text-decoration: underline;
 }
 
+.signup-box p {
+    display: flex;
+    align-items: end; /* 텍스트를 컨테이너의 하단에 정렬 */
+    height: 40px;
+}
+
 /* 소셜 로그인 버튼 */
 .social-login {
     display: flex;
