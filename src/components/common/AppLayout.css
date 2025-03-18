@@ -1,0 +1,100 @@
+/* 전체 레이아웃 컨테이너 */
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  /* 헤더 아래쪽 영역(좌우 정렬, 중앙 정렬 등) */
+  .header_bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  /* 실제 컨텐츠가 들어갈 부분 */
+  .container2 {
+    flex: 1;
+    padding: 16px;
+  }
+  
+  /* 사이드바 */
+  .sidebar {
+    position: fixed;       /* 화면 왼쪽 고정 */
+    top: 0;
+    left: 0;
+    width: 240px;
+    height: 100%;
+    background-color: #fdf0f1; /* 핑크 톤 배경 */
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+    padding: 24px;
+    overflow-y: auto;      /* 메뉴가 많으면 스크롤 */
+  }
+  
+  /* 사이드바 내 닫기 버튼 */
+  .sidebar .close-btn {
+    background: transparent;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    color: #444;
+    margin-left: auto;
+    display: block;
+    margin-bottom: 20px;
+  }
+  
+  /* 사이드바 메뉴 (ul) 초기화 */
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  /* 사이드바 메뉴 아이템 간격 */
+  .sidebar ul li {
+    margin-bottom: 10px;
+  }
+  
+  /* 링크 스타일 */
+  .sidebar ul li a {
+    display: block;
+    color: #444;
+    font-size: 16px;
+    text-decoration: none;
+    padding: 10px 12px;
+    border-radius: 4px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  /* 링크 호버 시 */
+  .sidebar ul li a:hover {
+    background-color: #2c0202; /* 어두운 빨강 계열 */
+    color: #e08490;            /* 연핑크/장미색 */
+  }
+  
+  /* nav 태그 내부 링크들(추가 링크 묶음) */
+  .sidebar nav {
+    margin-top: 16px;
+    display: flex;
+    flex-wrap: wrap; /* 화면 좁으면 줄바꿈 */
+  }
+  
+  .sidebar nav a {
+    margin-bottom: 8px;
+    /* 동일한 호버 효과를 주고 싶다면, 위 a:hover와 동일하게 적용 */
+    color: #444;
+    font-size: 14px;
+    text-decoration: none;
+    border-radius: 4px;
+    padding: 6px 8px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+  
+  .sidebar nav a:hover {
+    background-color: #2c0202;
+    color: #e08490;
+  }
+  

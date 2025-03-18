@@ -118,8 +118,8 @@ const Sidebar = () => {
   return (
     <SidebarContainer> 
       <LogoContainer>
-        <LogoIcon to="/admin"/>
-        <LogoText to="/admin">Peoch</LogoText>
+        <LogoIcon to="/"/>
+        <LogoText to="/">Peoch</LogoText>
       </LogoContainer>
  
       <SectionTitle>Menu</SectionTitle>
