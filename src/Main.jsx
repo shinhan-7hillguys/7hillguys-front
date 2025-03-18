@@ -1,7 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useLayoutEffect, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 import "./main.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -12,6 +12,26 @@ const Main = () => {
     const togetherRef = useRef(null);
     const valueRef = useRef(null);
     const panel2Ref = useRef(null);
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/auth/logout", {
+        method: "POST",
+        credentials: "include",
+      });
+
+      if (response.ok) {
+        console.log("로그아웃 성공");
+        window.location.href = "/"; // 메인 페이지로 강제 이동
+      } else {
+        console.error("로그아웃 실패");
+        alert("로그아웃에 실패했습니다.");
+      }
+    } catch (error) {
+      console.error("로그아웃 중 오류 발생:", error);
+      alert("서버 오류가 발생했습니다.");
+    }
+  };
 
     // 텍스트 애니메이션을 위한 ref 추가
     const sectionsRef = useRef([]);
@@ -192,6 +212,9 @@ const Main = () => {
                     <Link to="/login" className="login-button">
                         L o g i n
                     </Link>
+                    <button className="logout-button" onClick={handleLogout}>
+                        L o g o u t
+                    </button>
                     <Link to="/signup" className="signup-button">S i g n u p</Link>
                 </div>
 

@@ -1,4 +1,3 @@
-import { useState } from "react";
 import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -38,6 +37,7 @@ import BenefitCompare from "pages/card/BenefitCompare";
 
 import User from "pages/user/User";
 import Login from "pages/user/Login";
+import Logout from "pages/user/Logout";
 import Signup from "pages/user/Signup";
 import ResumeEdit from "./pages/education/ResumeEdit";
 import SalaryComparisonChart from "./pages/education/SalaryComparisonChart";
@@ -85,6 +85,7 @@ function App() {
         <Route path="/" element={<Main />} />
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/signup" element={<Signup />} />
 
         <Route element={<Layout />}>

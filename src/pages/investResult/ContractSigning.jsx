@@ -78,7 +78,7 @@ const ContractSigning = () => {
             {/* 계약서 내용 표시 */}
             {contract ? (
                 <div className="contract-box">
-                    <h3>{contract.title}</h3>
+                    <h4>{contract.title}</h4>
                     <p className="contract-content">{contract.investmentDetails}</p>
                     <h4 className="contract-section">상환 조건</h4>
                     <p className="contract-content">{contract.repaymentTerms}</p>

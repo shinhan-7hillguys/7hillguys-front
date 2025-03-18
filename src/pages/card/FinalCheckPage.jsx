@@ -1,20 +1,18 @@
 // src/pages/FinalCheckPage.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { submitCardApplication } from "../../features/cardApplicationSlice";
 import NavigationHeader from "components/common/NavigationHeader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function FinalCheckPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const { bgFile } = location.state || {};
 
   const {
     termsAgreed,
-    cardDesign,
-    identityVerified,
-    userInfo,
     englishName,
     cardPin,
     supportPeriod,
@@ -24,6 +22,18 @@ function FinalCheckPage() {
     error,
   } = useSelector((state) => state.cardApplication);
 
+  useEffect(() => {
+    if (!termsAgreed) {
+      navigate("/card/terms");
+    } else if (!englishName || !englishName.firstName || !englishName.lastName) {
+      navigate("/card/english-name");
+    } else if (!cardPin) {
+      navigate("/card/pin");
+    }
+    // 이 조건들이 모두 만족하면 현재 페이지(FinalCheckPage)를 렌더링
+  }, [termsAgreed, englishName, cardPin, navigate]);
+
+
   const handleSubmit = () => {
     // if (!termsAgreed || !identityVerified || !cardPin) {
     if (!termsAgreed || !cardPin) {
@@ -31,7 +41,13 @@ function FinalCheckPage() {
       return;
     }
     // console.log(bgFile)
-    dispatch(submitCardApplication(bgFile));
+    try {
+      dispatch(submitCardApplication(bgFile));
+      alert("카드 신청이 완료되었습니다.")
+    } catch (error) {
+      alert("카드 신청 중 문제 발생 ")
+    }
+    navigate("/card");
   };
 
   return (

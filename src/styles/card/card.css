@@ -25,7 +25,7 @@
     width: 80%;
     height: 30vh;
     
-    background: #f98ac7;
+    background:  #f98ac7 url("../../../public/camel.png") no-repeat center center/ cover;
     border-radius: 20px;
 }
 .card_intro button {
@@ -58,6 +58,7 @@
 .card_agree label {
     display: flex;
     align-items: center;
+    padding: 20px;
 }
 .card_agree input {
     height: 20px;
@@ -71,6 +72,19 @@
     background-color: #4caf50;
     border-color: #4caf50;
   }
+.card_agree_section ol {
+  padding: 30px;
+  height: 40vh;
+  overflow: scroll;
+}
+.card_agree_section h2 {
+  color: #DF6E99;
+  text-align: center;
+}
+.card_agree_section label {
+  width: 100%;
+  text-align: center;
+}
 .card_btn {
     width: 80%;
     background: #DF6E99;
@@ -86,6 +100,7 @@
     flex-direction: column;
     justify-content: space-between;
     height: 80vh;
+    padding: 0 20px;
 }
 .card_person em {
     color: #000;
@@ -102,12 +117,10 @@
     font-size: var(--font-size20);
     font-weight: 600;
     text-align: center;
-    margin: 20px 0;
     color: #000;
 }
-.card_person div {
-    padding: 20px 0;
-}
+
+
 .card_person input {
     border: 0;
     border-bottom: 2px solid #f49ecf;
@@ -181,6 +194,9 @@
     align-items: center;
     cursor: pointer;
     position: relative;
+    background: var(--box-color);
+    padding: 10px 20px;
+    border-radius: 20px;
   }
   
   .hidden-input {
