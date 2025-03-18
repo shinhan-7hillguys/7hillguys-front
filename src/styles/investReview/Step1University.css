@@ -1,71 +1,90 @@
 /* Step1University.css - 학교 정보 입력 페이지 스타일 */
 
-/* 전체 컨테이너를 왼쪽 상단으로 이동 */
+/*!* 🔹 전체 컨테이너를 화면 전체 크기로 확장 */
 .university-container {
     display: flex;
     flex-direction: column;
-    align-items: center; /* 왼쪽 정렬 */
-    justify-content: center; /* 상단 정렬 */
-    height: 100vh;
-    padding: 50px;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh; /* 화면 높이 전체를 차지 */
+    width: 100vw;
     background-color: #FFF7F7;
+    padding: 0; /* 여백 제거 */
 }
 
-/* 입력 박스 */
+/* 🔹 입력 박스를 화면 중앙에 배치하고 크기를 키움 */
 .university-box {
     background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
     width: 100%;
+    max-width: 900px;
+    height: auto;
+    min-height: calc(100vh - 80px); /* 헤더 높이 제외하고 꽉 채움 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1; /* 컨테이너 내에서 자동 확장 */
 }
 
-/* 제목 */
+/* 🔹 제목 스타일 */
 .university-title {
-    font-size: 24px;
+    font-size: 28px;
     font-weight: bold;
     color: #FF4170;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
+    text-align: center;
 }
 
-/* 입력 필드 */
+/* 🔹 입력 필드 */
 .input-field {
     width: 100%;
-    padding: 12px;
-    margin-bottom: 12px;
+    padding: 14px;
+    margin-bottom: 15px;
     border: 1px solid #FFD4DE;
-    border-radius: 5px;
-    font-size: 14px;
+    border-radius: 8px;
+    font-size: 16px;
     background-color: white;
 }
 
-/* 파일 업로드 컨테이너 */
+/* 🔹 입력 필드 라벨 */
+.input-label {
+    text-align: left;
+    width: 100%;
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #333;
+}
+
+/* 🔹 파일 업로드 컨테이너 */
 .file-upload-wrapper {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    margin-top: 12px;
+    margin-top: 15px;
 }
 
-/* 파일 업로드 라벨 */
+/* 🔹 파일 업로드 라벨 */
 .file-upload-label {
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     color: #333;
-    width: 40%; /* 라벨 크기 조정 */
+    width: 45%; /* 라벨 크기 조정 */
     text-align: left;
 }
 
-/* 파일 선택 버튼 */
+/* 🔹 파일 선택 버튼 */
 .custom-file-upload {
     background-color: #FEA1B8;
     color: white;
     border: none;
-    padding: 8px 12px;
-    border-radius: 5px;
-    font-size: 9px;
+    padding: 10px 15px;
+    border-radius: 8px;
+    font-size: 12px;
     cursor: pointer;
     text-align: center;
     width: 30%;
@@ -80,35 +99,35 @@
     display: none;
 }
 
-/* 파일명 표시 */
+/* 🔹 파일명 표시 */
 .file-name {
-    font-size: 12px;
+    font-size: 14px;
     color: #666;
-    margin-left: 10px;
-    width: 40%;
+    margin-left: 12px;
+    width: 50%;
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
 }
 
-/* 다음 버튼 */
+/* 🔹 다음 버튼 */
 .next-button {
     width: 100%;
-    padding: 12px;
+    padding: 14px;
     background-color: #FEA1B8;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 18px;
+    border-radius: 10px;
+    font-size: 20px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 20px;
 }
 
 .next-button:hover {
     background-color: #F994AD;
 }
 
-/* 입력 필드 포커스 효과 */
+/* 🔹 입력 필드 포커스 효과 */
 .input-field:focus {
     outline: none;
     border-color: #FF4170;

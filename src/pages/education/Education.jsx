@@ -273,7 +273,7 @@ const Education = () => {
                   <span
                       style={{ ...bulletStyle, backgroundColor: "#df6e99" }}
                   ></span>
-                    어학점수: {languageObj.score || "없음"}
+                    어학점수: {languageObj.score || "0"}
                   </li>
                   <li style={listItemStyle}>
                   <span
@@ -339,6 +339,16 @@ const Education = () => {
             right: 10px !important;
             z-index: 2;
           }
+          .my-slider-container .slick-prev:before,
+          .my-slider-container .slick-next:before {
+            color: #000 !important; /* 화살표 아이콘 검은색 */
+          }
+          .my-slider-container .slick-dots li button:before {
+            color: #000 !important; /* 도트(점) 기본 색 검은색 */
+          }
+          .my-slider-container .slick-dots .slick-active button:before {
+            color: #000 !important; /* 활성화된 도트 색도 검은색 */
+          }
         `}
         </style>
       </div>
@@ -356,13 +366,15 @@ const pageWrapperStyle = {
   boxSizing: "border-box",
   fontFamily: "Pretendard, sans-serif",
   overflowY: "auto",
+
 };
 
 const boxWrapperStyle = {
-  background:
-      "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235,217,238,0.3) 100%)",
-  borderRadius: "8px",
-  padding: "16px",
+  // background:
+  //     "#fff5f5",
+  borderRadius: "18px",
+  padding: "6px",
+  marginTop: "30px", // 원하는 만큼 내려주기
 };
 
 const topContainerStyle = {
@@ -398,7 +410,7 @@ const abilityInfoStyle = {
 
 const listStyle = {
   margin: 7,
-  padding: 10,
+  padding: 6,
   listStyle: "none",
   fontSize: "12px",
   fontWeight: "bold",
@@ -407,7 +419,7 @@ const listStyle = {
 const listItemStyle = {
   display: "flex",
   alignItems: "center",
-  padding: "14px 0",
+  padding: "12px 0",
   borderBottom: "2px solid #8884d8",
 };
 
@@ -421,7 +433,7 @@ const bulletStyle = {
 const updateButtonStyle = {
   padding: "8px 12px",
   fontSize: "13px",
-  backgroundColor: "#df6e99",
+  backgroundColor: "#ff99aa",
   color: "#fff",
   border: "none",
   borderRadius: "16px",
@@ -452,8 +464,7 @@ const slideItemStyle = {
 };
 
 const companyCardStyle = {
-  background:
-      "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235,217,238,0.3) 100%)",
+  background: "#fff5f5",
   borderRadius: "15px",
   padding: "20px",
   width: "180px",

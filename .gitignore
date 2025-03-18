@@ -230,3 +230,13 @@ gradle-app.setting
 # Java heap dump
 *.hprof
 # End of https://www.toptal.com/developers/gitignore/api/macos,react,gradle,windows,intellij,visualstudiocode,eclipse
+
+### macOS 시스템 파일 방지 ###
+.DS_Store.DS_Store
+
+# IDE-specific config files
+*.xml
+
+# Ignore IDE and config files
+*.iml
+.idea/

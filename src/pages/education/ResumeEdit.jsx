@@ -137,6 +137,7 @@ const ResumeEdit = () => {
                 {answers[selectedQuestion].length}/{maxCharacters}자
             </p>
 
+
             {/* 어학시험 섹션 */}
             <div style={sectionStyle}>
                 <h3 style={sectionTitle}>어학시험</h3>
@@ -406,7 +407,7 @@ const buttonStyle = {
     height: "40px",
     borderRadius: "50%",
     backgroundColor: "#f0f0f0",
-    color: "#333",
+    color: "#ff99aa",
     border: "none",
     cursor: "pointer",
 };
@@ -487,7 +488,7 @@ const controlRow = {
 const halfButton = {
     width: "48%",
     padding: "2%",
-    backgroundColor: "#ccc",
+    backgroundColor: "#ff99aa",
     border: "none",
     cursor: "pointer",
     textAlign: "center",
@@ -496,7 +497,7 @@ const halfButton = {
 const saveButton = {
     width: "100%",
     padding: "3%",
-    backgroundColor: "#df6e99",
+    backgroundColor: "#ff99aa",
     color: "white",
     fontSize: "1.2rem",
     border: "none",
