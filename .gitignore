@@ -239,4 +239,4 @@ gradle-app.setting
 
 # Ignore IDE and config files
 *.iml
-.idea/
+.idea/*

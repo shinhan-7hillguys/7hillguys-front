@@ -1,11 +1,13 @@
 // Review.jsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Step1University from "pages/investReview/Step1University";
 import Step2Personal from "pages/investReview/Step2Personal";
 import Step3Certification from "pages/investReview/Step3Certification";
 import Step4Health from "pages/investReview/Step4Health";
 import Step5Mental from "pages/investReview/Step5Mental";
 import Step6Submit from "pages/investReview/Step6Submit";
+import {resolve} from "chart.js/helpers";
 
 // 심리/인성 검사 문항
 const mentalQuestions = [
@@ -28,6 +30,7 @@ const radioOptions = [
 ];
 
 const Review = () => {
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         userId: "",
@@ -244,6 +247,9 @@ const Review = () => {
                 if (!fileResponse.ok) throw new Error("파일 업로드 실패");
 
                 alert("제출이 완료되었습니다!");
+                console.log("gd");
+                navigate("/investment/status");
+
                 setFormData({
                     userId: "",
                     universityInfo: { universityName: "", major: "" },
