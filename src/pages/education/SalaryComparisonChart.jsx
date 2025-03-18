@@ -195,9 +195,9 @@ const SalaryComparisonChart = () => {
                     내 연봉, 개발자 평균 연봉, {selectedCompany ? selectedCompany.name : "네이버"} 평균 연봉 비교
                 </p>
                 <Bar data={data} options={options} />
-                <button onClick={() => navigate(-1)} style={backButtonStyle}>
-                    뒤로가기
-                </button>
+                {/*<button onClick={() => navigate(-1)} style={backButtonStyle}>*/}
+                {/*    뒤로가기*/}
+                {/*</button>*/}
             </div>
 
             {/* (B) 자소서 리스트 테이블 영역 */}
@@ -245,8 +245,8 @@ const pageContainerStyle = {
     maxWidth: "900px",
     margin: "0 auto",
     padding: "20px",
-    background:
-        "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235,217,238,0.3) 100%)",
+    // background:
+    //     "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235,217,238,0.3) 100%)",
     boxSizing: "border-box",
     fontFamily: "Pretendard, sans-serif",
 };
@@ -256,10 +256,10 @@ const chartContainerStyle = {
     maxWidth: "700px",
     margin: "0 auto 30px",
     padding: "20px",
-    background:
-        "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235,217,238,0.3) 100%)",
+    // background:
+    //     "linear-gradient(191deg, rgb(255 247 252 / 70%) 0%, rgba(235,217,238,0.3) 100%)",
     borderRadius: "40px",
-    boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
+    // boxShadow: "0px 2px 8px rgba(0, 0, 0, 0.1)",
 };
 
 const chartTitleStyle = {
