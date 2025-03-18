@@ -7,9 +7,6 @@ import Step4Health from "pages/investReview/Step4Health";
 import Step5Mental from "pages/investReview/Step5Mental";
 import Step6Submit from "pages/investReview/Step6Submit";
 
-/*CSS파일*/
-import 'styles/investReview/Review.css';
-
 // 심리/인성 검사 문항
 const mentalQuestions = [
     { id: "M1", text: "나는 스트레스 상황에서 침착함을 유지한다." },
@@ -275,7 +272,7 @@ const Review = () => {
     };
 
     return (
-        <div className="p-6 border rounded-lg w-96 mx-auto mt-10">
+        <div className="investReview-container">
             {step === 1 && (
                 <Step1University
                     formData={formData}
