@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: white;
 }
 
@@ -22,7 +22,7 @@
 .login-title {
     font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
+    color: black;
     margin-bottom: 20px;
 }
 
@@ -44,26 +44,26 @@
 }
 
 /* 로그인 버튼 */
-.login-button {
+.login-box .login-button , .logout-button{
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     background-color: #FEA1B8;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 12px;
     cursor: pointer;
     margin-top: 10px;
 }
 
-.logout-button {
+.login-button , .logout-button{
     width: 100%;
-    padding: 12px;
-    background-color: #FEA1B8;
+    padding: 10px;
+    background-color: #f4b0b0;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 12px;
     cursor: pointer;
     margin-top: 10px;
 }
