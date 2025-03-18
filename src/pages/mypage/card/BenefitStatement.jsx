@@ -41,10 +41,12 @@ function BenefitStatement() {
   }, [yearMonth]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        {/* 연/월 선택 영역 */}
-        <div className="flex items-center justify-center space-x-2 p-4 border-b border-gray-200">
+    <div className="min-h-screen bg-gray-100 p-0">
+      <div className="w-full bg-white rounded-l-md rounded-r-md shadow-md p-6">
+        <div className="flex justify-center">
+          <h1 className="text-2xl font-bold">혜택 명세서</h1>
+        </div>
+        <div className="flex items-center justify-start space-x-2 p-4 border-b border-gray-200">
           <span className="text-xl font-bold">{currentYear}년</span>
           <div className="relative">
             <select
@@ -70,12 +72,9 @@ function BenefitStatement() {
           </div>
         </div>
 
-        {/* 받은 혜택 정보 */}
-        <div className="text-center py-6">
+        <div className="rounded-lg p-4 mb-4 bg-pink-50">
           {statement.userName && (
-            <p className="text-sm text-gray-500 mb-1">
-              {statement.userName}님이 받은 혜택
-            </p>
+            <p className="text-sm mb-1">{statement.userName}님이 받은 혜택</p>
           )}
           <p className="text-3xl font-bold text-pink-600">
             {String(statement.totalBenefitDiscount)}원
