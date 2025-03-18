@@ -120,6 +120,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     className="input-field"
                 />*/}
 
+                <label className="input-label">주</label>
                 {/* 주소 입력 필드 */}
                 <div className="address-input-group">
                     <input
@@ -137,6 +138,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                 {/* Daum 주소 API가 삽입될 div */}
                 <div id="postcode-container" style={{ width: "100%", height: "400px", display: "none" }}></div>
 
+                <label className="input-label">자산</label>
                 <input
                     type="number"
                     name="assets"
@@ -160,6 +162,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     </span>
                 </div>
 
+                <label className="input-label">자녀수</label>
                 <input
                     type="number"
                     name="familyStatus.children"
@@ -179,7 +182,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                         onChange={handleChange}
                     />
                     <span className="personal-checkbox-label-text">
-                        {formData.criminalRecord ? "가능" : "불가능"}
+                        {formData.criminalRecord ? "불가능" : "가능"}
                     </span>
                 </div>
 
