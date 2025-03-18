@@ -61,50 +61,44 @@ function CardStatement() {
   }, [sortType, statement.statementList]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      {/* 전체 컨테이너 (모바일 기준 중앙 정렬) */}
-      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md p-4">
-        {/* 상단 헤더 영역 */}
+    <div className="min-h-screen bg-gray-100 p-0">
+      <div className="w-full bg-white rounded-l-md rounded-r-md shadow-md p-6">
+        <div className="flex justify-center mb-4">
+          <h1 className="text-2xl font-bold">카드 명세서</h1>
+        </div>
         <div className="flex items-center justify-between mb-4">
-          <div>
-            {/* 월 선택 (연도 + 월) */}
-            <div className="flex items-center space-x-2">
-              <span className="text-xl font-bold">{currentYear}년</span>
-              <div className="relative">
-                <select
-                  value={selectedMonth}
-                  onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                  className="block appearance-none w-full bg-white border border-gray-300 rounded-md py-2 px-3 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-pink-300"
+          <div className="flex items-center space-x-2">
+            <span className="text-xl font-bold">{currentYear}년</span>
+            <div className="relative">
+              <select
+                value={selectedMonth}
+                onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                className="block appearance-none w-full bg-white border border-gray-300 rounded-md py-2 px-3 pr-8 leading-tight focus:outline-none focus:ring-2 focus:ring-pink-300"
+              >
+                {[...Array(12)].map((_, i) => (
+                  <option key={i + 1} value={i + 1}>
+                    {i + 1}월
+                  </option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <svg
+                  className="fill-current h-4 w-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
                 >
-                  {[...Array(12)].map((_, i) => (
-                    <option key={i + 1} value={i + 1}>
-                      {i + 1}월
-                    </option>
-                  ))}
-                </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                  <svg
-                    className="fill-current h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
-                  >
-                    <path d="M5.516 7.548L10 12.032l4.484-4.484L16 8.064 10 14.064 4 8.064l1.516-1.516z" />
-                  </svg>
-                </div>
+                  <path d="M5.516 7.548L10 12.032l4.484-4.484L16 8.064 10 14.064 4 8.064l1.516-1.516z" />
+                </svg>
               </div>
             </div>
           </div>
         </div>
-
-        {/* 총 이용금액 박스 */}
         <div className="rounded-lg p-4 mb-4 bg-pink-50">
           <p className="text-gray-600 text-sm">총 이용금액</p>
           <p className="text-3xl font-bold text-gray-800">
             {statement.monthlySpent.toLocaleString()}원
           </p>
         </div>
-
-        {/* 남은 한도/월 한도 표시 */}
         <div className="flex justify-between items-center mb-4 px-2">
           <p className="text-gray-700">
             <span className="text-sm text-gray-500 mr-1">남은 한도:</span>
@@ -119,8 +113,6 @@ function CardStatement() {
             </span>
           </p>
         </div>
-
-        {/* 탭/정렬 영역 */}
         <div className="flex items-center justify-end mb-4 px-2 text-sm text-gray-600">
           <button
             onClick={() => setSortType("최신순")}
@@ -147,8 +139,6 @@ function CardStatement() {
             </span>
           </button>
         </div>
-
-        {/* 이용 내역 리스트 */}
         <ul>
           {sortedStatementList.map((tx) => {
             const textColorClass =
