@@ -126,8 +126,8 @@ const InvestmentExit = () => {
                 // 두 데이터를 병합하여 그래프 데이터 생성
                 const formattedData = Object.entries(firstExpectedIncome).map(([year, income]) => ({
                     year: `${year}년`,
-                    firstIncome: income / 10000,
-                    lastIncome: lastExpectedIncome[year] ? lastExpectedIncome[year] / 10000 : null
+                    firstIncome: Number((income / 10000).toFixed(0)),  // 숫자로 변환
+                    lastIncome: lastExpectedIncome[year] ? Number((lastExpectedIncome[year] / 10000).toFixed(0)) : null
                 }));
                 setChartData(formattedData);
                 setLoading(false);
@@ -149,7 +149,7 @@ const InvestmentExit = () => {
 
     return (
         <Container>
-            <h1>투자 지원 금액 변경</h1>
+            <h1>엑시트 (조기 계약 종료)</h1>
 
             <div style={{height: '400px', marginBottom: '20px'}}>
                 <ResponsiveContainer width="100%" height="100%">
