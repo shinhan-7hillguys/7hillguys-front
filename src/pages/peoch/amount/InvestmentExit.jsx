@@ -111,7 +111,7 @@ const InvestmentExit = () => {
     useEffect(() => {
         const fetchExpectedIncome = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/investment/exit', {
+                const response = await axios.get('/api/investment/exit', {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json"
