@@ -46,7 +46,15 @@
     align-items: center;
     justify-content: center;
     padding: 0 20px;
-    padding-top: 30px;
+    padding-top: 10px;
+    height: 40vh;
+    width: 100%;
+  }
+  .card_benefit_sec1 div {
+    background: #f0c1de;
+    width: 95%;
+    height: 75%;
+    border-radius: 20px;
   }
   .card {
     box-shadow: 0 8px 12px -2px rgba(2, 2, 2, 0.3),

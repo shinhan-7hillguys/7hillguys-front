@@ -153,23 +153,7 @@ const filteredAvailableBenefits = useMemo(() => {
   return (
     <>
       <section className="card_benefit_sec1">
-        <div className={`flip-container ${isFlipped ? "flipped" : ""}`}>
-          <div className="flipper">
-            {/* Front: 혜택 선택 영역 */}
-            <div className="front">
-              <div className="card">
-                <p className="card-title">Card (체크하여 혜택 선택)</p>
-                <button className="my-benefit-btn" onClick={() => setIsFlipped(true)}>
-                  My 혜택
-                </button>
-              </div>
-            </div>
-            {/* Back: 적용된 혜택과 추가 혜택 모달 */}
-            <div className="back">
-              {/* <MyBenefitsModal /> */}
-            </div>
-          </div>
-        </div>
+        <div></div>
       </section>
 
       <section className="card_benefit_sec2">
