@@ -18,7 +18,7 @@ import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
 
-import Dashboard from "./pages/admin/dashboard";
+import Dashboard from "./pages/admin/Dashboard";
 
 
 // card 및 혜택
@@ -90,7 +90,7 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/admin" element={<Dashboard />} />
           <Route path="/admin/search/:query" element={<SearchResults />} />
-          <Route path="/admin/user/detail/:id" element={<Detail />} />
+          <Route path="/admin/user/detail/:userid" element={<Detail />} />
         </Route>
 
         <Route element={<AppLayout />}>
