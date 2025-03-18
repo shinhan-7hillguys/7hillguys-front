@@ -215,7 +215,6 @@ const Main = () => {
                     <button className="logout-button" onClick={handleLogout}>
                         L o g o u t
                     </button>
-                    <Link to="/signup" className="signup-button">S i g n u p</Link>
                 </div>
 
             </div>
