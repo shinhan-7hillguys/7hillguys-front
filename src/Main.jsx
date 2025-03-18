@@ -7,6 +7,7 @@ import "./main.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const Main = () => {
+
     const containerRef = useRef(null);
     const togetherRef = useRef(null);
     const valueRef = useRef(null);
@@ -193,6 +194,7 @@ const Main = () => {
                     </Link>
                     <Link to="/signup" className="signup-button">S i g n u p</Link>
                 </div>
+
             </div>
             {/* 첫 번째 섹션 - 인트로 */}
             <section className="vertical-section intro-section">
