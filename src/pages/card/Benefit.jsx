@@ -96,7 +96,7 @@ const Benefit = () => {
   };
 
   const handleAdd = () => {
-    console.log(addedBenefits.length, appliedBenefits.length )
+  
     if(addedBenefits.length + 1 + appliedBenefits.length > 3) return alert("최대 3개 초과");
     if (checkedBenefits.length === 0) {
       alert("추가할 혜택을 선택하세요.");
@@ -112,6 +112,10 @@ const Benefit = () => {
     });
     setCheckedBenefits([]);
   };
+  useEffect(() => {
+    console.log("updated addedBenefits:", addedBenefits);
+    console.log("appliedBenefits : ", appliedBenefits)
+  }, [addedBenefits, appliedBenefits]);
 
   const handleClear = () => {
     if (addedBenefits.length === 0) return;
@@ -204,6 +208,7 @@ const filteredAvailableBenefits = useMemo(() => {
 console.log("card : ", card)
   return (
     <>
+          <h2 className="sec_title">카멜레온 카드 혜택 적용</h2>
       <section className="card_benefit_sec1">
         <div>
           {/* 백컬러 프론트로 바꾸고 이미지 url */}
@@ -222,8 +227,8 @@ console.log("card : ", card)
                     />
                     {card?.cardDesigns[0]?.layoutId == "1" && (
                       <>
-                        <NumberLabel style={layoutPresets["1"].number}>{card?.cardNumber}</NumberLabel>
-                        <NameLabel style={layoutPresets["1"].name}>{card?.cardName}</NameLabel>
+                        <NumberLabel style={layoutPresets["1"].number}> {card?.cardNumber && card.cardNumber.replace(/(\d{4})(?=\d)/g, '$1-')}</NumberLabel>
+                        <NameLabel style={layoutPresets["1"].name}>{card?.enName}</NameLabel>
                         <ExpiryLabel style={layoutPresets["1"].expiry}>{card?.expirationDate}</ExpiryLabel>
                       </>
                     )}
@@ -296,7 +301,10 @@ console.log("card : ", card)
 
       <section className="card_benefit_sec4">
   <ul className="benefits-list">
-    {filteredAvailableBenefits && filteredAvailableBenefits.map((b) => (
+    <div className="benefits_column">
+        혜택 리스트
+    </div>
+    {filteredAvailableBenefits && filteredAvailableBenefits.map((b, i) => (
       <li key={b.benefitId} className="benefit-item">
         <label className="custom-checkbox">
           <input
@@ -307,11 +315,11 @@ console.log("card : ", card)
           <span className="checkmark"></span>
         </label>
         <div className="benefit-info">
-          <p className="benefit-name">{b.name}</p>
+          <p className="benefit-name">{i+1}. {b.name}</p>
           <p className="benefit-desc">{b.description}</p>
         </div>
         <div className="benefit-price">
-          <p>{b.fee}</p>
+          <p>{b.fee.toLocaleString("ko-KR") + "원"}</p>
         </div>
       </li>
     ))}

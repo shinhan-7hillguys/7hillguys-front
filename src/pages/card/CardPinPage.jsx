@@ -67,7 +67,6 @@ function CardPinPage() {
 
   return (
     <div className="card_pin">
-      <NavigationHeader />
       <h2>{stage === "enter" ? "카드 비밀번호" : "비밀번호 확인"}</h2>
       <p style={{ color: stage === "confirm" && error ? "red" : "inherit" }}>
         {stage === "enter"

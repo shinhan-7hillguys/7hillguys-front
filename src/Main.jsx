@@ -107,7 +107,7 @@ const Main = () => {
         "+=0"
       );
 
-    // panel2 애니메이션 (필요한 경우)
+    // panel2 애니메이션
     gsap.from(panel2Ref.current, {
       opacity: 0,
       y: 50,
