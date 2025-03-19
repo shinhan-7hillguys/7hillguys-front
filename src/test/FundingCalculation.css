@@ -1,0 +1,59 @@
+.funding-calculation {
+  margin-top: 20px;
+  text-align: center;
+  margin-right: 60px;
+  position: relative;
+}
+ 
+.data-analysis-container {
+  position: relative;
+  width: 200px;
+  height: 200px;
+  margin: 0 auto;
+}
+ 
+.data-item {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  line-height: 60px;
+  border-radius: 50%;
+  background-color: #f0f0f0;
+  color: #333;
+  font-weight: bold;
+  text-align: center;
+}
+ 
+.data-item.age {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(0deg) translate(80px) rotate(0deg);
+}
+
+.data-item.job {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(120deg) translate(80px) rotate(-120deg);
+}
+
+.data-item.school {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(240deg) translate(80px) rotate(-240deg);
+}
+ 
+.funding-amount {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
+  color: #28a745;
+}
+ 
+.funding-label {
+  font-size: 1rem;
+  color: #333;
+  margin-top: 10px;
+}

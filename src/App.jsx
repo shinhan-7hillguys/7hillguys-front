@@ -72,7 +72,7 @@ import PositiveFactors from "./pages/account/PositiveFactors";
 import ContractPreview from "./pages/investResult/ContractPreview";
 
 /* test */ 
-import Test from "./test/MainCycle";
+import Test from "./test/ServiceCycle";
 
 function App() {
   axios.defaults.withCredentials = true;

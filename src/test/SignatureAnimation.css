@@ -1,0 +1,28 @@
+.signature-container {
+    margin-top: 20px;
+    margin-left: 100px;
+    text-align: center;
+  }
+   
+  .signature-container svg {
+    width: 200px !important; 
+    height: 150px !important;
+  }
+   
+  .signature-container svg * {
+    fill: none !important;
+    stroke: #000 !important;       
+    stroke-width: 3 !important;     
+    stroke-opacity: 1 !important;  
+    vector-effect: non-scaling-stroke;  
+  }
+  .signature-container svg path {
+    stroke-dasharray: 2000;
+    stroke-dashoffset: 2000;
+    transition: stroke-dashoffset 6s ease;
+  }
+   
+.signature-container.animate svg path {
+    stroke-dashoffset: 0;
+  }
+  
