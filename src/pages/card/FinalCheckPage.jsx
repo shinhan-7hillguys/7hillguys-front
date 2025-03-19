@@ -90,11 +90,11 @@ function FinalCheckPage() {
           </div>
           <div className="form-group">
             <label>총 금액:</label>
-            <input type="text" value={totalAmount ? totalAmount + "원" : ""} readOnly />
+            <input type="text" value={totalAmount ? totalAmount.toLocaleString() + "원" : ""} readOnly />
           </div>
           <div className="form-group">
             <label>월 지원금:</label>
-            <input type="text" value={monthlyAmount ? monthlyAmount + "원" : ""} readOnly />
+            <input type="text" value={monthlyAmount ? monthlyAmount.toLocaleString() + "원" : ""} readOnly />
           </div>
         </div>
         <br />
