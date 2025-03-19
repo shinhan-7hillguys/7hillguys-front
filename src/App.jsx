@@ -1,3 +1,4 @@
+import { useState } from "react";
 import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
@@ -16,7 +17,6 @@ import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
 
-import Dashboard from "./pages/admin/Dashboard";
 
 
 // card 및 혜택
@@ -29,7 +29,8 @@ import PersonalInfoPage from "pages/card/PersonalInfoPage";
 import EnglishNamePage from "pages/card/EnglishNamePage";
 import CardPinPage from "pages/card/CardPinPage";
 import FinalCheckPage from "pages/card/FinalCheckPage";
- 
+
+import Dashboard from "./pages/admin/Dashboard"; 
 import BenefitCompare from "pages/card/BenefitCompare";
 
 import User from "pages/user/User";
@@ -122,7 +123,7 @@ function App() {
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
 
-    
+
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
@@ -172,7 +173,8 @@ function App() {
           <Route path="/account/calculationResult" element={<CalculationResult />} />
           <Route path="/account/positive" element={<PositiveFactors />} />
         </Route>
-        <Route element={<Layout />}> 
+        <Route element={<Layout />}>
+          {/* <Route path="/admin" element={<Dashboard />} /> */}
           <Route path="/admin/search/:query" element={<SearchResults />} />
           <Route path="/admin/user/detail/:userid" element={<Detail />} />
         </Route>
