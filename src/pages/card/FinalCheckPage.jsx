@@ -90,11 +90,13 @@ function FinalCheckPage() {
           </div>
           <div className="form-group">
             <label>총 금액:</label>
+
             <input type="text" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString("ko-KR") + "원" : ""} readOnly />
           </div>
           <div className="form-group">
             <label>월 지원금:</label>
             <input type="text" value={userInfo.monthlyAllowance ? userInfo.monthlyAllowance.toLocaleString("ko-KR") + "원" : ""} readOnly />
+
           </div>
         </div>
         <br />

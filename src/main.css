@@ -23,7 +23,7 @@ html {
 .main_header {
   position: fixed;
   z-index: 100;
-  background: transparent;
+  background: #f4b0b0;
   margin: 0 auto;
   width: 100%;
   display: flex;
@@ -761,7 +761,7 @@ html {
 ::-webkit-scrollbar {
   scrollbar-width: none;
 }
-/* 
+/*
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
 }

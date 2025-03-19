@@ -11,107 +11,72 @@ import {
 axios.defaults.withCredentials = true;
 
 function PositiveFactors2() {
-    const [user, setUser] = useState(null);
     const [profileData, setProfileData] = useState(null);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        axios.get('/api/auth/user', {
-            withCredentials: true,
-            headers: {
-                "Content-Type": "application/json"
-            }
+        axios.get("/api/userprofiles2", {
+            withCredentials: true, // 쿠키 포함
         })
             .then((res) => {
-                setUser(res.data);
+                console.log("profileData:", res.data);
+                setProfileData(res.data);
             })
             .catch((err) => {
                 console.error(err);
-                setError("사용자 정보를 불러올 수 없습니다.");
+                setError("user_profiles2 데이터를 불러올 수 없습니다.");
             });
     }, []);
 
-    useEffect(() => {
-        if (user && user.userId) {
-            axios.get(`/api/userprofiles2?userId=${user.userId}`)
-                .then((res) => {
-                    console.log("profileData:", res.data);
-                    setProfileData(res.data);
-                })
-                .catch((err) => {
-                    console.error(err);
-                    setError("user_profiles2 데이터를 불러올 수 없습니다.");
-                });
-        }
-    }, [user]);
-
     if (error) {
         return <div style={styles.error}>{error}</div>;
-    }
-    if (!user) {
-        return <div style={styles.error}>로그인이 필요한 서비스입니다.</div>;
     }
     if (!profileData) {
         return <div style={styles.loading}>로딩 중...</div>;
     }
 
+    // JSON 파싱
     const gradeObj = JSON.parse(profileData.grade);
     const languageObj = JSON.parse(profileData.languageScore);
 
+    // 차트 데이터
     const chartData = [
         {
             name: "학점",
             value: parseFloat(gradeObj.gpa),
             max: parseFloat(gradeObj.maxGpa) || 4.5,
-            avg: 3.2, // 더미 평균
+            avg: 3.2, // 더미
         },
         {
             name: "어학",
             value: parseFloat(languageObj.score),
             max: 990,
-            avg: 700, // 더미 평균
+            avg: 700, // 더미
         },
         {
             name: "인턴",
             value: 1,
             max: 5,
-            avg: 2, // 더미 평균
+            avg: 2, // 더미
         },
         {
             name: "자격증",
             value: 1,
             max: 10,
-            avg: 3, // 더미 평균
+            avg: 3, // 더미
         },
     ];
 
-
-    const renderCustomLabel = (props) => {
-        const { x, y, width, value } = props;
-        return (
-            <text
-                x={x + width + 5}
-                y={y + 10}
-                fill="#555"
-                fontSize={14}
-                fontWeight="bold"
-            >
-                {value}
-            </text>
-        );
-    };
-
     return (
         <div style={styles.container}>
-            <h1 style={styles.title}>긍정 요인 시각화</h1>
-            <p> 내 직군 : 컴퓨터공학</p>
+            <h1 style={styles.title}>직군 비교</h1>
 
             {chartData.map((item) => (
                 <div key={item.name} style={styles.chartBox}>
                     <div style={styles.labelTop}>
                         <span style={styles.itemTitle}>{item.name}</span>
                         <span style={styles.itemScore}>
-                내 점수 : {item.value} / 평균 : {item.avg}
+              내 점수 : {item.value} / 평균 : {item.avg}
                             {(item.name === '학점' || item.name === '어학') && ` / 만점 : ${item.max}`}
             </span>
                     </div>
@@ -120,7 +85,7 @@ function PositiveFactors2() {
                         <ResponsiveContainer>
                             <BarChart
                                 layout="vertical"
-                                data={[{ category: item.name, score: item.value,  avg: item.avg  }]}
+                                data={[{ category: item.name, score: item.value, avg: item.avg }]}
                                 margin={{ top: 5, right: 20, left: 20, bottom: 5 }}
                             >
                                 <XAxis type="number" hide domain={[0, item.max]} />
@@ -138,14 +103,12 @@ function PositiveFactors2() {
                                     fill="url(#barColor)"
                                     barSize={20}
                                     radius={[10, 10, 10, 10]}
-                                    label={renderCustomLabel}
                                 />
                                 <Bar
                                     dataKey="avg"
                                     fill="#8884d8"
                                     barSize={20}
                                     radius={[10, 10, 10, 10]}
-                                    label={{ position: "right", fill: "#000", fontSize: 14 }}
                                 />
                             </BarChart>
                         </ResponsiveContainer>

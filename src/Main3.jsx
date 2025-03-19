@@ -236,7 +236,7 @@ const Main = () => {
                             <div className="comparison-title">일반 금융</div>
                             <div className="comparison-content">
                                 <p>과거 신용 기록 중심</p>
-                                <p>표준화된 대출 조건</p>
+                                <p>표준화된 투자 조건</p>
                                 <p>복잡한 서류 절차</p>
                                 <p>단순 이자 수익 모델</p>
                             </div>
