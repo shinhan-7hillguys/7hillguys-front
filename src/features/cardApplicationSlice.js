@@ -89,6 +89,8 @@ const initialState = {
     phone: "",
     email: "",
     address: "",
+    maxInvestment: "",
+    monthlyAllowance: "",
   },
   // 영문 이름, 카드 PIN, 지원 정보 등 기존 상태...
   englishName: { firstName: "", lastName: "" },

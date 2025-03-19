@@ -1,3 +1,4 @@
+// src/Main.jsx
 import React, { useState, useEffect, useRef } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,22 +9,22 @@ import "./main.css";
 gsap.registerPlugin(ScrollTrigger);
 
 const Main = () => {
-  
-    const containerRef = useRef(null);
-    const togetherRef = useRef(null);
-    const valueRef = useRef(null);
-    const panel2Ref = useRef(null);
+  const containerRef = useRef(null);
+  const togetherRef = useRef(null);
+  const valueRef = useRef(null);
+  const panel2Ref = useRef(null);
+  const sectionsRef = useRef([]);
 
+  // 로그아웃 핸들러
   const handleLogout = async () => {
     try {
       const response = await fetch("/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });
-
       if (response.ok) {
         console.log("로그아웃 성공");
-        window.location.href = "/"; // 메인 페이지로 강제 이동
+        window.location.href = "/"; // 메인 페이지로 이동
       } else {
         console.error("로그아웃 실패");
         alert("로그아웃에 실패했습니다.");
@@ -34,110 +35,51 @@ const Main = () => {
     }
   };
 
-    // 텍스트 애니메이션을 위한 ref 추가
-    const sectionsRef = useRef([]);
+  useEffect(() => {
+    // 스크롤 스냅 효과 제거
+    document.body.style.overflow = "auto";
+    document.body.style.scrollSnapType = "none";
 
-    useEffect(() => {
-        // 스크롤 스냅 효과 제거 (부드러운 스크롤을 위해)
-        document.body.style.overflow = 'auto';
-        document.body.style.scrollSnapType = 'none';
+    // 텍스트 애니메이션 초기 설정
+    gsap.set(".text-animation", { opacity: 0, scale: 0.8, y: 100 });
 
-
-        gsap.set(".text-animation", {opacity: 0, scale: 0.8, y: 100});
-
-        // 각 섹션에 대한 애니메이션 설정
-        const sections = document.querySelectorAll(".vertical-section");
-
-        sections.forEach((section, index) => {
-            const texts = section.querySelectorAll(".text-animation");
-
-            texts.forEach((text, i) => {
-                // 텍스트 애니메이션 타임라인 생성
-                const tl = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: section,
-                        start: "top 80%",
-                        end: "bottom 20%",
-                        scrub: 1,
-                        toggleActions: "play none none reverse",
-                    }
-                });
-
-                // 나타나는 애니메이션
-                tl.fromTo(
-                    text,
-                    {
-                        opacity: 0,
-                        scale: 0.8,
-                        y: 100
-                    },
-                    {
-                        opacity: 1,
-                        scale: 1,
-                        y: 0,
-                        duration: 0.5,
-                        delay: i * 0.1,
-                        ease: "power2.out"
-                    }
-                );
-
-                // 사라지는 애니메이션 - 위로 올라가면서 사라짐
-                tl.to(
-                    text,
-                    {
-                        opacity: 0,
-                        scale: 1,
-                        y: -100, // 위로 올라가면서 사라짐
-                        duration: 0.5,
-                        ease: "power2.in"
-                    },
-                    "+=0.2"
-                );
-            });
- 
+    // 각 섹션에 대한 애니메이션 설정
+    const sections = document.querySelectorAll(".vertical-section");
+    sections.forEach((section) => {
+      const texts = section.querySelectorAll(".text-animation");
+      texts.forEach((text, i) => {
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: "top 80%",
+            end: "bottom 20%",
+            scrub: 1,
+            toggleActions: "play none none reverse",
+          },
         });
-
         // 나타나는 애니메이션
         tl.fromTo(
           text,
-          {
-            opacity: 0,
-            scale: 0.8,
-            y: 100
-          },
-          {
-            opacity: 1,
-            scale: 1,
-            y: 0,
-            duration: 0.5,
-            delay: i * 0.1,
-            ease: "power2.out"
-          }
+          { opacity: 0, scale: 0.8, y: 100 },
+          { opacity: 1, scale: 1, y: 0, duration: 0.5, delay: i * 0.1, ease: "power2.out" }
         );
-
-        // 사라지는 애니메이션 - 위로 올라가면서 사라짐
+        // 사라지는 애니메이션
         tl.to(
           text,
-          {
-            opacity: 0,
-            scale: 1,
-            y: -100, // 위로 올라가면서 사라짐
-            duration: 0.5,
-            ease: "power2.in"
-          },
+          { opacity: 0, scale: 1, y: -100, duration: 0.5, ease: "power2.in" },
           "+=0.2"
         );
       });
     });
 
-    // 첫 번째 섹션 애니메이션
-    const tl = gsap.timeline();
-
-    tl.fromTo(
-      togetherRef.current,
-      { opacity: 0, y: -50 },
-      { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
-    )
+    // 첫 번째 섹션 애니메이션 타임라인
+    const tlMain = gsap.timeline();
+    tlMain
+      .fromTo(
+        togetherRef.current,
+        { opacity: 0, y: -50 },
+        { opacity: 1, y: 0, duration: 1.5, ease: "power2.out" }
+      )
       .fromTo(
         valueRef.current,
         { opacity: 0, y: -50 },
@@ -145,6 +87,7 @@ const Main = () => {
         "+=0"
       );
 
+    // panel2 애니메이션
     gsap.from(panel2Ref.current, {
       opacity: 0,
       y: 50,
@@ -157,8 +100,8 @@ const Main = () => {
       },
     });
 
+    // 이미지 애니메이션
     const images = gsap.utils.toArray(".main_img1, .main_img2, .main_img3, .main_img4, .main_img5");
-
     images.forEach((img, index) => {
       gsap.fromTo(
         img,
@@ -178,134 +121,80 @@ const Main = () => {
       );
     });
 
-    // 이미지 회전 애니메이션
+    // 이미지 회전 애니메이션 예시
     images.forEach((img, index) => {
-      const targetRotation = ((index + 1) % 2 === 0) ? 45 : -45;
-
+      const targetRotation = (index + 1) % 2 === 0 ? 45 : -45;
       gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
           start: "top -3%",
           toggleActions: "play reverse play reverse",
-        }
+        },
       })
+        .to(img, { rotation: targetRotation, ease: "power2.out", duration: 1 })
         .to(
           img,
-          {
-            rotation: targetRotation,
-            ease: "power2.out",
-            duration: 1,
+          { rotation: 0, ease: "power2.out", duration: 1 },
+          0.5
+        );
+    });
+
+    // 패럴랙스 효과 추가
+    gsap.utils.toArray(".parallax-section").forEach((section) => {
+      const depth = section.dataset.speed;
+      const movement = -(section.offsetHeight * depth);
+      gsap.fromTo(
+        section,
+        { y: 0 },
+        {
+          y: movement,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            scrub: true,
+            start: "top bottom",
+            end: "bottom top",
           },
-          0
-        )
-        .to(
-          img,
-          {
-            rotation: 0,
-            ease: "power2.out",
- 
-            scrollTrigger: {
-                trigger: panel2Ref.current,
-                start: "top 80%",
-                toggleActions: "play none none none",
-            },
-        });
+        }
+      );
+    });
 
-        const images = gsap.utils.toArray(".main_img1, .main_img2, .main_img3, .main_img4, .main_img5");
+    // 스크롤 버튼 클릭 이벤트 (존재하는 경우)
+    const scrollBtn = document.querySelector(".scroll_btn");
+    if (scrollBtn) {
+      scrollBtn.addEventListener("click", () => {
+        const nextSection = document.querySelector(".text-animation-section");
+        if (nextSection) {
+          nextSection.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    }
 
-        images.forEach((img, index) => {
-            gsap.fromTo(
-                img,
-                {scale: 0.6, opacity: 0},
-                {
-                    scale: 1,
-                    opacity: 1,
-                    duration: 1.5,
-                    ease: "power2.out",
-                    delay: index * 0.3,
-                    scrollTrigger: {
-                        trigger: img,
-                        start: "top 100%",
-                        toggleActions: "play none none none",
-                    },
-                }
-            );
-        });
+    // cleanup: 이벤트 리스너 제거
+    return () => {
+      if (scrollBtn) {
+        scrollBtn.removeEventListener("click", () => {});
+      }
+    };
+  }, []);
 
-        // 이미지 회전 애니메이션
-        images.forEach((img, index) => {
-            const targetRotation = ((index + 1) % 2 === 0) ? 45 : -45;
-
-            gsap.timeline({
-                scrollTrigger: {
-                    trigger: containerRef.current,
-                    start: "top -3%",
-                    toggleActions: "play reverse play reverse",
-                }
-            })
-                .to(
-                    img,
-                    {
-                        rotation: targetRotation,
-                        ease: "power2.out",
-                        duration: 1,
-                    },
-                    0
-                )
-                .to(
-                    img,
-                    {
-                        rotation: 0,
-                        ease: "power2.out",
-                        duration: 1,
-                    },
-                    0.5
-                );
-        });
-
-        // 패럴랙스 효과 추가
-        gsap.utils.toArray('.parallax-section').forEach(section => {
-            const depth = section.dataset.speed;
-            const movement = -(section.offsetHeight * depth);
-
-            gsap.fromTo(section, {
-                y: 0
-            }, {
-                y: movement,
-                ease: "none",
-                scrollTrigger: {
-                    trigger: section,
-                    scrub: true,
-                    start: "top bottom",
-                    end: "bottom top"
-                }
-            });
-        });
-
-        // 스크롤 버튼 클릭 시 다음 섹션으로 스크롤
-        document.querySelector('.scroll_btn').addEventListener('click', () => {
-            const nextSection = document.querySelector('.text-animation-section');
-            nextSection.scrollIntoView({behavior: 'smooth'});
-        });
-    }, []);
-
-    return (
-        <div className="main" ref={containerRef}>
-            <div className="main_header">
-                <div>
-                    <Link to="/user/dashboard">
-                        <img src="./logo.png" alt="" width={30} height={30}/>L o g i n
-                    </Link>
-                </div>
-                <div className="auth-links">
-                    <Link to="/login" className="login-button">
-                        L o g i n
-                    </Link>
-                    <button className="logout-button" onClick={handleLogout}>
-                        L o g o u t
-                    </button>
-                </div>
- 
+  return (
+    <div className="main" ref={containerRef}>
+      <div className="main_header">
+        <div>
+          <Link to="/user/dashboard">
+            <img src="./logo.png" alt="logo" width={30} height={30} /> L o g i n
+          </Link>
+        </div>
+        <div className="auth-links">
+          <Link to="/login" className="login-button">
+            L o g i n
+          </Link>
+          <button className="logout-button" onClick={handleLogout}>
+            L o g o u t
+          </button>
+        </div>
+      </div>
 
       {/* 같이, 가치 섹션 */}
       <section className="vertical-section slogan-section">
@@ -315,7 +204,7 @@ const Main = () => {
         </div>
       </section>
 
-      {/* 커뮤니티 기반 금융 섹션 - 오른쪽 텍스트, 왼쪽 이미지 */}
+      {/* 커뮤니티 기반 금융 섹션 */}
       <section className="vertical-section text-right-section dark-section parallax-section" data-speed="0.25">
         <div className="split-container reverse">
           <div className="image-side">
@@ -326,19 +215,24 @@ const Main = () => {
           </div>
           <div className="text-side">
             <h2 className="text-animation heading">커뮤니티 기반 금융</h2>
-            <p className="text-animation subheading">함께 <span className="highlight">성장</span>하는 가치</p>
-            <p className="text-animation description">Peoch에서 비슷한 목표를 가진 사람들과 연결되어 정보를 공유하고, 서로의 성장을
-              응원하세요.</p>
+            <p className="text-animation subheading">
+              함께 <span className="highlight">성장</span>하는 가치
+            </p>
+            <p className="text-animation description">
+              Peoch에서 비슷한 목표를 가진 사람들과 연결되어 정보를 공유하고, 서로의 성장을 응원하세요.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* 투명한 금융 서비스 섹션 - 아이콘 그리드 */}
+      {/* 투명한 금융 서비스 섹션 */}
       <section className="vertical-section features-section parallax-section" data-speed="0.3">
         <div className="text-container">
           <h2 className="text-animation heading">투명한 금융 서비스</h2>
           <p className="text-animation subheading">신뢰와 안전을 최우선으로</p>
-          <p className="text-animation description">카멜레온 카드를 활용한 맞춤형 AI를 기반으로 한 객관적이며 공정한 금융 환경을 제공합니다.</p>
+          <p className="text-animation description">
+            카멜레온 카드를 활용한 맞춤형 AI를 기반으로 한 객관적이며 공정한 금융 환경을 제공합니다.
+          </p>
         </div>
         <div className="features-grid text-animation">
           <div className="feature-card">
@@ -377,7 +271,10 @@ const Main = () => {
         <div className="cta-container">
           <h2>지금 바로 시작하세요</h2>
           <p>Peoch와 함께 당신의 미래에 투자하세요.</p>
-          <p>"People(사람)"과 "같이(가치)"를 결합한 Peoch는 개인의 미래 성장 가능성을 기반으로 맞춤형 금융 지원을 제공합니다.</p>
+          <p>
+            "People(사람)"과 "같이(가치)"를 결합한 Peoch는 개인의 미래 성장 가능성을 기반으로
+            맞춤형 금융 지원을 제공합니다.
+          </p>
           <button className="start-btn">시작하기</button>
         </div>
       </section>

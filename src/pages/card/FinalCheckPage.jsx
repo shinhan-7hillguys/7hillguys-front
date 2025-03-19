@@ -20,6 +20,7 @@ function FinalCheckPage() {
     monthlyAmount,
     submitStatus,
     error,
+    userInfo
   } = useSelector((state) => state.cardApplication);
 
   useEffect(() => {
@@ -85,16 +86,16 @@ function FinalCheckPage() {
             <input type="text" value={userInfo.address || ""} readOnly />
           </div> */}
           <div className="form-group">
-            <label>지원기간:</label>
-            <input type="text" value={supportPeriod || ""} readOnly />
+            <label>지원 종료 일:</label>
+            <input type="text" value={userInfo.endDate ? userInfo.endDate: ""} readOnly />
           </div>
           <div className="form-group">
             <label>총 금액:</label>
-            <input type="text" value={totalAmount ? totalAmount + "원" : ""} readOnly />
+            <input type="text" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString("ko-KR") + "원" : ""} readOnly />
           </div>
           <div className="form-group">
             <label>월 지원금:</label>
-            <input type="text" value={monthlyAmount ? monthlyAmount + "원" : ""} readOnly />
+            <input type="text" value={userInfo.monthlyAllowance ? userInfo.monthlyAllowance.toLocaleString("ko-KR") + "원" : ""} readOnly />
           </div>
         </div>
         <br />
