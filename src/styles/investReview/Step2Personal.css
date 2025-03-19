@@ -1,38 +1,30 @@
 /* Step2Personal.css - 개인 및 기타 정보 입력 페이지 스타일 */
 
-/* 전체 컨테이너 */
-.personal-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center; /* 중앙 정렬 */
-    justify-content: flex-start; /* 헤더와 밀착 */
-    height: 100vh; /* 화면 전체를 차지 */
-    width: 100vw;
-    background-color: #FFF7F7;
-    padding: 0; /* 여백 제거 */
-}
 
 /* 🔹 입력 박스 (전체 높이를 채우도록 설정) */
 .personal-box {
     background: white;
     padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    border-radius: 20px; /* 기존 둥근 모서리를 없애기 */
+    box-shadow: none; /* 그림자 제거 */
     text-align: center;
-    width: 100%;
-    max-width: 900px;
-    height: 100%; /* 부모 컨테이너에 맞게 전체 높이 확장 */
+
+    /* 화면 전체 크기 사용 */
+    max-width: 100%;
+    min-height: 100vh;
+    overflow: auto;
+
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    flex-grow: 1;
+    justify-content: center; /* 화면 중앙 정렬 */
+     /* 가로 중앙 정렬 */
 }
 
 /* 제목 */
 .personal-title {
     font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
+    color: black;
     margin-bottom: 20px;
 }
 
@@ -162,7 +154,7 @@
 }
 
 .personal-next-button:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 주소 입력 그룹 */
@@ -204,13 +196,15 @@
 }
 
 .address-search-btn:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* Daum 주소 API iframe 컨테이너 스타일 유지 */
 #postcode-container {
-    margin-bottom: 16px;
+    width: 100%;
+    height: 0;
+    visibility: hidden; /* display: none 대신 사용 */
     border: 1px solid #FFD4DE;
     border-radius: 5px;
-    overflow: hidden;
+    transition: visibility 0.2s ease-in-out, height 0.2s ease-in-out;
 }

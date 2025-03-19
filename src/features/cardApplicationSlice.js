@@ -8,9 +8,7 @@ export const fetchUserInfo = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axios.get("/card/userInfo", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get("/card/userInfo");
 
       console.log(response);
       return response.data; // 서버가 반환한 { name, phone, email, address }
@@ -64,11 +62,7 @@ export const submitCardApplication = createAsyncThunk(
       }
   
       const token = localStorage.getItem("token");
-      const response = await axios.post("/card/insert", formData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
+      const response = await axios.post("/card/insert", formData)
       console.log("결과:", response.data);
 
       return response.data;

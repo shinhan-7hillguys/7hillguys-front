@@ -1,8 +1,9 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import "styles/user/signup.css";
 
 function Signup(props) {
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -70,6 +71,7 @@ function Signup(props) {
 
             if(response.ok) {
                 alert("회원가입이 완료되었습니다.");
+                navigate("/");
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || "회원가입에 실패했습니다.");
@@ -167,7 +169,7 @@ function Signup(props) {
                     </button>
                 </form>
                 <p>
-                    이미 계정이 있으신가요? <Link to="/login">로그인</Link>
+                    이미 계정이 있으신가요? <div style={{ color: "#ff6688" }}><Link to="/login">로그인</Link></div>
                 </p>
             </div>
         </div>

@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useEffect, useRef } from "react";
+import React, {useLayoutEffect, useEffect, useRef} from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import {Link} from "react-router-dom";
@@ -12,6 +12,26 @@ const Main = () => {
     const togetherRef = useRef(null);
     const valueRef = useRef(null);
     const panel2Ref = useRef(null);
+
+    const handleLogout = async () => {
+        try {
+            const response = await fetch("/api/auth/logout", {
+                method: "POST",
+                credentials: "include",
+            });
+
+            if (response.ok) {
+                console.log("로그아웃 성공");
+                window.location.href = "/"; // 메인 페이지로 강제 이동
+            } else {
+                console.error("로그아웃 실패");
+                alert("로그아웃에 실패했습니다.");
+            }
+        } catch (error) {
+            console.error("로그아웃 중 오류 발생:", error);
+            alert("서버 오류가 발생했습니다.");
+        }
+    };
 
     // 텍스트 애니메이션을 위한 ref 추가
     const sectionsRef = useRef([]);
@@ -119,7 +139,7 @@ const Main = () => {
                         start: "top 100%",
                         toggleActions: "play none none none",
                     },
-                }
+                },
             );
         });
 
@@ -192,7 +212,9 @@ const Main = () => {
                     <Link to="/login" className="login-button">
                         L o g i n
                     </Link>
-                    <Link to="/signup" className="signup-button">S i g n u p</Link>
+                    <button className="logout-button" onClick={handleLogout}>
+                        L o g o u t
+                    </button>
                 </div>
 
             </div>
@@ -222,7 +244,7 @@ const Main = () => {
                     </div>
                     <div className="image-side">
                         <div className="floating-image">
-                            <img src="./public/innovation1.jpg" alt="미래 지향적 금융"/>
+                            <img src="./innovation1.jpg" alt="미래 지향적 금융"/>
                         </div>
                     </div>
                 </div>
@@ -240,7 +262,7 @@ const Main = () => {
                         <div className="comparison-title">일반 금융</div>
                         <div className="comparison-content">
                             <p>과거 신용 기록 중심</p>
-                            <p>표준화된 대출 조건</p>
+                            <p>표준화된 투자 조건</p>
                             <p>복잡한 서류 절차</p>
                             <p>단순 이자 수익 모델</p>
                         </div>
@@ -263,20 +285,30 @@ const Main = () => {
                 <div className="centered-content">
                     <h2 className="text-animation heading">맞춤형 금융 솔루션</h2>
                     <p className="text-animation subheading">당신의 꿈을 위한 자금</p>
-                    <p className="text-animation description">교육, 창업, 주택 구매 등 인생의 중요한 순간에 필요한 자금을 개인 맞춤형으로 설계하여
+                    <p className="text-animation description">교육, 창업 등 인생의 중요한 순간에 필요한 자금을 개인 맞춤형으로 설계하여
                         제공합니다.</p>
                     <div className="solution-icons">
-                        <div className="solution-icon">
-                            <img src="../public/icon-education.png" alt="교육"/>
-                            <span>교육</span>
+                        <div className="solution-icon" style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            textAlign: 'center'
+                        }}>
+                            <img src="./yanadoo.png" alt="교육"/>
+                            <span>석사, 박사</span>
                         </div>
-                        <div className="solution-icon">
-                            <img src="../public/icon-startup.png" alt="창업"/>
+                        <div className="solution-icon" style={{
+                            display: 'flex',
+                            flexDirection: 'column',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            textAlign: 'center'
+                        }}>
+                            <img src="./startup.jpg" alt="창업"/>
                             <span>창업</span>
                         </div>
                         <div className="solution-icon">
-                            <img src="../public/icon-house.png" alt="주택"/>
-                            <span>주택</span>
                         </div>
                     </div>
                 </div>
@@ -293,17 +325,17 @@ const Main = () => {
             {/* 커뮤니티 기반 금융 섹션 - 오른쪽 텍스트, 왼쪽 이미지 */}
             <section className="vertical-section text-right-section dark-section parallax-section" data-speed="0.25">
                 <div className="split-container reverse">
-                    <div className="image-side">
-                        <div className="community-images">
-                            <img src="../public/community1.jpg" alt="커뮤니티 1" className="community-img"/>
-                            <img src="../public/community2.jpg" alt="커뮤니티 2" className="community-img"/>
-                        </div>
-                    </div>
+                    {/*<div className="image-side">*/}
+                    {/*    <div className="community-images">*/}
+                    {/*        <img src="./innovation5.jpg" alt="커뮤니티 1" className="community-img"/>*/}
+                    {/*        <img src="./innovation6.jpg" alt="커뮤니티 2" className="community-img"/>*/}
+                    {/*    </div>*/}
+                    {/*</div>*/}
                     <div className="text-side">
                         <h2 className="text-animation heading">커뮤니티 기반 금융</h2>
                         <p className="text-animation subheading">함께 <span className="highlight">성장</span>하는 가치</p>
-                        <p className="text-animation description">Peoch에서 비슷한 목표를 가진 사람들과 연결되어 정보를 공유하고, 서로의 성장을
-                            응원하세요.</p>
+                        <p className="text-animation description">Peoch에서 비슷한 목표를 가진 사람들과 연결되어 서로의 정보를 공유하고, 서로의 성장을
+                            확인하세요.</p>
                     </div>
                 </div>
             </section>
@@ -318,28 +350,36 @@ const Main = () => {
                 <div className="features-grid text-animation">
                     <div className="feature-card">
                         <div className="feature-icon">
-                            <img src="../public/icon-blockchain.png" alt="카멜레온 카드"/>
+                            <img
+                                src="./card.gif"
+                                alt="카멜레온 카드"
+                                style={{width: '300px', height: 'auto'}}
+                            />
                         </div>
                         <h3>카멜레온 카드</h3>
                         <p>필요한 혜택만 내가 쓰는 대로 진화하는 카드 서비스를 제공합니다.</p>
                     </div>
                     <div className="feature-card">
                         <div className="feature-icon">
-                            <img src="../public/icon-security.png" alt="같이"/>
+                            <img src="./valuetogether.png" alt="같이"
+                                 style={{width: '300px', height: 'auto'}}
+                            />
                         </div>
                         <h3>같이 그리고 가치</h3>
                         <p>과거가 아닌 미래의 가치를 기반으로 당신에게 투자합니다.</p>
                     </div>
                     <div className="feature-card">
                         <div className="feature-icon">
-                            <img src="../public/icon-ai.png" alt="AI"/>
+                            <img src="./aisearch.png" alt="AI"
+                                 style={{width: '300px', height: 'auto'}}/>
                         </div>
                         <h3>AI 기반 분석</h3>
                         <p>인공지능이 개인의 성장 가능성을 객관적으로 평가하여 공정한 금융 기회를 제공합니다.</p>
                     </div>
                     <div className="feature-card">
                         <div className="feature-icon">
-                            <img src="../public/icon-community.png" alt="커뮤니티"/>
+                            <img src="./together.jpg" alt="커뮤니티"
+                                 style={{width: '300px', height: 'auto'}}/>
                         </div>
                         <h3>함께 그리고 또 같이</h3>
                         <p>같은 목표를 가진 사람들과 나를 확인하며 함께 성장할 수 있는 환경을 조성합니다.</p>

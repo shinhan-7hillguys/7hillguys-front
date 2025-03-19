@@ -1,5 +1,5 @@
 // src/pages/EnglishNamePage.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setEnglishName } from "../../features/cardApplicationSlice";
@@ -12,7 +12,17 @@ function EnglishNamePage() {
   const [firstName, setFirstName] = useState(englishName.firstName);
   const [lastName, setLastName] = useState(englishName.lastName);
   const [error, setError] = useState("");
+const {
+    termsAgreed,
+  } = useSelector((state) => state.cardApplication);
 
+  useEffect(() => {
+    // 컴포넌트가 마운트되면 사용자 정보를 서버에서 가져옴
+    if (!termsAgreed) {
+      navigate("/card/terms");
+    } 
+    
+  }, [termsAgreed, navigate]);
   // 정규표현식: 오직 A-Z, a-z 만 허용
   const validateName = (name) => /^[A-Za-z]+$/.test(name);
 

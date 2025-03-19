@@ -7,6 +7,8 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
 
     const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
 
+
+
     useEffect(() => {
         // 다음 주소 API 스크립트 동적 로드
         const script = document.createElement("script");
@@ -20,10 +22,17 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
     }, []);
 
     const handleSearchAddress = () => {
-        setIsPostcodeVisible((prev) => !prev); // 버튼 클릭 시 토글
+        setIsPostcodeVisible((prev) => !prev);
 
         if (!isPostcodeVisible) {
             setTimeout(() => {
+                const postcodeContainer = document.getElementById("postcode-container");
+
+                if (postcodeContainer) {
+                    postcodeContainer.style.visibility = "visible"; // display: block 대신 사용
+                    postcodeContainer.style.height = "400px"; // 높이를 명시적으로 설정
+                }
+
                 const postcode = new window.daum.Postcode({
                     oncomplete: function (data) {
                         let fullAddress = data.address;
@@ -32,13 +41,17 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                         }
                         setFormData((prev) => ({ ...prev, address: fullAddress }));
 
-                        setIsPostcodeVisible(false); // 주소 선택 후 창 닫기
+                        setIsPostcodeVisible(false);
+
+                        // 주소 입력 후 iframe 숨기기
+                        postcodeContainer.style.visibility = "hidden";
+                        postcodeContainer.style.height = "0px";
                     },
                     width: "100%",
                     height: "400px",
                 });
 
-                postcode.embed(document.getElementById("postcode-container"));
+                postcode.embed(postcodeContainer);
             }, 0);
         }
     };

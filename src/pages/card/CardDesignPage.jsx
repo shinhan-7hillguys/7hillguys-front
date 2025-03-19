@@ -17,7 +17,7 @@ import {
   cardBackColorPresets,
 } from "./CardStyles";
 import CardPreview from "./CardPreview";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCardDesign } from "features/cardApplicationSlice";
 
@@ -39,11 +39,26 @@ function CardDesignPage() {
   const [step, setStep] = useState(1);
   const [showConfetti, setShowConfetti] = useState(false);
   const [logoGrayscale, setLogoGrayscale] = useState(true);
-
   const fileInputRef = useRef(null);
   const cardRef = useRef(null);
   const { width, height } = useWindowSize();
-
+ const {
+     termsAgreed,
+     englishName,
+     cardPin,
+   } = useSelector((state) => state.cardApplication);
+ 
+   useEffect(() => {
+     if (!termsAgreed) {
+       navigate("/card/terms");
+     } else if (!englishName || !englishName.firstName || !englishName.lastName) {
+       navigate("/card/english-name");
+     } else if (!cardPin) {
+       navigate("/card/pin");
+     }
+     // 이 조건들이 모두 만족하면 현재 페이지(FinalCheckPage)를 렌더링
+   }, [termsAgreed, englishName, cardPin]);
+ 
   // 함수 선언
   const toggleLogoSaturation = () => setLogoGrayscale((prev) => !prev);
 
@@ -184,13 +199,13 @@ function CardDesignPage() {
         <BreadCrumb>
           <MainCategory>커스텀 카드 디자인</MainCategory>
           <SubCategory>
-            {step === 1
+            {/* {step === 1
               ? "카드 배경 선택"
               : step === 2
               ? "카드 레이아웃 선택"
               : step === 3
               ? "카드 정보 입력"
-              : "신청 완료!"}
+              : "신청 완료!"} */}
           </SubCategory>
         </BreadCrumb>
 
@@ -236,7 +251,7 @@ function CardDesignPage() {
             <Input
               type="text"
               placeholder="JAMES KIM"
-              value={cardName}
+              value={englishName}
               onChange={(e) => setCardName(e.target.value.toUpperCase())}
               style={{ display: "block", marginBottom: 10 }}
             />
@@ -263,7 +278,7 @@ function CardDesignPage() {
 
         <CardPreview
           cardNumber={cardNumber}
-          cardName={cardName}
+          
           expiry={expiry}
           cvc={cvc}
           bgImage={bgImage}

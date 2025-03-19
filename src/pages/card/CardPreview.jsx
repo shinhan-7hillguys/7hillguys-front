@@ -14,6 +14,7 @@ import {
   SignatureLabel,
   SignatureLine,
 } from "./CardStyles";
+import { useSelector } from "react-redux";
 
 
 const layoutPresets = {
@@ -41,7 +42,6 @@ const layoutPresets = {
   
   const CardPreview = ({
     cardNumber,
-    cardName,
     expiry,
     cvc,
     bgImage,
@@ -59,8 +59,8 @@ const layoutPresets = {
   const [tilt, setTilt] = useState({ x: 0, y: 0 });
   const [lastTap, setLastTap] = useState(0); 
   const dragging = useRef(false);
+    const { englishName } = useSelector((state) => state.cardApplication);
   const startRef = useRef({ x: 0, y: 0 });
-
   const handleTap = () => {
     const now = Date.now();
     const DOUBLE_TAP_DELAY = 300; 
@@ -140,7 +140,7 @@ const layoutPresets = {
         onClick={handleTap}
         >
         <CardFront $bgImage={bgImage} $cardFrontColor={cardFrontColor}>
-          <Chip style={layout === "2" ? currentLayout.chip : layoutPresets["1"].chip}>
+          <Chip style={layout === "1" ? currentLayout.chip : layoutPresets["1"].chip}>
             <svg role="img" viewBox="0 0 100 100" aria-label="Chip">
               <use href="#chip-lines" />
             </svg>
@@ -151,17 +151,17 @@ const layoutPresets = {
             style={layout === "2" ? currentLayout.logo : layoutPresets["1"].logo}
             $logoGrayscale={logoGrayscale}
           />
-          {layout === "1" && (
+          {layout == "1" && (
             <>
               <NumberLabel style={layoutPresets["1"].number}>{cardNumber}</NumberLabel>
-              <NameLabel style={layoutPresets["1"].name}>{cardName}</NameLabel>
+              <NameLabel style={layoutPresets["1"].name}>{`${englishName.firstName} ${englishName.lastName}`}</NameLabel>
               <ExpiryLabel style={layoutPresets["1"].expiry}>{expiry}</ExpiryLabel>
             </>
           )}
         </CardFront>
         <CardBack $cardBackColor={cardBackColor} $cardBackTextColor={cardBackTextColor}>
           <BlackStrip />
-          {layout === "1" ? (
+          {layout == "1" ? (
             <>
               <SignatureLabel style={{ ...layoutPresets["1"].signature, textShadow: "none" }}>
                 서 명(Signature)
@@ -179,7 +179,7 @@ const layoutPresets = {
                     : cardNumber;
                 })()}
               </NumberLabel>
-              <NameLabel style={{ ...currentLayout.nameBack, textShadow: "none" }}>{cardName}</NameLabel>
+              <NameLabel style={{ ...currentLayout.nameBack, textShadow: "none" }}>{`${englishName.firstName} ${englishName.lastName}`}</NameLabel>
               <ExpiryLabel style={{ ...currentLayout.expiryBack, textShadow: "none" }}>{expiry}</ExpiryLabel>
               <SignatureLabel style={{ ...currentLayout.signature, textShadow: "none" }}>
                 서 명(Signature)

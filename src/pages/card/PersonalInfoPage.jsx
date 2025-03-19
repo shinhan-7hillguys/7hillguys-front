@@ -9,11 +9,21 @@ function PersonalInfoPage() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { userInfo, userInfoStatus } = useSelector((state) => state.cardApplication);
+const {
+    termsAgreed,
+    englishName,
+    cardPin,
+   
+  } = useSelector((state) => state.cardApplication);
 
   useEffect(() => {
     // 컴포넌트가 마운트되면 사용자 정보를 서버에서 가져옴
+    if (!termsAgreed) {
+      navigate("/card/terms");
+    }
+
     dispatch(fetchUserInfo());
-  }, [dispatch]);
+  }, [termsAgreed, englishName, cardPin, navigate,dispatch]);
 
   const handleNextClick = () => {
     navigate("/card/english-name");
