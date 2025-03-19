@@ -71,6 +71,10 @@
     margin-left: 10px;
 }
 
+.certification-item .delete-button:hover {
+    color: #ff6688;
+}
+
 .delete-button:hover {
     color: #F57391;
 }
@@ -107,7 +111,7 @@
 }
 
 .custom-file-upload:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 기본 파일 선택 input 숨기기 */
@@ -140,7 +144,7 @@
 }
 
 .certification-add-button:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 버튼 컨테이너 */
@@ -181,5 +185,5 @@
 }
 
 .certification-next-button:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
