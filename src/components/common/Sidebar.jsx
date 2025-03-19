@@ -1,54 +1,30 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import AccordionMenu from './AccordionMenu';  
+import { menuData } from './menuData';         
 
 const SidebarContainer = styled.div`
-  position: fixed; /* or 'sticky' */
+  position: fixed;
   top: 0;
-  right: 0;
-  width: 90%;  
-  height: 100vh;  
-  background-color: #fff; 
-  z-index: 1000;  
-  overflow-y: auto;  
-`;
-
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-`;
-
-const GridItem = styled(Link)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-decoration: none;
-  color: #444;
+  left: 0;
+  width: 100%;
+  height: 100vh;
   background-color: #fff;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  padding: 16px;
-  transition: transform 0.2s, background-color 0.2s;
-  &:hover {
-    transform: scale(1.05);
-    background-color: #f0f0f0;
-  }
+  z-index: 9999; 
+  overflow-y: auto;
 `;
 
-const Icon = styled.img`
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
-  margin-bottom: 8px;
-`;
-
-const Label = styled.div`
-  font-size: 14px;
-  font-weight: 600;
-  text-align: center;
+const LogoutButton = styled.button`
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: transparent;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+  color: #444;
 `;
 
 const CloseButton = styled.button`
@@ -91,61 +67,192 @@ const WelcomeMessage = styled.div`
   text-align: center;
 `;
 
+const RecentMenuHeader = styled.div`
+  padding: 8px 16px;
+  font-weight: bold;
+  color: #444;
+`;
+
+const RecentMenuContainer = styled.div`
+  padding: 8px 16px;
+  background: #f5f5f5;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+`;
+
+const RecentMenuItem = styled(Link)`
+  padding: 4px 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-decoration: none;
+  color: #444;
+  font-size: 14px;
+  &:hover {
+    background: #e08490;
+    color: #fff;
+  }
+`;
+
+const TwoColumnContainer = styled.div`
+  display: flex;
+  width: 100%;
+  height: calc(100% - 150px);
+  border-top: 1px solid #ddd;
+`;
+
+const LeftColumn = styled.div`
+  width: 30%;
+  border-right: 1px solid #ddd;
+  padding: 16px;
+  padding-top: 32px;
+`;
+
+const RightColumn = styled.div`
+  width: 70%;
+  padding: 16px;
+  overflow-y: auto;
+  padding-top: 32px;
+  animation: fadeIn 0.5s ease;
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+`;
+
+const FirstLevelItem = styled.div`
+  padding: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: ${({ selected }) => (selected ? '#e08490' : '#444')};
+  border-bottom: 1px solid #ddd;
+  transition: color 0.3s ease;
+  &:hover {
+    color: #e08490;
+  }
+  white-space: nowrap;
+`;
+
 const Sidebar = ({ toggleSidebar }) => {
   const [userName, setUserName] = useState('');
-   
+  const [selectedFirst, setSelectedFirst] = useState(
+    menuData.find(menu => menu.label === 'Card')
+  );
+  const [recentMenus, setRecentMenus] = useState([]);
+  const navigate = useNavigate();
+
+  const prevUserNameRef = useRef('');
+
+  useEffect(() => {
+    const storedRecent = localStorage.getItem('recentMenus');
+    if (storedRecent) {
+      setRecentMenus(JSON.parse(storedRecent));
+    }
+  }, []);
+
   useEffect(() => {
     axios
-      .get('/api/auth/userid', { withCredentials: true })
-      .then(response => {
-        // 응답 안의 name 값을 사용
+      .get('/api/auth/userId', { withCredentials: true })
+      .then((response) => {
         setUserName(response.data.name);
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('사용자 정보를 가져오는데 실패:', error);
       });
   }, []);
+ 
+  useEffect(() => {
+    if (prevUserNameRef.current && prevUserNameRef.current !== userName) {
+      setRecentMenus([]);
+      localStorage.removeItem('recentMenus');
+    }
+    prevUserNameRef.current = userName;
+  }, [userName]);
+ 
+  const handleFirstLevelClick = (menu) => {
+    setSelectedFirst(menu);
+  };
 
-  // 메뉴 항목 배열: label, 이동 경로(to), 아이콘(icon)
-  const menuItems = [
-    { label: 'Home', to: '/', icon: 'https://cdn-icons-png.flaticon.com/512/1946/1946433.png' },
-    { label: 'Card', to: '/card', icon: 'https://cdn-icons-png.flaticon.com/512/633/633611.png' },
-    { label: 'My Page', to: '/mypage', icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077063.png' },
-    { label: 'Card Intro', to: '/card/intro', icon: 'https://cdn-icons-png.flaticon.com/512/633/633611.png' },
-    { label: 'education', to: '/education', icon: 'https://cdn-icons-png.flaticon.com/512/3043/3043124.png' },
-    { label: 'Peoch', to: '/peoch', icon: 'https://cdn-icons-png.flaticon.com/512/25/25694.png' },
-    { label: 'admin', to: '/admin', icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828490.png' },
-    { label: '투자심사신청', to: '/investReview', icon: 'https://cdn-icons-png.flaticon.com/512/2885/2885337.png' },
-    { label: '심사결과조회', to: '/investment/status', icon: 'https://cdn-icons-png.flaticon.com/512/190/190411.png' },
-    { label: '계약서', to: '/contract', icon: 'https://cdn-icons-png.flaticon.com/512/1250/1250689.png' },
-    { label: '의찬', to: '/user', icon: 'https://cdn-icons-png.flaticon.com/512/1077/1077012.png' },
-    { label: '계좌목록', to: '/account', icon: 'https://cdn-icons-png.flaticon.com/512/2921/2921822.png' },
-    { label: '납부내역조회', to: '/account/check', icon: 'https://cdn-icons-png.flaticon.com/512/1041/1041912.png' },
-    { label: '산정', to: '/account/calculation', icon: 'https://cdn-icons-png.flaticon.com/512/2767/2767063.png' },
-    { label: '긍정효과', to: '/account/positive', icon: 'https://cdn-icons-png.flaticon.com/512/190/190411.png' },
-    { label: '청구서', to: '/account/bill', icon: 'https://cdn-icons-png.flaticon.com/512/1157/1157056.png' },
-    { label: '카드명세서', to: '/mypage/card/CardStatement', icon: 'https://cdn-icons-png.flaticon.com/512/633/633611.png' },
-    { label: '혜택명세서', to: '/mypage/card/BenefitStatement', icon: 'https://cdn-icons-png.flaticon.com/512/1170/1170678.png' },
-    { label: '전체 혜택 조회', to: '/mypage/card/AllBenefitSearch', icon: 'https://cdn-icons-png.flaticon.com/512/1828/1828919.png' },
-    { label: '카드 결제 테스트', to: '/mypage/card/PaymentTest', icon: 'https://cdn-icons-png.flaticon.com/512/148/148766.png' },
-  ];
+  const updateRecentMenus = (menu) => {
+    let updatedRecent = [menu, ...recentMenus.filter(m => m.label !== menu.label)];
+    if (updatedRecent.length > 3) {
+      updatedRecent = updatedRecent.slice(0, 4);
+    }
+    setRecentMenus(updatedRecent);
+    localStorage.setItem('recentMenus', JSON.stringify(updatedRecent));
+  };
+
+  const handleRightMenuClick = (menu) => {
+    updateRecentMenus(menu);
+    toggleSidebar();
+  };
+
+  const handleLogout = () => {
+    axios
+      .post('/api/auth/logout', {}, { withCredentials: true })
+      .then((response) => { 
+        navigate('/');
+      })
+      .catch((error) => {
+        console.error('로그아웃 실패:', error);
+      });
+  };
 
   return (
     <SidebarContainer>
+      <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
       <CloseButton onClick={toggleSidebar}>x</CloseButton>
       <LogoContainer>
         <LogoIcon />
-        <LogoText to="/" onClick={toggleSidebar}>Peoch</LogoText>
+        <LogoText to="/" onClick={toggleSidebar}>
+          Peoch
+        </LogoText>
       </LogoContainer>
       {userName && <WelcomeMessage>{userName}님 환영합니다</WelcomeMessage>}
-      <GridContainer>
-        {menuItems.map((item, index) => (
-          <GridItem key={index} to={item.to} onClick={toggleSidebar}>
-            <Icon src={item.icon} alt={item.label} />
-            <Label>{item.label}</Label>
-          </GridItem>
-        ))}
-      </GridContainer>
+      
+      {recentMenus.length > 0 && (
+        <>
+          <RecentMenuHeader>최근 방문 메뉴</RecentMenuHeader>
+          <RecentMenuContainer>
+            {recentMenus.map((menu, idx) => (
+              <RecentMenuItem key={idx} to={menu.to} onClick={toggleSidebar}>
+                {menu.label}
+              </RecentMenuItem>
+            ))}
+          </RecentMenuContainer>
+        </>
+      )}
+
+      <TwoColumnContainer>
+        <LeftColumn>
+          {menuData.map((menu, index) => (
+            <FirstLevelItem
+              key={index}
+              onClick={() => handleFirstLevelClick(menu)}
+              selected={menu === selectedFirst}
+            >
+              {menu.label}
+            </FirstLevelItem>
+          ))}
+        </LeftColumn>
+        <RightColumn key={selectedFirst ? selectedFirst.label : 'default'}>
+          {selectedFirst && selectedFirst.children ? (
+            <AccordionMenu menuData={selectedFirst.children} onMenuItemClick={handleRightMenuClick} />
+          ) : (
+            <div>하위 메뉴가 없습니다.</div>
+          )}
+        </RightColumn>
+      </TwoColumnContainer>
     </SidebarContainer>
   );
 };
