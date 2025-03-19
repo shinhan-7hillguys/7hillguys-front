@@ -64,11 +64,6 @@ body, html {
     background: #fb6aac;
 }
 
-.login-button:hover, .signup-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(251, 106, 172, 0.3);
-}
-
 /* 수직 스크롤 섹션 */
 .vertical-section {
     width: 100%;
