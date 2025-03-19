@@ -2,8 +2,7 @@ import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
-
-import Mypage from "./pages/mypage/Mypage";
+ 
 import Main from "./Main";
 import Education from "./pages/education/Education";
 
@@ -30,9 +29,7 @@ import PersonalInfoPage from "pages/card/PersonalInfoPage";
 import EnglishNamePage from "pages/card/EnglishNamePage";
 import CardPinPage from "pages/card/CardPinPage";
 import FinalCheckPage from "pages/card/FinalCheckPage";
-
  
-import Design from "./pages/card/CardDesignPage";
 import BenefitCompare from "pages/card/BenefitCompare";
 
 import User from "pages/user/User";
@@ -73,7 +70,8 @@ import CalculationResult from "./pages/account/CalculationResult";
 import PositiveFactors from "./pages/account/PositiveFactors";
 import ContractPreview from "./pages/investResult/ContractPreview";
 
-
+/* test */ 
+import Test from "./test/MainCycle";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -133,7 +131,7 @@ function App() {
           <Route path="/investExit" element={<InvestmentExit/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
           <Route path="/investmentReallyExit" element={<InvestmentReallyExit/>}/>
-
+          <Route path="/test" element = {<Test/>}/>
           <Route
             path="/investment/status"
             element={<InvestmentStatusCheck />}
