@@ -272,3 +272,44 @@ div, button {
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
   }
+  .benefit_compare h1 {
+    text-align: center;
+  }
+
+  #month-select {
+    height: 200px;       /* 높이 200px */
+    overflow-y: auto;    /* 내용이 넘치면 스크롤 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+  }
+  
+  /* Chrome, Safari, Opera */
+  #month-select::-webkit-scrollbar {
+    display: none;
+  }
+  .month_box {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    justify-content: center;
+    border: 0;
+  
+  }
+  .select_box {
+    font-weight: 600;
+  }
+  .payment_graph {
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: 600;
+    margin-bottom: 70px;
+    gap: 15px;
+  }
+  .payment_graph p {
+    text-align: center;
+  }
+  .payment_graph p div:first-child {
+    font-size: 18px;
+    background: var(--box-color);
+    padding: 10px 20px;
+    border-radius: 10px;
+  }
