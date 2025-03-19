@@ -81,7 +81,7 @@
 }
 
 .custom-file-upload:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 기본 파일 선택 input 숨기기 */
@@ -113,8 +113,8 @@
     margin-top: 20px;
 }
 
-.next-button:hover {
-    background-color: #F994AD;
+.university-box .next-button:hover {
+    background-color: #ff6688;
 }
 
 /* 🔹 입력 필드 포커스 효과 */

@@ -57,7 +57,7 @@
 }
 
 .signup-button:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 비밀번호 조건 안내 */
@@ -109,7 +109,7 @@
 }
 
 .address-search-btn:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* Daum 주소 API iframe 컨테이너 스타일 유지 */
@@ -181,24 +181,4 @@
     width: 24px;
     height: 24px;
     margin-right: 10px;
-}
-
-/* 카카오 & 네이버 로그인 버튼 */
-.kakao-login {
-    background-color: #FEE500;
-    color: #3C1E1E;
-}
-
-.naver-login {
-    background-color: #03C75A;
-    color: white;
-    font-weight: bold;
-}
-
-.kakao-login:hover {
-    background-color: #E5D500;
-}
-
-.naver-login:hover {
-    background-color: #029F4F;
 }

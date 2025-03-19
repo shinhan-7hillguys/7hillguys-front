@@ -154,7 +154,7 @@
 }
 
 .personal-next-button:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 주소 입력 그룹 */
@@ -196,7 +196,7 @@
 }
 
 .address-search-btn:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* Daum 주소 API iframe 컨테이너 스타일 유지 */

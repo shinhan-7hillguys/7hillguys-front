@@ -169,7 +169,7 @@ function Signup(props) {
                     </button>
                 </form>
                 <p>
-                    이미 계정이 있으신가요? <Link to="/login">로그인</Link>
+                    이미 계정이 있으신가요? <div style={{ color: "#ff6688" }}><Link to="/login">로그인</Link></div>
                 </p>
             </div>
         </div>
