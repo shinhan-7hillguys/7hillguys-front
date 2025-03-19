@@ -14,7 +14,9 @@ http://scripts.sil.org/OFL
 	font-display: swap;
 	src: url('./fonts/PretendardVariable.woff2') format('woff2-variations');
 }
-
+div, button, p, h1,h2 {
+  font-family: 'PretendardVariable', sans-serif;
+}
 
 :root {
   --bg-color: #df6e99;
@@ -112,7 +114,6 @@ div {
 }
 .container2 {
   min-height: 93vh;
-  margin-top: 20px;
   height: 100%;
   width: 100%;
   background: #fffeff;

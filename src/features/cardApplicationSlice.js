@@ -5,9 +5,11 @@ import axios from "axios";
 // 사용자 정보를 가져오는 Thunk
 export const fetchUserInfo = createAsyncThunk(
   "cardApplication/fetchUserInfo",
-  async (_, { rejectWithValue }) => {
+  async (_, { getState,rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const state = getState().cardApplication;
+      console.log(state)
+
       const response = await axios.get("/card/userInfo");
 
       console.log(response);
@@ -22,7 +24,7 @@ export const fetchUserCardInfo = createAsyncThunk(
   "cardApplication/fetchUserCardInfo", // 고유한 타입 문자열 사용
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+
       const response = await axios.get("http://localhost:8080/card/cardInfo");
       console.log(response);
       return response.data; // 서버가 반환한 { cardRegistered: true/false }
@@ -41,33 +43,49 @@ export const submitCardApplication = createAsyncThunk(
   async (bgFile, { getState, rejectWithValue }) => {
     try {
       const state = getState().cardApplication;
-      const requestData = {
+      console.log(state);
+
+      // 카드 디자인 정보 (CardDesignDTO)
+      const cardDesign = state.cardDesign;
+
+      // 카드 신청 정보 (CardRequestDTO)
+      const cardRequestDTO = {
         englishName: `${state.englishName.lastName} ${state.englishName.firstName}`,
         pin: state.cardPin,
-        cardDesign: state.cardDesign, // 객체 형태 (예: { layoutId, username, letterColor, cardBackColor, logoGrayscale })
+        monthlyAllowance: state.monthlyAmount,
       };
-   
+
       const formData = new FormData();
-      // 카드 디자인 정보를 JSON으로 직렬화해서 Blob으로 변환 후 추가
+
+      // cardDesignDTO를 JSON Blob으로 추가
       formData.append(
         "cardDesignDTO",
-        new Blob([JSON.stringify(requestData.cardDesign)], { type: "application/json" })
+        new Blob([JSON.stringify(cardDesign)], { type: "application/json" })
       );
 
-      formData.append("englishName", requestData.englishName);
-      formData.append("pin", requestData.pin);
-    
+      // cardRequestDTO를 JSON Blob으로 추가
+      formData.append(
+        "cardRequestDTO",
+        new Blob([JSON.stringify(cardRequestDTO)], { type: "application/json" })
+      );
+
+      // 파일이 있을 경우 추가
       if (bgFile) {
         formData.append("image", bgFile);
       }
-  
-      const token = localStorage.getItem("token");
-      const response = await axios.post("/card/insert", formData)
-      console.log("결과:", response.data);
 
+      // 전송되는 FormData의 항목 확인 (디버깅용)
+      for (let [key, value] of formData.entries()) {
+        console.log(key, value);
+      }
+
+      const response = await axios.post("/card/insert", formData);
+      console.log("결과:", response.data);
       return response.data;
     } catch (error) {
-      return rejectWithValue(error.response?.data || "카드 신청 중 에러가 발생했습니다.");
+      return rejectWithValue(
+        error.response?.data || "카드 신청 중 에러가 발생했습니다."
+      );
     }
   }
 );

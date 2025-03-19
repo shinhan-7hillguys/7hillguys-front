@@ -19,6 +19,7 @@ div, button {
   margin-bottom: 5px;
   font-weight: 600;
   text-align: center;
+  color: var(--button-color);
 }
 .benefit-item {
     width: 100%;
@@ -34,6 +35,7 @@ div, button {
 }
 .benefits-section p {
   text-align: center;
+  font-weight: 600;
 }
 .benefit-info {
     background: transparent;
@@ -42,15 +44,20 @@ div, button {
 .benefit-info p {
   text-align: center;
 }
+.sec_title {
+  text-align: center;
+  padding: 20px;
+
+}
 .card_benefit_sec1 {
     background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 0 20px;
-    padding-top: 10px;
-    height: 40vh;
+    /* height: 30vh; */
     width: 100%;
+    margin: 20px 0;
     font-family: 'PretendardVariable', sans-serif;
   }
   .card_benefit_sec1 > div {
@@ -93,7 +100,8 @@ div, button {
     z-index: 1; /* 메인 카드 뒤에 배치 */
   }
   .card_benefit_sec2 {
-    background: var(--box-color);
+    height: 15vh;
+    background-color: var(--box-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -151,6 +159,13 @@ div, button {
     overflow: auto; /* 스크롤 기능 유지 */
     -ms-overflow-style: none;  /* IE, Edge에서 스크롤 바 숨김 */
     scrollbar-width: none;  /* Firefox에서 스크롤 바 숨김 */
+  }
+  .benefits_column {
+    text-align: center;
+    padding: 20px;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--button-color);
   }
 
  

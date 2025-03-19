@@ -70,7 +70,7 @@ const {
         <label>성 (Last Name): </label>
         <input
           type="text"
-          placeholder="ex) Doe"
+          placeholder="ex) Hong"
           value={lastName}
           onChange={handleLastNameChange}
         />
@@ -78,7 +78,7 @@ const {
         <label>이름 (First Name): </label>
         <input
           type="text"
-          placeholder="ex) John"
+          placeholder="ex) Gildong"
           value={firstName}
           onChange={handleFirstNameChange}
         />
