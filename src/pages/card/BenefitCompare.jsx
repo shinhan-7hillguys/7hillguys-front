@@ -18,7 +18,8 @@ import "styles/card/benefit.css";
 import { useNavigate } from "react-router-dom";
 import MonthSelect from "./MonthSelect";
 
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6384", "#36A2EB", "#FFCE56"];
+
 
 const BenefitCompare = () => {
   const dispatch = useDispatch();
@@ -52,13 +53,22 @@ const BenefitCompare = () => {
   }, [selectedMonth, cardId, dispatch]);
 
   // 그룹화 및 계산 로직 (생략)
+
   const aggregatedData = payments.reduce((acc, txn) => {
     const matchingBenefit = [...appliedBenefits, ...addedBenefits].find((benefit) => {
-      const benefitId = benefit.benefitId ? benefit.benefitId : benefit.benefit.benefitId;
-      return benefitId === txn.benefit?.benefitId;
+      const storeId = benefit?.store?.storeId ? benefit?.store?.storeId : benefit?.benefit?.store?.storeId;
+      return storeId == txn.store?.storeId;
     });
-    const effectiveDiscountRate = matchingBenefit?.discountRate ?? matchingBenefit?.benefit?.discountRate ?? 0;
+
+
+    // console.log("matchingBenefit : ",matchingBenefit)
+
+    const effectiveDiscountRate = matchingBenefit?.benefit?.discountRate ?? matchingBenefit?.discountRate ?? 0;
+
     const newFinal = txn.originalAmount * (1 - effectiveDiscountRate / 100);
+    // console.log(txn.originalAmount)
+    // console.log(newFinal)
+    const discount = txn.originalAmount - newFinal
     if (!acc[txn.store.category]) {
       acc[txn.store.category] = {
         category: txn.store.category,
@@ -68,14 +78,18 @@ const BenefitCompare = () => {
         discountAmount: 0,
       };
     }
+
+
     acc[txn.store.category].originalAmount += txn.originalAmount;
     acc[txn.store.category].finalAmount += txn.finalAmount;
     acc[txn.store.category].newFinal += newFinal;
-    acc[txn.store.category].discountAmount += txn.originalAmount - newFinal;
+    acc[txn.store.category].discountAmount += discount;
+    console.log(JSON.stringify(acc));
     return acc;
   }, {});
 
   const computedData = Object.values(aggregatedData);
+  // console.log(computedData)
   const totalCurrentFinal = computedData.reduce((sum, cur) => sum + cur.finalAmount, 0);
   const totalNewFinal = computedData.reduce((sum, cur) => sum + cur.newFinal, 0);
 
@@ -138,8 +152,8 @@ const BenefitCompare = () => {
                   <YAxis />
                   <Tooltip formatter={(value) => `${value.toLocaleString()} 원`} />
                   <Legend />
-                  <Bar dataKey="finalAmount" fill="#8884d8" name="현재 혜택 적용 후" />
-                  <Bar dataKey="newFinal" fill="#82ca9d" name="새로운 조합 적용 후" />
+                  <Bar dataKey="finalAmount" fill="rgb(111 219 255)" name="현재 혜택 적용 후" />
+                  <Bar dataKey="newFinal" fill="rgb(88 245 127)" name="새로운 조합 적용 후" />
                 </BarChart>
               </ResponsiveContainer>
             </div>

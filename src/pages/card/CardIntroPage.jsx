@@ -65,7 +65,7 @@ function CardIntroPage() {
       {/* <div className="intro_card">    
           <img src="../chip.png" alt="" width={50} height={50}/>
       </div> */}
-      <CardFront style={{ background:"#f98ac7 url(/camel.png) no-repeat center center/ cover", width: "80%", height:"200px", position: "relative" }}
+      <CardFront style={{ background:"#f98ac7 url(/camel.png) no-repeat center center/ cover", width: "310px", height:"200px", position: "relative" }}
        $cardFrontColor="#000">
         <Chip style={{ top: "30px", left: "20px", width: "50px", height: "40px", position: "absolute" }}>
           <svg role="img" viewBox="0 0 100 100" aria-label="Chip">

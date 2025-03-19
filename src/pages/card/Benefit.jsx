@@ -96,7 +96,7 @@ const Benefit = () => {
   };
 
   const handleAdd = () => {
-    console.log(addedBenefits.length, appliedBenefits.length )
+  
     if(addedBenefits.length + 1 + appliedBenefits.length > 3) return alert("최대 3개 초과");
     if (checkedBenefits.length === 0) {
       alert("추가할 혜택을 선택하세요.");
@@ -112,6 +112,10 @@ const Benefit = () => {
     });
     setCheckedBenefits([]);
   };
+  useEffect(() => {
+    console.log("updated addedBenefits:", addedBenefits);
+    console.log("appliedBenefits : ", appliedBenefits)
+  }, [addedBenefits, appliedBenefits]);
 
   const handleClear = () => {
     if (addedBenefits.length === 0) return;
