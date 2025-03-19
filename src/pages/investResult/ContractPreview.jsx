@@ -16,7 +16,10 @@ const ContractPreview = () => {
         <div className="preview-container">
             <h2 className="preview-title">서명된 계약서 미리보기</h2>
             <object className="preview-object" data={pdfUrl} type="application/pdf" width="100%" height="600px">
-                <p>❌ PDF미리보기는 웹 환경에서만 가능합니다. 모바일 환경에서는 다운로드를 이용해주세요. <a href={pdfUrl} download>여기에서 다운로드</a></p>
+                <p>PDF미리보기는 <label>웹 환경</label>에서만 가능합니다.</p>
+                <p> 모바일 환경에서는 <label>다운로드</label>를 이용해주세요.</p><br/>
+
+                {/*<p><a href={pdfUrl} download>여기에서 다운로드</a></p>*/}
             </object>
 
             <div className="preview-button-container">
