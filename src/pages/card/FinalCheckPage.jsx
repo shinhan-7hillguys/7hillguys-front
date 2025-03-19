@@ -53,7 +53,6 @@ function FinalCheckPage() {
 
   return (
     <>
-      <NavigationHeader />
       <div className="final-check-container">
         <h2>최종 정보 확인</h2>
         <div className="final-info-form">

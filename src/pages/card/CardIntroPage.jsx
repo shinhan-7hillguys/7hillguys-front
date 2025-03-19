@@ -35,7 +35,9 @@ function CardIntroPage() {
         <p>내 마음대로</p>
         <p>디자인과 혜택을 적용</p>
       </div>
-      <div className="intro_card"></div>
+      <div className="intro_card">    
+          {/* <img src="../chip.png" alt="" width={50} height={50}/> */}
+      </div>
       <button onClick={handleApplyClick}>카드 신청하기</button>
     </div>
   );

@@ -1,5 +1,7 @@
 
-
+div, button {
+  font-family: 'PretendardVariable', sans-serif;
+}
 .my-benefits {
   display: flex;
   justify-content: space-between
@@ -49,6 +51,7 @@
     padding-top: 10px;
     height: 40vh;
     width: 100%;
+    font-family: 'PretendardVariable', sans-serif;
   }
   .card_benefit_sec1 > div {
     background: #f0c1de;
