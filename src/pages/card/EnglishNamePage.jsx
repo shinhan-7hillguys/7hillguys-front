@@ -61,7 +61,6 @@ const {
 
   return (
     <>
-     <NavigationHeader  />
      <div style={{ padding: 20 }} className="card_english">
       <h2>영문 이름을 입력해 주세요.</h2>
       {/* <p style={{ fontStyle: "italic", color: "#555" }}>
@@ -71,7 +70,7 @@ const {
         <label>성 (Last Name): </label>
         <input
           type="text"
-          placeholder="ex) Doe"
+          placeholder="ex) Hong"
           value={lastName}
           onChange={handleLastNameChange}
         />
@@ -79,7 +78,7 @@ const {
         <label>이름 (First Name): </label>
         <input
           type="text"
-          placeholder="ex) John"
+          placeholder="ex) Gildong"
           value={firstName}
           onChange={handleFirstNameChange}
         />

@@ -27,7 +27,6 @@ function IdentityVerificationPage() {
 
   return (
     <>
-    <NavigationHeader  />
     <div style={{ padding: 20 }}>
       <h2>본인 인증</h2>
       <p>휴대폰 번호로 전송된 인증 코드를 입력하세요. (예시: 1234)</p>

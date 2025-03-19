@@ -36,10 +36,9 @@ const Main = () => {
         method: "POST",
         credentials: "include",
       });
-
       if (response.ok) {
         console.log("로그아웃 성공");
-        window.location.href = "/"; // 메인 페이지로 강제 이동
+        window.location.href = "/"; // 메인 페이지로 이동
       } else {
         console.error("로그아웃 실패");
         alert("로그아웃에 실패했습니다.");
@@ -95,8 +94,7 @@ const Main = () => {
             ease: "power2.out",
           }
         );
-
-        // 사라지는 애니메이션 - 위로 올라가면서 사라짐
+        // 사라지는 애니메이션
         tl.to(
           text,
           {
@@ -125,6 +123,7 @@ const Main = () => {
       "+=0"
     );
 
+    // panel2 애니메이션
     gsap.from(panel2Ref.current, {
       opacity: 0,
       y: 50,
@@ -160,7 +159,7 @@ const Main = () => {
       );
     });
 
-    // 이미지 회전 애니메이션
+    // 이미지 회전 애니메이션 예시
     images.forEach((img, index) => {
       const targetRotation = (index + 1) % 2 === 0 ? 45 : -45;
 

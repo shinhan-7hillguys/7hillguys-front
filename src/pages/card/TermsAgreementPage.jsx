@@ -24,7 +24,6 @@ function TermsAgreementPage() {
 
   return (
     <div className="card_agree">
-      <NavigationHeader  />
       <h2>카드에 꼭 필요한 설명서와<br/>동의만 모았어요</h2>
       
       <div className="card_agree_section">
