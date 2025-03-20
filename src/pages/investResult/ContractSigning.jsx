@@ -61,13 +61,13 @@ const ContractSigning = () => {
             const reader = new FileReader();
 
             reader.onloadend = () => {
-                const pdfDataUrl = reader.result; // ✅ Data URL 변환
-                navigate("/contract-preview", { state: { pdfUrl: pdfDataUrl } }); // ✅ 미리보기 페이지로 이동
+                const pdfDataUrl = reader.result; // Data URL 변환
+                navigate("/contract-preview", { state: { pdfUrl: pdfDataUrl } }); // 미리보기 페이지로 이동
             };
 
             reader.readAsDataURL(blob);
         } catch (error) {
-            console.error("🚨 계약서 제출 중 오류 발생:", error);
+            console.error("계약서 제출 중 오류 발생:", error);
             alert("서명 제출 실패! 서버 상태를 확인하세요.");
         }
     };
@@ -95,7 +95,11 @@ const ContractSigning = () => {
                     </ul>
                 </div>
             ) : (
-                <p>계약서를 불러오는 중...</p>
+                <div className="loading-dots">
+                    <span className="dot"></span>
+                    <span className="dot"></span>
+                    <span className="dot"></span>
+                </div>
             )}
 
             <h2 className="contract-section">전자 서명</h2>
