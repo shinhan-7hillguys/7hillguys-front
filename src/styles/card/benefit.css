@@ -3,14 +3,21 @@ div, button {
   font-family: 'PretendardVariable', sans-serif;
 }
 .my-benefits {
-  display: flex;
-  justify-content: space-between
-}
-.benefits-section {
-    background:transparent;
-    width: 45%;
+  height: 70%;
 }
 
+.benefits-section {
+    background:transparent;
+    width: 100%;
+    padding: 10px 30px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.benefits-section ul {
+  text-align: center;
+}
 .benefits-section:first-child {
   width: 55%;
 }
@@ -135,12 +142,41 @@ div, button {
     padding: 5px;
     color: #fff;
   }
+  .benefits-tabs {
+    text-align: center;
+    width: 100%;
+  }
+  .benefits-tabs button {
+    width: 50%;
+    padding: 10px 20px;
+    /* margin-right: 10px; */
+    border: none;
+    border-radius: 20px 0 0 0;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .benefits-tabs button:nth-child(2) {
+    border-radius: 0 20px 0 0;
+  }
+  
+  /* 활성 탭: 백그라운드 핑크, 텍스트 컬러는 대비에 맞게 조정 */
+  .benefits-tabs button.active {
+    background-color: pink;
+    color: #fff;
+  }
+  
+  /* 비활성 탭: 백그라운드 흰색, 테두리로 구분 */
+  .benefits-tabs button.inactive {
+    background-color: white;
+    color: #000;
+    border: 1px solid #ccc;
+  }
   .card_benefit_sec3{
     height: 20vh;
    
     border-radius: 20px;
     background: #fff;
-    padding: 10px;
+    /* padding: 10px; */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     margin: 20px
     /* color:#fff; */
