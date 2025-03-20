@@ -208,6 +208,7 @@ export default function MainPage() {
     const response = await axios.get("/api/auth/userId", {
       withCredentials: true,
     });
+    console.log("사용자 이름:", response.data.name);
     setUserName(response.data.name);
   };
 
@@ -215,6 +216,7 @@ export default function MainPage() {
     const response = await axios.get("/api/auth/user", {
       withCredentials: true,
     });
+    console.log("사용자 ID:", response.data.userId);
     setUserId(response.data.userId);
   };
 
@@ -224,6 +226,7 @@ export default function MainPage() {
       params: { date: today },
       withCredentials: true,
     }); 
+    console.log("대시보드 데이터:", response.data);
     setDashboardData(response.data);
   };
 
@@ -233,6 +236,7 @@ export default function MainPage() {
       params: { date: today },
       withCredentials: true,
     }); 
+    console.log("그래프 데이터:", response.data);
     setRawGraphData(response.data);
   };
  
@@ -241,6 +245,7 @@ export default function MainPage() {
       try { 
         await getInvestmentStatus(); 
         const invStatus = investmentStatus; 
+        console.log("투자 심사 상태:", invStatus);
         if (invStatus !== "승인") {
           setIsLoading(false);
           return;
