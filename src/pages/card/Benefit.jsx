@@ -10,7 +10,7 @@ import {
   applyBenefits 
 } from "../../features/benefitSlice";
 import { useNavigate } from "react-router-dom";
-import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined } from "@ant-design/icons";
+import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined, SwapOutlined } from "@ant-design/icons";
 import "styles/card/benefit.css";
 import CardPreview from "./CardPreview";
 import {
@@ -212,7 +212,7 @@ console.log("card : ", card)
       <section className="card_benefit_sec1">
         <div>
           {/* 백컬러 프론트로 바꾸고 이미지 url */}
-            <CardFront style={{ position: "relative" }}
+            <CardFront style={{ position: "relative",  }}
  $cardFrontColor={card?.cardDesigns[0]?.cardBackColor}>
                     <Chip style={card?.cardDesigns[0]?.layoutId === "2" ? currentLayout.chip : layoutPresets["1"].chip}>
                       <svg role="img" viewBox="0 0 100 100" aria-label="Chip">
@@ -227,7 +227,7 @@ console.log("card : ", card)
                     />
                     {card?.cardDesigns[0]?.layoutId == "1" && (
                       <>
-                        <NumberLabel style={layoutPresets["1"].number}> {card?.cardNumber && card.cardNumber.replace(/(\d{4})(?=\d)/g, '$1-')}</NumberLabel>
+                        <NumberLabel  style={ layoutPresets["1"].number}> {card?.cardNumber && card.cardNumber.replace(/(\d{4})(?=\d)/g, '$1-')}</NumberLabel>
                         <NameLabel style={layoutPresets["1"].name}>{card?.enName}</NameLabel>
                         <ExpiryLabel style={layoutPresets["1"].expiry}>{card?.expirationDate}</ExpiryLabel>
                       </>
@@ -250,7 +250,7 @@ console.log("card : ", card)
           <span>구독</span>
         </div>
         <div className="action-btn" onClick={() => navigate("/benefit/compare")}>
-          <BarcodeOutlined style={{ fontSize: "30px" }} />
+         <SwapOutlined style={{ fontSize: "30px" }} />
           <span>비교</span>
         </div>
       </section>
