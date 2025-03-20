@@ -6,7 +6,7 @@ function AllBenefitSearch() {
 
   useEffect(() => {
     axios
-        .get("/card/allBenefitSearch", {
+      .get("/card/allBenefitSearch", {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -21,8 +21,8 @@ function AllBenefitSearch() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-0">
-      <div className="w-full bg-white shadow-md rounded-l-md rounded-r-md overflow-hidden">
+    <div className="min-h-screen">
+      <div className="w-full bg-white shadow-md my-custom-rounded overflow-hidden">
         <div className="bg-pink-50 p-4">
           <p className="text-lg md:text-xl text-black text-center font-bold drop-shadow-sm">
             필요한 혜택만 쏙쏙!

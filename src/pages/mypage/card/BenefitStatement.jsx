@@ -25,7 +25,7 @@ function BenefitStatement() {
 
   useEffect(() => {
     axios
-        .get("/card/benefitStatement", {
+      .get("/card/benefitStatement", {
         withCredentials: true,
         params: { yearMonth },
         headers: {
@@ -41,8 +41,8 @@ function BenefitStatement() {
   }, [yearMonth]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-0">
-      <div className="w-full bg-white rounded-l-md rounded-r-md shadow-md p-6">
+    <div className="min-h-screen">
+      <div className="w-full bg-white my-custom-rounded shadow-md p-6">
         <div className="flex justify-center">
           <h1 className="text-2xl font-bold">혜택 명세서</h1>
         </div>
