@@ -10,7 +10,7 @@ const ContractSigning = () => {
     const [signature, setSignature] = useState("");
     const [contract, setContract] = useState(null);
 
-    // 📌 계약서 내용 불러오기 (쿠키 포함)
+    // 계약서 내용 불러오기 (쿠키 포함)
     useEffect(() => {
         fetch("/api/contract/template", {
             method: "GET",
@@ -27,7 +27,7 @@ const ContractSigning = () => {
             .catch(error => console.error("🚨 계약서 불러오기 실패:", error));
     }, []);
 
-    // 📌 서명 저장 (Base64 변환)
+    // 서명 저장 (Base64 변환)
     const handleSaveSignature = () => {
         if (sigPad.current) {
             const base64Signature = sigPad.current.getTrimmedCanvas().toDataURL("image/png");
@@ -36,7 +36,7 @@ const ContractSigning = () => {
         }
     };
 
-    // 📌 계약서 서명 후 제출 및 다음 페이지로 이동
+    // 계약서 서명 후 제출 및 다음 페이지로 이동
     const handleSubmitContract = async () => {
         if (!signature) {
             alert("서명을 입력하세요!");
