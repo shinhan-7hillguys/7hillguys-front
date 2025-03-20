@@ -1,0 +1,43 @@
+/* 로딩 애니메이션 컨테이너 */
+.loading-dots-exit {
+    display: flex;
+    margin: 20px auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 30vh;
+    background-color: white;
+    border-radius: 20px;
+}
+
+/* 로딩 점 컨테이너 */
+.dots-container {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+}
+
+/* 개별 점 스타일 */
+.loading-dots-exit .dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+    background-color: black;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+/* 깜빡이는 애니메이션 */
+@keyframes blink {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
+
+/* 로딩 안내 텍스트 */
+.loading-text {
+    margin-top: 12px;
+    font-size: 24px;
+    color: #333;
+    font-weight: bold;
+}

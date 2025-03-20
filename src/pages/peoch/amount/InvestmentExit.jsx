@@ -3,6 +3,7 @@ import axios from 'axios';
 import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend} from 'recharts';
 import styled from 'styled-components';
 import {useNavigate} from "react-router-dom";
+import "styles/peoch/InvestmentExit.css";
 
 
 const InvestmentExit = () => {
@@ -45,7 +46,15 @@ const InvestmentExit = () => {
         fetchExpectedIncome();
     }, []);
 
-    if (loading) return <p>로딩 중...</p>;
+    if (loading) return (
+        <div className="loading-dots-exit">
+            <p className="loading-text">잠시만 기다려 주세요...</p>
+            <div className="dots-container">
+                <span className="dot"></span>
+                <span className="dot"></span>
+                <span className="dot"></span>
+            </div>
+        </div>);
     if (error) return <p>예상 소득금액 산출중입니다. 최대 3분정도 소요될 수 있습니다.</p>;
     // (1) 버튼 클릭 시 alert를 띄우는 핸들러
     const handleSadAlert = () => {

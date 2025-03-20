@@ -115,6 +115,42 @@
     color: white;
 }
 
+/* 로딩 애니메이션 컨테이너 */
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* 개별 점 스타일 */
+.dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+    background-color: black;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+/* 애니메이션 적용 - 순차적으로 깜빡이게 */
+.dot:nth-child(1) {
+    animation-delay: 0s;
+}
+.dot:nth-child(2) {
+    animation-delay: 0.3s;
+}
+.dot:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+/* 깜빡이는 애니메이션 */
+@keyframes blink {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
+
 /*
 .submit-button:hover {
     background-color: #45A049;
