@@ -28,7 +28,7 @@ const MonthSelect = ({ onChange, value }) => {
       opts.push(`${year}-${month}`);
       temp.setMonth(temp.getMonth() + 1);
     }
-    setOptions(opts);
+    setOptions(opts.reverse());
   }, [card]);
 
   return (
