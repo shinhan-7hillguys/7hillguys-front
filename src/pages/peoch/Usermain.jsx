@@ -17,6 +17,7 @@ const PageContainer = styled.div`
   padding: 16px;
   background: #f9f9f9;
   font-family: 'Pretendard', sans-serif;
+  border-radius : 64px;
 `;
 
 const HeaderRow = styled.div`
@@ -201,7 +202,10 @@ export default function MainPage() {
     const response = await axios.get("/api/investment/status", {
       withCredentials: true,
     }); 
+    console.log(response);
     setInvestmentStatus(response.data);
+    console.log(1);
+    console.log(investmentStatus);
   };
 
   const getUserName = async () => {
@@ -261,8 +265,8 @@ export default function MainPage() {
     };
   
     fetchData();
-  }, []);
-   
+  }, [investmentStatus]);
+    
   useEffect(() => {
     if (!rawGraphData) return;
 
