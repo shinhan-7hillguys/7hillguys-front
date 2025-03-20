@@ -81,6 +81,7 @@ const ContractSigning = () => {
                 <div className="contract-box">
                     <h4>{contract.title}</h4>
                     <p className="contract-content">{contract.investmentDate}</p>
+                    <p className="contract-content">{contract.monthlyAllowance}</p>
                     <p className="contract-content">{contract.investmentMoney}</p>
                     <p className="contract-content">{contract.investmentTotal}</p>
                     <h4 className="contract-section">상환 조건</h4>
