@@ -15,6 +15,11 @@ function Signup(props) {
         role: "USER",
     });
 
+    // 로고 클릭 시 홈으로 이동
+    const handleLogoClick = () => {
+        navigate("/");
+    };
+
     const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
 
     useEffect(() => {
@@ -85,6 +90,11 @@ function Signup(props) {
     return (
         <div className="signup-container">
             <div className="signup-box">
+                {/* 로고 클릭 시 홈으로 이동 */}
+                <h2 className="signup-title" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+                    <img src="/logo.png" alt="Logo" width={38} />
+                    Peoch
+                </h2>
                 <h2 className="signup-title">회원가입</h2>
                 <form onSubmit={handleSubmit}>
                     <input
