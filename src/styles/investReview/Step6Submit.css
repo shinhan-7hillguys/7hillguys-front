@@ -24,9 +24,10 @@
 }
 
 /* 제목 */
-.submit-title {
+.submit-box .submit-title {
     font-size: 22px;
     font-weight: bold;
+    text-align: center;
     color: black;
     margin-bottom: 15px;
 }
