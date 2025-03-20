@@ -66,9 +66,9 @@
     color: white;
 }
 
-.download-button:hover {
+/*.download-button:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* 홈 이동 버튼 */
 .home-button {
@@ -76,9 +76,9 @@
     color: white;
 }
 
-.home-button:hover {
+/*.home-button:hover {
     background-color: #45A049;
-}
+}*/
 
 /* 오류 메시지 */
 .preview-error {

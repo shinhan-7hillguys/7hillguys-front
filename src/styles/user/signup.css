@@ -56,9 +56,9 @@
     margin-top: 10px;
 }
 
-.signup-button:hover {
+/*.signup-button:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* 비밀번호 조건 안내 */
 .password-hint {
@@ -108,9 +108,9 @@
     justify-content: center;
 }
 
-.address-search-btn:hover {
+/*.address-search-btn:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* Daum 주소 API iframe 컨테이너 스타일 유지 */
 #postcode-container {

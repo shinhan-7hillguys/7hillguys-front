@@ -46,6 +46,47 @@ const Education = () => {
   const companyList = [
     {
       id: 1,
+      name: "신한DS",
+      closingDate: "2025.3.26",
+      recruit: "ICT 개발",
+      salary: "6,194",
+      averageData: [8, 6, 6, 4, 6],
+      //avaragedata "자소서 , 자격증 , 어학점수 , 인턴경험 , 학점"
+    },
+    {
+      id: 2,
+      name: "신한카드",
+      closingDate: "2025.3.28",
+      recruit: "ICT 개발",
+      salary: "6,837만 원",
+      averageData: [6, 4, 8, 2, 6],
+    },
+    {
+      id: 3,
+      name: "신한은행",
+      closingDate: "2025.3.30",
+      recruit: "뱅킹서비스 개발",
+      salary: "6,669만 원",
+      averageData: [6, 6, 6, 2, 6],
+    },
+    {
+      id: 4,
+      name: "신한저축은행",
+      closingDate: "2025.3.31",
+      recruit: "ICT개발운영",
+      salary: "6,199만 원",
+      averageData: [6, 4, 8, 2, 4],
+    },
+    {
+      id: 5,
+      name: "신한신용정보",
+      closingDate: "2025.03.31",
+      recruit: "IT",
+      salary: "4,881만 원",
+      averageData: [6, 2, 6, 4, 6],
+    },
+    {
+      id: 6,
       name: "금융결제원",
       closingDate: "2025.3.26",
       recruit: "전산직",
@@ -53,7 +94,7 @@ const Education = () => {
       averageData: [8, 10, 4, 4, 6],
     },
     {
-      id: 2,
+      id: 7,
       name: "SK 하이닉스",
       closingDate: "2025.3.28",
       recruit: "IT",
@@ -61,7 +102,7 @@ const Education = () => {
       averageData: [10, 6, 0, 6, 6],
     },
     {
-      id: 3,
+      id: 8,
       name: "롯데캐피탈",
       closingDate: "2025.3.30",
       recruit: "IT개발/운영",
@@ -69,7 +110,7 @@ const Education = () => {
       averageData: [8, 6, 0, 2, 6],
     },
     {
-      id: 4,
+      id: 9,
       name: "LG CNS",
       closingDate: "2025.3.31",
       recruit: "DX Engineer",
@@ -77,11 +118,11 @@ const Education = () => {
       averageData: [8, 8, 2, 2, 6],
     },
     {
-      id: 5,
+      id: 10,
       name: "한화시스템/ICT",
       closingDate: "2025.03.31",
       recruit: "서비스개발/운영",
-      salary: "5,783", // 배달의민족 평균 연봉(천원)
+      salary: "5,783",
       averageData: [8, 6, 2, 2, 6],
     },
   ];
@@ -191,7 +232,7 @@ const Education = () => {
   const chartData = [
     { subject: "자소서", user: letterScore },
     { subject: "자격증", user: certScore },
-    { subject: "어학점수", user: langScore },
+    { subject: "어학", user: langScore },
     { subject: "인턴경험", user: internScore },
     { subject: "학점", user: gradeScore },
   ];
@@ -212,7 +253,7 @@ const Education = () => {
 
   // (L) "직군 평균" 버튼 클릭 -> 예시로 /education/JobAverage 라고 가정
   const handleJobAverage = () => {
-    navigate("/account/positive");
+    navigate("/education/positive");
   };
 
   // 슬라이더 옵션
@@ -221,17 +262,13 @@ const Education = () => {
     infinite: true,
     speed: 500,
     slidesToShow: 2,
-    slidesToScroll: 1,
+    slidesToScroll: 2,
     autoplay: false,
     arrows: true,
   };
 
   return (
     <div style={pageWrapperStyle}>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
-      />
       <div style={boxWrapperStyle}>
         <div style={topContainerStyle}>
           <div style={chartWrapperStyle}>
@@ -253,8 +290,8 @@ const Education = () => {
               <Radar
                 name="내 능력치"
                 dataKey="user"
-                stroke="#8884d8"
-                fill="#8884d8"
+                stroke="#c9e8ff"
+                fill="#c9e8ff"
                 fillOpacity={0.6}
                 strokeWidth={2}
               />
@@ -262,8 +299,8 @@ const Education = () => {
                 <Radar
                   name={`${hoveredCompany.name} 평균`}
                   dataKey="company"
-                  stroke="#82ca9d"
-                  fill="#82ca9d"
+                  stroke="#ff89a3"
+                  fill="#ff89a3"
                   fillOpacity={0.6}
                   strokeWidth={2}
                 />
@@ -284,7 +321,7 @@ const Education = () => {
                   <span
                     style={{ ...bulletStyle, backgroundColor: "#df6e99" }}
                   ></span>
-                  어학점수: {languageObj.score || "0"}
+                  어학: {languageObj.score || "0"}
                 </li>
                 <li style={listItemStyle}>
                   <span
@@ -485,6 +522,7 @@ const buttonRowStyle = {
   display: "flex",
   gap: "8px",
   marginTop: "5px",
+  marginLeft: "-15px", //수정 직군 비교 버튼 왼쪽 정렬
   justifyContent: "flex-start", // 왼쪽 정렬
   flexWrap: "nowrap", // 버튼이 줄바꿈되지 않도록
 };

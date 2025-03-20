@@ -25,7 +25,7 @@ const ResumeDetail = () => {
             <h2 style={detailTitleStyle}>
                 {resume.company} / {resume.position} / {resume.applyDate}
             </h2>
-            <p style={detailSubTitleStyle}>{resume.type}</p>
+            {/*<p style={detailSubTitleStyle}>{resume.type}</p>*/}
             <hr />
             <p style={detailTextStyle}>{resume.detail}</p>
             {/*<button onClick={() => navigate(-1)} style={backButtonStyle}>*/}
@@ -53,7 +53,7 @@ const detailContainerStyle = {
 const detailTitleStyle = {
     fontSize: "1.4rem",
     fontWeight: "bold",
-    marginBottom: "30px",
+    marginBottom: "10px",
 };
 
 const detailSubTitleStyle = {

@@ -61,7 +61,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
         let newValue = type === "checkbox" ? checked : value;
 
         // 성별(gender) 라디오 버튼 선택 시 boolean 값으로 변환
-        if (name === "gender") {
+        if (name === "gender" || name === "familyStatus.married" || name === "criminalRecord") {
             newValue = value === "true";
         }
 
@@ -167,17 +167,29 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                 />
 
                 {/* 결혼 여부 체크박스 */}
-                <div className="personal-checkbox-group">
-                    <p>결혼 여부:</p>
-                    <input
-                        type="checkbox"
-                        name="familyStatus.married"
-                        checked={formData.familyStatus.married || false}
-                        onChange={handleChange}
-                    />
-                    <span className="personal-checkbox-label-text">
-                        {formData.familyStatus.married ? "기혼" : "미혼"}
-                    </span>
+                {/* 결혼 여부 (라디오 버튼) */}
+                <div className="personal-radio-group">
+                    <span className="personal-radio-label">결혼 여부:</span>
+                    <div className="personal-radio-options">
+                        <label>
+                            <input
+                                type="radio"
+                                name="familyStatus.married"
+                                value="true"
+                                checked={formData.familyStatus.married === true}
+                                onChange={handleChange}
+                            /> 기혼
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="familyStatus.married"
+                                value="false"
+                                checked={formData.familyStatus.married === false}
+                                onChange={handleChange}
+                            /> 미혼
+                        </label>
+                    </div>
                 </div>
 
                 <label className="input-label">자녀수</label>
@@ -190,18 +202,29 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     className="input-field"
                 />
 
-                {/* 해외여행 출국 가능 여부 체크박스 */}
-                <div className="personal-checkbox-group">
-                    <p>해외여행 출국:</p>
-                    <input
-                        type="checkbox"
-                        name="criminalRecord"
-                        checked={formData.criminalRecord || false}
-                        onChange={handleChange}
-                    />
-                    <span className="personal-checkbox-label-text">
-                        {formData.criminalRecord ? "불가능" : "가능"}
-                    </span>
+                {/* 해외여행 출국 여부 (라디오 버튼) */}
+                <div className="personal-radio-group">
+                    <span className="personal-radio-label">해외여행 출국 가능 여부:</span>
+                    <div className="personal-radio-options">
+                        <label>
+                            <input
+                                type="radio"
+                                name="criminalRecord"
+                                value="true"
+                                checked={formData.criminalRecord === true}
+                                onChange={handleChange}
+                            /> 가능
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="criminalRecord"
+                                value="false"
+                                checked={formData.criminalRecord === false}
+                                onChange={handleChange}
+                            /> 불가능
+                        </label>
+                    </div>
                 </div>
 
                 {/* 가족관계 증명서 업로드 */}

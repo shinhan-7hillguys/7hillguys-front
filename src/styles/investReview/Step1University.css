@@ -1,7 +1,7 @@
 /* Step1University.css - 학교 정보 입력 페이지 스타일 */
 
 
-/* 🔹 입력 박스를 화면 중앙에 배치하고 크기를 키움 */
+/* 입력 박스를 화면 중앙에 배치하고 크기를 키움 */
 .university-box {
     background: white;
     padding: 40px;
@@ -15,20 +15,19 @@
 
     display: flex;
     flex-direction: column;
-    justify-content: center; /* 화면 중앙 정렬 */
     align-items: center; /* 가로 중앙 정렬 */
 }
 
-/* 🔹 제목 스타일 */
+/* 제목 스타일 */
 .university-title {
     font-size: 28px;
     font-weight: bold;
     color: black;
-    margin-bottom: 25px;
+    margin-top: 0;
     text-align: center;
 }
 
-/* 🔹 입력 필드 */
+/* 입력 필드 */
 .input-field {
     width: 100%;
     padding: 14px;
@@ -39,7 +38,7 @@
     background-color: white;
 }
 
-/* 🔹 입력 필드 라벨 */
+/* 입력 필드 라벨 */
 .input-label {
     text-align: left;
     width: 100%;
@@ -49,7 +48,7 @@
     color: #333;
 }
 
-/* 🔹 파일 업로드 컨테이너 */
+/* 파일 업로드 컨테이너 */
 .file-upload-wrapper {
     display: flex;
     align-items: center;
@@ -58,7 +57,7 @@
     margin-top: 15px;
 }
 
-/* 🔹 파일 업로드 라벨 */
+/* 파일 업로드 라벨 */
 .file-upload-label {
     font-size: 14px;
     font-weight: bold;
@@ -67,7 +66,7 @@
     text-align: left;
 }
 
-/* 🔹 파일 선택 버튼 */
+/* 파일 선택 버튼 */
 .custom-file-upload {
     background-color: #FEA1B8;
     color: white;
@@ -80,16 +79,16 @@
     width: 30%;
 }
 
-.custom-file-upload:hover {
+/*.custom-file-upload:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* 기본 파일 선택 input 숨기기 */
 .file-upload {
     display: none;
 }
 
-/* 🔹 파일명 표시 */
+/* 파일명 표시 */
 .file-name {
     font-size: 14px;
     color: #666;
@@ -100,7 +99,7 @@
     overflow: auto;
 }
 
-/* 🔹 다음 버튼 */
+/* 다음 버튼 */
 .next-button {
     width: 100%;
     padding: 14px;
@@ -113,11 +112,11 @@
     margin-top: 20px;
 }
 
-.university-box .next-button:hover {
+/*.university-box .next-button:hover {
     background-color: #ff6688;
-}
+}*/
 
-/* 🔹 입력 필드 포커스 효과 */
+/* 입력 필드 포커스 효과 */
 .input-field:focus {
     outline: none;
     border-color: #FF4170;

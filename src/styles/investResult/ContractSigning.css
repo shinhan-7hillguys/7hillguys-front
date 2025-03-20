@@ -95,9 +95,9 @@
     color: black;
 }
 
-.clear-button:hover {
+/*.clear-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 서명 저장 버튼 */
 .save-button {
@@ -105,9 +105,9 @@
     color: white;
 }
 
-.save-button:hover {
+/*.save-button:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* 계약서 제출 버튼 */
 .submit-button {
@@ -115,6 +115,7 @@
     color: white;
 }
 
+/*
 .submit-button:hover {
     background-color: #45A049;
-}
+}*/
