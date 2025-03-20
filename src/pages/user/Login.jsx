@@ -9,7 +9,12 @@ function Login() {
         password: "",
     });
 
-    const navigate = useNavigate();  
+    const navigate = useNavigate();
+
+    // 로고 클릭 시 홈으로 이동
+    const handleLogoClick = () => {
+        navigate("/");
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -34,7 +39,7 @@ function Login() {
 
             if (response.ok) {
                 alert("로그인 성공!");
-                navigate("/");
+                navigate("/user/dashboard");
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || "로그인 실패");
@@ -48,6 +53,11 @@ function Login() {
     return (
         <div className="login-container">
             <div className="login-box">
+                {/* 로고 클릭 시 홈으로 이동 */}
+                <h2 className="login-title" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+                    <img src="/logo.png" alt="Logo" width={38} />
+                    Peoch
+                </h2>
                 <h2 className="login-title">로그인</h2>
                 <form onSubmit={handleSubmit}>
                     <input

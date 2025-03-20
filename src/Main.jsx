@@ -22,10 +22,10 @@ const Main = () => {
   useEffect(() => {
     // 로그인 상태 확인
     axios
-      .get("/auth/user/userId", { withCredentials: true })
-      .then((response) => {
-        if (response.data.username) {
-          setUser(response.data.username);
+      .get("/api/auth/userId", { withCredentials: true })
+      .then((response) => { 
+        if (response.data.name) {
+          setUser(response.data.name);
         }
       })
       .catch((error) => {
@@ -40,15 +40,11 @@ const Main = () => {
         method: "POST",
         credentials: "include",
       });
-      if (response.ok) {
-        console.log("로그아웃 성공");
-        window.location.href = "/"; // 메인 페이지로 이동
-      } else {
-        console.error("로그아웃 실패");
-        alert("로그아웃에 실패했습니다.");
+      if (response.ok) { 
+        window.location.href = "/";  
+      } else {  
       }
-    } catch (error) {
-      console.error("로그아웃 중 오류 발생:", error);
+    } catch (error) { 
       alert("서버 오류가 발생했습니다.");
     }
   };
@@ -233,7 +229,7 @@ const Main = () => {
             }}
           >
             {user ? (
-              <Link to="/login" className="login-button">
+              <Link to="/logout" className="login-button">
                 <CiLogout size={40} />
               </Link>
             ) : (

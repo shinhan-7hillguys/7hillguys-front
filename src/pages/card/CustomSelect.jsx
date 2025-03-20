@@ -54,16 +54,15 @@ const CustomSelect = ({
         <span
           style={{
             position: "absolute",
-            right: "8px", // 부모 내부에 위치하도록 변경
+            right: "20px", // 부모 내부에 위치하도록 변경
             top: "50%",
             transform: "translateY(-50%)",
             fontSize: "20px",
             display: "inline-block",
             padding: "0px 3px 1px 3px",
-            border: "3px solid #000",
             height: "32px",
             cursor: "pointer",
-            backgroundColor: "#000",
+            backgroundColor: "#fff",
             borderRadius: "150px",
             lineHeight: "1.3"
           }}

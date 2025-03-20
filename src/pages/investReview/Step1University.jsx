@@ -40,6 +40,15 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
                     onChange={handleChange}
                     className="input-field"
                 />
+                <label className="input-label">학점</label>
+                <input
+                    type="text"
+                    name="studentCard.highscoolGPA"
+                    placeholder="학점"
+                    value={formData.studentCard.highscoolGPA || ""}
+                    onChange={handleChange}
+                    className="input-field"
+                />
                 <label className="input-label">고등학교</label>
                 <input
                     type="text"
@@ -48,16 +57,7 @@ const Step1University = ({ formData, handleChange, handleFileChange, handleNext 
                     value={formData.studentCard.highscool || ""}
                     onChange={handleChange}
                     className="input-field"
-                />
-                <label className="input-label">내신성적</label>
-                <input
-                    type="text"
-                    name="studentCard.highscoolGPA"
-                    placeholder="내신 성적"
-                    value={formData.studentCard.highscoolGPA || ""}
-                    onChange={handleChange}
-                    className="input-field"
-                />
+                    />
 
                 {/* 대학교 증명서 파일 업로드 */}
                 <div className="file-upload-wrapper">

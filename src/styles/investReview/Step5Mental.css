@@ -1,7 +1,7 @@
 /* Step5Mental.css - 성실도 설문 페이지*/
 
 
-/* 🔹 평가 박스 (전체 높이를 채우도록 설정) */
+/* 박스 */
 .mental-box {
     background: white;
     padding: 40px;
@@ -19,9 +19,10 @@
 }
 
 /* 제목 */
-.mental-title {
+.mental-box .mental-title {
     font-size: 22px;
     font-weight: bold;
+    text-align: center;
     color: black;
     margin-bottom: 15px;
 }
@@ -95,9 +96,9 @@
     width: 48%;
 }
 
-.mental-prev-button:hover {
+/*.mental-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 다음 버튼 */
 .mental-next-button {
@@ -111,6 +112,7 @@
     width: 48%;
 }
 
+/*
 .mental-next-button:hover {
     background-color: #ff6688;
-}
+}*/

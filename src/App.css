@@ -8,14 +8,18 @@ http://scripts.sil.org/OFL
 */
 
 @font-face {
-	font-family: 'Pretendard Variable';
-	font-weight: 45 920;
-	font-style: normal;
-	font-display: swap;
-	src: url('./fonts/PretendardVariable.woff2') format('woff2-variations');
+  font-family: "Pretendard Variable";
+  font-weight: 45 920;
+  font-style: normal;
+  font-display: swap;
+  src: url("./fonts/PretendardVariable.woff2") format("woff2-variations");
 }
-div, button, p, h1,h2 {
-  font-family: 'PretendardVariable', sans-serif;
+div,
+button,
+p,
+h1,
+h2 {
+  font-family: "PretendardVariable", sans-serif;
 }
 
 :root {
@@ -95,7 +99,7 @@ div, button, p, h1,h2 {
   box-sizing: border-box;
   text-decoration: none;
   list-style: none;
-  font-family: 'PretendardVariable', sans-serif;
+  font-family: "PretendardVariable", sans-serif;
 }
 
 div {
@@ -106,11 +110,14 @@ div {
   min-height: 100vh;
   height: 100%;
   /* background-image: radial-gradient(circle at top right, #fff4fb 0%, #f6cfea 100%); */
-  background-image: radial-gradient(circle at top right, #ff6ca2 -100%, #fcf4f4 100%);
+  background-image: radial-gradient(
+    circle at top right,
+    #ff6ca2 -100%,
+    #fcf4f4 100%
+  );
   /* background-image: radial-gradient(circle at top right, #ebbcf2 0%, #ffe7e7 100%); */
   /* padding: 5px 0; */
   margin: 0 auto;
-
 }
 .container2 {
   min-height: 93vh;
@@ -118,7 +125,6 @@ div {
   width: 100%;
   background: #fffeff;
   border-radius: 30px 30px 0 0;
-  
 }
 
 .header_top {
@@ -135,7 +141,6 @@ div {
   align-items: center;
   /* padding: 10px; */
   padding: 15px;
-  
 }
 .header_bottom h2 {
   display: flex;
@@ -153,7 +158,6 @@ header {
   flex-direction: column;
   /* 헤더 스타일 */
 }
-
 
 /* 사이드바 기본 스타일 */
 .sidebar {
@@ -186,11 +190,6 @@ header {
   margin: 0 auto;
 } */
 
-
-
-
-
-
 /* src/components/NavigationHeader.css */
 .navigation-header {
   width: 100%;
@@ -210,7 +209,15 @@ header {
   font-size: 18px;
   border-radius: 4px;
   cursor: pointer;
+}
 
+.my-custom-rounded {
+  border-radius: 60px;
+}
+
+.my-custom-rounded-top {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
 }
 
 /* .nav-btn:hover {

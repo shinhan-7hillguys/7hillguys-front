@@ -24,9 +24,10 @@
 }
 
 /* 제목 */
-.submit-title {
+.submit-box .submit-title {
     font-size: 22px;
     font-weight: bold;
+    text-align: center;
     color: black;
     margin-bottom: 15px;
 }
@@ -59,14 +60,14 @@
     width: 48%;
 }
 
-.submit-prev-button:hover {
+/*.submit-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 제출 버튼 */
 .submit-next-button {
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: #FEA1B8;
     color: white;
     border: none;
     border-radius: 5px;
@@ -75,6 +76,7 @@
     width: 48%;
 }
 
+/*
 .submit-next-button:hover {
     background-color: #45A049;
-}
+}*/

@@ -43,6 +43,7 @@ html {
   color: #fff;
   display: inline-flex;
   align-items: center;
+  justify-content: flex-end;
 }
 
 .auth-links {
@@ -53,8 +54,7 @@ html {
 .login-button,
 .signup-button {
   padding: 8px 16px;
-  border-radius: 20px;
-  transition: all 0.3s ease;
+  border-radius: 20px; 
 }
 
 .login-button {
@@ -68,8 +68,7 @@ html {
 
 .login-button:hover,
 .signup-button:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(251, 106, 172, 0.3);
+   
 }
 
 /* 수직 스크롤 섹션 */

@@ -1,5 +1,4 @@
-// src/components/LogoutButton.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const LogoutButton = () => {
@@ -15,22 +14,24 @@ const LogoutButton = () => {
                 credentials: "include",
             });
 
-            if (response.ok) {
-                console.log(" 로그아웃 성공");
-                navigate("/"); // 로그아웃 후 메인 페이지로 이동
+            if (response.ok) { 
+                navigate("/");  
             } else {
                 console.error("로그아웃 실패");
+                navigate("/");  
             }
-        } catch (error) {
-            console.error("로그아웃 중 오류 발생:", error);
+        } catch (error) { 
             alert("서버 오류가 발생했습니다.");
+            navigate("/");  
         }
     };
+ 
+    useEffect(() => {
+        handleLogout();
+    }, []);
 
     return (
-        <button className="logout-button" onClick={handleLogout}>
-            로그아웃
-        </button>
+        <div/>
     );
 };
 

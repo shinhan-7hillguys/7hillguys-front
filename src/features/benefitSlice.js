@@ -69,7 +69,12 @@ const benefitSlice = createSlice({
       // );
     },
     clearAddedBenefits: (state) => {
-      state.availableBenefits = state.availableBenefits.concat(state.addedBenefits);
+      state.addedBenefits.forEach((benefit) => {
+        // 이미 availableBenefits에 없는 경우에만 추가
+        if (!state.availableBenefits.find(b => b.benefitId === benefit.benefitId)) {
+          state.availableBenefits.push(benefit);
+        }
+      });
       state.addedBenefits = [];
     },
     mergeBenefits: (state) => {
