@@ -151,19 +151,20 @@ function PositiveFactors() {
 
                                 <defs>
                                     <linearGradient id="barColor" x1="0" y1="0" x2="1" y2="0">
-                                        <stop offset="0%" stopColor="#82ca9d" />
-                                        <stop offset="100%" stopColor="#a0e4b6" />
+                                        <stop  offset="0%" stopColor="#9966ff" />
+                                        <stop offset="100%" stopColor="#9966ff"  />
                                     </linearGradient>
                                 </defs>
 
                                 <Bar
                                     dataKey="score"
-                                    fill="#8884d8"
+                                    fill="#c9e8ff"
                                     barSize={20}
                                     radius={[10, 10, 10, 10]}
                                     label={renderCustomBarLabel("나")}
                                 />
                                 <Bar
+                                    style ={{ border:"5px solid #ddd"}}
                                     dataKey="avg"
                                     fill="url(#barColor)"
                                     barSize={20}
