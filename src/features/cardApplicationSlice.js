@@ -26,8 +26,10 @@ export const fetchUserCardInfo = createAsyncThunk(
     try {
 
       const response = await axios.get("http://localhost:8080/card/cardInfo");
-      console.log(response);
+      console.log("response", response);
+
       return response.data; // 서버가 반환한 { cardRegistered: true/false }
+
     } catch (error) {
       return rejectWithValue(
         error.response?.data || "카드 정보를 가져오지 못했습니다."
@@ -93,6 +95,8 @@ export const submitCardApplication = createAsyncThunk(
 const initialState = {
   // 약관 동의, 카드 디자인 등 기존 상태...
   termsAgreed: false,
+  englishName: { firstName: "", lastName: "" },
+  cardPin: "",
   cardDesign: {
     layoutId: "", // 숫자로 전달
     username: "",
@@ -111,8 +115,7 @@ const initialState = {
     monthlyAllowance: "",
   },
   // 영문 이름, 카드 PIN, 지원 정보 등 기존 상태...
-  englishName: { firstName: "", lastName: "" },
-  cardPin: "",
+  
   supportPeriod: "2년",
   totalAmount: 240000,
   monthlyAmount: 10000,
@@ -122,6 +125,7 @@ const initialState = {
   // 새로운 사용자 정보 요청 상태 (옵션)
   userInfoStatus: "idle", // "idle" | "loading" | "succeeded" | "failed"
   cardRegistered: false,
+  investRegistered: false,
 
 };
 
@@ -162,6 +166,9 @@ const cardApplicationSlice = createSlice({
       })
       .addCase(submitCardApplication.fulfilled, (state) => {
         state.submitStatus = "succeeded";
+        state.termsAgreed = false;
+        state.englishName = { firstName: "", lastName: "" };
+        state.cardPin = "";
       })
       .addCase(submitCardApplication.rejected, (state, action) => {
         state.submitStatus = "failed";
@@ -185,7 +192,20 @@ const cardApplicationSlice = createSlice({
       })
       .addCase(fetchUserCardInfo.fulfilled, (state, action) => {
         // 응답으로 { cardRegistered: true/false }를 받는다고 가정
-        state.cardRegistered = action.payload.cardRegistered;
+        const cardInfo = action.payload.cardRegistered;
+
+        if (cardInfo.hasOwnProperty("invest")) {
+          // 투자 정보가 있는 경우
+          state.investRegistered = cardInfo.invest; // false가 들어올 것임
+        } else if (cardInfo.hasOwnProperty("cardRegistered")) {
+          // 카드 정보의 존재 여부를 나타내는 경우
+          state.cardRegistered = cardInfo.cardRegistered;
+          // 카드 정보가 없으면(cardRegistered false) investRegistered를 true로 설정 (원래 로직대로라면)
+          if (!cardInfo.cardRegistered) {
+            state.investRegistered = true;
+          } 
+        }
+        
       })
       .addCase(fetchUserCardInfo.rejected, (state, action) => {
         state.error = action.payload;

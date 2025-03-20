@@ -38,7 +38,7 @@ function CardIntroPage() {
   const dispatch = useDispatch();
 
   // benefit state에서 카드 정보를 가져옵니다.
-  const { cardRegistered } = useSelector((state) => state.cardApplication);
+  const { cardRegistered, investRegistered} = useSelector((state) => state.cardApplication);
 
   useEffect(() => {
     // 컴포넌트 마운트 시 한 번만 호출
@@ -47,8 +47,10 @@ function CardIntroPage() {
   const handleApplyClick = () => {
     // 등록된 카드가 있으면 /benefit, 없으면 /card/terms로 이동합니다.
     console.log(cardRegistered)
-    if (cardRegistered) {
-      alert("카드 신청이 완료된 상태입니다.");
+    if(!investRegistered){
+      return alert("투자 신청 후 이용 부탁드립니다.");
+    } else if (cardRegistered) {
+      return alert("카드 신청이 완료된 상태입니다.");
       navigate("/user/dashboard");
     } else {
       navigate("/card/terms");
