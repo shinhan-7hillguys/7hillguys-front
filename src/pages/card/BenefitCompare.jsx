@@ -17,7 +17,7 @@ import { fetchPayments } from "../../features/paymentSlice";
 import "styles/card/benefit.css";
 import { useNavigate } from "react-router-dom";
 import MonthSelect from "./MonthSelect";
-import { CheckCircleOutlined, CloseCircleOutlined } from "@ant-design/icons";
+import { CheckCircleOutlined, CloseCircleOutlined} from "@ant-design/icons";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6384", "#36A2EB", "#FFCE56"];
 
@@ -108,17 +108,22 @@ const BenefitCompare = () => {
       </div>
       <div className="payment_graph">
       <p style={{ fontSize: "1.2rem", fontWeight: "bold", textAlign: "center" }}>
-  {isSavings ? (
-    <>
-      <CheckCircleOutlined style={{ color: "green", marginRight: "8px" }} />
-      총 {priceDifference.toLocaleString()}원 절감
-    </>
-  ) : (
-    <>
-      <CloseCircleOutlined style={{ color: "red", marginRight: "8px" }} />
-      총 {Math.abs(priceDifference).toLocaleString()}원 추가 지출
-    </>
-  )}
+      {priceDifference === 0 ? (
+  <>
+    <span style={{ marginRight: "8px", fontSize: "20px" }}>⚖️</span>
+    변동 없음
+  </>
+) : isSavings ? (
+  <>
+    <CheckCircleOutlined style={{ color: "green", marginRight: "8px" }} />
+    총 {priceDifference.toLocaleString()}원 절감
+  </>
+) : (
+  <>
+    <CloseCircleOutlined style={{ color: "red", marginRight: "8px" }} />
+    총 {Math.abs(priceDifference).toLocaleString()}원 추가 지출
+  </>
+)}
 </p>
       </div>
       <div style={{ margin: "20px 0" }}>
