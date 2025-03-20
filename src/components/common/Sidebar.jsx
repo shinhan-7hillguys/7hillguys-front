@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Link, useNavigate } from 'react-router-dom';
 import AccordionMenu from './AccordionMenu';  
 import { menuData } from './menuData';         
+import { HiX } from "react-icons/hi";
 
 const SidebarContainer = styled.div`
   position: fixed;
@@ -20,22 +21,22 @@ const LogoutButton = styled.button`
   position: absolute;
   top: 16px;
   left: 16px;
-  background: transparent;
-  border: none;
+  background: transparent; 
   font-size: 16px;
   cursor: pointer;
   color: #444;
-`;
-
-const CloseButton = styled.button`
-  background: transparent;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  color: #444;
-  margin-bottom: 16px;
-  float: right;
-`;
+  font-weight: bold;
+  margin : auto;  
+  padding: 4px 8px;
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  text-decoration: none; 
+  &:hover {
+    background: #e08490;
+    color: #fff;
+  }
+`; 
 
 const LogoContainer = styled.div`
   display: flex;
@@ -146,7 +147,7 @@ const FirstLevelItem = styled.div`
 const Sidebar = ({ toggleSidebar }) => {
   const [userName, setUserName] = useState('');
   const [selectedFirst, setSelectedFirst] = useState(
-    menuData.find(menu => menu.label === 'Card')
+    menuData.find(menu => menu.label === 'Peoch')
   );
   const [recentMenus, setRecentMenus] = useState([]);
   const navigate = useNavigate();
@@ -186,7 +187,7 @@ const Sidebar = ({ toggleSidebar }) => {
   const updateRecentMenus = (menu) => {
     let updatedRecent = [menu, ...recentMenus.filter(m => m.label !== menu.label)];
     if (updatedRecent.length > 3) {
-      updatedRecent = updatedRecent.slice(0, 4);
+      updatedRecent = updatedRecent.slice(0, 3);
     }
     setRecentMenus(updatedRecent);
     localStorage.setItem('recentMenus', JSON.stringify(updatedRecent));
@@ -211,7 +212,7 @@ const Sidebar = ({ toggleSidebar }) => {
   return (
     <SidebarContainer>
       <LogoutButton onClick={handleLogout}>로그아웃</LogoutButton>
-      <CloseButton onClick={toggleSidebar}>x</CloseButton>
+      <HiX style = {{fontSize : "35px", marginLeft:"auto", marginRight:"10px", marginTop:"15px"}} onClick={toggleSidebar}></HiX>
       <LogoContainer>
         <LogoIcon />
         <LogoText to="/" onClick={toggleSidebar}>

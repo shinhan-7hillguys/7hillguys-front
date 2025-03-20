@@ -1,0 +1,22 @@
+.contract-stamp-container {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    margin-left : 60px;
+  }
+  
+  .contract-icon {
+    width: 150px;
+    height: auto;
+  }
+  
+  .stamp-icon {
+    width: 80px;
+    height: auto;
+    position: absolute;
+    top: 30px;
+    right: 10px; 
+  }
+  
