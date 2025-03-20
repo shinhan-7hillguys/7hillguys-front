@@ -17,6 +17,7 @@ import { fetchPayments } from "../../features/paymentSlice";
 import "styles/card/benefit.css";
 import { useNavigate } from "react-router-dom";
 import MonthSelect from "./MonthSelect";
+import { CheckCircleOutlined, CloseCircleOutlined} from "@ant-design/icons";
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#FF6384", "#36A2EB", "#FFCE56"];
 
@@ -92,7 +93,8 @@ const BenefitCompare = () => {
   // console.log(computedData)
   const totalCurrentFinal = computedData.reduce((sum, cur) => sum + cur.finalAmount, 0);
   const totalNewFinal = computedData.reduce((sum, cur) => sum + cur.newFinal, 0);
-
+  const priceDifference = totalCurrentFinal - totalNewFinal;
+  const isSavings = priceDifference > 0;
   return (
     <div className="benefit_compare" style={{ padding: "20px" }}>
       <h1>혜택 적용 결과 비교</h1>
@@ -105,8 +107,24 @@ const BenefitCompare = () => {
         />
       </div>
       <div className="payment_graph">
-        <p><div>기존 혜택 적용</div><div>{totalCurrentFinal.toLocaleString()} 원</div> </p>
-        <p><div>새로운 조합 적용</div><div>{totalNewFinal.toLocaleString()} 원</div> </p>
+      <p style={{ fontSize: "1.2rem", fontWeight: "bold", textAlign: "center" }}>
+      {priceDifference === 0 ? (
+  <>
+    <span style={{ marginRight: "8px", fontSize: "20px" }}>⚖️</span>
+    변동 없음
+  </>
+) : isSavings ? (
+  <>
+    <CheckCircleOutlined style={{ color: "green", marginRight: "8px" }} />
+    총 {priceDifference.toLocaleString()}원 절감
+  </>
+) : (
+  <>
+    <CloseCircleOutlined style={{ color: "red", marginRight: "8px" }} />
+    총 {Math.abs(priceDifference).toLocaleString()}원 추가 지출
+  </>
+)}
+</p>
       </div>
       <div style={{ margin: "20px 0" }}>
         <button
@@ -118,20 +136,22 @@ const BenefitCompare = () => {
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
-            fontWeight: "600"
+            fontWeight: "600",
+            color:"#fff",
           }}
         >
-          결제 금액 비교
+           금액 비교
         </button>
         <button
           onClick={() => setSelectedChart("pie")}
           style={{
             padding: "10px 20px",
-            backgroundColor: selectedChart === "pie" ? "#82ca9d" : "#ccc",
+            backgroundColor: selectedChart === "pie" ? "rgb(255, 153, 170)" : "#ccc",
             border: "none",
             borderRadius: "5px",
             cursor: "pointer",
-            fontWeight: "600"
+            fontWeight: "600",
+            color:"#fff",
           }}
         >
           할인 비율
@@ -143,44 +163,53 @@ const BenefitCompare = () => {
         </div>
       ) : (
         <>
-          {selectedChart === "bar" ? (
-            <div style={{ width: "100%", height: 300, marginBottom: "40px" }}>
-              <h2>카테고리별 결제 금액 비교</h2>
-              <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={computedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
-                  <XAxis dataKey="category" />
-                  <YAxis />
-                  <Tooltip formatter={(value) => `${value.toLocaleString()} 원`} />
-                  <Legend />
-                  <Bar dataKey="finalAmount" fill="rgb(111 219 255)" name="현재 혜택 적용 후" />
-                  <Bar dataKey="newFinal" fill="rgb(88 245 127)" name="새로운 조합 적용 후" />
-                </BarChart>
-              </ResponsiveContainer>
-            </div>
-          ) : (
-            <div style={{ width: "100%", height: 300 }}>
-              <h2>카테고리별 할인 금액 비율</h2>
-              <ResponsiveContainer width="100%" height="100%">
-                <PieChart>
-                  <Pie
-                    data={computedData}
-                    dataKey="discountAmount"
-                    nameKey="category"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={100}
-                    label
-                  >
-                    {computedData.map((entry, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
-                  </Pie>
-                  <Tooltip formatter={(value) => `${value.toLocaleString()} 원`} />
-                  <Legend />
-                </PieChart>
-              </ResponsiveContainer>
-            </div>
-          )}
+          {selectedChart === "pie" ? (
+    computedData.reduce((sum, cur) => sum + cur.discountAmount, 0) === 0 ? (
+      <div style={{ textAlign: "center", margin: "50px 0", fontSize: "1.2rem" }}>
+        적용되는 이용 내역이 없습니다.
+      </div>
+    ) : (
+      <div style={{ width: "100%", height: 300 }}>
+        <h2>카테고리별 할인 금액 비율</h2>
+        <ResponsiveContainer width="100%" height="100%">
+          <PieChart>
+            <Pie
+              data={computedData}
+              dataKey="discountAmount"
+              nameKey="category"
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              label
+            >
+              {computedData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Pie>
+            <Tooltip formatter={(value) => `${value.toLocaleString()} 원`} />
+            <Legend />
+          </PieChart>
+        </ResponsiveContainer>
+      </div>
+    )
+  ) : (
+          <div style={{ width: "100%", height: 300, marginBottom: "40px" }}>
+            <h2>카테고리별 결제 금액 비교</h2>
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={computedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
+                <XAxis dataKey="category" />
+                <YAxis tickFormatter={(value) => `${value.toLocaleString()}`} />
+                <Tooltip formatter={(value) => `${value.toLocaleString()} 원`} />
+                <Legend />
+                <Bar dataKey="finalAmount" fill="#e9c0c9" name="현재 혜택 적용 후" />
+                <Bar dataKey="newFinal" fill="#c9e8ff" name="새로운 조합 적용 후" />
+              </BarChart>
+            </ResponsiveContainer>
+        </div>
+        )}
+
+        
+          
         </>
       )}
     </div>

@@ -1,7 +1,7 @@
 // src/pages/FinalCheckPage.jsx
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { submitCardApplication } from "../../features/cardApplicationSlice";
+import { fetchUserCardInfo, submitCardApplication } from "../../features/cardApplicationSlice";
 import NavigationHeader from "components/common/NavigationHeader";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -20,10 +20,18 @@ function FinalCheckPage() {
     monthlyAmount,
     submitStatus,
     error,
-    userInfo
+    userInfo,
+    cardRegistered
   } = useSelector((state) => state.cardApplication);
 
   useEffect(() => {
+    // dispatch(fetchUserCardInfo());
+    if (submitStatus == "succeeded") {
+      
+      navigate("/card");
+      return;
+    }
+
     if (!termsAgreed) {
       navigate("/card/terms");
     } else if (!englishName || !englishName.firstName || !englishName.lastName) {
@@ -32,7 +40,7 @@ function FinalCheckPage() {
       navigate("/card/pin");
     }
     // 이 조건들이 모두 만족하면 현재 페이지(FinalCheckPage)를 렌더링
-  }, [termsAgreed, englishName, cardPin, navigate]);
+  }, []);
 
 
   const handleSubmit = () => {
@@ -44,11 +52,12 @@ function FinalCheckPage() {
     // console.log(bgFile)
     try {
       dispatch(submitCardApplication(bgFile));
-      alert("카드 신청이 완료되었습니다.")
+      alert("카드 신청이 완료되어 혜택 적용 페이지로 이동하겠습니다.");
+      navigate("/card");
     } catch (error) {
       alert("카드 신청 중 문제 발생 ")
     }
-    navigate("/card");
+
   };
 
   return (

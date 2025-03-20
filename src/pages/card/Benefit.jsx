@@ -10,7 +10,7 @@ import {
   applyBenefits 
 } from "../../features/benefitSlice";
 import { useNavigate } from "react-router-dom";
-import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined } from "@ant-design/icons";
+import { ArrowDownOutlined, ArrowUpOutlined, BarcodeOutlined, SwapOutlined } from "@ant-design/icons";
 import "styles/card/benefit.css";
 import CardPreview from "./CardPreview";
 import {
@@ -62,7 +62,8 @@ const Benefit = () => {
   const { availableBenefits, appliedBenefits, addedBenefits,  status, error, card } = useSelector(
     (state) => state.benefit
   );
- 
+  const [selectedTab, setSelectedTab] = useState("existing");
+
   // 더 이상 고정된 cardId 사용하지 않고, Redux에 저장된 카드 정보를 사용합니다.
   // card가 아직 null일 수 있으므로 안전하게 처리합니다.
   const cardId = card ? card.cardId : null;
@@ -97,7 +98,9 @@ const Benefit = () => {
 
   const handleAdd = () => {
   
-    if(addedBenefits.length + 1 + appliedBenefits.length > 3) return alert("최대 3개 초과");
+    if (checkedBenefits.length + appliedBenefits.length > 3) {
+      return alert("최대 3개 초과");
+    }
     if (checkedBenefits.length === 0) {
       alert("추가할 혜택을 선택하세요.");
       return;
@@ -107,6 +110,7 @@ const Benefit = () => {
       checkedBenefits.includes(b.benefitId)
     );
     if (benefitsToAdd.length === 0) return;
+    console.log(checkedBenefits);
     benefitsToAdd.forEach((benefit) => {
       dispatch(addBenefit(benefit));
     });
@@ -205,14 +209,14 @@ const filteredAvailableBenefits = useMemo(() => {
   //     </button>
   //   </div>
   // );
-console.log("card : ", card)
+console.log("card : ", checkedBenefits)
   return (
     <>
           <h2 className="sec_title">카멜레온 카드 혜택 적용</h2>
       <section className="card_benefit_sec1">
         <div>
           {/* 백컬러 프론트로 바꾸고 이미지 url */}
-            <CardFront style={{ position: "relative" }}
+            <CardFront style={{ position: "relative",  }}
  $cardFrontColor={card?.cardDesigns[0]?.cardBackColor}>
                     <Chip style={card?.cardDesigns[0]?.layoutId === "2" ? currentLayout.chip : layoutPresets["1"].chip}>
                       <svg role="img" viewBox="0 0 100 100" aria-label="Chip">
@@ -227,7 +231,7 @@ console.log("card : ", card)
                     />
                     {card?.cardDesigns[0]?.layoutId == "1" && (
                       <>
-                        <NumberLabel style={layoutPresets["1"].number}> {card?.cardNumber && card.cardNumber.replace(/(\d{4})(?=\d)/g, '$1-')}</NumberLabel>
+                        <NumberLabel  style={ layoutPresets["1"].number}> {card?.cardNumber && card.cardNumber.replace(/(\d{4})(?=\d)/g, '$1-')}</NumberLabel>
                         <NameLabel style={layoutPresets["1"].name}>{card?.enName}</NameLabel>
                         <ExpiryLabel style={layoutPresets["1"].expiry}>{card?.expirationDate}</ExpiryLabel>
                       </>
@@ -237,20 +241,32 @@ console.log("card : ", card)
       </section>
 
       <section className="card_benefit_sec2">
-        <div className="action-btn" onClick={handleAdd}>
-          <ArrowUpOutlined style={{ fontSize: "30px" }} />
-          <span>add</span>
-        </div>
-        <div className="action-btn" onClick={handleClear}>
-          <ArrowDownOutlined style={{ fontSize: "30px" }} />
-          <span>clear</span>
-        </div>
-        <div className="action-btn" onClick={handlePayment}>
-          <BarcodeOutlined style={{ fontSize: "30px" }} />
-          <span>구독</span>
-        </div>
+      <div
+  className="action-btn"
+  onClick={handleAdd}
+  style={{ backgroundColor: checkedBenefits.length > 0 ? "var(--box-color)" : undefined }}
+>
+  <ArrowUpOutlined style={{ fontSize: "30px" }} />
+  <span>add</span>
+</div>
+<div
+  className="action-btn"
+  onClick={handleClear}
+  style={{ backgroundColor: addedBenefits.length > 0 ? "var(--box-color)" : undefined }}
+>
+  <ArrowDownOutlined style={{ fontSize: "30px" }} />
+  <span>clear</span>
+</div>
+<div
+  className="action-btn"
+  onClick={handlePayment}
+  style={{ backgroundColor: addedBenefits.length > 0 ? "var(--box-color)" : undefined }}
+>
+  <BarcodeOutlined style={{ fontSize: "30px" }} />
+  <span>구독</span>
+</div>
         <div className="action-btn" onClick={() => navigate("/benefit/compare")}>
-          <BarcodeOutlined style={{ fontSize: "30px" }} />
+         <SwapOutlined style={{ fontSize: "30px" }} />
           <span>비교</span>
         </div>
       </section>
@@ -261,39 +277,56 @@ console.log("card : ", card)
         style={{ cursor: "pointer" }}
       >
         <div className="my-benefits">
-          <div className="benefits-section">
-            <h3>기존 혜택</h3>
-            {appliedBenefits && appliedBenefits.length > 0 ? (
-              <ul>
-                {appliedBenefits.map((b) => (
-                  <li key={b.benefit.benefitId} className="benefit-item">
-                    <div className="benefit-info">
-                      <strong>{b.benefit.name}</strong>: {b.benefit.discountRate}% 
-                    </div>
-                    <button className="benefit_remove_btn" onClick={() => handleDeleteSelected(b.benefit.benefitId)}>
-                      취소
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : (
-              <p>혜택이 없습니다.</p>
-            )}
+        <div className="benefits-tabs">
+            <button
+              className={selectedTab === "existing" ? "active" : ""}
+              onClick={() => setSelectedTab("existing")}
+            >
+              My 혜택
+            </button>
+            <button
+              className={selectedTab === "added" ? "active" : ""}
+              onClick={() => setSelectedTab("added")}
+            >
+              Add 혜택
+            </button>
           </div>
-          <div className="benefits-section">
-            <h3>추가 혜택</h3>
-            {addedBenefits && addedBenefits.length > 0 ? (
-              <ul>
-                {addedBenefits.map((b) => (
-                  <li key={b.benefitId} className="benefit-item2">
-                    <div className="benefit-info2">
-                      <strong>{b.name}</strong>
-                    </div>
-                  </li>
-                ))}
-              </ul>
+        {/* 선택된 탭에 따른 혜택 리스트 */}
+        <div className="benefits-section">
+            {selectedTab === "existing" ? (
+              appliedBenefits && appliedBenefits.length > 0 ? (
+                <ul>
+                  {appliedBenefits.map((b) => (
+                    <li key={b.benefit.benefitId} className="benefit-item">
+                      <div className="benefit-info">
+                        <span>{b.benefit.name} : {b.benefit.discountRate}%</span> 
+                      </div>
+                      <button
+                        className="benefit_remove_btn"
+                        onClick={() => handleDeleteSelected(b.benefit.benefitId)}
+                      >
+                        취소
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>혜택이 없습니다.</p>
+              )
             ) : (
-              <p>혜택이 없습니다.</p>
+              addedBenefits && addedBenefits.length > 0 ? (
+                <ul>
+                  {addedBenefits.map((b) => (
+                    <li key={b.benefitId} className="benefit-item2">
+                      <div className="benefit-info2">
+                        <strong>{b.name}</strong>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              ) : (
+                <p>혜택이 없습니다.</p>
+              )
             )}
           </div>
         </div>

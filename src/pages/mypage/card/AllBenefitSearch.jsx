@@ -6,7 +6,7 @@ function AllBenefitSearch() {
 
   useEffect(() => {
     axios
-        .get("/card/allBenefitSearch", {
+      .get("/card/allBenefitSearch", {
         withCredentials: true,
         headers: {
           "Content-Type": "application/json",
@@ -21,15 +21,11 @@ function AllBenefitSearch() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-0">
-      <div className="w-full bg-white shadow-md rounded-l-md rounded-r-md overflow-hidden">
-        <div className="bg-pink-50 p-4">
-          <p className="text-lg md:text-xl text-black text-center font-bold drop-shadow-sm">
-            필요한 혜택만 쏙쏙!
-            <br />
-            카멜레온 카드로 맞춤형 혜택을 누려보세요!
-          </p>
-        </div>
+    <div className="min-h-screen">
+      <div className="w-full bg-white my-custom-rounded shadow-md p-6">
+        <p className="text-lg md:text-xl text-black text-center font-bold drop-shadow-sm">
+          전체혜택조회
+        </p>
 
         {/* 오른쪽 상단: 지난달 결제 기준 (핑크색) */}
         <div className="flex justify-end px-4 py-2">
