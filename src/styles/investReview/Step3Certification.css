@@ -12,9 +12,10 @@
 }
 
 /* 제목 */
-.certification-title {
+.certification-box .certification-title {
     font-size: 24px;
     font-weight: bold;
+    text-align: center;
     color: black;
     margin-bottom: 20px;
 }
