@@ -42,43 +42,44 @@ const Education = () => {
   const companyList = [
     {
       id: 1,
-      name: "금융결제원",
+      name: "신한DS",
       closingDate: "2025.3.26",
-      recruit: "전산직",
-      salary: "6,816",
-      averageData: [8, 10, 4, 4, 6],
+      recruit: "ICT 개발",
+      salary: "6,194",
+      averageData: [8, 6, 6, 4, 6],
+      //avaragedata "자소서 , 자격증 , 어학점수 , 인턴경험 , 학점"
     },
     {
       id: 2,
-      name: "SK 하이닉스",
+      name: "신한카드",
       closingDate: "2025.3.28",
-      recruit: "IT",
-      salary: "6,951",
-      averageData: [10, 6, 0, 6, 6],
+      recruit: "ICT 개발",
+      salary: "6,837만 원",
+      averageData: [6, 4, 8, 2, 6],
     },
     {
       id: 3,
-      name: "롯데캐피탈",
+      name: "신한은행",
       closingDate: "2025.3.30",
-      recruit: "IT개발/운영",
-      salary: "5,408",
-      averageData: [8, 6, 0, 2, 6],
+      recruit: "뱅킹서비스 개발",
+      salary: "6,669만 원",
+      averageData: [6, 6, 6, 2, 6],
     },
     {
       id: 4,
-      name: "LG CNS",
+      name: "신한저축은행",
       closingDate: "2025.3.31",
-      recruit: "DX Engineer",
-      salary: "6,819",
-      averageData: [8, 8, 2, 2, 6],
+      recruit: "ICT개발운영",
+      salary: "6,199만 원",
+      averageData: [6, 4, 8, 2, 4],
     },
     {
       id: 5,
-      name: "한화시스템/ICT",
+      name: "신한신용정보",
       closingDate: "2025.03.31",
-      recruit: "서비스개발/운영",
-      salary: "5,783", // 배달의민족 평균 연봉(천원)
-      averageData: [8, 6, 2, 2, 6],
+      recruit: "IT",
+      salary: "4,881만 원",
+      averageData: [6, 2, 6, 4, 6],
     },
   ];
 
@@ -206,7 +207,7 @@ const Education = () => {
 
   // (L) "직군 평균" 버튼 클릭 -> 예시로 /education/JobAverage 라고 가정
   const handleJobAverage = () => {
-    navigate("/account/positive");
+    navigate("/education/positive");
   };
 
   // 슬라이더 옵션

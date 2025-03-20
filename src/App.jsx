@@ -172,7 +172,7 @@ function App() {
           <Route path="/account/bill" element={<Bill />} />
           <Route path="/account/calculation" element={<Calculation />} />
           <Route path="/account/calculationResult" element={<CalculationResult />} />
-          <Route path="/account/positive" element={<PositiveFactors />} />
+          <Route path="/education/positive" element={<PositiveFactors />} />
         </Route>
         <Route element={<Layout />}> 
           <Route path="/admin/search/:query" element={<SearchResults />} />
