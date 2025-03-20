@@ -4,7 +4,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
     background-color: white;
 }
 
@@ -22,7 +22,7 @@
 .login-title {
     font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
+    color: black;
     margin-bottom: 20px;
 }
 
@@ -44,32 +44,32 @@
 }
 
 /* 로그인 버튼 */
-.login-button {
+.login-box .login-button , .logout-button{
     width: 100%;
-    padding: 12px;
+    padding: 10px;
     background-color: #FEA1B8;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 12px;
     cursor: pointer;
     margin-top: 10px;
 }
 
-.logout-button {
+.login-button , .logout-button{
     width: 100%;
-    padding: 12px;
-    background-color: #FEA1B8;
+    padding: 10px;
+    background-color: #f4b0b0;
     color: white;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 12px;
     cursor: pointer;
     margin-top: 10px;
 }
 
-.login-button:hover {
-    background-color: #F994AD;
+.login-box .login-button:hover {
+    background-color: #ff6688;
 }
 
 /* 아이디 찾기, 비밀번호 찾기 */
@@ -111,8 +111,8 @@
     margin-top: 10px;
 }
 
-.signup-button:hover {
-    background-color: #F994AD;
+.login-container .signup-button:hover {
+    background-color: #ff6688;
 }
 
 /* 소셜 로그인 버튼 */
@@ -141,25 +141,4 @@
     width: 24px;
     height: 24px;
     margin-right: 10px;
-}
-
-/* 카카오 & 네이버 로그인 버튼 */
-.kakao-login {
-    background-color: #FEE500;
-    color: #3C1E1E;
-    font-weight: bold;
-}
-
-.naver-login {
-    background-color: #03C75A;
-    color: white;
-    font-weight: bold;
-}
-
-.kakao-login:hover {
-    background-color: #E5D500;
-}
-
-.naver-login:hover {
-    background-color: #029F4F;
 }

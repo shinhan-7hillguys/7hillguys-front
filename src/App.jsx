@@ -1,9 +1,9 @@
+import { useState } from "react";
 import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
-
-import Mypage from "./pages/mypage/Mypage";
+ 
 import Main from "./Main";
 import Education from "./pages/education/Education";
 
@@ -17,7 +17,6 @@ import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
 
-import Dashboard from "./pages/admin/Dashboard";
 
 
 // card 및 혜택
@@ -31,8 +30,7 @@ import EnglishNamePage from "pages/card/EnglishNamePage";
 import CardPinPage from "pages/card/CardPinPage";
 import FinalCheckPage from "pages/card/FinalCheckPage";
 
- 
-import Design from "./pages/card/CardDesignPage";
+import Dashboard from "./pages/admin/Dashboard"; 
 import BenefitCompare from "pages/card/BenefitCompare";
 
 import User from "pages/user/User";
@@ -73,7 +71,8 @@ import CalculationResult from "./pages/account/CalculationResult";
 import PositiveFactors from "./pages/account/PositiveFactors";
 import ContractPreview from "./pages/investResult/ContractPreview";
 
-
+/* test */ 
+import Test from "./test/ServiceCycle";
 
 function App() {
   axios.defaults.withCredentials = true;
@@ -124,7 +123,7 @@ function App() {
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
 
-    
+
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
@@ -133,7 +132,7 @@ function App() {
           <Route path="/investExit" element={<InvestmentExit/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
           <Route path="/investmentReallyExit" element={<InvestmentReallyExit/>}/>
-
+          <Route path="/test" element = {<Test/>}/>
           <Route
             path="/investment/status"
             element={<InvestmentStatusCheck />}
@@ -174,7 +173,8 @@ function App() {
           <Route path="/account/calculationResult" element={<CalculationResult />} />
           <Route path="/education/positive" element={<PositiveFactors />} />
         </Route>
-        <Route element={<Layout />}> 
+        <Route element={<Layout />}>
+          {/* <Route path="/admin" element={<Dashboard />} /> */}
           <Route path="/admin/search/:query" element={<SearchResults />} />
           <Route path="/admin/user/detail/:userid" element={<Detail />} />
         </Route>

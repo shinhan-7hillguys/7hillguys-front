@@ -107,12 +107,12 @@ const InvestmentSimulator = () => {
                         'Content-Type': 'application/json'
                     }
                 });
-
                 const parsedIncomes = Object.entries(JSON.parse(response.data.expectedIncomes))
                     .map(([age, income]) => ({age: parseInt(age), income}));
                 setExpectedIncomes(parsedIncomes);
                 setInflationRates(JSON.parse(response.data.inflationRate));
                 setMaxInvestment(response.data.maxInvestment);
+                console.log(response.data.maxInvestment);
 
                 // 초기 차트 데이터 설정
                 const initialChartData = parsedIncomes.map(({age, income}) => ({
@@ -197,7 +197,7 @@ const InvestmentSimulator = () => {
             );
 
             // 성공 시 메인 페이지로 이동
-            navigate('/');
+            navigate('/contract');
         } catch (error) {
             console.error("투자 신청 실패:", error);
             alert("투자 신청에 실패했습니다. 다시 시도해주세요.");

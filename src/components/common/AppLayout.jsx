@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import Sidebar from "./Sidebar"; // Sidebar.jsx 파일 경로에 맞게 수정
+import { IoArrowBackOutline } from "react-icons/io5";
 
 const AppLayout = () => {
   // 사이드바 렌더링 여부
@@ -11,17 +12,28 @@ const AppLayout = () => {
     setIsSidebarVisible((prev) => !prev);
   };
 
+  const navigate = useNavigate();
+
+  const handleBack = () =>{
+    navigate(-1);
+  }
   return (
     <div className="container">
       <header>
         <div className="header_bottom">
-          <Link to="/">
+        <IoArrowBackOutline
+            style={{ cursor: "pointer", fontSize: "35px"  }}
+            alt="back"
+            onClick={handleBack}
+          />
+          <Link style = {{marginRight : "15px", marginTop : "10px"}} to="/">
             <h2>
               <img src="/logo.png" alt="Logo" width={38} />
               Peoch
             </h2>
           </Link>
-          {/* 햄버거 버튼: 클릭 시 사이드바 토글 */}
+
+ 
           <img
             src="/menu.png"
             alt="메뉴"

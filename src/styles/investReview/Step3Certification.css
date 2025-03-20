@@ -6,8 +6,9 @@
     flex-direction: column;
     align-items: center; /* 중앙 정렬 */
     justify-content: flex-start; /* 헤더와 밀착 */
-    height: 100vh; /* 화면 전체를 차지 */
-    width: 100vw;
+    min-height: 100vh;
+    max-width: 100%;
+    overflow: auto;
     background-color: #FFF7F7;
     padding: 0; /* 여백 제거 */
 }
@@ -20,13 +21,14 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
     width: 100%;
+    overflow: auto;
 }
 
 /* 제목 */
 .certification-title {
     font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
+    color: black;
     margin-bottom: 20px;
 }
 
@@ -69,6 +71,10 @@
     margin-left: 10px;
 }
 
+.certification-item .delete-button:hover {
+    color: #ff6688;
+}
+
 .delete-button:hover {
     color: #F57391;
 }
@@ -105,7 +111,7 @@
 }
 
 .custom-file-upload:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 기본 파일 선택 input 숨기기 */
@@ -121,7 +127,7 @@
     width: 40%;
     text-overflow: ellipsis;
     white-space: nowrap;
-    overflow: hidden;
+    overflow: auto;
 }
 
 /* 자격증 추가 버튼 */
@@ -138,7 +144,7 @@
 }
 
 .certification-add-button:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
 
 /* 버튼 컨테이너 */
@@ -179,5 +185,5 @@
 }
 
 .certification-next-button:hover {
-    background-color: #F994AD;
+    background-color: #ff6688;
 }
