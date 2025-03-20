@@ -43,7 +43,7 @@ function CardIntroPage() {
   useEffect(() => {
     // 컴포넌트 마운트 시 한 번만 호출
     dispatch(fetchUserCardInfo());
-  }, [dispatch]);
+  }, [dispatch, investRegistered]);
   const handleApplyClick = () => {
     // 등록된 카드가 있으면 /benefit, 없으면 /card/terms로 이동합니다.
     console.log(cardRegistered)

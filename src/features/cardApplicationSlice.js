@@ -199,11 +199,11 @@ const cardApplicationSlice = createSlice({
           state.investRegistered = cardInfo.invest; // false가 들어올 것임
         } else if (cardInfo.hasOwnProperty("cardRegistered")) {
           // 카드 정보의 존재 여부를 나타내는 경우
+          state.investRegistered = true;
           state.cardRegistered = cardInfo.cardRegistered;
           // 카드 정보가 없으면(cardRegistered false) investRegistered를 true로 설정 (원래 로직대로라면)
-          if (!cardInfo.cardRegistered) {
-            state.investRegistered = true;
-          } 
+
+          
         }
         
       })
