@@ -11,11 +11,13 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
- 
+import { useNavigate } from "react-router-dom";
+
 const PageContainer = styled.div`
   padding: 16px;
   background: #f9f9f9;
   font-family: 'Pretendard', sans-serif;
+  border-radius : 64px;
 `;
 
 const HeaderRow = styled.div`
@@ -44,7 +46,7 @@ const UserInfo = styled.div`
 const Username = styled.h2`
   font-size: 24px;
   margin: 0;
-  white-space : nowrap;
+  white-space: nowrap;
 `;
 
 const Greeting = styled.p`
@@ -62,7 +64,7 @@ const UsageAmount = styled.p`
   margin: 8px 0 0;
   font-size: 28px;
   font-weight: bold;
-  white-space : nowrap;
+  white-space: nowrap;
 `;
 
 const FilterRow = styled.div`
@@ -136,7 +138,6 @@ const ArrowIcon = styled.span`
   font-size: 18px;
 `;
 
-
 const InfoCard = styled.div`
   background: #ffffff;
   border-radius: 16px;
@@ -150,192 +151,316 @@ const ChartCard = styled(InfoCard)`
   height: 300px;
 `;
 
-export default function MainPage() { 
-  // 필터 상태
+// 투자 심사 미승인 시 보여줄 대체 UI
+const InactiveContainer = styled(PageContainer)`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+`;
+
+const Message = styled.p`
+  font-size: 20px;
+  color: #666;
+  margin-bottom: 16px;
+`;
+
+const ActionButton = styled.button`
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #f95f89;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+`;
+
+export default function MainPage() {
+  // 필터 및 기타 상태들
   const [timeFilter, setTimeFilter] = useState("월"); // "주", "월", "연"
   const [typeFilter, setTypeFilter] = useState("나"); // "나" 또는 "평균"
-  const [selectedStat, setSelectedStat] = useState("사용액"); // "납부율", "지원금", "사용액" 중 하나
-
+  const [selectedStat, setSelectedStat] = useState("사용액"); // "납부율", "지원금", "사용액"
   const [userId, setUserId] = useState(null);
-
-  // 기존 상태들 (예: 차트 데이터 등)
+  const [userName, setUserName] = useState("");
   const [usage, setUsage] = useState(0);
-  const [lastMonthUsage, setLastMonthUsage] = useState(0);
-  const [comparison, setComparison] = useState(0);
   const [chartData, setChartData] = useState({
     "납부율": { percentageDiff: 0, dailyUsage: {} },
     "지원금": { percentageDiff: 0, dailyUsage: {} },
     "월소득": { percentageDiff: 0, dailyUsage: {} },
   });
+  const [dashboardData, setDashboardData] = useState(null);
+  const [rawGraphData, setRawGraphData] = useState(null);
   const [graphData, setGraphData] = useState([]);
+  const [investmentStatus, setInvestmentStatus] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
-  // 사용자 정보 (여기서는 userName, 실제로 userId도 필요하면 별도 관리)
-  const [userName, setUserName] = useState("");
+  const navigate = useNavigate();
+
+  // API 호출 함수들
+  const getInvestmentStatus = async () => {
+    const response = await axios.get("/api/investment/status", {
+      withCredentials: true,
+    }); 
+    console.log(response);
+    setInvestmentStatus(response.data);
+    console.log(1);
+    console.log(investmentStatus);
+  };
 
   const getUserName = async () => {
-    try {
-      const response = await axios.get("/api/auth/userId", {
-        withCredentials: true,
-      }); 
-      setUserName(response.data.name); 
-    } catch (error) {
-      console.error("사용자 정보를 불러오는데 실패했습니다.", error);
-    }
+    const response = await axios.get("/api/auth/userId", {
+      withCredentials: true,
+    });
+    console.log("사용자 이름:", response.data.name);
+    setUserName(response.data.name);
   };
-  const getUserId = async () =>{
-    try{
-      const response = await axios.get("/api/auth/user",{
-        withCredentials : true,
-      });
-      setUserId(response.data.userId); 
-    }catch (error){
-      console.error("사용자 정보를 불러오는데 실패했습니다.", error);
-    } 
-  }
 
-  useEffect(() => {
-    getUserName();
-    getUserId();
-  }, []);
- 
-  const [dashboardData, setDashboardData] = useState(null);
+  const getUserId = async () => {
+    const response = await axios.get("/api/auth/user", {
+      withCredentials: true,
+    });
+    console.log("사용자 ID:", response.data.userId);
+    setUserId(response.data.userId);
+  };
 
   const getDashboardData = async () => {
-    try {  
-      const today = new Date().toISOString().split("T")[0];
-      const response = await axios.get(`/card/cardDataTotal`, {
-        params: { date: today },
-        withCredentials: true,
-      });
-      console.log(response.data);
-      setDashboardData(response.data); 
-    } catch (error) {
-      console.error("대시보드 데이터를 불러오는데 실패했습니다.", error);
-    }
+    const today = new Date().toISOString().split("T")[0];
+    const response = await axios.get(`/card/cardDataTotal`, {
+      params: { date: today },
+      withCredentials: true,
+    }); 
+    console.log("대시보드 데이터:", response.data);
+    setDashboardData(response.data);
   };
-  
-  useEffect(() => {
-    if (userName) {
-      getDashboardData();
-    }
-  }, [userName]);
 
-  // 선택된 필터(기간, 그룹)에 따라 현재 사용액과 이전 사용액을 반환하는 함수
+  const getGraphData = async () => {
+    const today = new Date().toISOString().split("T")[0];
+    const response = await axios.get(`/card/cardDataMap`, {
+      params: { date: today },
+      withCredentials: true,
+    }); 
+    console.log("그래프 데이터:", response.data);
+    setRawGraphData(response.data);
+  };
+ 
+  useEffect(() => {
+    const fetchData = async () => {
+      try { 
+        await getInvestmentStatus(); 
+        const invStatus = investmentStatus; 
+        console.log("투자 심사 상태:", invStatus);
+        if (invStatus !== "승인") {
+          setIsLoading(false);
+          return;
+        } 
+        await getUserName();
+        await getUserId();
+        await getDashboardData();
+        await getGraphData();
+      } catch (error) {
+        console.error("API 호출 중 오류 발생:", error);
+      }
+      setIsLoading(false);
+    };
+  
+    fetchData();
+  }, [investmentStatus]);
+    
+  useEffect(() => {
+    if (!rawGraphData) return;
+
+    let mapData = {};
+    if (timeFilter === "주") {
+      mapData =
+        typeFilter === "나"
+          ? rawGraphData.weeklyCurrentMap
+          : rawGraphData.weeklyCurrentAverageMap;
+    } else if (timeFilter === "월") {
+      mapData =
+        typeFilter === "나"
+          ? rawGraphData.monthlyCurrentMap
+          : rawGraphData.monthlyCurrentAverageMap;
+    } else if (timeFilter === "연") {
+      mapData =
+        typeFilter === "나"
+          ? rawGraphData.yearlyCurrentMap
+          : rawGraphData.yearlyCurrentAverageMap;
+    }
+    const newGraphData = Object.entries(mapData).map(([key, value]) => ({
+      day: key,
+      amount: value,
+    }));
+    setGraphData(newGraphData);
+  }, [rawGraphData, timeFilter, typeFilter]);
+
+  // Loading 처리
+  if (isLoading) {
+    return <PageContainer>로딩 중...</PageContainer>;
+  }
+
+  // 투자 심사 상태가 '승인'이 아닐 경우 대체 UI
+  if (investmentStatus !== "승인") {
+    return (
+      <InactiveContainer>
+        <Message>투자 심사 완료 후 사용 가능 합니다.</Message>
+        <ActionButton onClick={() => navigate("/investReview")}>
+          심사 신청하기
+        </ActionButton>
+      </InactiveContainer>
+    );
+  }
+
   const getCurrentUsage = () => {
     if (!dashboardData) return { current: 0, previous: 0 };
 
     if (typeFilter === "나") {
       if (timeFilter === "주") {
-        return { current: dashboardData.weekCurrentTotal, previous: dashboardData.weekPreviousTotal };
+        return {
+          current: dashboardData.weekCurrentTotal,
+          previous: dashboardData.weekPreviousTotal,
+        };
       } else if (timeFilter === "월") {
-        return { current: dashboardData.monthCurrentTotal, previous: dashboardData.monthPreviousTotal };
+        return {
+          current: dashboardData.monthCurrentTotal,
+          previous: dashboardData.monthPreviousTotal,
+        };
       } else if (timeFilter === "연") {
-        return { current: dashboardData.yearCurrentTotal, previous: dashboardData.yearPreviousTotal };
+        return {
+          current: dashboardData.yearCurrentTotal,
+          previous: dashboardData.yearPreviousTotal,
+        };
       }
     } else if (typeFilter === "평균") {
       if (timeFilter === "주") {
-        return { current: dashboardData.avgWeekCurrentTotal, previous: dashboardData.avgWeekPreviousTotal };
+        return {
+          current: dashboardData.avgWeekCurrentTotal,
+          previous: dashboardData.avgWeekPreviousTotal,
+        };
       } else if (timeFilter === "월") {
-        return { current: dashboardData.avgMonthCurrenTotalt, previous: dashboardData.avgMonthPreviousTotal };
+        return {
+          current: dashboardData.avgMonthCurrentTotal,
+          previous: dashboardData.avgMonthPreviousTotal,
+        };
       } else if (timeFilter === "연") {
-        return { current: dashboardData.avgYearCurrentTotal, previous: dashboardData.avgYearPreviousTotal };
+        return {
+          current: dashboardData.avgYearCurrentTotal,
+          previous: dashboardData.avgYearPreviousTotal,
+        };
       }
     }
     return { current: 0, previous: 0 };
   };
 
-  // 사용액 비교 % 계산 함수
   const getUsageDiff = () => {
     const { current, previous } = getCurrentUsage();
-    if (previous === 0) return 0;
+    if (previous === 0) return 100;
     return ((current - previous) / previous) * 100;
   };
- 
+
   const getUsageTitle = () => {
     if (timeFilter === "월") return "이번 달 이용액";
     if (timeFilter === "주") return "이번 주 이용액";
     if (timeFilter === "연") return "이번 연 이용액";
     return "이용액";
   };
- 
- const getInfoText = () => {
-  if (!dashboardData) return <p>로딩 중...</p>;
 
-  const diff = getUsageDiff();
-  let periodLabel = "";
-  let previousPeriodLabel = "";
-  let previousUsage = 0;
+  const getInfoText = () => {
+    if (!dashboardData) return <p>로딩 중...</p>;
 
-  if (typeFilter === "나") {
-    if (timeFilter === "주") {
-      periodLabel = "지난 주 기준으로";
-      previousPeriodLabel = "지난 주";
-      previousUsage = dashboardData.weekPreviousTotal;
-    } else if (timeFilter === "월") {
-      periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
-      previousPeriodLabel = "지난 달";
-      previousUsage = dashboardData.monthPreviousTotal;
-    } else if (timeFilter === "연") {
-      periodLabel = "지난 해 기준으로";
-      previousPeriodLabel = "지난 해";
-      previousUsage = dashboardData.yearPreviousTotal;
-    }
-    return (
-      <>
+    const diff = getUsageDiff();
+    let periodLabel = "";
+    let previousPeriodLabel = "";
+    let previousUsage = 0;
+
+    if (typeFilter === "나") {
+      if (timeFilter === "주") {
+        periodLabel = "지난 주 기준으로";
+        previousPeriodLabel = "지난 주";
+        previousUsage = dashboardData.weekPreviousTotal;
+      } else if (timeFilter === "월") {
+        periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
+        previousPeriodLabel = "지난 달";
+        previousUsage = dashboardData.monthPreviousTotal;
+      } else if (timeFilter === "연") {
+        periodLabel = "지난 해 기준으로";
+        previousPeriodLabel = "지난 해";
+        previousUsage = dashboardData.yearPreviousTotal;
+      }
+      return (
+        <>
+          <p>
+            {periodLabel}{" "}
+            <span
+              style={{
+                color: diff < 0 ? "#3d8bfd" : "#f95f89",
+                fontWeight: "bold",
+              }}
+            >
+              {diff > 0 ? `+${diff.toFixed(1)}%` : `${diff.toFixed(1)}%`}
+            </span>{" "}
+            {diff > 0 ? "더 많이" : "덜"} 사용했어요.
+          </p>
+          <p>
+            {previousPeriodLabel} 사용액:{" "}
+            <strong style={{ fontWeight: "bold", color: "#f95f89" }}>
+              {previousUsage.toLocaleString()}
+            </strong>{" "}
+            원
+          </p>
+        </>
+      );
+    } else {
+      if (timeFilter === "주") {
+        periodLabel = "지난 주 기준으로";
+        previousPeriodLabel = "지난 주";
+        previousUsage = dashboardData.avgWeekPreviousTotal;
+      } else if (timeFilter === "월") {
+        periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
+        previousPeriodLabel = "지난 달";
+        previousUsage = dashboardData.avgMonthPreviousTotal;
+      } else if (timeFilter === "연") {
+        periodLabel = "지난 해 기준으로";
+        previousPeriodLabel = "지난 해";
+        previousUsage = dashboardData.avgYearPreviousTotal;
+      }
+      return (
         <p>
-          {periodLabel}{" "}
-          <span style={{ color: diff < 0 ? "#3d8bfd" : "#f95f89", fontWeight: "bold" }}>
-            {diff > 0 ? `+${diff.toFixed(1)}%` : `${diff.toFixed(1)}%`}
-          </span>{" "}
-          {diff > 0 ? "더 많이" : "덜"} 사용했어요.
-        </p>
-        <p>
-          {previousPeriodLabel} 사용액:{" "}
+          그룹 평균 대비 내 사용액은{" "}
           <strong style={{ fontWeight: "bold", color: "#f95f89" }}>
             {previousUsage.toLocaleString()}
           </strong>{" "}
-          원
+          원이며,{" "}
+          <span
+            style={{
+              color: diff < 0 ? "#3d8bfd" : "#f95f89",
+              fontWeight: "bold",
+            }}
+          >
+            {diff.toFixed(1)}%
+          </span>{" "}
+          차이가 있습니다.
         </p>
-      </>
-    );
-  } else {
-    if (timeFilter === "주") {
-      periodLabel = "지난 주 기준으로";
-      previousPeriodLabel = "지난 주";
-      previousUsage = dashboardData.avgWeekPreviousTotal;
-    } else if (timeFilter === "월") {
-      periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
-      previousPeriodLabel = "지난 달";
-      previousUsage = dashboardData.avgMonthPreviousTotal;
-    } else if (timeFilter === "연") {
-      periodLabel = "지난 해 기준으로";
-      previousPeriodLabel = "지난 해";
-      previousUsage = dashboardData.avgYearPreviousTotal;
+      );
     }
-    return (
-      <p>
-        그룹 평균 대비 내 사용액은{" "}
-        <strong style={{ fontWeight: "bold", color: "#f95f89" }}>
-          {previousUsage.toLocaleString()}
-        </strong>{" "}
-        원이며,{" "}
-        <span style={{ color: diff < 0 ? "#3d8bfd" : "#f95f89", fontWeight: "bold" }}>
-          {diff.toFixed(1)}%
-        </span>{" "}
-        차이가 있습니다.
-      </p>
-    );
-  }
-};
-  
-  
- 
+  };
+
   const getArrowIcon = (diff, isSelected) => {
-    if (diff > 0) return <ArrowIcon isUp isSelected={isSelected}>{<FaArrowUp />}</ArrowIcon>;
-    if (diff < 0) return <ArrowIcon isSelected={isSelected}>{<FaArrowDown />}</ArrowIcon>;
+    if (diff > 0)
+      return (
+        <ArrowIcon isUp isSelected={isSelected}>
+          {<FaArrowUp />}
+        </ArrowIcon>
+      );
+    if (diff < 0)
+      return (
+        <ArrowIcon isSelected={isSelected}>
+          {<FaArrowDown />}
+        </ArrowIcon>
+      );
     return null;
   };
-   
+
   const renderStatBox = (title) => {
     let diff = 0;
     if (title === "사용액") {
@@ -343,22 +468,25 @@ export default function MainPage() {
     } else {
       const chartKey = title === "월 소득" ? "월소득" : title;
       diff = chartData[chartKey]?.percentageDiff || 0;
-    } 
+    }
     const statValueColor = diff < 0 ? "#3d8bfd" : "#f95f89";
-  
+
     return (
-      <StatBox highlight={selectedStat === title} onClick={() => setSelectedStat(title)}>
+      <StatBox
+        highlight={selectedStat === title}
+        onClick={() => setSelectedStat(title)}
+      >
         <StatTitle>{title}</StatTitle>
         <StatValueRow>
           {getArrowIcon(diff, selectedStat === title)}
-          <StatValue style={{ color: statValueColor }}>{`${Math.abs(diff).toFixed(1)}%`}</StatValue>
+          <StatValue style={{ color: statValueColor }}>
+            {`${Math.abs(diff).toFixed(1)}%`}
+          </StatValue>
         </StatValueRow>
       </StatBox>
     );
   };
-  
-  
-  
+
   return (
     <PageContainer>
       <HeaderRow>
@@ -370,7 +498,6 @@ export default function MainPage() {
         </SquareUsageCard>
         <SquareUsageCard>
           <UsageTitle>{getUsageTitle()}</UsageTitle>
-          {/* selectedStat이 "사용액"이면 dashboardData의 현재 사용액을, 아니라면 기존 usage 값을 표시 */}
           <UsageAmount>
             {selectedStat === "사용액"
               ? dashboardData
@@ -430,8 +557,15 @@ export default function MainPage() {
       <ChartCard>
         <h4 style={{ marginBottom: "8px" }}>{selectedStat}</h4>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart data={graphData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
-            <CartesianGrid stroke="#ccc" strokeDasharray="3 3" opacity={0.5} />
+          <LineChart
+            data={graphData}
+            margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+          >
+            <CartesianGrid
+              stroke="#ccc"
+              strokeDasharray="3 3"
+              opacity={0.5}
+            />
             <XAxis dataKey="day" />
             <YAxis />
             <Tooltip />

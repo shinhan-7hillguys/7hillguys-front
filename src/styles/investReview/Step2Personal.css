@@ -37,7 +37,7 @@
 .personal-radio-options {
     display: flex;
     align-items: center;
-    gap: 10px; /* 라디오 버튼과 텍스트 간의 간격 설정 */
+    gap: 15px; /* 라디오 버튼과 텍스트 간의 간격 설정 */
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
@@ -63,7 +63,7 @@
 
 .personal-checkbox-group p {
     margin: 0;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: #333;
 }
@@ -73,7 +73,7 @@
     display: flex;
     align-items: center;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 }
 
 /* 체크박스 스타일 */
@@ -98,7 +98,7 @@
 
 /* 체크박스 선택된 텍스트 스타일 */
 .personal-checkbox-label-text {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: #333;
 }
@@ -207,6 +207,7 @@
     transition: visibility 0.2s ease-in-out, height 0.2s ease-in-out;
 }
 
-.personal-radio-label, .personal-radio-label {
+.personal-radio-label {
     font-weight: bold;
+    font-size: 14px;
 }
