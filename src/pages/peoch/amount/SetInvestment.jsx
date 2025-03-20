@@ -76,7 +76,7 @@ const SliderLabel = styled.div`
 const SubmitButton = styled.button`
     display: block;
     margin: 30px auto;
-    padding: 15px 40px;
+    padding: 15px 120px;
     background-color: #FEA1B8;
     color: white;
     font-size: 18px;
