@@ -65,6 +65,7 @@ const initialContainerStyle = {
 };
 
 const mainTitleStyle = {
+    marginTop: "20px",
     fontSize: "26px",
     fontWeight: "bold",
     marginBottom: "12px",
