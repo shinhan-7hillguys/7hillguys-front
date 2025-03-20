@@ -150,8 +150,7 @@ const InfoCard = styled.div`
 const ChartCard = styled(InfoCard)`
   height: 300px;
 `;
-
-// 투자 심사 미승인 시 보여줄 대체 UI
+ 
 const InactiveContainer = styled(PageContainer)`
   display: flex;
   flex-direction: column;
@@ -175,6 +174,7 @@ const ActionButton = styled.button`
   border-radius: 8px;
   cursor: pointer;
 `;
+ 
 
 export default function MainPage() {
   // 필터 및 기타 상태들
@@ -269,28 +269,43 @@ export default function MainPage() {
     
   useEffect(() => {
     if (!rawGraphData) return;
-
-    let mapData = {};
+  
+    let currentMap = {};
+    let previousMap = {};
+  
     if (timeFilter === "주") {
-      mapData =
-        typeFilter === "나"
-          ? rawGraphData.weeklyCurrentMap
-          : rawGraphData.weeklyCurrentAverageMap;
+      if (typeFilter === "나") {
+        currentMap = rawGraphData.weeklyCurrentMap;
+        previousMap = rawGraphData.weeklyPreviousMap;
+      } else {
+        currentMap = rawGraphData.weeklyCurrentAverageMap;
+        previousMap = rawGraphData.weeklyPreviousAverageMap;
+      }
     } else if (timeFilter === "월") {
-      mapData =
-        typeFilter === "나"
-          ? rawGraphData.monthlyCurrentMap
-          : rawGraphData.monthlyCurrentAverageMap;
+      if (typeFilter === "나") {
+        currentMap = rawGraphData.monthlyCurrentMap;
+        previousMap = rawGraphData.monthlyPreviousMap;
+      } else {
+        currentMap = rawGraphData.monthlyCurrentAverageMap;
+        previousMap = rawGraphData.monthlyPreviousAverageMap;
+      }
     } else if (timeFilter === "연") {
-      mapData =
-        typeFilter === "나"
-          ? rawGraphData.yearlyCurrentMap
-          : rawGraphData.yearlyCurrentAverageMap;
+      if (typeFilter === "나") {
+        currentMap = rawGraphData.yearlyCurrentMap;
+        previousMap = rawGraphData.yearlyPreviousMap;
+      } else {
+        currentMap = rawGraphData.yearlyCurrentAverageMap;
+        previousMap = rawGraphData.yearlyPreviousAverageMap;
+      }
     }
-    const newGraphData = Object.entries(mapData).map(([key, value]) => ({
+  
+    // currentMap의 키를 기준으로 데이터를 구성 (두 map의 키가 동일하다고 가정)
+    const newGraphData = Object.keys(currentMap).map((key) => ({
       day: key,
-      amount: value,
+      current: currentMap[key],
+      previous: previousMap[key] || 0, // 과거 값이 없으면 0 처리
     }));
+  
     setGraphData(newGraphData);
   }, [rawGraphData, timeFilter, typeFilter]);
 
@@ -557,28 +572,42 @@ export default function MainPage() {
       <ChartCard>
         <h4 style={{ marginBottom: "8px" }}>{selectedStat}</h4>
         <ResponsiveContainer width="100%" height="100%">
-          <LineChart
-            data={graphData}
-            margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
-          >
-            <CartesianGrid
-              stroke="#ccc"
-              strokeDasharray="3 3"
-              opacity={0.5}
-            />
-            <XAxis dataKey="day" />
-            <YAxis />
-            <Tooltip />
-            <Line
-              type="monotone"
-              dataKey="amount"
-              stroke="#f4a9c0"
-              strokeWidth={3}
-              dot={{ r: 5, strokeWidth: 1, fill: "#f4a9c0" }}
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+  <LineChart data={graphData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
+    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" opacity={0.5} />
+    <XAxis dataKey="day" />
+    <YAxis /> 
+    <Line
+  type="monotone"
+  dataKey="current"
+  stroke="#f4a9c0"
+  strokeWidth={3}
+  dot={{ r: 5, strokeWidth: 1, fill: "#f4a9c0" }}
+  activeDot={{ r: 8 }}
+  animationDuration={1000} // 애니메이션 지속 시간 1초
+  label={({ x, y, value }) => (
+    <text x={x} y={y - 10} fill="#f4a9c0" fontSize="12px" textAnchor="middle">
+      {value}
+    </text>
+  )}
+/>
+<Line
+  type="monotone"
+  dataKey="previous"
+  stroke="#3d8bfd"
+  strokeWidth={3}
+  dot={{ r: 5, strokeWidth: 1, fill: "#3d8bfd" }}
+  activeDot={{ r: 8 }}
+  animationDuration={1000} // 애니메이션 지속 시간 1초
+  label={({ x, y, value }) => (
+    <text x={x} y={y - 10} fill="#3d8bfd" fontSize="12px" textAnchor="middle">
+      {value}
+    </text>
+  )}
+/>
+
+  </LineChart>
+</ResponsiveContainer> 
+
       </ChartCard>
     </PageContainer>
   );
