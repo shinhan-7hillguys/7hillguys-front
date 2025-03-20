@@ -16,7 +16,7 @@ function PaymentTest() {
     };
 
     axios
-      .post("http://localhost:8080/payment/paymentRequest", requestData, {})
+        .post("/payment/paymentRequest", requestData, {})
       .then((response) => {
         const { success, message, code } = response.data;
 

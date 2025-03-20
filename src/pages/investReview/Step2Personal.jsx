@@ -5,6 +5,10 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
     const [familyCertificateFile, setFamilyCertificateFile] = useState("선택된 파일 없음");
     const [criminalRecordFile, setCriminalRecordFile] = useState("선택된 파일 없음");
 
+    const [isPostcodeVisible, setIsPostcodeVisible] = useState(false);
+
+
+
     useEffect(() => {
         // 다음 주소 API 스크립트 동적 로드
         const script = document.createElement("script");
@@ -18,24 +22,38 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
     }, []);
 
     const handleSearchAddress = () => {
-        const container = document.getElementById("postcode-container");
-        container.style.display = "block"; // iframe을 보이도록 설정
+        setIsPostcodeVisible((prev) => !prev);
 
-        const postcode = new window.daum.Postcode({
-            oncomplete: function (data) {
-                let fullAddress = data.address;
-                if (data.addressType === "R") {
-                    if (data.bname) fullAddress += ` (${data.bname})`;
+        if (!isPostcodeVisible) {
+            setTimeout(() => {
+                const postcodeContainer = document.getElementById("postcode-container");
+
+                if (postcodeContainer) {
+                    postcodeContainer.style.visibility = "visible"; // display: block 대신 사용
+                    postcodeContainer.style.height = "400px"; // 높이를 명시적으로 설정
                 }
-                setFormData((prev) => ({ ...prev, address: fullAddress }));
 
-                container.style.display = "none"; // 주소 선택 후 iframe 숨김
-            },
-            width: "100%", // iframe 가로 크기 설정
-            height: "400px", // iframe 세로 크기 설정
-        });
+                const postcode = new window.daum.Postcode({
+                    oncomplete: function (data) {
+                        let fullAddress = data.address;
+                        if (data.addressType === "R" && data.bname) {
+                            fullAddress += ` (${data.bname})`;
+                        }
+                        setFormData((prev) => ({ ...prev, address: fullAddress }));
 
-        postcode.embed(container); // 기존 open() 대신 embed() 사용하여 iframe으로 렌더링
+                        setIsPostcodeVisible(false);
+
+                        // 주소 입력 후 iframe 숨기기
+                        postcodeContainer.style.visibility = "hidden";
+                        postcodeContainer.style.height = "0px";
+                    },
+                    width: "100%",
+                    height: "400px",
+                });
+
+                postcode.embed(postcodeContainer);
+            }, 0);
+        }
     };
 
     const handleChange = (e) => {
@@ -43,7 +61,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
         let newValue = type === "checkbox" ? checked : value;
 
         // 성별(gender) 라디오 버튼 선택 시 boolean 값으로 변환
-        if (name === "gender") {
+        if (name === "gender" || name === "familyStatus.married" || name === "criminalRecord") {
             newValue = value === "true";
         }
 
@@ -120,6 +138,7 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     className="input-field"
                 />*/}
 
+                <label className="input-label">주소</label>
                 {/* 주소 입력 필드 */}
                 <div className="address-input-group">
                     <input
@@ -135,8 +154,9 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     </button>
                 </div>
                 {/* Daum 주소 API가 삽입될 div */}
-                <div id="postcode-container" style={{ width: "100%", height: "400px", display: "none" }}></div>
+                <div id="postcode-container" style={{ width: "100%", height: "400px", display: isPostcodeVisible ? "block" : "none" }}></div>
 
+                <label className="input-label">자산</label>
                 <input
                     type="number"
                     name="assets"
@@ -147,19 +167,32 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                 />
 
                 {/* 결혼 여부 체크박스 */}
-                <div className="personal-checkbox-group">
-                    <p>결혼 여부:</p>
-                    <input
-                        type="checkbox"
-                        name="familyStatus.married"
-                        checked={formData.familyStatus.married || false}
-                        onChange={handleChange}
-                    />
-                    <span className="personal-checkbox-label-text">
-                        {formData.familyStatus.married ? "기혼" : "미혼"}
-                    </span>
+                {/* 결혼 여부 (라디오 버튼) */}
+                <div className="personal-radio-group">
+                    <span className="personal-radio-label">결혼 여부:</span>
+                    <div className="personal-radio-options">
+                        <label>
+                            <input
+                                type="radio"
+                                name="familyStatus.married"
+                                value="true"
+                                checked={formData.familyStatus.married === true}
+                                onChange={handleChange}
+                            /> 기혼
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="familyStatus.married"
+                                value="false"
+                                checked={formData.familyStatus.married === false}
+                                onChange={handleChange}
+                            /> 미혼
+                        </label>
+                    </div>
                 </div>
 
+                <label className="input-label">자녀수</label>
                 <input
                     type="number"
                     name="familyStatus.children"
@@ -169,18 +202,29 @@ const Step2Personal = ({ formData, setFormData, handleFileChange, handleNext, ha
                     className="input-field"
                 />
 
-                {/* 해외여행 출국 가능 여부 체크박스 */}
-                <div className="personal-checkbox-group">
-                    <p>해외여행 출국:</p>
-                    <input
-                        type="checkbox"
-                        name="criminalRecord"
-                        checked={formData.criminalRecord || false}
-                        onChange={handleChange}
-                    />
-                    <span className="personal-checkbox-label-text">
-                        {formData.criminalRecord ? "가능" : "불가능"}
-                    </span>
+                {/* 해외여행 출국 여부 (라디오 버튼) */}
+                <div className="personal-radio-group">
+                    <span className="personal-radio-label">해외여행 출국 가능 여부:</span>
+                    <div className="personal-radio-options">
+                        <label>
+                            <input
+                                type="radio"
+                                name="criminalRecord"
+                                value="true"
+                                checked={formData.criminalRecord === true}
+                                onChange={handleChange}
+                            /> 가능
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                name="criminalRecord"
+                                value="false"
+                                checked={formData.criminalRecord === false}
+                                onChange={handleChange}
+                            /> 불가능
+                        </label>
+                    </div>
                 </div>
 
                 {/* 가족관계 증명서 업로드 */}

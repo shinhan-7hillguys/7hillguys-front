@@ -1,0 +1,64 @@
+.card-application-container {
+  margin-top: 20px;
+  text-align: center;
+  position: relative;
+}
+ 
+.ca-icon {
+  position: absolute;
+  font-size: 4rem;
+  opacity: 0;
+}
+ 
+.ca-bag {
+  left: -100px;
+  top: 30px;
+}
+.ca-bag.ca-visible {
+  animation: bagIn 1s forwards;
+}
+@keyframes bagIn {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+}
+ 
+.ca-car {
+  right: -100px;
+  top : 30px;
+}
+.ca-car.ca-visible {
+  animation: carIn 1s forwards;
+}
+@keyframes carIn {
+  0% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+}
+ 
+.card-design-icon1 {
+  position: absolute;
+  font-size: 8rem;
+  left: 65%;
+  top: 100%;
+  transform-origin: center center;  
+}
+ 
+@keyframes scaleDownUp {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(0.8); }
+  100% { transform: scale(1); }
+}
+.card-scale {
+  animation: scaleDownUp 1s ease forwards;
+}

@@ -1,20 +1,18 @@
 // src/pages/FinalCheckPage.jsx
-import React from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { submitCardApplication } from "../../features/cardApplicationSlice";
 import NavigationHeader from "components/common/NavigationHeader";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 function FinalCheckPage() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const { bgFile } = location.state || {};
 
   const {
     termsAgreed,
-    cardDesign,
-    identityVerified,
-    userInfo,
     englishName,
     cardPin,
     supportPeriod,
@@ -22,7 +20,20 @@ function FinalCheckPage() {
     monthlyAmount,
     submitStatus,
     error,
+    userInfo
   } = useSelector((state) => state.cardApplication);
+
+  useEffect(() => {
+    if (!termsAgreed) {
+      navigate("/card/terms");
+    } else if (!englishName || !englishName.firstName || !englishName.lastName) {
+      navigate("/card/english-name");
+    } else if (!cardPin) {
+      navigate("/card/pin");
+    }
+    // 이 조건들이 모두 만족하면 현재 페이지(FinalCheckPage)를 렌더링
+  }, [termsAgreed, englishName, cardPin, navigate]);
+
 
   const handleSubmit = () => {
     // if (!termsAgreed || !identityVerified || !cardPin) {
@@ -31,12 +42,17 @@ function FinalCheckPage() {
       return;
     }
     // console.log(bgFile)
-    dispatch(submitCardApplication(bgFile));
+    try {
+      dispatch(submitCardApplication(bgFile));
+      alert("카드 신청이 완료되었습니다.")
+    } catch (error) {
+      alert("카드 신청 중 문제 발생 ")
+    }
+    navigate("/card");
   };
 
   return (
     <>
-      <NavigationHeader />
       <div className="final-check-container">
         <h2>최종 정보 확인</h2>
         <div className="final-info-form">
@@ -69,16 +85,18 @@ function FinalCheckPage() {
             <input type="text" value={userInfo.address || ""} readOnly />
           </div> */}
           <div className="form-group">
-            <label>지원기간:</label>
-            <input type="text" value={supportPeriod || ""} readOnly />
+            <label>지원 종료 일:</label>
+            <input type="text" value={userInfo.endDate ? userInfo.endDate: ""} readOnly />
           </div>
           <div className="form-group">
             <label>총 금액:</label>
-            <input type="text" value={totalAmount ? totalAmount + "원" : ""} readOnly />
+
+            <input type="text" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString("ko-KR") + "원" : ""} readOnly />
           </div>
           <div className="form-group">
             <label>월 지원금:</label>
-            <input type="text" value={monthlyAmount ? monthlyAmount + "원" : ""} readOnly />
+            <input type="text" value={userInfo.monthlyAllowance ? userInfo.monthlyAllowance.toLocaleString("ko-KR") + "원" : ""} readOnly />
+
           </div>
         </div>
         <br />

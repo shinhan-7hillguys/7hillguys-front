@@ -1,32 +1,29 @@
 /* Step2Personal.css - 개인 및 기타 정보 입력 페이지 스타일 */
 
-/* 전체 컨테이너 */
-.personal-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    justify-content: flex-start;
-    height: 100vh;
-    padding: 50px;
-    background-color: #FFF7F7;
-}
 
 /* 입력 박스 */
 .personal-box {
     background: white;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    width: 100%;
+    padding: 40px;
+    border-radius: 20px; /* 기존 둥근 모서리를 없애기 */
+    box-shadow: none; /* 그림자 제거 */
+    text-align: center;
+
+    /* 화면 전체 크기 사용 */
+    max-width: 100%;
+    min-height: 100vh;
+    overflow: auto;
+
+    display: flex;
+    flex-direction: column;
 }
 
 /* 제목 */
-.personal-title {
+.personal-box .personal-title {
     font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
-    margin-bottom: 20px;
+    text-align: center;
+    color: black;
 }
 
 /* 라디오 버튼 그룹 */
@@ -40,7 +37,7 @@
 .personal-radio-options {
     display: flex;
     align-items: center;
-    gap: 5px; /* 라디오 버튼과 텍스트 간의 간격 설정 */
+    gap: 10px; /* 라디오 버튼과 텍스트 간의 간격 설정 */
     cursor: pointer;
     font-size: 14px;
     font-weight: bold;
@@ -62,6 +59,13 @@
 /* 선택된 라디오 버튼 스타일 */
 .personal-radio-group input[type="radio"]:checked {
     background-color: #FEA1B8;
+}
+
+.personal-checkbox-group p {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
 }
 
 /* 체크박스 그룹 */
@@ -131,9 +135,9 @@
     width: 48%;
 }
 
-.personal-prev-button:hover {
+/*.personal-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 다음 버튼 */
 .personal-next-button {
@@ -147,9 +151,9 @@
     width: 48%;
 }
 
-.personal-next-button:hover {
-    background-color: #F994AD;
-}
+/*.personal-next-button:hover {
+    background-color: #ff6688;
+}*/
 
 /* 주소 입력 그룹 */
 .address-input-group {
@@ -189,14 +193,20 @@
     justify-content: center;
 }
 
-.address-search-btn:hover {
-    background-color: #F994AD;
-}
+/*.address-search-btn:hover {
+    background-color: #ff6688;
+}*/
 
 /* Daum 주소 API iframe 컨테이너 스타일 유지 */
 #postcode-container {
-    margin-bottom: 16px;
+    width: 100%;
+    height: 0;
+    visibility: hidden; /* display: none 대신 사용 */
     border: 1px solid #FFD4DE;
     border-radius: 5px;
-    overflow: hidden;
+    transition: visibility 0.2s ease-in-out, height 0.2s ease-in-out;
+}
+
+.personal-radio-label, .personal-radio-label {
+    font-weight: bold;
 }

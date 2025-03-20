@@ -1,27 +1,30 @@
 // Review.jsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import Step1University from "pages/investReview/Step1University";
 import Step2Personal from "pages/investReview/Step2Personal";
 import Step3Certification from "pages/investReview/Step3Certification";
 import Step4Health from "pages/investReview/Step4Health";
 import Step5Mental from "pages/investReview/Step5Mental";
 import Step6Submit from "pages/investReview/Step6Submit";
-
-/*CSS파일*/
-import 'styles/investReview/Review.css';
+import {resolve} from "chart.js/helpers";
 
 // 심리/인성 검사 문항
 const mentalQuestions = [
-    { id: "M1", text: "나는 스트레스 상황에서 침착함을 유지한다." },
-    { id: "M2", text: "새로운 환경에서도 쉽게 적응한다." },
-    { id: "M3", text: "자신감 있게 결정을 내리는 편이다." },
+    { id: "M1", text: "나는 예상치 못한 문제나 위기 상황에서도 침착하게 대응할 수 있다." },
+    { id: "M2", text: "나는 재정적인 결정을 내릴 때 신중하게 고려하는 편이다." },
+    { id: "M3", text: "나는 장기적인 목표를 세우고 꾸준히 실천하는 편이다." },
+    { id: "M4", text: "나는 돈을 빌리거나 사용할 때 감정에 휘둘리지 않고 합리적으로 판단한다." },
+    { id: "M5", text: "나는 불확실한 상황에서도 긍정적인 태도를 유지한다." },
 ];
 
 // 건강 상태 검사 문항
 const healthQuestions = [
-    { id: "H1", text: "나는 하루 7시간 이상의 수면을 취한다." },
-    { id: "H2", text: "규칙적으로 운동을 한다." },
-    { id: "H3", text: "식습관이 건강하다." },
+    { id: "H1", text: "나는 하루 평균 7시간 이상의 충분한 수면을 취한다." },
+    { id: "H2", text: "나는 규칙적으로 운동을 하고 있으며, 건강을 위해 신경 쓰는 편이다." },
+    { id: "H3", text: "나는 최근 6개월 이내에 건강 문제로 인해 병원 진료(입원 포함)를 받은 적이 없다." },
+    { id: "H4", text: "나는 최근 1년 동안 심한 피로감이나 만성적인 스트레스를 거의 느끼지 않았다." },
+    { id: "H5", text: "나는 건강한 식습관을 유지하며, 패스트푸드나 야식 섭취를 최소화하고 있다." },
 ];
 
 const radioOptions = [
@@ -31,6 +34,7 @@ const radioOptions = [
 ];
 
 const Review = () => {
+    const navigate = useNavigate();
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         userId: "",
@@ -158,7 +162,7 @@ const Review = () => {
             try {
                 const token = localStorage.getItem("token");
                 console.log(token);
-                const response = await fetch("http://localhost:8080/api/auth/user", {
+                const response = await fetch("/api/auth/user", {
                     method: "GET",
                     credentials: "include",
                     headers: {
@@ -176,6 +180,10 @@ const Review = () => {
         };
         fetchUserId();
     }, []);
+
+    useEffect(() => {
+        console.log("✅ 현재 formData:", formData);
+    }, [formData]);
 
     const handleNext = () => setStep((prev) => prev + 1);
     const handleBack = () => setStep((prev) => prev - 1);
@@ -214,7 +222,7 @@ const Review = () => {
                     mentalStatus: Number(formData.mentalStatus) || 0,
                 };
 
-                const textResponse = await fetch("http://localhost:8080/api/review/save", {
+                const textResponse = await fetch("/api/review/save", {
                     method: "POST",
                     headers: {
                         "Content-Type": "application/json",
@@ -239,7 +247,7 @@ const Review = () => {
                     }
                 });
                 console.log("업로드될 FormData내용: ", [...fileFormData.entries()]);
-                const fileResponse = await fetch("http://localhost:8080/api/review/file", {
+                const fileResponse = await fetch("/api/review/file", {
                     method: "POST",
                     credentials: "include",
                     body: fileFormData,
@@ -247,6 +255,8 @@ const Review = () => {
                 if (!fileResponse.ok) throw new Error("파일 업로드 실패");
 
                 alert("제출이 완료되었습니다!");
+                navigate("/investment/status");
+
                 setFormData({
                     userId: "",
                     universityInfo: { universityName: "", major: "" },
@@ -275,7 +285,7 @@ const Review = () => {
     };
 
     return (
-        <div className="p-6 border rounded-lg w-96 mx-auto mt-10">
+        <div className="investReview-container">
             {step === 1 && (
                 <Step1University
                     formData={formData}
@@ -325,7 +335,7 @@ const Review = () => {
                     handleBack={handleBack}
                 />
             )}
-            {step === 6 && <Step6Submit handleSubmit={handleSubmit} handleBack={handleBack} />}
+            {step === 6 && <Step6Submit formData={formData} handleSubmit={handleSubmit} handleBack={handleBack} />}
         </div>
     );
 };

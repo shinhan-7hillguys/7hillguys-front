@@ -6,7 +6,8 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
+    overflow: auto;
     padding: 40px;
     background-color: #FFF7F7;
 }
@@ -19,13 +20,15 @@
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 100%;
+    overflow: auto;
 }
 
 /* 제목 */
-.submit-title {
+.submit-box .submit-title {
     font-size: 22px;
     font-weight: bold;
-    color: #FF4170;
+    text-align: center;
+    color: black;
     margin-bottom: 15px;
 }
 
@@ -57,9 +60,9 @@
     width: 48%;
 }
 
-.submit-prev-button:hover {
+/*.submit-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 제출 버튼 */
 .submit-next-button {
@@ -73,6 +76,7 @@
     width: 48%;
 }
 
+/*
 .submit-next-button:hover {
     background-color: #45A049;
-}
+}*/

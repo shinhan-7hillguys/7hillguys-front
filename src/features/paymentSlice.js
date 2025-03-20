@@ -13,9 +13,9 @@ export const fetchPayments = createAsyncThunk(
   async ({ cardId, month }, { rejectWithValue }) => {
     try {
       console.log(cardId)
-      
-      const response = await axios.get("http://localhost:8080/benefit/payments", {
-        params: { cardId : 1, month },
+
+      const response = await axios.get("/benefit/payments", {
+        params: { cardId, month },
       });
       console.log(response.data)
       return response.data; // PaymentEntity 배열

@@ -11,11 +11,11 @@ const InvestmentStatusCheck = () => {
     useEffect(() => {
         const checkStatus = async () => {
             try {
-                console.log("✅ [프론트] 투자 심사 상태 조회 요청");
+                console.log("[프론트] 투자 심사 상태 조회 요청");
 
-                const response = await fetch("http://localhost:8080/api/investment/status", {
+                const response = await fetch("/api/investment/status", {
                     method: "GET",
-                    credentials: "include", // ✅ 쿠키 자동 포함
+                    credentials: "include", // 쿠키 자동 포함
                     headers: {
                         "Accept": "application/json",
                         "Content-Type": "application/json"
@@ -27,12 +27,12 @@ const InvestmentStatusCheck = () => {
                 }
 
                 const result = await response.text();
-                console.log("✅ [프론트] 서버 응답 값:", result);
+                console.log("[프론트] 서버 응답 값:", result);
 
                 setStatus(result.trim() === "승인" || result.trim() === "거절" ? result.trim() : "대기");
 
             } catch (error) {
-                console.error("❌ [프론트] 심사 상태 조회 오류:", error);
+                console.error("[프론트] 심사 상태 조회 오류:", error);
             }
         };
 

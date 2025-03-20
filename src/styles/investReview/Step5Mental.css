@@ -1,31 +1,29 @@
 /* Step5Mental.css - 성실도 설문 페이지*/
 
-/* 전체 컨테이너 */
-.mental-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    padding: 40px;
-    background-color: #FFF7F7;
-}
 
-/* 평가 박스 */
+/* 박스 */
 .mental-box {
     background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     text-align: left;
     width: 100%;
+    max-width: 900px;
+    height: 100%; /* 부모 컨테이너에 맞게 전체 높이 확장 */
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 /* 제목 */
-.mental-title {
+.mental-box .mental-title {
     font-size: 22px;
     font-weight: bold;
-    color: #FF4170;
+    text-align: center;
+    color: black;
     margin-bottom: 15px;
 }
 
@@ -98,9 +96,9 @@
     width: 48%;
 }
 
-.mental-prev-button:hover {
+/*.mental-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 다음 버튼 */
 .mental-next-button {
@@ -114,6 +112,7 @@
     width: 48%;
 }
 
+/*
 .mental-next-button:hover {
-    background-color: #F994AD;
-}
+    background-color: #ff6688;
+}*/

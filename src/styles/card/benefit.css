@@ -1,5 +1,7 @@
 
-
+div, button {
+  font-family: 'PretendardVariable', sans-serif;
+}
 .my-benefits {
   display: flex;
   justify-content: space-between
@@ -17,6 +19,7 @@
   margin-bottom: 5px;
   font-weight: 600;
   text-align: center;
+  color: var(--button-color);
 }
 .benefit-item {
     width: 100%;
@@ -32,6 +35,7 @@
 }
 .benefits-section p {
   text-align: center;
+  font-weight: 600;
 }
 .benefit-info {
     background: transparent;
@@ -40,14 +44,27 @@
 .benefit-info p {
   text-align: center;
 }
+.sec_title {
+  text-align: center;
+  padding: 20px;
+
+}
 .card_benefit_sec1 {
-    position: relative;
     background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: 20px;
-    height: 40vh;
+    padding: 0 20px;
+    /* height: 30vh; */
+    width: 100%;
+    margin: 20px 0;
+    font-family: 'PretendardVariable', sans-serif;
+  }
+  .card_benefit_sec1 > div {
+    background: #f0c1de;
+    width: 350px;
+    height: 200px;
+    border-radius: 20px;
   }
   .card {
     box-shadow: 0 8px 12px -2px rgba(2, 2, 2, 0.3),
@@ -83,7 +100,8 @@
     z-index: 1; /* 메인 카드 뒤에 배치 */
   }
   .card_benefit_sec2 {
-    background: var(--box-color);
+    height: 15vh;
+    background-color: var(--box-color);
     display: flex;
     justify-content: center;
     align-items: center;
@@ -91,8 +109,7 @@
     margin: 0 20px;
     margin-bottom: 20px;
     border-radius: 20px;
-    padding: 0 20px;
-    height: calc(20vh - 20px);
+
   }
   .card_benefit_sec2 div {
     background: var(--button-color);
@@ -137,17 +154,21 @@
 }
 
   .card_benefit_sec4 {
+    height: 40vh;
     background: var(--box-color);
-    height: 29vh;
     overflow: auto; /* 스크롤 기능 유지 */
     -ms-overflow-style: none;  /* IE, Edge에서 스크롤 바 숨김 */
     scrollbar-width: none;  /* Firefox에서 스크롤 바 숨김 */
   }
+  .benefits_column {
+    text-align: center;
+    padding: 20px;
+    font-weight: 600;
+    font-size: 24px;
+    color: var(--button-color);
+  }
 
  
-  .benefits-list {
-    
-}
 
 .card_benefit_sec4::-webkit-scrollbar {
     display: none; /* Chrome, Safari에서 스크롤 바 숨김 */
@@ -250,4 +271,45 @@
     border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
+  }
+  .benefit_compare h1 {
+    text-align: center;
+  }
+
+  #month-select {
+    height: 200px;       /* 높이 200px */
+    overflow-y: auto;    /* 내용이 넘치면 스크롤 */
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+  }
+  
+  /* Chrome, Safari, Opera */
+  #month-select::-webkit-scrollbar {
+    display: none;
+  }
+  .month_box {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    justify-content: center;
+    border: 0;
+  
+  }
+  .select_box {
+    font-weight: 600;
+  }
+  .payment_graph {
+    display: flex;
+    justify-content: space-evenly;
+    font-weight: 600;
+    margin-bottom: 70px;
+    gap: 15px;
+  }
+  .payment_graph p {
+    text-align: center;
+  }
+  .payment_graph p div:first-child {
+    font-size: 18px;
+    background: var(--box-color);
+    padding: 10px 20px;
+    border-radius: 10px;
   }

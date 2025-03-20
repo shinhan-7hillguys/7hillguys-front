@@ -111,7 +111,7 @@ const InvestmentExit = () => {
     useEffect(() => {
         const fetchExpectedIncome = async () => {
             try {
-                const response = await axios.get('http://localhost:8080/api/investment/exit', {
+                const response = await axios.get('/api/investment/exit', {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json"
@@ -197,7 +197,7 @@ const InvestmentExit = () => {
                 </BenefitsList>
             </MembershipInfo>
             <ButtonsContainer>
-                <Button onClick={() => navigate("/")}>내가 받고 있는 혜택 유지하기</Button>
+                <Button onClick={() => navigate("/user/dashboard")}>내가 받고 있는 혜택 유지하기</Button>
             </ButtonsContainer>
             <SadIcon>😢</SadIcon>
             <p>그래도 해지하시겠어요?</p>

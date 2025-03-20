@@ -5,8 +5,9 @@ import PieChartCard from 'components/dashboard/piechart';
 import Badge from 'components/dashboard/Badge';
 import UserListCard from 'components/dashboard/UserListCard';
 import config from 'config.js';
-import dummyDataMap from 'dummyData.js';
-import { getDashboardData } from 'api';
+import dummyDataMap from 'dummyData.js';   
+import { getDashboardData } from 'api';  
+
 const DashboardContainer = styled.div`
   flex: 1;
   padding: 24px;
@@ -15,17 +16,19 @@ const DashboardContainer = styled.div`
     padding: 16px;
   }
 `;
+
 const StatsContainer = styled.div`
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
-  flex-wrap: wrap;
+  flex-wrap: wrap;  
   font-family: 'Pretendard', sans-serif;
 `;
+
 const StatBox = styled.div`
   flex: 1;
-  min-width: 220px;
-  background-color: ${({ isSelected }) => (isSelected ? '#FFE9EC' : '#fff')} !important;
+  min-width: 220px; 
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : '#fff')} !important;
   border: 2px solid ${({ isSelected }) => (isSelected ? '#260086' : 'gray')};
   border-radius: 8px;
   padding: 16px;
@@ -37,40 +40,46 @@ const StatBox = styled.div`
   font-family: 'Pretendard', sans-serif;
   white-space :nowrap;
 `;
+
 const StatContentWrapper = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
-  background-color: ${({ isSelected }) => (isSelected ? '#FFE9EC' : 'transparent')} !important;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
   transition: background-color 0.3s ease;
 `;
+
 const StatLeft = styled.div`
   flex: 1;
   display: flex;
   align-items: center;
-  background-color: ${({ isSelected }) => (isSelected ? '#FFE9EC' : 'transparent')} !important;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
 `;
+
 const StatRight = styled.div`
   margin-left: auto;
   display: flex;
   align-items: center;
-  background-color: ${({ isSelected }) => (isSelected ? '#FFE9EC' : 'transparent')} !important;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
 `;
+
 const StatNumber = styled.p`
   font-size: clamp(15px, 4vw, 20px);
   font-weight: bold;
   margin: 0;
-  background-color: ${({ isSelected }) => (isSelected ? '#FFE9EC' : 'transparent')} !important;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
   transition: background-color 0.3s ease;
 `;
+
 const ComparisonText = styled.p`
   font-size: clamp(10px, 2vw, 12px);
   margin: 0;
   white-space: nowrap;
   margin-left: 8px;
-  background-color: ${({ isSelected }) => (isSelected ? '#FFE9EC' : 'transparent')} !important;
+  background-color: ${({ isSelected }) => (isSelected ? '#ffe9ec' : 'transparent')} !important;
   transition: background-color 0.3s ease;
 `;
+
 const RowContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
@@ -81,6 +90,7 @@ const RowContainer = styled.div`
     min-width: 300px;
   }
 `;
+
 const PeriodContainer = styled.div`
   display: flex;
   gap: 16px;
@@ -88,23 +98,25 @@ const PeriodContainer = styled.div`
   flex-wrap: wrap;
   font-family: 'Pretendard', sans-serif;
 `;
+
 const PeriodButton = styled.button`
   padding: 8px 16px;
-  border: 1px solid #EAEAEA;
+  border: 1px solid #eaeaea;
   border-radius: 4px;
-  background-color: ${({ isSelected }) => (isSelected ? '#E08490' : '#fff')} !important;
+  background-color: ${({ isSelected }) => (isSelected ? '#e08490' : '#fff')} !important;
   color: ${({ isSelected }) => (isSelected ? '#fff' : '#444')};
   cursor: pointer;
   transition: background-color 0.2s, color 0.2s;
   &:hover {
-    background-color: ${({ isSelected }) => (isSelected ? '#D76A80' : '#F0F0F0')} !important;
+    background-color: ${({ isSelected }) => (isSelected ? '#d76a80' : '#f0f0f0')} !important;
   }
   font-family: 'Pretendard', sans-serif;
-`;
+`; 
+
 const ChartsContainer = styled.div`
   display: flex;
   gap: 16px;
-  flex-wrap: wrap;
+  flex-wrap: wrap; 
   border-radius: 16px;
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   &:hover {
@@ -120,24 +132,29 @@ const ChartsContainer = styled.div`
     margin-bottom:20px;
   }
 `;
-const Dashboard = () => {
+
+const Dashboard = () => { 
   const [selectedStat, setSelectedStat] = useState('userCount');
   const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [dashboardData, setDashboardData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
   const handleStatClick = (statKey) => {
     setSelectedStat(statKey);
   };
+
   const handlePeriodClick = (periodKey) => {
     setSelectedPeriod(periodKey);
   };
+
   const periodComparisonLabel = {
     week: '지난 주 대비',
     month: '지난 달 대비',
     '6months': '지난 반기 대비',
     year: '작년 대비',
   }[selectedPeriod];
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
@@ -155,13 +172,17 @@ const Dashboard = () => {
         setLoading(false);
       }
     };
+
     fetchData();
   }, [selectedStat, selectedPeriod]);
+
   if (loading) return <DashboardContainer>로딩중...</DashboardContainer>;
   if (error) return <DashboardContainer>{error}</DashboardContainer>;
+
   const currentData = dashboardData;
+
   return (
-    <DashboardContainer>
+    <DashboardContainer> 
       <breadcrumbMaintitle>서비스 현황</breadcrumbMaintitle>
       <StatsContainer>
         <StatBox
@@ -183,6 +204,7 @@ const Dashboard = () => {
             </StatRight>
           </StatContentWrapper>
         </StatBox>
+     
         <StatBox
           onClick={() => handleStatClick('totalSignups')}
           isSelected={selectedStat === 'totalSignups'}
@@ -202,6 +224,7 @@ const Dashboard = () => {
             </StatRight>
           </StatContentWrapper>
         </StatBox>
+
         <StatBox
           onClick={() => handleStatClick('totalAmount')}
           isSelected={selectedStat === 'totalAmount'}
@@ -221,6 +244,7 @@ const Dashboard = () => {
             </StatRight>
           </StatContentWrapper>
         </StatBox>
+
         <StatBox
           onClick={() => handleStatClick('revenue')}
           isSelected={selectedStat === 'revenue'}
@@ -241,6 +265,7 @@ const Dashboard = () => {
           </StatContentWrapper>
         </StatBox>
       </StatsContainer>
+
       <PeriodContainer>
         <PeriodButton
           onClick={() => handlePeriodClick('week')}
@@ -267,9 +292,11 @@ const Dashboard = () => {
           연
         </PeriodButton>
       </PeriodContainer>
+ 
       <ChartsContainer>
         <ChartCard data={currentData.barData} name={selectedStat} />
-      </ChartsContainer>
+      </ChartsContainer> 
+      
       <RowContainer>
         <ChartsContainer>
           <PieChartCard data={currentData.pieData} />
@@ -281,4 +308,5 @@ const Dashboard = () => {
     </DashboardContainer>
   );
 };
+
 export default Dashboard;

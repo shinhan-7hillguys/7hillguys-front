@@ -137,6 +137,7 @@ const ResumeEdit = () => {
                 {answers[selectedQuestion].length}/{maxCharacters}자
             </p>
 
+
             {/* 어학시험 섹션 */}
             <div style={sectionStyle}>
                 <h3 style={sectionTitle}>어학시험</h3>
@@ -179,7 +180,7 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() =>
@@ -187,7 +188,7 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -242,13 +243,13 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() => setCertificates(certificates.slice(0, -1))}
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -339,13 +340,13 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() => setInternships(internships.slice(0, -1))}
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -406,7 +407,7 @@ const buttonStyle = {
     height: "40px",
     borderRadius: "50%",
     backgroundColor: "#f0f0f0",
-    color: "#333",
+    color: "#ff99aa",
     border: "none",
     cursor: "pointer",
 };
@@ -487,16 +488,18 @@ const controlRow = {
 const halfButton = {
     width: "48%",
     padding: "2%",
-    backgroundColor: "#ccc",
+    backgroundColor: "#ff99aa",
+    color: "white",
     border: "none",
     cursor: "pointer",
     textAlign: "center",
+    borderRadius: "5px",
 };
 
 const saveButton = {
     width: "100%",
     padding: "3%",
-    backgroundColor: "#df6e99",
+    backgroundColor: "#ff99aa",
     color: "white",
     fontSize: "1.2rem",
     border: "none",

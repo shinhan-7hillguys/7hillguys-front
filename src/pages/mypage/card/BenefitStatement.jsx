@@ -25,7 +25,7 @@ function BenefitStatement() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/card/benefitStatement", {
+        .get("/card/benefitStatement", {
         withCredentials: true,
         params: { yearMonth },
         headers: {

@@ -25,7 +25,7 @@ function CardStatement() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:8080/card/cardStatement", {
+        .get("/card/cardStatement", {
         withCredentials: true,
         params: { yearMonth },
         headers: {

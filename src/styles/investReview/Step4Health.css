@@ -1,31 +1,27 @@
 /* Step4Health.css - 건강 정보 설문 페이지*/
 
-/* 전체 컨테이너 */
-.health-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    padding: 40px;
-    background-color: #FFF7F7;
-}
-
 /* 평가 박스 */
 .health-box {
     background: white;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    text-align: left;
-    width: 100%;
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 100%;
+    height: 100%;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex-grow: 1;
 }
 
 /* 제목 */
-.health-title {
+.health-box .health-title {
     font-size: 22px;
     font-weight: bold;
-    color: #FF4170;
+    text-align: center;
+    color: black;
     margin-bottom: 15px;
 }
 
@@ -42,6 +38,7 @@
 .health-question h3 {
     font-size: 16px;
     font-weight: bold;
+    text-align: left;
     color: #333;
     margin-bottom: 8px;
 }
@@ -98,9 +95,9 @@
     width: 48%;
 }
 
-.health-prev-button:hover {
+/*.health-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 다음 버튼 */
 .health-next-button {
@@ -114,6 +111,7 @@
     width: 48%;
 }
 
+/*
 .health-next-button:hover {
-    background-color: #F994AD;
-}
+    background-color: #ff6688;
+}*/

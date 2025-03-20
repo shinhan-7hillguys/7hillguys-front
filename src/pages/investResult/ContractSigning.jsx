@@ -5,14 +5,14 @@ import SignaturePad from "react-signature-canvas";
 import "styles/investResult/ContractSigning.css";
 
 const ContractSigning = () => {
-    const navigate = useNavigate();  // ✅ 페이지 이동을 위한 useNavigate 추가
+    const navigate = useNavigate();  // 페이지 이동을 위한 useNavigate 추가
     const sigPad = useRef(null);
     const [signature, setSignature] = useState("");
     const [contract, setContract] = useState(null);
 
     // 📌 계약서 내용 불러오기 (쿠키 포함)
     useEffect(() => {
-        fetch("http://localhost:8080/api/contract/template", {
+        fetch("/api/contract/template", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -32,6 +32,7 @@ const ContractSigning = () => {
         if (sigPad.current) {
             const base64Signature = sigPad.current.getTrimmedCanvas().toDataURL("image/png");
             setSignature(base64Signature);
+            alert("서명이 저장되었습니다!");
         }
     };
 
@@ -43,7 +44,7 @@ const ContractSigning = () => {
         }
 
         try {
-            const response = await fetch("http://localhost:8080/api/contract/sign", {
+            const response = await fetch("/api/contract/sign", {
                 method: "POST",
                 credentials: "include",
                 headers: {
@@ -78,10 +79,14 @@ const ContractSigning = () => {
             {/* 계약서 내용 표시 */}
             {contract ? (
                 <div className="contract-box">
-                    <h3>{contract.title}</h3>
-                    <p className="contract-content">{contract.investmentDetails}</p>
+                    <h4>{contract.title}</h4>
+                    <p className="contract-content">{contract.investmentDate}</p>
+                    <p className="contract-content">{contract.monthlyAllowance}</p>
+                    <p className="contract-content">{contract.investmentMoney}</p>
+                    <p className="contract-content">{contract.investmentTotal}</p>
                     <h4 className="contract-section">상환 조건</h4>
                     <p className="contract-content">{contract.repaymentTerms}</p>
+                    <p className="contract-content">{contract.repaymentTerms2}</p>
                     <h4 className="contract-section">약정 사항</h4>
                     <ul className="contract-content">
                         {contract.agreements.map((item, index) => (
