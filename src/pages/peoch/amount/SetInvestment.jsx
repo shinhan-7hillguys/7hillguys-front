@@ -58,7 +58,6 @@ const SliderContainer = styled.div`
     }
 `;
 
-// 슬라이더 값 표시
 const SliderValue = styled.div`
     margin-bottom: 10px;
     font-size: 18px;
@@ -66,7 +65,6 @@ const SliderValue = styled.div`
     color: #555;
 `;
 
-// 슬라이더 라벨
 const SliderLabel = styled.div`
     display: flex;
     justify-content: space-between;
@@ -289,42 +287,40 @@ const InvestmentSimulator = () => {
                             wrapperStyle={{ fontSize: 13, color: "#666", marginTop: -10 }}
                         />
 
-                        {/* Gradient */}
-                        <defs>
-                            <linearGradient id="colorExpected" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#e9c0c9" stopOpacity={0.4} />
-                                <stop offset="95%" stopColor="#e9c0c9" stopOpacity={0} />
-                            </linearGradient>
-                            <linearGradient id="colorRefund" x1="0" y1="0" x2="0" y2="1">
-                                <stop offset="5%" stopColor="#cdcaf8" stopOpacity={0.4} />
-                                <stop offset="95%" stopColor="#cdcaf8" stopOpacity={0} />
-                            </linearGradient>
-                        </defs>
+                        {/*<defs>*/}
+                        {/*    <linearGradient id="colorExpected" x1="0" y1="0" x2="0" y2="1">*/}
+                        {/*        <stop offset="5%" stopColor="#fea1b8" stopOpacity={0.4} />*/}
+                        {/*        <stop offset="95%" stopColor="#fea1b8" stopOpacity={0} />*/}
+                        {/*    </linearGradient>*/}
+                        {/*    <linearGradient id="colorRefund" x1="0" y1="0" x2="0" y2="1">*/}
+                        {/*        <stop offset="5%" stopColor="#c9e8ff" stopOpacity={0.4} />*/}
+                        {/*        <stop offset="95%" stopColor="#c9e8ff" stopOpacity={0} />*/}
+                        {/*    </linearGradient>*/}
+                        {/*</defs>*/}
 
-                        {/* 예상 소득 */}
                         <Area
                             type="monotone"
                             dataKey="expected"
                             name="예상 소득"
-                            stroke="#e9c0c9"
-                            fill="url(#colorExpected)"
+                            stroke="#fea1b8"
+                            fill = "#fea1b8"
+                            // fill="url(#colorExpected)"
                             strokeWidth={2}
                         />
 
-                        {/* 환급 금액 */}
                         <Area
                             type="monotone"
                             dataKey="refund"
                             name="환급 금액"
-                            stroke="#cdcaf8"
-                            fill="url(#colorRefund)"
+                            stroke="#0095D9"
+                            fill="#0095D9"
+                            //fill="url(#colorRefund)"
                             strokeWidth={2}
                         />
                     </AreaChart>
                 </ResponsiveContainer>
             </div>
 
-            {/* 월 지원금 슬라이더 */}
             <SliderContainer>
                 <SliderValue>월 지원금: {monthlySupport}만원</SliderValue>
                 <Slider
@@ -340,7 +336,6 @@ const InvestmentSimulator = () => {
                 </SliderLabel>
             </SliderContainer>
 
-            {/* 지원 기간 슬라이더 */}
             <SliderContainer>
                 <SliderValue>지원 기간: {supportPeriod}년</SliderValue>
                 <Slider
