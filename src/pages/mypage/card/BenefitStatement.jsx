@@ -77,7 +77,7 @@ function BenefitStatement() {
             <p className="text-sm mb-1">{statement.userName}님이 받은 혜택</p>
           )}
           <p className="text-3xl font-bold text-pink-600">
-            {String(statement.totalBenefitDiscount)}원
+            {statement.totalBenefitDiscount.toLocaleString()}원
           </p>
         </div>
 
@@ -91,10 +91,10 @@ function BenefitStatement() {
                 <span className="font-semibold">{tx.storeName}</span>
                 <div className="flex items-center space-x-1">
                   <span className="line-through">
-                    {String(tx.originalAmount)}원
+                    {tx.originalAmount.toLocaleString()}원
                   </span>
                   <span>→</span>
-                  <span>{String(tx.finalAmount)}원</span>
+                  <span>{tx.finalAmount.toLocaleString()}원</span>
                 </div>
               </div>
               <div className="flex justify-between items-center mt-1">
@@ -102,7 +102,7 @@ function BenefitStatement() {
                   {formatDate(tx.paymentDate)}
                 </span>
                 <span className="font-bold text-pink-600 text-lg mr-8">
-                  {String(tx.benefitDiscountAmount)}원
+                  {tx.benefitDiscountAmount.toLocaleString()}원
                 </span>
               </div>
             </li>
