@@ -34,7 +34,7 @@
     margin-bottom: 15px;
     border: 1px solid #FFD4DE;
     border-radius: 8px;
-    font-size: 16px;
+    font-size: 14px;
     background-color: white;
 }
 
@@ -59,7 +59,7 @@
 
 /* 파일 업로드 라벨 */
 .file-upload-label {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: bold;
     color: #333;
     width: 45%; /* 라벨 크기 조정 */
