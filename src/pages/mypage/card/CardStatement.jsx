@@ -25,7 +25,7 @@ function CardStatement() {
 
   useEffect(() => {
     axios
-        .get("/card/cardStatement", {
+      .get("/card/cardStatement", {
         withCredentials: true,
         params: { yearMonth },
         headers: {
@@ -61,8 +61,8 @@ function CardStatement() {
   }, [sortType, statement.statementList]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-0">
-      <div className="w-full bg-white rounded-md shadow-md p-6">
+    <div className="min-h-screen bg-gray-100">
+      <div className="w-full bg-white rounded-3xl shadow-md p-6">
         <div className="flex justify-center mb-4">
           <h1 className="text-2xl font-bold">카드 명세서</h1>
         </div>
