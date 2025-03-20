@@ -74,7 +74,7 @@ const InvestmentExit = () => {
                 <ResponsiveContainer width="100%" height="100%">
                     <AreaChart
                         data={chartData}
-                        margin={{top: 10, right: 20, left: 5, bottom: 0}}
+                        margin={{top: 10, right: 20, left: 8, bottom: 0}}
                     >
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="year"/>
@@ -128,14 +128,14 @@ const InvestmentExit = () => {
                 </BenefitsList>
             </MembershipInfo>
             <ButtonsContainer>
-                <Button onClick={() => navigate("/user/dashboard")}>내가 받고 있는 혜택 유지하기</Button>
+                <Button onClick={() => navigate("/user/dashboard")}>혜택 유지</Button>
             </ButtonsContainer>
             {/*<SadIcon>😢</SadIcon>*/}
             {/*<p>그래도 해지하시겠어요?</p>*/}
 
             <ButtonsContainer>
-                <button onClick={handleSadAlert} style={{marginLeft:'5px', marginTop: '10px', padding: '10px 82px', borderRadius: '5px', border: 'none', backgroundColor: '#c9e8ff', color: '#000', cursor: 'pointer' }}>
-                    내가 받고 있는 혜택 포기하기
+                <button onClick={handleSadAlert} style={{marginLeft:'5px', marginTop: '10px', padding: '10px 137px', borderRadius: '5px', border: 'none', backgroundColor: '#c9e8ff', color: '#000', cursor: 'pointer' }}>
+                    혜택 포기
                 </button>
             </ButtonsContainer>
 
