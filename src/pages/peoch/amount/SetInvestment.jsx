@@ -219,8 +219,8 @@ const InvestmentSimulator = () => {
 
     // 슬라이더 최대값 계산
     const maxMonthlySupport = Math.min(
-        150,
-        Math.floor(maxInvestment / (supportPeriod * 12 * 10000)) || 150
+        100,
+        Math.floor(maxInvestment / (supportPeriod * 12 * 10000)) || 100
     );
     const maxSupportPeriod = Math.min(
         8,
