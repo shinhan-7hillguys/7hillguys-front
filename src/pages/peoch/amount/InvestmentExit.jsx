@@ -134,7 +134,7 @@ const InvestmentExit = () => {
             {/*<p>그래도 해지하시겠어요?</p>*/}
 
             <ButtonsContainer>
-                <button onClick={handleSadAlert} style={{marginLeft:'5px', marginTop: '10px', padding: '10px 137px', borderRadius: '5px', border: 'none', backgroundColor: '#c9e8ff', color: '#000', cursor: 'pointer' }}>
+                <button onClick={handleSadAlert} style={{marginLeft:'5px', marginTop: '10px', padding: '10px 137px', borderRadius: '30px', border: 'none', backgroundColor: '#c9e8ff', color: '#000', cursor: 'pointer' }}>
                     혜택 포기
                 </button>
             </ButtonsContainer>
@@ -212,13 +212,14 @@ const ButtonsContainer = styled.div`
     display: flex;
     justify-content: space-between;
     margin-top: 0px;
+    
 `;
 
 const Button = styled.button`
     flex-grow: 1;
     margin: 0 5px;
     padding: 10px 20px;
-    border-radius: 5px;
+    border-radius: 30px;
     border: none;
     cursor: pointer;
 
