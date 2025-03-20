@@ -42,7 +42,7 @@ function BenefitStatement() {
 
   return (
     <div className="min-h-screen">
-      <div className="w-full bg-white my-custom-rounded shadow-md p-6">
+      <div className="w-full bg-white my-custom-rounded shadow-md p-6 min-h-screen">
         <div className="flex justify-center">
           <h1 className="text-2xl font-bold">혜택 명세서</h1>
         </div>

@@ -215,6 +215,11 @@ header {
   border-radius: 60px;
 }
 
+.my-custom-rounded-top {
+  border-top-left-radius: 0px;
+  border-top-right-radius: 0px;
+}
+
 /* .nav-btn:hover {
   background-color: #43a047;
 } */
