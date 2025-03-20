@@ -39,7 +39,7 @@ function Login() {
 
             if (response.ok) {
                 alert("로그인 성공!");
-                navigate("/");
+                navigate("/user/dashboard");
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || "로그인 실패");
