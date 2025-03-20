@@ -85,6 +85,46 @@ const Education = () => {
       salary: "4,881만 원",
       averageData: [6, 2, 6, 4, 6],
     },
+    {
+      id: 6,
+      name: "금융결제원",
+      closingDate: "2025.3.26",
+      recruit: "전산직",
+      salary: "6,816",
+      averageData: [8, 10, 4, 4, 6],
+    },
+    {
+      id: 7,
+      name: "SK 하이닉스",
+      closingDate: "2025.3.28",
+      recruit: "IT",
+      salary: "6,951",
+      averageData: [10, 6, 0, 6, 6],
+    },
+    {
+      id: 8,
+      name: "롯데캐피탈",
+      closingDate: "2025.3.30",
+      recruit: "IT개발/운영",
+      salary: "5,408",
+      averageData: [8, 6, 0, 2, 6],
+    },
+    {
+      id: 9,
+      name: "LG CNS",
+      closingDate: "2025.3.31",
+      recruit: "DX Engineer",
+      salary: "6,819",
+      averageData: [8, 8, 2, 2, 6],
+    },
+    {
+      id: 10,
+      name: "한화시스템/ICT",
+      closingDate: "2025.03.31",
+      recruit: "서비스개발/운영",
+      salary: "5,783",
+      averageData: [8, 6, 2, 2, 6],
+    },
   ];
 
   // userProfile 데이터 GET
@@ -192,7 +232,7 @@ const Education = () => {
   const chartData = [
     { subject: "자소서", user: letterScore },
     { subject: "자격증", user: certScore },
-    { subject: "어학점수", user: langScore },
+    { subject: "어학", user: langScore },
     { subject: "인턴경험", user: internScore },
     { subject: "학점", user: gradeScore },
   ];
@@ -222,7 +262,7 @@ const Education = () => {
     infinite: true,
     speed: 500,
     slidesToShow: 2,
-    slidesToScroll: 1,
+    slidesToScroll: 2,
     autoplay: false,
     arrows: true,
   };
@@ -254,8 +294,8 @@ const Education = () => {
               <Radar
                 name="내 능력치"
                 dataKey="user"
-                stroke="#8884d8"
-                fill="#8884d8"
+                stroke="#c9e8ff"
+                fill="#c9e8ff"
                 fillOpacity={0.6}
                 strokeWidth={2}
               />
@@ -263,8 +303,8 @@ const Education = () => {
                 <Radar
                   name={`${hoveredCompany.name} 평균`}
                   dataKey="company"
-                  stroke="#82ca9d"
-                  fill="#82ca9d"
+                  stroke="#ff89a3"
+                  fill="#ff89a3"
                   fillOpacity={0.6}
                   strokeWidth={2}
                 />
@@ -285,7 +325,7 @@ const Education = () => {
                   <span
                     style={{ ...bulletStyle, backgroundColor: "#df6e99" }}
                   ></span>
-                  어학점수: {languageObj.score || "0"}
+                  어학: {languageObj.score || "0"}
                 </li>
                 <li style={listItemStyle}>
                   <span
@@ -486,6 +526,7 @@ const buttonRowStyle = {
   display: "flex",
   gap: "8px",
   marginTop: "5px",
+  marginLeft: "-15px", //수정 직군 비교 버튼 왼쪽 정렬
   justifyContent: "flex-start", // 왼쪽 정렬
   flexWrap: "nowrap", // 버튼이 줄바꿈되지 않도록
 };

@@ -73,7 +73,7 @@ function PositiveFactors() {
             avg: 3.6, // 더미 평균
         },
         {
-            name: "자격증 (평균 자격증 보기)",
+            name: "자격증",
             value: certificationObj.length,
             max: 5,
             avg: 2, // 더미 평균
@@ -123,7 +123,7 @@ function PositiveFactors() {
             {chartData.map((item) => (
                 <div key={item.name} style={styles.chartBox}
                      onClick={() => {
-                         if (item.name === "자격증 (평균 자격증 보기)") {
+                         if (item.name === "자격증") {
                              handleCertificateClick();
                          }
                      }}>
@@ -178,7 +178,7 @@ function PositiveFactors() {
             {isModalOpen && (
                 <div className="modal-overlay" style={styles.modalOverlay} onClick={closeModal}>
                     <div className="modal-content" style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                        <h2 style={{ textAlign: "center" }}>평균 자격증</h2>
+                        <h2 style={{ textAlign: "center" }}>보유 자격증</h2>
                         <p>1. 정보처리기사 (56%)</p>
                         <p>2. SQLD (31%)</p>
                         <p>3. ADsP (13%)</p>
