@@ -282,13 +282,13 @@ console.log("card : ", checkedBenefits)
               className={selectedTab === "existing" ? "active" : ""}
               onClick={() => setSelectedTab("existing")}
             >
-              기존 혜택
+              My 혜택
             </button>
             <button
               className={selectedTab === "added" ? "active" : ""}
               onClick={() => setSelectedTab("added")}
             >
-              추가 혜택
+              Add 혜택
             </button>
           </div>
         {/* 선택된 탭에 따른 혜택 리스트 */}
@@ -299,7 +299,7 @@ console.log("card : ", checkedBenefits)
                   {appliedBenefits.map((b) => (
                     <li key={b.benefit.benefitId} className="benefit-item">
                       <div className="benefit-info">
-                        <strong>{b.benefit.name}</strong>: {b.benefit.discountRate}%
+                        <span>{b.benefit.name} : {b.benefit.discountRate}%</span> 
                       </div>
                       <button
                         className="benefit_remove_btn"
