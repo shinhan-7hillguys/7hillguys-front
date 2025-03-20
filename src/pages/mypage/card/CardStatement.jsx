@@ -62,7 +62,7 @@ function CardStatement() {
 
   return (
     <div className="min-h-screen bg-gray-100 p-0">
-      <div className="w-full bg-white rounded-l-md rounded-r-md shadow-md p-6">
+      <div className="w-full bg-white rounded-md shadow-md p-6">
         <div className="flex justify-center mb-4">
           <h1 className="text-2xl font-bold">카드 명세서</h1>
         </div>
