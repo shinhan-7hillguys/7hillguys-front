@@ -269,10 +269,6 @@ const Education = () => {
 
   return (
     <div style={pageWrapperStyle}>
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css"
-      />
       <div style={boxWrapperStyle}>
         <div style={topContainerStyle}>
           <div style={chartWrapperStyle}>
