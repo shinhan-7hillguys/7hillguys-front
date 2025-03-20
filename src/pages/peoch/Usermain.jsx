@@ -11,8 +11,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-
-/* --- styled-components --- */
+ 
 const PageContainer = styled.div`
   padding: 16px;
   background: #f9f9f9;
@@ -45,6 +44,7 @@ const UserInfo = styled.div`
 const Username = styled.h2`
   font-size: 24px;
   margin: 0;
+  white-space : nowrap;
 `;
 
 const Greeting = styled.p`
@@ -203,7 +203,7 @@ export default function MainPage() {
   const getDashboardData = async () => {
     try {  
       const today = new Date().toISOString().split("T")[0];
-      const response = await axios.get(`/card/cardData`, {
+      const response = await axios.get(`/card/cardDataTotal`, {
         params: { date: today },
         withCredentials: true,
       });
@@ -226,19 +226,19 @@ export default function MainPage() {
 
     if (typeFilter === "나") {
       if (timeFilter === "주") {
-        return { current: dashboardData.weekCurrent, previous: dashboardData.weekPrevious };
+        return { current: dashboardData.weekCurrentTotal, previous: dashboardData.weekPreviousTotal };
       } else if (timeFilter === "월") {
-        return { current: dashboardData.monthCurrent, previous: dashboardData.monthPrevious };
+        return { current: dashboardData.monthCurrentTotal, previous: dashboardData.monthPreviousTotal };
       } else if (timeFilter === "연") {
-        return { current: dashboardData.yearCurrent, previous: dashboardData.yearPrevious };
+        return { current: dashboardData.yearCurrentTotal, previous: dashboardData.yearPreviousTotal };
       }
     } else if (typeFilter === "평균") {
       if (timeFilter === "주") {
-        return { current: dashboardData.avgWeekCurrent, previous: dashboardData.avgWeekPrevious };
+        return { current: dashboardData.avgWeekCurrentTotal, previous: dashboardData.avgWeekPreviousTotal };
       } else if (timeFilter === "월") {
-        return { current: dashboardData.avgMonthCurrent, previous: dashboardData.avgMonthPrevious };
+        return { current: dashboardData.avgMonthCurrenTotalt, previous: dashboardData.avgMonthPreviousTotal };
       } else if (timeFilter === "연") {
-        return { current: dashboardData.avgYearCurrent, previous: dashboardData.avgYearPrevious };
+        return { current: dashboardData.avgYearCurrentTotal, previous: dashboardData.avgYearPreviousTotal };
       }
     }
     return { current: 0, previous: 0 };
@@ -270,15 +270,15 @@ export default function MainPage() {
     if (timeFilter === "주") {
       periodLabel = "지난 주 기준으로";
       previousPeriodLabel = "지난 주";
-      previousUsage = dashboardData.weekPrevious;
+      previousUsage = dashboardData.weekPreviousTotal;
     } else if (timeFilter === "월") {
       periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
       previousPeriodLabel = "지난 달";
-      previousUsage = dashboardData.monthPrevious;
+      previousUsage = dashboardData.monthPreviousTotal;
     } else if (timeFilter === "연") {
       periodLabel = "지난 해 기준으로";
       previousPeriodLabel = "지난 해";
-      previousUsage = dashboardData.yearPrevious;
+      previousUsage = dashboardData.yearPreviousTotal;
     }
     return (
       <>
@@ -302,15 +302,15 @@ export default function MainPage() {
     if (timeFilter === "주") {
       periodLabel = "지난 주 기준으로";
       previousPeriodLabel = "지난 주";
-      previousUsage = dashboardData.avgWeekPrevious;
+      previousUsage = dashboardData.avgWeekPreviousTotal;
     } else if (timeFilter === "월") {
       periodLabel = `지난 달 ${new Date().getDate()}일 기준으로`;
       previousPeriodLabel = "지난 달";
-      previousUsage = dashboardData.avgMonthPrevious;
+      previousUsage = dashboardData.avgMonthPreviousTotal;
     } else if (timeFilter === "연") {
       periodLabel = "지난 해 기준으로";
       previousPeriodLabel = "지난 해";
-      previousUsage = dashboardData.avgYearPrevious;
+      previousUsage = dashboardData.avgYearPreviousTotal;
     }
     return (
       <p>
