@@ -180,7 +180,7 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() =>
@@ -188,7 +188,7 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -243,13 +243,13 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() => setCertificates(certificates.slice(0, -1))}
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -340,13 +340,13 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() => setInternships(internships.slice(0, -1))}
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -489,9 +489,11 @@ const halfButton = {
     width: "48%",
     padding: "2%",
     backgroundColor: "#ff99aa",
+    color: "white",
     border: "none",
     cursor: "pointer",
     textAlign: "center",
+    borderRadius: "5px",
 };
 
 const saveButton = {
