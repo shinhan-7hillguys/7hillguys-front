@@ -73,7 +73,7 @@ function PositiveFactors() {
             avg: 3.6, // 더미 평균
         },
         {
-            name: "자격증 (평균 자격증 보기)",
+            name: "자격증 (자격증 보기)",
             value: certificationObj.length,
             max: 5,
             avg: 2, // 더미 평균
@@ -178,10 +178,10 @@ function PositiveFactors() {
             {isModalOpen && (
                 <div className="modal-overlay" style={styles.modalOverlay} onClick={closeModal}>
                     <div className="modal-content" style={styles.modalContent} onClick={(e) => e.stopPropagation()}>
-                        <h2 style={{ textAlign: "center" }}>평균 자격증</h2>
-                        <p>1. 정보처리기사 (56%)</p>
-                        <p>2. SQLD (31%)</p>
-                        <p>3. ADsP (13%)</p>
+                        <h2 style={{ textAlign: "center" }}>평균 보유 자격증</h2>
+                        <p>1. 정보처리기사 (46%)</p>
+                        <p>2. SQLD (21%)</p>
+                        <p>3. ADsP (10%)</p>
                         <button  style={{
                             backgroundColor: "#ffb8d2",
                             border: "none",
