@@ -137,9 +137,9 @@
     width: 48%;
 }
 
-.personal-prev-button:hover {
+/*.personal-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 다음 버튼 */
 .personal-next-button {
@@ -153,9 +153,9 @@
     width: 48%;
 }
 
-.personal-next-button:hover {
+/*.personal-next-button:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* 주소 입력 그룹 */
 .address-input-group {
@@ -195,9 +195,9 @@
     justify-content: center;
 }
 
-.address-search-btn:hover {
+/*.address-search-btn:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* Daum 주소 API iframe 컨테이너 스타일 유지 */
 #postcode-container {
@@ -207,4 +207,8 @@
     border: 1px solid #FFD4DE;
     border-radius: 5px;
     transition: visibility 0.2s ease-in-out, height 0.2s ease-in-out;
+}
+
+.personal-radio-label, .personal-radio-label {
+    font-weight: bold;
 }

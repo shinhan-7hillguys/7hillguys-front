@@ -68,9 +68,11 @@
     margin-top: 10px;
 }
 
+/*
 .login-box .login-button:hover {
     background-color: #ff6688;
 }
+*/
 
 /* 아이디 찾기, 비밀번호 찾기 */
 .options {
@@ -86,9 +88,9 @@
     text-decoration: none;
 }
 
-.option-link:hover {
+/*.option-link:hover {
     text-decoration: underline;
-}
+}*/
 
 /* 회원가입 섹션 */
 .login-signup-box {
@@ -111,9 +113,9 @@
     margin-top: 10px;
 }
 
-.login-container .signup-button:hover {
+/*.login-container .signup-button:hover {
     background-color: #ff6688;
-}
+}*/
 
 /* 소셜 로그인 버튼 */
 .social-login {

@@ -95,9 +95,9 @@
     width: 48%;
 }
 
-.mental-prev-button:hover {
+/*.mental-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 다음 버튼 */
 .mental-next-button {
@@ -111,6 +111,7 @@
     width: 48%;
 }
 
+/*
 .mental-next-button:hover {
     background-color: #ff6688;
-}
+}*/
