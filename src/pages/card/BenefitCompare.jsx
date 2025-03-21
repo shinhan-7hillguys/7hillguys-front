@@ -169,7 +169,7 @@ const BenefitCompare = () => {
         적용되는 이용 내역이 없습니다.
       </div>
     ) : (
-      <div style={{ width: "100%", height: 300 }}>
+      <div style={{ width: "100%", height: 330 }}>
         <h2>카테고리별 할인 금액 비율</h2>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
@@ -193,7 +193,7 @@ const BenefitCompare = () => {
       </div>
     )
   ) : (
-          <div style={{ width: "100%", height: 300, marginBottom: "40px" }}>
+          <div style={{ width: "100%", height: 330, marginBottom: "40px" }}>
             <h2>카테고리별 결제 금액 비교</h2>
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={computedData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
