@@ -69,6 +69,7 @@ function TermsAgreementPage() {
       <label>
         <input
           type="checkbox"
+          className="checkbox"
           checked={termsAgreed}
           onChange={handleAgreeChange}
         />
