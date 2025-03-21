@@ -363,6 +363,7 @@ const InvestmentSimulator = () => {
 
             <SubmitButton onClick={handleSubmit}>신청하기</SubmitButton>
         </Container>
+
     );
 };
 
