@@ -3,7 +3,7 @@ div, button {
   font-family: 'PretendardVariable', sans-serif;
 }
 .my-benefits {
-  height: 70%;
+  height: 90%;
 }
 
 .benefits-section {
@@ -43,7 +43,7 @@ div, button {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 4px;
+    margin: 1px;
     font-size: var(--font-size14);
     
 }
@@ -182,7 +182,10 @@ div, button {
     border: 1px solid #ccc;
   }
   .card_benefit_sec3{
-    height: 20vh;
+
+    min-height: 15vh;
+    max-height: 25vh;
+
    
     border-radius: 20px;
     background: #fff;

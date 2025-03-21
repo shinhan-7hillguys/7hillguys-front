@@ -115,6 +115,7 @@ const Benefit = () => {
       dispatch(addBenefit(benefit));
     });
     setCheckedBenefits([]);
+    setSelectedTab("added");
   };
   useEffect(() => {
     console.log("updated addedBenefits:", addedBenefits);
@@ -141,7 +142,8 @@ const Benefit = () => {
     if (confirmed) {
       // 결제 시, Redux에 저장된 cardId와 선택된 혜택 ID들을 백엔드에 전송합니다.
       dispatch(applyBenefits({ cardId, benefitIds: addedBenefits.map(b => b.benefitId) }));
-      alert("결제가 진행됩니다.");
+      alert("구독이 완료되었습니다.");
+      setSelectedTab("existing")
     }
   };
 // src/pages/Benefit.jsx

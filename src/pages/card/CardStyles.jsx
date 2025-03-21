@@ -104,8 +104,7 @@ export const CardPage = styled.div`
 
 export const MobileButton = styled.button`
   padding: 10px 20px;
-  background-color: #f4a9c0;
-  border: 1.5px solid black;
+  background-color: #DF6E99;
   border-radius: 5px;
   color: white;
   font-size: 16px;
