@@ -25,7 +25,7 @@ export const fetchUserCardInfo = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
 
-      const response = await axios.get("http://localhost:8080/card/cardInfo");
+      const response = await axios.get("/card/cardInfo");
       console.log("response", response);
 
       return response.data; // 서버가 반환한 { cardRegistered: true/false }
