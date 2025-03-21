@@ -163,7 +163,7 @@ const InvestmentExit = () => {
       </div>
 
       <br />
-      <CamelTitle>카멜레온 카드으로 절약한 금액</CamelTitle>
+      <CamelTitle>카멜레온 카드로 절약한 금액</CamelTitle>
       <MembershipInfo>
         <Amount>
           {benefitAmount ? `${benefitAmount.toLocaleString()}원` : "0원"}
