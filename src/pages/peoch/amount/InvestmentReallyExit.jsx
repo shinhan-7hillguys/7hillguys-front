@@ -155,7 +155,7 @@ const InvestmentReallyExit = () => {
                             domain={[0, 600000]}
                         />
                         <Tooltip />
-                        <Bar dataKey="투자금액" fill="#FFAB91" fontWeight="bold" />
+                        <Bar dataKey="투자금액" fill="#ff89a3" fontWeight="bold" />
                     </BarChart>
                 </ResponsiveContainer>
             </ChartContainer>
@@ -177,7 +177,7 @@ const InvestmentReallyExit = () => {
                 <HighlightText>
                     {adjustedAmount?.toLocaleString() || '0'}
                 </HighlightText>
-                원입니다.
+                원
                 <br />
                 서비스를 중단하시기 위해서는
                 <br />
