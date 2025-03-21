@@ -2,13 +2,14 @@ import { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   Tooltip,
   ResponsiveContainer,
+  ReferenceLine,
 } from "recharts";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -17,7 +18,7 @@ const PageContainer = styled.div`
   padding: 16px;
   background: #f9f9f9;
   font-family: 'Pretendard', sans-serif;
-  border-radius : 64px;
+  border-radius: 64px;
 `;
 
 const HeaderRow = styled.div`
@@ -150,7 +151,7 @@ const InfoCard = styled.div`
 const ChartCard = styled(InfoCard)`
   height: 300px;
 `;
- 
+
 const InactiveContainer = styled(PageContainer)`
   display: flex;
   flex-direction: column;
@@ -174,34 +175,40 @@ const ActionButton = styled.button`
   border-radius: 8px;
   cursor: pointer;
 `;
- 
 
 export default function MainPage() {
-  // 필터 및 기타 상태들
-  const [timeFilter, setTimeFilter] = useState("월"); // "주", "월", "연"
-  const [typeFilter, setTypeFilter] = useState("나"); // "나" 또는 "평균"
-  const [selectedStat, setSelectedStat] = useState("사용액"); // "납부율", "지원금", "사용액"
+  // 상태들
+  const [timeFilter, setTimeFilter] = useState("월"); 
+  const [typeFilter, setTypeFilter] = useState("나");  
+  const [selectedStat, setSelectedStat] = useState("사용액");  
   const [userId, setUserId] = useState(null);
   const [userName, setUserName] = useState("");
   const [usage, setUsage] = useState(0);
   const [chartData, setChartData] = useState({
     "납부율": { percentageDiff: 0, dailyUsage: {} },
-    "지원금": { percentageDiff: 0, dailyUsage: {} },
-    "월소득": { percentageDiff: 0, dailyUsage: {} },
+    "예상소득": { percentageDiff: 0, dailyUsage: {} },
   });
   const [dashboardData, setDashboardData] = useState(null);
   const [rawGraphData, setRawGraphData] = useState(null);
   const [graphData, setGraphData] = useState([]);
   const [investmentStatus, setInvestmentStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [age, setAge] = useState(null);  
 
   const navigate = useNavigate();
+ 
+  const getUserAge = async () => {
+    const response = await axios.get("/api/user/age", {
+      withCredentials: true,
+    });
+    console.log("사용자 나이:", response.data);
+    setAge(response.data);
+  };
 
-  // API 호출 함수들
   const getInvestmentStatus = async () => {
     const response = await axios.get("/api/investment/status", {
       withCredentials: true,
-    }); 
+    });
     console.log(response);
     setInvestmentStatus(response.data);
     console.log(1);
@@ -226,53 +233,74 @@ export default function MainPage() {
 
   const getDashboardData = async () => {
     const today = new Date().toISOString().split("T")[0];
-    const response = await axios.get(`/card/cardDataTotal`, {
+    const response = await axios.get("/card/cardDataTotal", {
       params: { date: today },
       withCredentials: true,
-    }); 
+    });
     console.log("대시보드 데이터:", response.data);
     setDashboardData(response.data);
   };
+ 
+  useEffect(() => {
+    if (selectedStat === "예상소득") {
+      axios
+        .get(`/api/user/expectedincome`, { withCredentials: true })
+        .then((response) => {
+          const expectedIncome = response.data;
+          console.log("예측소득 데이터:", expectedIncome);
+          const newGraphData = Object.keys(expectedIncome).map((key) => ({
+            day: key,
+            current: expectedIncome[key],
+            previous: 0,  
+          }));
+          setGraphData(newGraphData);
+        })
+        .catch((error) => {
+          console.error("예상소득 데이터 호출 중 오류 발생:", error);
+        });
+    }
+  }, [selectedStat]);
 
   const getGraphData = async () => {
     const today = new Date().toISOString().split("T")[0];
-    const response = await axios.get(`/card/cardDataMap`, {
+    const response = await axios.get("/card/cardDataMap", {
       params: { date: today },
       withCredentials: true,
-    }); 
+    });
     console.log("그래프 데이터:", response.data);
     setRawGraphData(response.data);
   };
- 
+
   useEffect(() => {
     const fetchData = async () => {
-      try { 
-        await getInvestmentStatus(); 
-        const invStatus = investmentStatus; 
+      try {
+        await getInvestmentStatus();
+        const invStatus = investmentStatus;
         console.log("투자 심사 상태:", invStatus);
         if (invStatus !== "승인") {
           setIsLoading(false);
           return;
-        } 
+        }
         await getUserName();
         await getUserId();
         await getDashboardData();
         await getGraphData();
+        await getUserAge();
       } catch (error) {
         console.error("API 호출 중 오류 발생:", error);
       }
       setIsLoading(false);
     };
-  
+
     fetchData();
   }, [investmentStatus]);
-    
-  useEffect(() => {
-    if (!rawGraphData) return;
-  
+
+  useEffect(() => { 
+    if (!rawGraphData || selectedStat === "예상소득") return;
+
     let currentMap = {};
     let previousMap = {};
-  
+
     if (timeFilter === "주") {
       if (typeFilter === "나") {
         currentMap = rawGraphData.weeklyCurrentMap;
@@ -298,23 +326,19 @@ export default function MainPage() {
         previousMap = rawGraphData.yearlyPreviousAverageMap;
       }
     }
-  
-    // currentMap의 키를 기준으로 데이터를 구성 (두 map의 키가 동일하다고 가정)
+
     const newGraphData = Object.keys(currentMap).map((key) => ({
       day: key,
       current: currentMap[key],
-      previous: previousMap[key] || 0, // 과거 값이 없으면 0 처리
+      previous: previousMap[key] || 0,
     }));
-  
     setGraphData(newGraphData);
-  }, [rawGraphData, timeFilter, typeFilter]);
+  }, [rawGraphData, timeFilter, typeFilter, selectedStat]);
 
-  // Loading 처리
   if (isLoading) {
     return <PageContainer>로딩 중...</PageContainer>;
   }
-
-  // 투자 심사 상태가 '승인'이 아닐 경우 대체 UI
+ 
   if (investmentStatus !== "승인") {
     return (
       <InactiveContainer>
@@ -378,6 +402,12 @@ export default function MainPage() {
     if (timeFilter === "주") return "이번 주 이용액";
     if (timeFilter === "연") return "이번 연 이용액";
     return "이용액";
+  };
+ 
+  const getExpectedIncomeForAge = () => {
+    if (!graphData || age == null) return 0; 
+    const dataForAge = graphData.find((d) => String(d.day) === String(age));
+    return dataForAge ? dataForAge.current : 0;
   };
 
   const getInfoText = () => {
@@ -452,7 +482,7 @@ export default function MainPage() {
               fontWeight: "bold",
             }}
           >
-            {diff.toFixed(1)}%
+            {`${diff.toFixed(1)}%`}
           </span>{" "}
           차이가 있습니다.
         </p>
@@ -464,42 +494,59 @@ export default function MainPage() {
     if (diff > 0)
       return (
         <ArrowIcon isUp isSelected={isSelected}>
-          {<FaArrowUp />}
+          <FaArrowUp />
         </ArrowIcon>
       );
     if (diff < 0)
       return (
         <ArrowIcon isSelected={isSelected}>
-          {<FaArrowDown />}
+          <FaArrowDown />
         </ArrowIcon>
       );
     return null;
   };
 
-  const renderStatBox = (title) => {
-    let diff = 0;
-    if (title === "사용액") {
-      diff = getUsageDiff();
+  const renderStatBox = (title) => { 
+    if (title === "예상소득") {
+      const incomeValue = getExpectedIncomeForAge();
+      return (
+        <StatBox
+          highlight={selectedStat === title}
+          onClick={() => setSelectedStat(title)}
+        >
+          <StatTitle>{title}</StatTitle>
+          <StatValueRow>
+            <StatValue style={{ color: "#f95f89" }}>
+              {incomeValue.toLocaleString()} 원
+            </StatValue>
+          </StatValueRow>
+        </StatBox>
+      );
     } else {
-      const chartKey = title === "월 소득" ? "월소득" : title;
-      diff = chartData[chartKey]?.percentageDiff || 0;
-    }
-    const statValueColor = diff < 0 ? "#3d8bfd" : "#f95f89";
+      let diff = 0;
+      if (title === "사용액") {
+        diff = getUsageDiff();
+      } else {
+        const chartKey = title === "월 소득" ? "월소득" : title;
+        diff = chartData[chartKey]?.percentageDiff || 0;
+      }
+      const statValueColor = diff < 0 ? "#3d8bfd" : "#f95f89";
 
-    return (
-      <StatBox
-        highlight={selectedStat === title}
-        onClick={() => setSelectedStat(title)}
-      >
-        <StatTitle>{title}</StatTitle>
-        <StatValueRow>
-          {getArrowIcon(diff, selectedStat === title)}
-          <StatValue style={{ color: statValueColor }}>
-            {`${Math.abs(diff).toFixed(1)}%`}
-          </StatValue>
-        </StatValueRow>
-      </StatBox>
-    );
+      return (
+        <StatBox
+          highlight={selectedStat === title}
+          onClick={() => setSelectedStat(title)}
+        >
+          <StatTitle>{title}</StatTitle>
+          <StatValueRow>
+            {getArrowIcon(diff, selectedStat === title)}
+            <StatValue style={{ color: statValueColor }}>
+              {Math.abs(diff).toFixed(1)}%
+            </StatValue>
+          </StatValueRow>
+        </StatBox>
+      );
+    }
   };
 
   return (
@@ -562,8 +609,7 @@ export default function MainPage() {
       </FilterRow>
 
       <StatContainer>
-        {renderStatBox("납부율")}
-        {renderStatBox("지원금")}
+        {renderStatBox("예상소득")}
         {renderStatBox("사용액")}
       </StatContainer>
 
@@ -572,42 +618,38 @@ export default function MainPage() {
       <ChartCard>
         <h4 style={{ marginBottom: "8px" }}>{selectedStat}</h4>
         <ResponsiveContainer width="100%" height="100%">
-  <LineChart data={graphData} margin={{ top: 10, right: 20, left: 10, bottom: 10 }}>
-    <CartesianGrid stroke="#ccc" strokeDasharray="3 3" opacity={0.5} />
-    <XAxis dataKey="day" />
-    <YAxis /> 
-    <Line
-  type="monotone"
-  dataKey="current"
-  stroke="#f4a9c0"
-  strokeWidth={3}
-  dot={{ r: 5, strokeWidth: 1, fill: "#f4a9c0" }}
-  activeDot={{ r: 8 }}
-  animationDuration={1000} // 애니메이션 지속 시간 1초
-  label={({ x, y, value }) => (
-    <text x={x} y={y - 10} fill="#f4a9c0" fontSize="12px" textAnchor="middle">
-      {value}
-    </text>
-  )}
-/>
-<Line
-  type="monotone"
-  dataKey="previous"
-  stroke="#3d8bfd"
-  strokeWidth={3}
-  dot={{ r: 5, strokeWidth: 1, fill: "#3d8bfd" }}
-  activeDot={{ r: 8 }}
-  animationDuration={1000} // 애니메이션 지속 시간 1초
-  label={({ x, y, value }) => (
-    <text x={x} y={y - 10} fill="#3d8bfd" fontSize="12px" textAnchor="middle">
-      {value}
-    </text>
-  )}
-/>
-
-  </LineChart>
-</ResponsiveContainer> 
-
+          <BarChart
+            data={graphData}
+            margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+          >
+            <CartesianGrid stroke="#ccc" strokeDasharray="3 3" opacity={0.5} />
+            <XAxis dataKey="day" />
+            <YAxis />
+            <Tooltip /> 
+            {selectedStat === "예상소득" && age != null && (
+              <ReferenceLine
+                x={String(age)}
+                stroke="red"
+                strokeWidth={2}
+                label={{ value: "", position: "insideTop" }}
+              />
+            )}
+            <Bar
+              dataKey="current"
+              fill="#f4a9c0"
+              animationDuration={1000}  
+              label={selectedStat !== "예상소득" ? { position: "top", fill: "#f4a9c0", fontSize: 12 } : undefined}
+            />
+            {selectedStat !== "예상소득" && (
+              <Bar
+                dataKey="previous"
+                fill="#3d8bfd"
+                animationDuration={1000}  
+                label={{ position: "top", fill: "#3d8bfd", fontSize: 12 }}
+              />
+            )}
+          </BarChart>
+        </ResponsiveContainer>
       </ChartCard>
     </PageContainer>
   );
