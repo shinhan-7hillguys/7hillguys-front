@@ -61,7 +61,7 @@ const {
 
   return (
     <>
-     <div style={{ padding: 20 }} className="card_english">
+     <div  className="card_english">
       <h2>영문 이름을 입력해 주세요.</h2>
       {/* <p style={{ fontStyle: "italic", color: "#555" }}>
         영문으로 입력해 주세요. 예시: 성 (Last Name): Doe, 이름 (First Name): John

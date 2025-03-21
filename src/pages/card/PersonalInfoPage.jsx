@@ -33,7 +33,7 @@ const {
     <>
       <div >
       {userInfoStatus === "loading" ? (
-        <p>불러오는 중...</p>
+        <p className="info_loading">불러오는 중...</p>
       ) : (
         <div className="card_person">
           <h2><em>{userInfo.name}</em> 님의 정보를 확인해주세요.</h2>
@@ -51,6 +51,7 @@ const {
           </div>
           <div>
             <label>주소: </label>
+            {/* <p>※해당 주소로 카드가 배송됩니다. </p> */}
             <input type="text" value={userInfo.address} readOnly />
           </div>
  

@@ -70,6 +70,9 @@ const BenefitCompare = () => {
     // console.log(txn.originalAmount)
     // console.log(newFinal)
     const discount = txn.originalAmount - newFinal
+    console.log(txn);
+    console.log(newFinal);
+    console.log(effectiveDiscountRate);
     if (!acc[txn.store.category]) {
       acc[txn.store.category] = {
         category: txn.store.category,
@@ -85,7 +88,7 @@ const BenefitCompare = () => {
     acc[txn.store.category].finalAmount += txn.finalAmount;
     acc[txn.store.category].newFinal += newFinal;
     acc[txn.store.category].discountAmount += discount;
-    console.log(JSON.stringify(acc));
+    // console.log(JSON.stringify(acc));
     return acc;
   }, {});
 
@@ -201,7 +204,7 @@ const BenefitCompare = () => {
                 <YAxis tickFormatter={(value) => `${value.toLocaleString()}`} />
                 <Tooltip formatter={(value) => `${value.toLocaleString()} 원`} />
                 <Legend />
-                <Bar dataKey="finalAmount" fill="#e9c0c9" name="현재 혜택 적용 후" />
+                <Bar dataKey="finalAmount" fill="#e9c0c9" name="가존 혜택 적용 후" />
                 <Bar dataKey="newFinal" fill="#c9e8ff" name="새로운 조합 적용 후" />
               </BarChart>
             </ResponsiveContainer>
