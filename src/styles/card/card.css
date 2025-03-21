@@ -173,11 +173,11 @@
 .card_english input {
     border: 0;
     /* box-shadow: 0 2px 4px var(--button-color); */
-    box-shadow: -2px 3px 10px -3px var(--button-color);
+    box-shadow: -3px 4px 8px -3px var(--button-color);
 
     padding: 10px;
     width: 100%;
-    background: transparent;
+    background: #f4edf3;
     font-size: var(--font-size18);
     /* font-weight: 600; */
     color: #000;
