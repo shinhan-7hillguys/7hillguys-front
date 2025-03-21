@@ -43,7 +43,8 @@ const {
           </div>
           <div>
             <label>전화번호: </label>
-            <input type="text" value={userInfo.phone} readOnly />
+            <input type="text" value={userInfo.phone.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3")
+} readOnly />
           </div>
           <div>
             <label>이메일: </label>
