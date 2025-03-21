@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import {
@@ -335,10 +335,21 @@ export default function MainPage() {
     setGraphData(newGraphData);
   }, [rawGraphData, timeFilter, typeFilter, selectedStat]);
 
-  if (isLoading) {
-    return <PageContainer>로딩 중...</PageContainer>;
-  }
- 
+  // if (isLoading) {
+  //   return <PageContainer>로딩 중...</PageContainer>;
+  // }
+  if (isLoading)
+    return (
+        <div className="loading-dots-exit">
+          <p className="loading-text">잠시만 기다려 주세요...</p>
+          <div className="dots-container">
+            <span className="dot"></span>
+            <span className="dot"></span>
+            <span className="dot"></span>
+          </div>
+        </div>
+    );
+
   if (investmentStatus !== "승인") {
     return (
       <InactiveContainer>

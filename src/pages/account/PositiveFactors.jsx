@@ -123,7 +123,7 @@ function PositiveFactors() {
             {chartData.map((item) => (
                 <div key={item.name} style={styles.chartBox}
                      onClick={() => {
-                         if (item.name === "자격증 (평균 자격증 보기)") {
+                         if (item.name === "자격증 (자격증 보기)") {
                              handleCertificateClick();
                          }
                      }}>
