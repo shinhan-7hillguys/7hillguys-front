@@ -63,7 +63,7 @@ const InvestmentStatusCheck = () => {
 
             {status === "대기" && (
                 <div className="status-box">
-                    <p className="pending">승인 <span className="highlight">대기</span>중입니다.</p>
+                    <p className="pending">승인 <span className="highlight">잠시 후</span>다시 이용해주세요.</p>
                     <div className="loading-dots">
                         <span className="dot"></span>
                         <span className="dot"></span>
@@ -72,7 +72,12 @@ const InvestmentStatusCheck = () => {
                 </div>
             )}
 
-            {!status && <p>심사 결과를 가져오는 중...</p>}
+            {!status &&
+                <div className="loading-dots">
+                    <span className="dot"></span>
+                    <span className="dot"></span>
+                    <span className="dot"></span>
+                </div>}
         </div>
     );
 };
