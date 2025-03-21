@@ -25,12 +25,10 @@ const ResumeDetail = () => {
             <h2 style={detailTitleStyle}>
                 {resume.company} / {resume.position} / {resume.applyDate}
             </h2>
-            {/*<p style={detailSubTitleStyle}>{resume.type}</p>*/}
             <hr />
-            <p style={detailTextStyle}>{resume.detail}</p>
-            {/*<button onClick={() => navigate(-1)} style={backButtonStyle}>*/}
-            {/*    뒤로가기*/}
-            {/*</button>*/}
+            {resume.detail.split('\n').map((line, index) => (
+                <p key={index} style={detailTextStyle}>{line}</p>
+            ))}
         </div>
     );
 };
@@ -64,10 +62,11 @@ const detailSubTitleStyle = {
 };
 
 const detailTextStyle = {
-    fontSize: "0.95rem",
+    fontSize: "1.10rem",
     lineHeight: "1.6",
     color: "#333",
     marginBottom: "20px",
+    whiteSpace: "pre-line", // 줄바꿈 유지
 };
 
 const backButtonStyle = {

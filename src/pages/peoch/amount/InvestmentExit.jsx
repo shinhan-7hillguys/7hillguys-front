@@ -91,7 +91,7 @@ const InvestmentExit = () => {
 
   // (1) 버튼 클릭 시 alert를 띄우는 핸들러
   const handleSadAlert = () => {
-    if (window.confirm("😢 그래도 해지하시겠어요?")) {
+    if (window.confirm("그래도 해지하시겠어요?")) {
       navigate("/investmentReallyExit");
     }
   };
