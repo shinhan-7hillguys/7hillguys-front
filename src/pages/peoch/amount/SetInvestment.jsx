@@ -243,7 +243,7 @@ const InvestmentSimulator = () => {
     return (
         <Container>
             <h2 style={{ textAlign: "center", marginBottom: "30px", fontSize: "24px", color: "#333" }}>
-                생애주기 투자 시뮬레이션
+                미래 소득 투자 시뮬레이션
             </h2>
 
             {/* 차트 영역 */}
@@ -354,7 +354,7 @@ const InvestmentSimulator = () => {
             <div style={featureBoxStyle}>
                 <h3 style={infoTitleStyle}>투자 정보</h3>
                 <p style={infoTextStyle}>
-                    총 투자금: { (monthlySupport * supportPeriod * 12 * 10000).toLocaleString() }원
+                    총 지원금: {(monthlySupport * supportPeriod * 12 * 10000).toLocaleString()}원
                 </p>
                 <p style={infoTextStyle}>
                     환급 비율: {refundRate.toFixed(1)}%
