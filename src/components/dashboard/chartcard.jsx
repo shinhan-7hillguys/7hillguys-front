@@ -19,7 +19,7 @@ const CardContainer = styled.div`
   padding: 16px;
   flex: 1; 
   margin: 8px;
-    font-family: 'Pretendard', sans-serif;
+  font-family: 'Pretendard', sans-serif;
 `;
 
 const CardTitle = styled.h3`
@@ -27,8 +27,8 @@ const CardTitle = styled.h3`
   font-size: 18px;
   font-family: 'Pretendard', sans-serif;
 `;
- 
-const ChartCard = ({ data , name}) => {
+
+const ChartCard = ({ data, name }) => {
   return (
     <CardContainer>
       <CardTitle>{name}</CardTitle>
@@ -36,8 +36,8 @@ const ChartCard = ({ data , name}) => {
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
-          <YAxis />
-          <Tooltip />
+          <YAxis tickFormatter={(value) => value.toLocaleString()} />
+          <Tooltip formatter={(value) => value.toLocaleString()} />
           <Bar dataKey="usage" fill="#e08490" maxBarSize={40} radius={[20, 20, 0, 0]}/>
         </BarChart>
       </ResponsiveContainer>
