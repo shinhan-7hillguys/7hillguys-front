@@ -195,9 +195,16 @@ export default function MainPage() {
   const [investmentStatus, setInvestmentStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [age, setAge] = useState(null);  
-
   const navigate = useNavigate();
  
+  const getRole = async () => {
+    const response = await axios.get("/api/user/usertype", {
+      withCredentials: true,
+    });
+    console.log("사용자 역할:", response.data);
+    return response.data;
+  };
+
   const getUserAge = async () => {
     const response = await axios.get("/api/user/age", {
       withCredentials: true,
@@ -212,7 +219,6 @@ export default function MainPage() {
     });
     console.log(response);
     setInvestmentStatus(response.data);
-    console.log(1);
     console.log(investmentStatus);
   };
 
@@ -241,8 +247,7 @@ export default function MainPage() {
     console.log("대시보드 데이터:", response.data);
     setDashboardData(response.data);
   };
- 
-  useEffect(() => {
+   useEffect(() => {
     if (selectedStat === "예상소득") {
       axios
         .get(`/api/user/expectedincome`, { withCredentials: true })
@@ -275,9 +280,15 @@ export default function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const userrole = await getRole();  
+        console.log("useEffect 내 getrole : " + userrole);
+        if (userrole === "ADMIN") {
+          navigate("/admin");
+      }
         await getInvestmentStatus();
         const invStatus = investmentStatus;
         console.log("투자 심사 상태:", invStatus);
+
         if (invStatus !== "승인") {
           setIsLoading(false);
           return;
