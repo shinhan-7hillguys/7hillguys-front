@@ -274,6 +274,10 @@ const DetailPage = () => {
 
   const topSectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
+
+  const [dashboardData, setDashboardData] = useState(null);
+  const [rawGraphData, setRawGraphData] = useState(null);
+  const [graphData, setGraphData] = useState([]);
  
   useEffect(() => {
     if (userid) {
@@ -578,10 +582,10 @@ const DetailPage = () => {
         </Section>
  
         <Section>
-          <SectionTitle >예상 가치 및 수익</SectionTitle>
+          <SectionTitle >예상 소득</SectionTitle>
           <StatBoxesContainer>
             <StatBox style = {{marginBottom: '30px'}}>
-              <StatTitleText>예상 가치</StatTitleText>
+              <StatTitleText>예상 소득</StatTitleText>
               <StatNumber>
                 {expectedValue !== null 
                   ? expectedValue.toLocaleString() + ' 원' 
@@ -590,7 +594,7 @@ const DetailPage = () => {
             </StatBox>
           </StatBoxesContainer>
           <ChartsContainer> 
-            <LineChartCard data={expectedIncomeChartData} name="예상 수익" currentAge={currentAge} />
+            <LineChartCard data={expectedIncomeChartData} name="예상 소득" currentAge={currentAge} />
              
           </ChartsContainer>
         </Section>
@@ -618,7 +622,7 @@ const DetailPage = () => {
   <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '없음' : null} />
   <ReadOnlyField label="건강 상태" value={userInfo.healthStatus} />
   <ReadOnlyField label="성별" value={userInfo.gender != null ? (userInfo.gender ? '여성' : '남성') : null} />
-  <ReadOnlyField label="정신 상태" value={userInfo.mentalStatus} />
+  <ReadOnlyField label="인성 점수" value={userInfo.mentalStatus} />
   <ReadOnlyField label="프로필 생성일" value={formatDateTime(userInfo.profileCreatedAt)} />
 </Section>
 
@@ -630,14 +634,14 @@ const DetailPage = () => {
           <ReadOnlyField label="투자 시작일" value={userInfo.startDate} />
           <ReadOnlyField label="투자 종료일" value={userInfo.endDate} />
           <ReadOnlyField label="상태" value={userInfo.status} />
-          <ReadOnlyField label="원래 투자 금액" value={userInfo.originalInvestValue ? userInfo.originalInvestValue.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="누적 투자 금액" value={userInfo.originalInvestValue ? userInfo.originalInvestValue.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="월 지원금" value={userInfo.monthlyAllowance ? userInfo.monthlyAllowance.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="상환 비율" value={userInfo.refundRate ? userInfo.refundRate + '%' : null} />
           <ReadOnlyField label="최대 투자 가능 금액" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="운용 보수" value={userInfo.field} placeholder="운용 보수" />
           <ReadOnlyField label="사용한 지원금" value={userInfo.investValue ? userInfo.investValue.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="임시 월 지원금" value={userInfo.tempAllowance ? userInfo.tempAllowance.toLocaleString() + ' 원' : null} />
-          <ReadOnlyField label="투자 생성일" value={userInfo.investmentCreatedAt} />
+          <ReadOnlyField label="투자 생성일" value={formatDateTime(userInfo.investmentCreatedAt)} />
         </Section>
 
         <Section ref={bottomSectionRef} style={{ height: 0, overflow: 'hidden', margin: 0, padding: 0 }}></Section>

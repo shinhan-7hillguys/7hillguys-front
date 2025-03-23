@@ -435,30 +435,7 @@ html {
   text-shadow: 0 2px 15px rgba(251, 106, 172, 0.5);
   letter-spacing: -0.04em;
 }
-
-.scroll_btn {
-  border: 0;
-  padding: 12px 32px;
-  margin: 20px 20px;
-  background: #ff8f8f;
-  border-radius: 24px;
-  position: absolute;
-  bottom: 50px;
-  left: 50%;
-  transform: translateX(-50%);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  z-index: 10;
-  font-weight: 600;
-  font-size: 16px;
-}
-
-.scroll_btn:hover {
-  background: #fb6aac;
-  color: white;
-  transform: translateX(-50%) translateY(-5px);
-  box-shadow: 0 5px 15px rgba(251, 106, 172, 0.5);
-}
+ 
 
 .main_intro2 {
   position: relative;

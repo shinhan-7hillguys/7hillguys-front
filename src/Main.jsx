@@ -182,15 +182,7 @@ const Main = () => {
         }
       );
     });
-
-    // 스크롤 버튼 클릭 시 다음 섹션으로 이동
-    const scrollBtn = document.querySelector(".scroll_btn");
-    if (scrollBtn) {
-      scrollBtn.addEventListener("click", () => {
-        const nextSection = document.querySelector(".text-animation-section");
-        nextSection.scrollIntoView({ behavior: "smooth" });
-      });
-    }
+ 
   }, []);
 
   return (
@@ -253,7 +245,7 @@ const Main = () => {
             </p>
             <h2>Peoch</h2>
           </div>
-          <button className="scroll_btn">S c r o l l</button>
+           
           <div className="main_img1"></div>
           <div className="main_img2"></div>
           <div className="main_img3"></div>
