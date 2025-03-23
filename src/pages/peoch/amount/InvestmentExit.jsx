@@ -31,9 +31,9 @@ const InvestmentExit = () => {
         });
 
         const incomeData = response.data;
-        // 반대로 오는데 꼬인거 같음, 여기서 처리
-        const firstExpectedIncome = JSON.parse(incomeData.lastExpectedIncome);
-        const lastExpectedIncome = JSON.parse(incomeData.firstExpectedIncome);
+        //  백 로직 수정완료
+        const firstExpectedIncome = JSON.parse(incomeData.firstExpectedIncome);
+        const lastExpectedIncome = JSON.parse(incomeData.lastExpectedIncome);
 
         // 두 데이터를 병합하여 그래프 데이터 생성
         const formattedData = Object.entries(firstExpectedIncome).map(
