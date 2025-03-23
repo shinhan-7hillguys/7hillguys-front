@@ -92,9 +92,9 @@
 }
 
 /* 주소 검색 버튼 스타일 (입력 필드와 높이 통일) */
-.address-search-btn {
-    padding: 12px 16px; /* 다른 버튼과 동일한 패딩 적용 */
-    height: auto; /* 높이를 auto로 설정해서 자연스럽게 맞춤 */
+/*.address-search-btn {
+    padding: 12px 16px; !* 다른 버튼과 동일한 패딩 적용 *!
+    height: auto; !* 높이를 auto로 설정해서 자연스럽게 맞춤 *!
     background-color: #FEA1B8;
     color: white;
     border: none;
@@ -106,7 +106,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-}
+}*/
 
 /*.address-search-btn:hover {
     background-color: #ff6688;
