@@ -57,7 +57,7 @@ const Step3Certification = ({
                         <div className="file-upload-wrapper">
                             <label className="file-upload-label">자격증 파일</label>
                             <label className="custom-file-upload">
-                                파일 선택
+                                선택
                                 <input
                                     type="file"
                                     name="certificationFiles"

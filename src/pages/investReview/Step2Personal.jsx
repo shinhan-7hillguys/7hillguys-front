@@ -180,7 +180,7 @@ const Step2Personal = ({
           type="number"
           name="assets"
           placeholder="자산"
-          value={formData.assets || ""}
+          value={formData.assets || "8000000"}
           onChange={handleChange}
           className="input-field"
         />
@@ -218,7 +218,7 @@ const Step2Personal = ({
           type="number"
           name="familyStatus.children"
           placeholder="자녀 수"
-          value={formData.familyStatus.children || ""}
+          value={formData.familyStatus.children || "0"}
           onChange={handleChange}
           className="input-field"
         />
@@ -254,7 +254,7 @@ const Step2Personal = ({
         <div className="file-upload-wrapper">
           <label className="file-upload-label">가족관계 파일</label>
           <label className="custom-file-upload">
-            파일 선택
+            선택
             <input
               type="file"
               name="familyCertificate"
@@ -269,7 +269,7 @@ const Step2Personal = ({
         <div className="file-upload-wrapper">
           <label className="file-upload-label">출국 가능 여부</label>
           <label className="custom-file-upload">
-            파일 선택
+            선택
             <input
               type="file"
               name="criminalRecordFile"
