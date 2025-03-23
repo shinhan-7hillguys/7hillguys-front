@@ -139,32 +139,14 @@ function Signup(props) {
                         value={formData.phone}
                         onChange={handleChange}
                     />
-                    {/*<input
+                    <input
                         type="text"
                         name="address"
                         placeholder="주소"
                         className="input-field"
                         value={formData.address}
                         onChange={handleChange}
-                    />*/}
-
-                    <div className="address-input-group">
-                        <input
-                            type="text"
-                            name="address"
-                            placeholder="주소"
-                            className="input-field"
-                            value={formData.address || ""}
-                            readOnly
-                        />
-                        <button type="button" onClick={handleSearchAddress} className="address-search-btn">
-                            {isPostcodeVisible ? "주소 검색 닫기" : "주소 검색"}
-                        </button>
-                    </div>
-
-                    {/* Daum 주소 API가 삽입될 div */}
-                    <div id="postcode-container" style={{ width: "100%", height: "400px", display: isPostcodeVisible ? "block" : "none" }}></div>
-
+                    />
                     <input
                         type="number"
                         name="assets"
