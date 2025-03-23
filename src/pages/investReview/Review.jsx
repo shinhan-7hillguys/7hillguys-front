@@ -38,11 +38,11 @@ const Review = () => {
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
         userId: "",
-        universityInfo: { universityName: "", major: "" },
-        studentCard: { highscool: "", highscoolGPA: "" },
+        universityInfo: { universityName: "홍익대학교", major: "컴퓨터공학과" },
+        studentCard: { highscool: "마포고등학교", highscoolGPA: "4.0" },
         certification: [], // 인증은 배열로 관리 (입력 시)
-        familyStatus: { married: false, children: "" },
-        assets: "",
+        familyStatus: { married: false, children: "0" },
+        assets: "8000000",
         criminalRecord: false,
         healthStatus: "",
         gender: false,
