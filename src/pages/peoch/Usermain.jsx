@@ -344,6 +344,7 @@ export default function MainPage() {
         console.log("투자 심사 상태:", invStatus);
 
         if (invStatus !== "승인") {
+          setIsLoading(false);
           return;
         }
         await getUserName();
