@@ -88,7 +88,7 @@ const initialSubTextStyle = {
 };
 
 const featureBoxStyle = {
-    backgroundColor: "#fff",
+    backgroundColor: "#FEF7F7",
     borderRadius: "10px",
     padding: "16px",
     marginTop: "50px",
