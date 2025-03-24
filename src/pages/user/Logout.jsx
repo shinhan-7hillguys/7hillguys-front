@@ -6,7 +6,7 @@ const LogoutButton = () => {
 
     const handleLogout = async () => {
         try {
-            const response = await fetch("/api/auth/logout", {
+            const response = await fetch("http://192.168.0.172:31001/api/auth/logout", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

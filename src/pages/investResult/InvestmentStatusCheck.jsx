@@ -13,7 +13,7 @@ const InvestmentStatusCheck = () => {
             try {
                 console.log("[프론트] 투자 심사 상태 조회 요청");
 
-                const response = await fetch("/api/investment/status", {
+                const response = await fetch("http://192.168.0.172:31001/api/investment/status", {
                     method: "GET",
                     credentials: "include", // 쿠키 자동 포함
                     headers: {
