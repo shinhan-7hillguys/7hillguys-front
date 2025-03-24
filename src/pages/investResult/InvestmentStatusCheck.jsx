@@ -62,7 +62,7 @@ const InvestmentStatusCheck = () => {
 
             {status === "대기" && (
                 <div className="status-box">
-                    <p className="pending"><span className="highlight">잠시 후</span>다시 이용해주세요.</p>
+                    <p className="pending"><span className="highlight">승인대기</span>중입니다..</p>
                     <div className="loading-dots">
                         <span className="dot"></span>
                         <span className="dot"></span>
