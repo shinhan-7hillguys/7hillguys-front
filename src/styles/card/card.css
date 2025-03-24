@@ -31,7 +31,7 @@
 }
 .card_intro button {
     width: 80%;
-    background: #DF6E99;
+    background: var(--button-color);
     padding: 15px;
     border: 0;
     color: #fff;
@@ -80,7 +80,7 @@
   overflow: scroll;
 }
 .card_agree_section h2 {
-  color: #DF6E99;
+  color: var(--button-color);
   text-align: center;
 }
 .card_agree_section label {
@@ -89,7 +89,7 @@
 }
 .card_btn {
     width: 80%;
-    background: #DF6E99;
+    background: var(--button-color);
     padding: 15px;
     border: 0;
     color: #fff;
@@ -172,12 +172,12 @@
 }
 .card_english input {
     border: 0;
-    /* box-shadow: 0 2px 4px var(--button-color); */
-    box-shadow: -3px 4px 8px -3px var(--button-color);
+    /* box-shadow: 0 2px 4px #000; */
+    /* box-shadow: -3px 4px 8px -3px var(--button-color); */
 
     padding: 10px;
     width: 100%;
-    background: #f4edf3;
+    background: var(--box-color);
     font-size: var(--font-size18);
     /* font-weight: 600; */
     color: #000;

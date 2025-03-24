@@ -172,7 +172,7 @@ const BenefitCompare = () => {
         적용되는 이용 내역이 없습니다.
       </div>
     ) : (
-      <div style={{ width: "100%", height: 330 }}>
+      <div style={{ width: "100%", height: "360px" }}>
         <h2>카테고리별 할인 금액 비율</h2>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>

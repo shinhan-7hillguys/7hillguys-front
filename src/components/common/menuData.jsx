@@ -14,7 +14,7 @@ export const menuData = [
           {label: "투자심사신청", to: "/investReview"}, 
           {label: "심사결과조회", to: "/investment/status"},
           {label: "임시한도신청", to: "/investTempAllowance"},  
-          {label: "엑시트", to: "/investExit"}, 
+          {label: "조기상환", to: "/investExit"}, 
         ],
       },
     ],
