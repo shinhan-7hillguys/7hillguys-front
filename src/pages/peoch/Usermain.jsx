@@ -213,19 +213,6 @@ const FeatureList = {
   lineHeight: "1.6",
 };
 
-const ActionButton = styled.button`
-  margin-top: 16px;
-  padding: 15px 80px;
-  font-size: 16px;
-  font-weight: bold;
-  background-color: #ff99aa;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  outline: none;
-  transition: all 0.3s ease;
-`;
 
 const Message = styled.p`
   font-size: 20px;
@@ -233,6 +220,17 @@ const Message = styled.p`
   margin-bottom: 16px;
 `;
 
+
+const ActionButton = styled.button`
+  padding: 12px 24px;
+  font-size: 16px;
+  background: #ff99aa;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+`;
 
 export default function MainPage() { 
   const [timeFilter, setTimeFilter] = useState("월"); 

@@ -45,9 +45,8 @@ const InvestmentStatusCheck = () => {
 
             {status === "승인" && (
                 <div className="status-box">
-                    <p className="approved"><span className="highlight">승인</span>되었습니다!<br/>
-                        버튼을 클릭해<br/>
-                        다음 페이지로 이동해주세요.</p>
+                    <p className="approved"><span className="highlight">승인</span>완료!<br/>
+                     </p>
                     <button
                         onClick={() => navigate("/SetInvestment")} className="next-button">
                         다음 단계로 이동

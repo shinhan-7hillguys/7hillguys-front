@@ -6,9 +6,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    min-height: 100vh;
-    padding: 40px;
-    background-color: #FFF7F7;
+    /* min-height: 100vh; */
+    padding: 20px;
+    /* background-color: #FFF7F7; */
 }
 
 /* 계약서 박스 */
@@ -16,7 +16,7 @@
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: -4px 6px 10px rgba(0, 0, 0, 0.3);
     text-align: left;
     width: 100%;
     max-width: 600px;
@@ -25,7 +25,7 @@
 .contract-box h4 {
     font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
+    color: #000;
     margin-bottom: 20px;
 }
 
@@ -49,7 +49,7 @@
 .contract-section {
     font-size: 18px;
     font-weight: bold;
-    color: #FF4170;
+    color: var(--button-color);
     margin-top: 15px;
 }
 
@@ -111,7 +111,7 @@
 
 /* 계약서 제출 버튼 */
 .submit-button {
-    background-color: #4CAF50;
+    background-color: rgb(201, 232, 255);
     color: white;
 }
 
