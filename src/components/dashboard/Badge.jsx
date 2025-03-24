@@ -8,7 +8,7 @@ const Badge = ({ change }) => {
     const borderColor = isPositive ? 'darkgreen' : 'darkred';
 
     return (
-        <div className="badge" style={{ backgroundColor, borderColor }}> 
+        <div className="badge" style={{ backgroundColor, borderColor,   marginRight: 'auto' }}> 
             <span className="badge-change">
                 {sign}
                 {Math.abs(change)}%

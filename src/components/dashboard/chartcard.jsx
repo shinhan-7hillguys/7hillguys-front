@@ -38,7 +38,7 @@ const ChartCard = ({ data, name }) => {
           <XAxis dataKey="name" />
           <YAxis tickFormatter={(value) => value.toLocaleString()} />
           <Tooltip formatter={(value) => value.toLocaleString()} />
-          <Bar dataKey="usage" fill="#e08490" maxBarSize={40} radius={[20, 20, 0, 0]}/>
+          <Bar dataKey="usage" fill="#e08490" maxBarSize={40} radius={[0,0,0,0]}/>
         </BarChart>
       </ResponsiveContainer>
     </CardContainer>
