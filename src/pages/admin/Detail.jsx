@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import ChartCard from 'components/dashboard/chartcard';
@@ -96,7 +96,7 @@ const StatNumber = styled.p`
   font-size: clamp(20px, 4vw, 24px);
   font-weight: bold;
   margin: 0;
-  margin-right : 10px;
+  margin-right: 10px;
   white-space: nowrap;
 `;
 
@@ -266,10 +266,8 @@ const DetailPage = () => {
   const [modalType, setModalType] = useState(null);
   const [resultModalOpen, setResultModalOpen] = useState(false);
   const [resultModalMessage, setResultModalMessage] = useState("");
-
+ 
   const [expectedValue, setExpectedValue] = useState(null);
-  const [expectedIncomes, setExpectedIncomes] = useState(null);
-  const [expectedIncomeChartData, setExpectedIncomeChartData] = useState([]);
 
   const topSectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
@@ -282,9 +280,20 @@ const DetailPage = () => {
       axios.get(`/api/user/info?userid=${userid}`, { withCredentials: true })
         .then(response => {
           setUserInfo(response.data);
-          console.log(response.data);
+          console.log("사용자 정보 ", response.data);
         })
         .catch(err => console.error("userInfo 조회 실패:", err));
+    }
+  }, [userid]);
+
+  // expectedValue API 호출은 기존 그대로
+  useEffect(() => {
+    if (userid) {
+      axios.get(`/api/expectedvalue/${userid}`, { withCredentials: true })
+        .then(response => {
+          setExpectedValue(response.data);
+        })
+        .catch(err => console.error("예상 가치 조회 실패:", err));
     }
   }, [userid]);
 
@@ -295,7 +304,7 @@ const DetailPage = () => {
         params: { userid, date: today },
         withCredentials: true,
       });
-      console.log("사용액액 데이터:", response.data);
+      console.log("사용액 데이터:", response.data);
       setDashboardData(response.data);
     } catch (error) {
       console.error("대시보드 데이터를 불러오는 중 에러 발생:", error);
@@ -344,43 +353,22 @@ const DetailPage = () => {
     getGraphData();
   }, []);
 
-  useEffect(() => {
-    if (userid) {
-      axios.get(`/api/expectedvalue/${userid}`, { withCredentials: true })
-        .then(response => {
-          setExpectedValue(response.data);
-        })
-        .catch(err => console.error("예상 가치 조회 실패:", err));
-    }
-  }, [userid]);
-
-  useEffect(() => {
-    if (userid) {
-      axios.get(`/api/expectedincome/${userid}`, { withCredentials: true })
-        .then(response => {
-          console.log("예상 수익 응답:", response.data);
-          const data = Array.isArray(response.data) ? response.data[0] : response.data;
-          setExpectedIncomes(data);
-        })
-        .catch(err => console.error("예상 수익 조회 실패:", err));
-    }
-  }, [userid]);
- 
-  useEffect(() => {
-    let incomeData = [];
-    if (expectedIncomes && expectedIncomes.expectedIncome) {
+  // userInfo의 expectedIncome 필드를 파싱하여 차트 데이터로 생성 (useMemo 사용)
+  const expectedIncomeChartData = useMemo(() => {
+    if (userInfo && userInfo.expectedIncome) {
       try {
-        const parsedIncome = JSON.parse(expectedIncomes.expectedIncome);
-        incomeData = Object.entries(parsedIncome).map(([key, value]) => ({
-          name: key,      
-          usage: value    
+        const parsedIncome = JSON.parse(userInfo.expectedIncome);
+        return Object.entries(parsedIncome).map(([key, value]) => ({
+          name: key,
+          usage: value,
         }));
       } catch (error) {
         console.error("JSON 파싱 에러:", error);
+        return [];
       }
     }
-    setExpectedIncomeChartData(incomeData);
-  }, [expectedIncomes]);
+    return [];
+  }, [userInfo]);
 
   const periodComparisonLabel = {
     week: '지난 주 대비',
@@ -462,11 +450,11 @@ const DetailPage = () => {
   const certificationData = parseJSONField(userInfo.certification, []);
   const familyData = parseJSONField(userInfo.familyStatus);
 
-  const universityName = universityData?.name || "없음";
-  const major = universityData?.degree || "없음";
+  const universityName = universityData?.universityName || "없음";
+  const major = universityData?.major || "없음";
 
-  const highSchool = highSchoolData?.highschool || "없음";
-  const transcript = highSchoolData?.gpa || "없음";
+  const highSchool = highSchoolData?.highscool || "없음";
+  const transcript = highSchoolData?.highscoolGPA || "없음";
  
   let certificationsArray = [];
   if (Array.isArray(certificationData)) {
@@ -479,7 +467,7 @@ const DetailPage = () => {
     certificationsArray = [certificationData.toString()];
   }
 
-  const marriageStatus = familyData?.marriageStatus || "없음";
+  const marriageStatus = familyData?.married !== undefined ? (familyData.married ? "기혼" : "미혼") : "없음";
   const children = familyData?.children != null ? familyData.children.toString() : "없음";
 
   return (
@@ -515,9 +503,7 @@ const DetailPage = () => {
           <SectionTitle>통계</SectionTitle>
           <StatBoxesContainer>
             <StatBox style={{ marginBottom: '30px' }}>
-              <StatTitleText>
-                사용액  
-              </StatTitleText>
+              <StatTitleText>사용액</StatTitleText>
               <div style={{ display: 'flex', alignItems: 'center' }}> 
                 <StatNumber>{statDisplayValueForPeriod()}</StatNumber>
                 <Badge change={computeBadgeChangeForPeriod()} />
@@ -563,14 +549,18 @@ const DetailPage = () => {
             <StatBox style={{ marginBottom: '30px' }}>
               <StatTitleText>예상 소득</StatTitleText>
               <StatNumber>
-                {expectedValue !== null 
-                  ? expectedValue.toLocaleString() + ' 원' 
+                {userInfo.expectedIncome
+                  ? expectedValue.toLocaleString() + ' 원'
                   : "데이터 없음"}
               </StatNumber>
             </StatBox>
           </StatBoxesContainer>
           <ChartsContainer> 
-            <LineChartCard data={expectedIncomeChartData} name="예상 소득" currentAge={currentAge} />
+            <LineChartCard 
+              data={expectedIncomeChartData} 
+              name="예상 소득" 
+              currentAge={calculateAge(userInfo.birthDate)}
+            />
           </ChartsContainer>
         </Section>
  

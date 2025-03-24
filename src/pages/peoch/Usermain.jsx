@@ -271,16 +271,16 @@ export default function MainPage() {
     const response = await axios.get("/api/investment/status", {
       withCredentials: true,
     });
-    console.log(response);
+    console.log("사용자 정보 : " + response);
     setInvestmentStatus(response.data);
-    console.log(investmentStatus);
+    console.log("투자 정보 " + investmentStatus);
   };
 
   const getUserName = async () => {
     const response = await axios.get("/api/auth/userId", {
       withCredentials: true,
     });
-    console.log("사용자 이름:", response.data.name);
+    console.log("사용자 이름:" + response.data.name);
     setUserName(response.data.name);
   };
 
@@ -288,7 +288,7 @@ export default function MainPage() {
     const response = await axios.get("/api/auth/user", {
       withCredentials: true,
     });
-    console.log("사용자 ID:", response.data.userId);
+    console.log("사용자 ID:" + response.data.userId);
     setUserId(response.data.userId);
   };
 
@@ -301,7 +301,7 @@ export default function MainPage() {
     console.log("대시보드 데이터:", response.data);
     setDashboardData(response.data);
   };
-   useEffect(() => {
+/*    useEffect(() => {
     if (selectedStat === "예상소득") {
       axios
         .get(`/api/user/expectedincome`, { withCredentials: true })
@@ -319,7 +319,7 @@ export default function MainPage() {
           console.error("예상소득 데이터 호출 중 오류 발생:", error);
         });
     }
-  }, [selectedStat]);
+  }, [selectedStat]); */
 
   const getGraphData = async () => {
     try {
@@ -743,15 +743,13 @@ export default function MainPage() {
         <Bar
           dataKey="previous"
           fill="#3d8bfd"
-          animationDuration={1000}
-          // label 속성 제거하여 숫자 미출력
+          animationDuration={1000} 
         />
       )}
             <Bar
         dataKey="current"
         fill="#f4a9c0"
-        animationDuration={1000}
-        // label 속성 제거하여 숫자 미출력
+        animationDuration={1000} 
       />
     </BarChart>
   </ResponsiveContainer>
