@@ -109,13 +109,13 @@ const ContractSigning = () => {
 
             <div className="contract-button-container">
                 <button className="contract-button clear-button" onClick={() => sigPad.current.clear()}>
-                    서명 지우기
+                    지우기
                 </button>
                 <button className="contract-button save-button" onClick={handleSaveSignature}>
-                    서명 저장
+                    저장
                 </button>
                 <button className="contract-button submit-button" onClick={handleSubmitContract} disabled={!signature}>
-                    계약서 제출
+                    제출
                 </button>
             </div>
         </div>

@@ -1,23 +1,10 @@
 /* Step6Submit.css - 최종 제출페이지 */
 
-/* 전체 컨테이너 */
-.submit-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 100vh;
-    overflow: auto;
-    padding: 40px;
-    background-color: #FFF7F7;
-}
-
 /* 제출 박스 */
 .submit-box {
     background: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 100%;
     overflow: auto;

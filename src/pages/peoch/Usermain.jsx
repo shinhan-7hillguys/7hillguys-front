@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import axios from "axios";
 import {
@@ -6,8 +6,7 @@ import {
   Bar,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
+  CartesianGrid, 
   ResponsiveContainer,
   ReferenceLine,
 } from "recharts";
@@ -38,6 +37,7 @@ const SquareUsageCard = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  width: 50%;
 `;
 
 const UserInfo = styled.div`
@@ -82,6 +82,8 @@ const FilterGroup = styled.div`
   border-radius: 9999px;
   padding: 4px 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  width : 50%;
+  justify-content: space-around;
 `;
 
 const FilterButton = styled.button`
@@ -176,8 +178,7 @@ const ActionButton = styled.button`
   cursor: pointer;
 `;
 
-export default function MainPage() {
-  // 상태들
+export default function MainPage() { 
   const [timeFilter, setTimeFilter] = useState("월"); 
   const [typeFilter, setTypeFilter] = useState("나");  
   const [selectedStat, setSelectedStat] = useState("사용액");  
@@ -194,9 +195,16 @@ export default function MainPage() {
   const [investmentStatus, setInvestmentStatus] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [age, setAge] = useState(null);  
-
   const navigate = useNavigate();
  
+  const getRole = async () => {
+    const response = await axios.get("/api/user/usertype", {
+      withCredentials: true,
+    });
+    console.log("사용자 역할:", response.data);
+    return response.data;
+  };
+
   const getUserAge = async () => {
     const response = await axios.get("/api/user/age", {
       withCredentials: true,
@@ -211,7 +219,6 @@ export default function MainPage() {
     });
     console.log(response);
     setInvestmentStatus(response.data);
-    console.log(1);
     console.log(investmentStatus);
   };
 
@@ -240,8 +247,7 @@ export default function MainPage() {
     console.log("대시보드 데이터:", response.data);
     setDashboardData(response.data);
   };
- 
-  useEffect(() => {
+   useEffect(() => {
     if (selectedStat === "예상소득") {
       axios
         .get(`/api/user/expectedincome`, { withCredentials: true })
@@ -274,9 +280,15 @@ export default function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const userrole = await getRole();  
+        console.log("useEffect 내 getrole : " + userrole);
+        if (userrole === "ADMIN") {
+          navigate("/admin");
+      }
         await getInvestmentStatus();
         const invStatus = investmentStatus;
         console.log("투자 심사 상태:", invStatus);
+
         if (invStatus !== "승인") {
           setIsLoading(false);
           return;
@@ -332,13 +344,22 @@ export default function MainPage() {
       current: currentMap[key],
       previous: previousMap[key] || 0,
     }));
+ 
     setGraphData(newGraphData);
   }, [rawGraphData, timeFilter, typeFilter, selectedStat]);
-
-  if (isLoading) {
-    return <PageContainer>로딩 중...</PageContainer>;
-  }
  
+  if (isLoading)
+    return (
+        <div className="loading-dots-exit">
+          <p className="loading-text">잠시만 기다려 주세요...</p>
+          <div className="dots-container">
+            <span className="dot"></span>
+            <span className="dot"></span>
+            <span className="dot"></span>
+          </div>
+        </div>
+    );
+
   if (investmentStatus !== "승인") {
     return (
       <InactiveContainer>
@@ -616,41 +637,45 @@ export default function MainPage() {
       <InfoCard>{getInfoText()}</InfoCard>
 
       <ChartCard>
-        <h4 style={{ marginBottom: "8px" }}>{selectedStat}</h4>
-        <ResponsiveContainer width="100%" height="100%">
-          <BarChart
-            data={graphData}
-            margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
-          >
-            <CartesianGrid stroke="#ccc" strokeDasharray="3 3" opacity={0.5} />
-            <XAxis dataKey="day" />
-            <YAxis />
-            <Tooltip /> 
-            {selectedStat === "예상소득" && age != null && (
-              <ReferenceLine
-                x={String(age)}
-                stroke="red"
-                strokeWidth={2}
-                label={{ value: "", position: "insideTop" }}
-              />
-            )}
+  <h4 style={{ marginBottom: "8px" }}>{selectedStat}</h4>
+  <ResponsiveContainer width="100%" height="100%">
+    <BarChart
+      data={graphData}
+      margin={{ top: 10, right: 20, left: 10, bottom: 10 }}
+    >
+      <CartesianGrid stroke="#ccc" strokeDasharray="3 3" opacity={0.5} />
+      <XAxis dataKey={(item) => item["날짜"]} />
+
+      {/* YAxis에 tickFormatter 추가 */}
+      <YAxis tickFormatter={(value) => value.toLocaleString()} />
+  
+      {selectedStat === "예상소득" && age != null && (
+        <ReferenceLine
+          x={String(age)}
+          stroke="red"
+          strokeWidth={2}
+          label={{ value: "", position: "insideTop" }}
+        />
+      )}
+
+      {selectedStat !== "예상소득" && (
+        <Bar
+          dataKey="previous"
+          fill="#3d8bfd"
+          animationDuration={1000}
+          // label 속성 제거하여 숫자 미출력
+        />
+      )}
             <Bar
-              dataKey="current"
-              fill="#f4a9c0"
-              animationDuration={1000}  
-              label={selectedStat !== "예상소득" ? { position: "top", fill: "#f4a9c0", fontSize: 12 } : undefined}
-            />
-            {selectedStat !== "예상소득" && (
-              <Bar
-                dataKey="previous"
-                fill="#3d8bfd"
-                animationDuration={1000}  
-                label={{ position: "top", fill: "#3d8bfd", fontSize: 12 }}
-              />
-            )}
-          </BarChart>
-        </ResponsiveContainer>
-      </ChartCard>
+        dataKey="current"
+        fill="#f4a9c0"
+        animationDuration={1000}
+        // label 속성 제거하여 숫자 미출력
+      />
+    </BarChart>
+  </ResponsiveContainer>
+</ChartCard>
+
     </PageContainer>
   );
 }

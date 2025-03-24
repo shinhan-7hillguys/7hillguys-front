@@ -1,4 +1,3 @@
-// LineChartCard.jsx
 import React from 'react';
 import { Line } from 'react-chartjs-2';
 import styled from 'styled-components';
@@ -29,8 +28,7 @@ const TitleText = styled.h3`
   color: #333;
 `;
 
-const LineChartCard = ({ data, name, currentAge }) => {
-  // data: [{ name: "20", usage: 0 }, { name: "21", usage: 0 }, ... ]
+const LineChartCard = ({ data, name, currentAge }) => { 
   const labels = data.map(item => item.name);
   const dataset = data.map(item => item.usage);
 
@@ -57,8 +55,7 @@ const LineChartCard = ({ data, name, currentAge }) => {
       annotation: {
         annotations: {
           verticalLine: {
-            type: 'line',
-            // x축 라벨과 동일한 타입(string)으로 비교하기 위해 currentAge를 toString()으로 변환합니다.
+            type: 'line', 
             scaleID: 'x',
             value: currentAge ? currentAge.toString() : '',
             borderColor: 'red',
@@ -67,15 +64,7 @@ const LineChartCard = ({ data, name, currentAge }) => {
           },
         },
       },
-    },
-    scales: {
-      x: {
-        title: { display: true, text: '나이' },
-      },
-      y: {
-        title: { display: true, text: '예상 수익' },
-      },
-    },
+    }, 
   };
 
   return (

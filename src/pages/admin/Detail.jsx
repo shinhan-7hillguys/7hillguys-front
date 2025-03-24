@@ -88,14 +88,15 @@ const StatBox = styled.div`
 `;
 
 const StatTitleText = styled.h3`
-  margin: 0 0 8px 0;
-  font-size: 16px;
+  margin: 0 16px 8px 0;
+  font-size: 16px; 
 `;
 
 const StatNumber = styled.p`
   font-size: clamp(20px, 4vw, 24px);
   font-weight: bold;
   margin: 0;
+  margin-right : 10px;
   white-space: nowrap;
 `;
 
@@ -178,7 +179,6 @@ const FieldLabel = styled.label`
   display: block;
 `;
 
-
 const FieldInput = styled.input`
   background-color: #f7f7f7;
   border: 1px solid #ddd;
@@ -246,20 +246,19 @@ const CertificationBadge = styled.span`
   color: white;
   padding: 4px 12px;
   border-radius: 16px;
-  margin-top : 10px;
+  margin-top: 10px;
   margin-right: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 8px; 
   font-size: 14px;
 `;
+
 const DetailPage = () => {
   const { userid } = useParams(); 
 
   const [userInfo, setUserInfo] = useState({});
   const [statCategories, setStatCategories] = useState({});
-  const [dataMap, setDataMap] = useState({});
-  const [currentData, setCurrentData] = useState({ barData: [], pieData: [] });
   const [selectedStat, setSelectedStat] = useState('remainingSupport');
-  const [selectedPeriod, setSelectedPeriod] = useState('month');
+  const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -274,7 +273,12 @@ const DetailPage = () => {
 
   const topSectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
- 
+
+  // dashboardData: API에서 받아온 대시보드 데이터 (weekCurrentTotal 등)
+  const [dashboardData, setDashboardData] = useState(null); 
+  // graphData: 별도 그래프 데이터 상태
+  const [graphData, setGraphData] = useState([]);
+
   useEffect(() => {
     if (userid) {
       axios.get(`/api/user/info?userid=${userid}`, { withCredentials: true })
@@ -286,34 +290,63 @@ const DetailPage = () => {
     }
   }, [userid]);
 
-  // 통계 데이터 초기화 – 실제 로직에 맞게 수정 필요
+  const getDashboardData = async () => {
+    const today = new Date().toISOString().split("T")[0];
+    try {
+      const response = await axios.get("/card/cardDataTotal", {
+        params: { date: today },
+        withCredentials: true,
+      });
+      console.log("대시보드 데이터:", response.data);
+      setDashboardData(response.data);
+    } catch (error) {
+      console.error("대시보드 데이터를 불러오는 중 에러 발생:", error);
+    }
+  };
+ 
+  // dashboardData를 사용해 선택한 기간의 현재 값과 이전 값의 증감율을 계산하는 함수
+  const statDisplayValueForPeriod = () => {
+    if (!dashboardData) return "데이터 없음";
+    const currentValue = dashboardData[`${selectedPeriod}CurrentTotal`];
+    return currentValue !== undefined ? currentValue.toLocaleString() + ' 원' : "0 원";
+  };
+
+  const computeBadgeChangeForPeriod = () => {
+    if (!dashboardData) return 0;
+    const current = dashboardData[`${selectedPeriod}CurrentTotal`];
+    const previous = dashboardData[`${selectedPeriod}PreviousTotal`];
+    if (!previous) return 0;
+    const change = ((current - previous) / previous) * 100;
+    return change.toFixed(1);
+  };
+ 
+  const getChartData = () => {
+    if (!dashboardData) return [];
+    return [
+      { name: "현재", usage: dashboardData[`${selectedPeriod}CurrentTotal`] || 0 },
+      { name: "이전", usage: dashboardData[`${selectedPeriod}PreviousTotal`] || 0 }
+    ];
+  };
+
+  const getGraphData = async () => {
+    const today = new Date().toISOString().split("T")[0];
+    try {
+      const response = await axios.get("/card/cardDataMap", {
+        params: { date: today },
+        withCredentials: true,
+      });
+      console.log("그래프 데이터:", response.data);
+      setGraphData(response.data);
+    } catch (error) {
+      console.error("그래프 데이터를 불러오는 중 에러 발생:", error);
+    }
+  };
+  
   useEffect(() => {
-    setStatCategories({
-      remainingSupport: "남은 지원금",
-    });
-    setDataMap({
-      remainingSupport: {
-        month: {
-          barData: [
-            { name: "현재", usage: 500000 },
-            { name: "예상", usage: 600000 }
-          ],
-          pieData: [
-            { name: "현재", usage: 500000 },
-            { name: "예상", usage: 600000 }
-          ],
-          prevTotal: 450000
-        }
-      }
-    });
+    getDashboardData();
+    getGraphData();
   }, []);
 
-  useEffect(() => {
-    if (dataMap[selectedStat] && dataMap[selectedStat][selectedPeriod]) {
-      setCurrentData(dataMap[selectedStat][selectedPeriod]);
-    }
-  }, [selectedStat, selectedPeriod, dataMap]);
- 
   useEffect(() => {
     if (userid) {
       axios.get(`/api/expectedvalue/${userid}`, { withCredentials: true })
@@ -324,8 +357,7 @@ const DetailPage = () => {
     }
   }, [userid]);
 
-
-     useEffect(() => {
+  useEffect(() => {
     if (userid) {
       axios.get(`/api/expectedincome/${userid}`, { withCredentials: true })
         .then(response => {
@@ -353,42 +385,9 @@ const DetailPage = () => {
     setExpectedIncomeChartData(incomeData);
   }, [expectedIncomes]);
 
-  // 통계 관련 헬퍼 함수
-  const getCurrentTotalForCategory = (cat) => {
-    if (dataMap[cat] && dataMap[cat][selectedPeriod]) {
-      return dataMap[cat][selectedPeriod].barData.reduce((sum, item) => sum + item.usage, 0);
-    }
-    return 0;
-  };
-
-  const getPrevTotalForCategory = (cat) => {
-    if (dataMap[cat] && dataMap[cat][selectedPeriod]) {
-      return dataMap[cat][selectedPeriod].prevTotal || 0;
-    }
-    return 0;
-  };
-
-  const computeBadgeChangeForCategory = (cat) => {
-    const currentTotal = getCurrentTotalForCategory(cat);
-    const prevTotal = getPrevTotalForCategory(cat);
-    if (!prevTotal) return 0;
-    const change = ((currentTotal - prevTotal) / prevTotal) * 100;
-    return change.toFixed(1);
-  };
-
-  const statDisplayValueForCategory = (cat) => {
-    const total = getCurrentTotalForCategory(cat);
-    if (cat === 'remainingSupport') {
-      return total.toLocaleString() + ' 원';
-    } else {
-      return total.toLocaleString() + '%';
-    }
-  };
-
   const periodComparisonLabel = {
     week: '지난 주 대비',
-    month: '지난 달 대비',
-    '6months': '지난 반기 대비',
+    month: '지난 달 대비', 
     year: '작년 대비',
   }[selectedPeriod];
 
@@ -430,7 +429,6 @@ const DetailPage = () => {
     setResultModalMessage(resultMessage);
     setResultModalOpen(true);
 
-    // 2초 후 페이지 새로고침
     setTimeout(() => {
       window.location.reload();
     }, 2000);
@@ -481,16 +479,16 @@ const DetailPage = () => {
   const children = familyData?.children != null ? familyData.children.toString() : "없음";
 
   let certificationsArray = [];
-  
-    if (Array.isArray(certificationData)) {
-      certificationsArray = certificationData.map(cert => 
-        typeof cert === 'object' && cert.certificate ? cert.certificate : cert
-      );
-    } else if (typeof certificationData === 'object' && certificationData !== null) {
-      certificationsArray = [certificationData.certificate];
-    } else if (certificationData) {
-      certificationsArray = [certificationData.toString()];
-    }
+  if (Array.isArray(certificationData)) {
+    certificationsArray = certificationData.map(cert => 
+      typeof cert === 'object' && cert.certificate ? cert.certificate : cert
+    );
+  } else if (typeof certificationData === 'object' && certificationData !== null) {
+    certificationsArray = [certificationData.certificate];
+  } else if (certificationData) {
+    certificationsArray = [certificationData.toString()];
+  }
+
   return (
     <PageContainer>
       <ContentWrapper>
@@ -519,38 +517,30 @@ const DetailPage = () => {
             </div>
           )}
         </Section>
-
-        {/* 통계 섹션 */}
+ 
         <Section>
-          <SectionTitle>통계</SectionTitle>
-          <StatBoxesContainer>
-            {Object.entries(statCategories).map(([key, label]) => (
-              <StatBox
-                key={key}
-                onClick={() => setSelectedStat(key)}
-                $isSelected={selectedStat === key}
-              >
-                <StatTitleText>{label}</StatTitleText>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <StatNumber>{statDisplayValueForCategory(key)}</StatNumber>
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-                    <Badge change={computeBadgeChangeForCategory(key)} />
-                    <ComparisonText>{periodComparisonLabel}</ComparisonText>
-                  </div>
-                </div>
-              </StatBox>
-            ))}
-          </StatBoxesContainer>
-
+        <SectionTitle>통계</SectionTitle>
+        <StatBoxesContainer>
+          <StatBox style={{ marginBottom: '30px' }}>
+              <StatTitleText>
+                사용액  
+              </StatTitleText>
+            <div style={{ display: 'flex', alignItems: 'center' }}> 
+              <StatNumber>{statDisplayValueForPeriod()}</StatNumber>
+              <Badge change={computeBadgeChangeForPeriod()} />
+              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                {periodComparisonLabel}
+              </div>
+            </div>
+          </StatBox>
+        </StatBoxesContainer> 
           <PeriodContainer>
-            {selectedStat !== 'remainingSupport' && (
-              <PeriodButton
-                onClick={() => setSelectedPeriod('week')}
-                isSelected={selectedPeriod === 'week'}
-              >
-                주
-              </PeriodButton>
-            )}
+            <PeriodButton
+              onClick={() => setSelectedPeriod('week')}
+              isSelected={selectedPeriod === 'week'}
+            >
+              주
+            </PeriodButton>
             <PeriodButton
               onClick={() => setSelectedPeriod('month')}
               isSelected={selectedPeriod === 'month'}
@@ -558,30 +548,27 @@ const DetailPage = () => {
               월
             </PeriodButton>
             <PeriodButton
-              onClick={() => setSelectedPeriod('6months')}
-              isSelected={selectedPeriod === '6months'}
-            >
-              6개월
-            </PeriodButton>
-            <PeriodButton
               onClick={() => setSelectedPeriod('year')}
               isSelected={selectedPeriod === 'year'}
             >
               연
             </PeriodButton>
-          </PeriodContainer>
-
-          <ChartsContainer>
-            <ChartCard data={currentData.barData} name={statCategories[selectedStat]} />
-            <PieChartCard data={currentData.pieData} />
-          </ChartsContainer>
+          </PeriodContainer>  
+          
+          <ChartCard 
+            data={getChartData()} 
+            name={`기간별 비교 (${selectedPeriod})`}
+          />
+          
+          <StatBoxesContainer/>
+       
         </Section>
  
         <Section>
-          <SectionTitle >예상 가치 및 수익</SectionTitle>
+          <SectionTitle>예상 소득</SectionTitle>
           <StatBoxesContainer>
-            <StatBox style = {{marginBottom: '30px'}}>
-              <StatTitleText>예상 가치</StatTitleText>
+            <StatBox style={{ marginBottom: '30px' }}>
+              <StatTitleText>예상 소득</StatTitleText>
               <StatNumber>
                 {expectedValue !== null 
                   ? expectedValue.toLocaleString() + ' 원' 
@@ -590,39 +577,38 @@ const DetailPage = () => {
             </StatBox>
           </StatBoxesContainer>
           <ChartsContainer> 
-            <LineChartCard data={expectedIncomeChartData} name="예상 수익" currentAge={currentAge} />
-             
+            <LineChartCard data={expectedIncomeChartData} name="예상 소득" currentAge={currentAge} />
           </ChartsContainer>
         </Section>
+ 
         <Section>
-  <SectionTitle>사용자 프로필 정보</SectionTitle>
-  <ReadOnlyField label="대학" value={universityName} />
-  <ReadOnlyField label="학과" value={major} />
-  <ReadOnlyField label="고등학교" value={highSchool} />
-  <ReadOnlyField label="내신" value={transcript} />
-  <div style={{ marginBottom: '16px' }}>
-    <FieldLabel>자격증</FieldLabel>
-    <div>
-      {certificationsArray.length > 0 ? (
-        certificationsArray.map((cert, idx) => (
-          <CertificationBadge key={idx}>{cert}</CertificationBadge>
-        ))
-      ) : (
-        <span>없음</span>
-      )}
-    </div>
-  </div>
-  <ReadOnlyField label="결혼상태" value={marriageStatus} />
-  <ReadOnlyField label="자녀" value={children} />
-  <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />
-  <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '없음' : null} />
-  <ReadOnlyField label="건강 상태" value={userInfo.healthStatus} />
-  <ReadOnlyField label="성별" value={userInfo.gender != null ? (userInfo.gender ? '여성' : '남성') : null} />
-  <ReadOnlyField label="정신 상태" value={userInfo.mentalStatus} />
-  <ReadOnlyField label="프로필 생성일" value={formatDateTime(userInfo.profileCreatedAt)} />
-</Section>
-
-
+          <SectionTitle>사용자 프로필 정보</SectionTitle>
+          <ReadOnlyField label="대학" value={universityName} />
+          <ReadOnlyField label="학과" value={major} />
+          <ReadOnlyField label="고등학교" value={highSchool} />
+          <ReadOnlyField label="내신" value={transcript} />
+          <div style={{ marginBottom: '16px' }}>
+            <FieldLabel>자격증</FieldLabel>
+            <div>
+              {certificationsArray.length > 0 ? (
+                certificationsArray.map((cert, idx) => (
+                  <CertificationBadge key={idx}>{cert}</CertificationBadge>
+                ))
+              ) : (
+                <span>없음</span>
+              )}
+            </div>
+          </div>
+          <ReadOnlyField label="결혼상태" value={marriageStatus} />
+          <ReadOnlyField label="자녀" value={children} />
+          <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '없음' : null} />
+          <ReadOnlyField label="건강 상태" value={userInfo.healthStatus} />
+          <ReadOnlyField label="성별" value={userInfo.gender != null ? (userInfo.gender ? '여성' : '남성') : null} />
+          <ReadOnlyField label="인성 점수" value={userInfo.mentalStatus} />
+          <ReadOnlyField label="프로필 생성일" value={formatDateTime(userInfo.profileCreatedAt)} />
+        </Section>
+ 
         {/* 투자 정보 섹션 */}
         <Section>
           <SectionTitle>투자 정보</SectionTitle>
@@ -630,18 +616,17 @@ const DetailPage = () => {
           <ReadOnlyField label="투자 시작일" value={userInfo.startDate} />
           <ReadOnlyField label="투자 종료일" value={userInfo.endDate} />
           <ReadOnlyField label="상태" value={userInfo.status} />
-          <ReadOnlyField label="원래 투자 금액" value={userInfo.originalInvestValue ? userInfo.originalInvestValue.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="누적 투자 금액" value={userInfo.originalInvestValue ? userInfo.originalInvestValue.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="월 지원금" value={userInfo.monthlyAllowance ? userInfo.monthlyAllowance.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="상환 비율" value={userInfo.refundRate ? userInfo.refundRate + '%' : null} />
           <ReadOnlyField label="최대 투자 가능 금액" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="운용 보수" value={userInfo.field} placeholder="운용 보수" />
           <ReadOnlyField label="사용한 지원금" value={userInfo.investValue ? userInfo.investValue.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="임시 월 지원금" value={userInfo.tempAllowance ? userInfo.tempAllowance.toLocaleString() + ' 원' : null} />
-          <ReadOnlyField label="투자 생성일" value={userInfo.investmentCreatedAt} />
+          <ReadOnlyField label="투자 생성일" value={formatDateTime(userInfo.investmentCreatedAt)} />
         </Section>
 
         <Section ref={bottomSectionRef} style={{ height: 0, overflow: 'hidden', margin: 0, padding: 0 }}></Section>
-
 
         {/* 모달 영역 */}
         {modalOpen && (

@@ -141,7 +141,7 @@ const Education = () => {
 
   // 각 답변의 길이가 350자 이상일 때만 카운트하여 자소서 점수를 계산
   const answeredCount = Object.values(answersObj).filter(
-    (ans) => ans && ans.trim().length >= 350
+    (ans) => ans && ans.trim().length >= 300
   ).length;
   const letterScore = Math.min(answeredCount * 2, 10);
 

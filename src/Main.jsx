@@ -49,7 +49,6 @@ const Main = () => {
     }
   };
 
-
   useEffect(() => {
     // 스크롤 스냅 효과 제거
     document.body.style.overflow = "auto";
