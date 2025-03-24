@@ -15,7 +15,7 @@ const Main = () => {
   const togetherRef = useRef(null);
   const valueRef = useRef(null);
   const panel2Ref = useRef(null);
-  
+
   // 텍스트 애니메이션을 위한 ref (여러 섹션을 제어할 수 있도록 배열 사용)
   const sectionsRef = useRef([]);
 
@@ -249,10 +249,13 @@ const Main = () => {
           <section className="vertical-section intro-section">
             <div className="main_intro">
               <p className="p1">새로운 금융의 시작</p>
+              <p className="p1-sub">당신의 여정을 함께합니다</p>
               <p className="p2">
                 <em ref={togetherRef}>같이</em> 만드는 <em ref={valueRef}>가치</em>
               </p>
-              <h2>Peoch</h2>
+              {/*<img src="/logo.png" alt="icon" className="intro-icon" />*/}
+
+              <h2>'Peoch'</h2>
             </div>
             <button className="scroll_btn">
               <span>Scroll</span>

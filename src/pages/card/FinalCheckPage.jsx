@@ -98,7 +98,7 @@ function FinalCheckPage() {
             <input type="text" value={userInfo.endDate ? userInfo.endDate: ""} readOnly />
           </div>
           <div className="form-group">
-            <label>총 금액:</label>
+            <label>최대 사용 금액:</label>
 
             <input type="text" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString("ko-KR") + "원" : ""} readOnly />
           </div>

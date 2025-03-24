@@ -112,7 +112,7 @@ const Step2Personal = ({
   return (
     <div className="personal-container">
       <div className="personal-box">
-        <h2 className="personal-title">개인 및 기타 정보 입력</h2>
+        <h2 className="personal-title">개인 정보 입력</h2>
 
         {/* 성별 */}
         <div className="personal-radio-group">
@@ -140,6 +140,86 @@ const Step2Personal = ({
             </label>
           </div>
         </div>
+
+         {/* 해외여행 출국 여부 (라디오 버튼) */}
+         <div className="personal-radio-group">
+          <span className="personal-radio-label">해외 출국:</span>
+          <div className="personal-radio-options">
+            <label>
+              <input
+                type="radio"
+                name="criminalRecord"
+                value="true"
+                checked={formData.criminalRecord === true}
+                onChange={handleChange}
+              />{" "}
+              가능
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="criminalRecord"
+                value="false"
+                checked={formData.criminalRecord === false}
+                onChange={handleChange}
+              />{" "}
+              제한
+            </label>
+          </div>
+        </div>
+
+         {/* 결혼 여부 체크박스 */}
+        {/* 결혼 여부 (라디오 버튼) */}
+        <div className="personal-radio-group">
+          <span className="personal-radio-label">결혼 여부:</span>
+          <div className="personal-radio-options">
+            <label>
+              <input
+                type="radio"
+                name="familyStatus.married"
+                value="true"
+                checked={formData.familyStatus.married === true}
+                onChange={handleChange}
+              />{" "}
+              기혼
+            </label>
+            <label>
+              <input
+                type="radio"
+                name="familyStatus.married"
+                value="false"
+                checked={formData.familyStatus.married === false}
+                onChange={handleChange}
+              />{" "}
+              미혼
+            </label>
+          </div>
+        </div>
+        <div className="person_input">
+          <label className="input-label">자녀수</label>
+          <input
+            type="number"
+            name="familyStatus.children"
+            placeholder="자녀 수"
+            value={formData.familyStatus.children || "12"}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+
+        <div className="person_input">
+          <label className="input-label">자산</label>
+          <input
+            type="text"
+            name="assets"
+            placeholder="자산을 입력해주요 ex) 800000"
+            value={formData.assets}
+            onChange={handleChange}
+            className="input-field"
+          />
+        </div>
+      
+       
 
         {/*<input
                     type="text"
@@ -175,80 +255,9 @@ const Step2Personal = ({
           }}
         ></div>
 
-        <label className="input-label">자산</label>
-        <input
-          type="number"
-          name="assets"
-          placeholder="자산"
-          value={formData.assets || "8000000"}
-          onChange={handleChange}
-          className="input-field"
-        />
+      
 
-        {/* 결혼 여부 체크박스 */}
-        {/* 결혼 여부 (라디오 버튼) */}
-        <div className="personal-radio-group">
-          <span className="personal-radio-label">결혼 여부:</span>
-          <div className="personal-radio-options">
-            <label>
-              <input
-                type="radio"
-                name="familyStatus.married"
-                value="true"
-                checked={formData.familyStatus.married === true}
-                onChange={handleChange}
-              />{" "}
-              기혼
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="familyStatus.married"
-                value="false"
-                checked={formData.familyStatus.married === false}
-                onChange={handleChange}
-              />{" "}
-              미혼
-            </label>
-          </div>
-        </div>
-
-        <label className="input-label">자녀수</label>
-        <input
-          type="number"
-          name="familyStatus.children"
-          placeholder="자녀 수"
-          value={formData.familyStatus.children || "0"}
-          onChange={handleChange}
-          className="input-field"
-        />
-
-        {/* 해외여행 출국 여부 (라디오 버튼) */}
-        <div className="personal-radio-group">
-          <span className="personal-radio-label">해외여행 출국 가능 여부:</span>
-          <div className="personal-radio-options">
-            <label>
-              <input
-                type="radio"
-                name="criminalRecord"
-                value="true"
-                checked={formData.criminalRecord === true}
-                onChange={handleChange}
-              />{" "}
-              가능
-            </label>
-            <label>
-              <input
-                type="radio"
-                name="criminalRecord"
-                value="false"
-                checked={formData.criminalRecord === false}
-                onChange={handleChange}
-              />{" "}
-              불가능
-            </label>
-          </div>
-        </div>
+       
 
         {/* 가족관계 증명서 업로드 */}
         <div className="file-upload-wrapper">

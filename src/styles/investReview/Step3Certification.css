@@ -3,7 +3,7 @@
 /* 입력 박스 */
 .certification-box {
     background: white;
-    padding: 30px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: left;
@@ -28,18 +28,21 @@
     padding: 15px;
     margin-bottom: 15px;
     border-radius: 10px;
-    background: #FEEFF0;
+    background: #fff;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* 입력 필드 */
 .input-field {
     width: 100%;
-    padding: 10px;
+    /* padding: 10px; */
     border: 1px solid #FFD4DE;
     border-radius: 5px;
     font-size: 14px;
     background-color: white;
+}
+.certification-input-wrapper .input-field{
+    border: 3px solid #FFD4DE;
 }
 
 /* 자격증 입력 필드 & 삭제 버튼 */
@@ -96,6 +99,7 @@
     cursor: pointer;
     text-align: center;
     width: 30%;
+    font-weight: 600;
 }
 
 /*.custom-file-upload:hover {
@@ -109,7 +113,7 @@
 
 /* 파일명 표시 */
 .file-name {
-    font-size: 10px;
+    font-size: 13px;
     color: #666;
     margin-left: 10px;
     width: 40%;

@@ -48,7 +48,7 @@ const FundingCalculation = ({ active, finalAmount }) => {
           <div className="funding-amount" ref={amountRef}>0</div>
         )}
       </div>
-      <div className="funding-label">원 지원금 산정 완료!</div>
+      <div className="funding-label">지원금 산정 완료!</div>
     </div>
   );
 };

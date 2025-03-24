@@ -3,7 +3,7 @@
 /* 평가 박스 */
 .health-box {
     background: white;
-    padding: 40px;
+    padding: 20px;
     border-radius: 20px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
     text-align: center;
@@ -18,7 +18,7 @@
 
 /* 제목 */
 .health-box .health-title {
-    font-size: 22px;
+    font-size: 24px;
     font-weight: bold;
     text-align: center;
     color: black;
@@ -27,7 +27,7 @@
 
 /* 질문 박스 */
 .health-question {
-    background: #FEEFF0;
+    background: #fff;
     padding: 15px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
@@ -36,11 +36,12 @@
 
 /* 질문 텍스트 */
 .health-question h3 {
-    font-size: 16px;
-    font-weight: bold;
+    font-size: 14px;
+    /* font-weight: bold; */
     text-align: left;
     color: #333;
-    margin-bottom: 8px;
+    line-height: 2;
+    margin-bottom: 20px;
 }
 
 /* 라디오 버튼 그룹 */
@@ -55,7 +56,7 @@
     appearance: none;
     width: 16px;
     height: 16px;
-    border: 2px solid #FEA1B8;
+    border: 1px solid #FEA1B8;
     border-radius: 50%;
     outline: none;
     cursor: pointer;

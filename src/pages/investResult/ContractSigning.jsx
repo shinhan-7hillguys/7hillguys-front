@@ -74,7 +74,7 @@ const ContractSigning = () => {
 
     return (
         <div className="contract-container">
-            <h2 className="contract-title">대출 계약서</h2>
+            <h2 className="contract-title">투자 계약서</h2>
 
             {/* 계약서 내용 표시 */}
             {contract ? (
@@ -87,7 +87,7 @@ const ContractSigning = () => {
                     <h4 className="contract-section">상환 조건</h4>
                     <p className="contract-content">{contract.repaymentTerms}</p>
                     <p className="contract-content">{contract.repaymentTerms2}</p>
-                    <h4 className="contract-section">약정 사항</h4>
+                    <h4 className="contract-section">기타 약관</h4>
                     <ul className="contract-content">
                         {contract.agreements.map((item, index) => (
                             <li key={index}>{item}</li>
