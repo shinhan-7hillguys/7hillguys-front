@@ -292,19 +292,20 @@ const DetailPage = () => {
 
   const getDashboardData = async () => {
     const today = new Date().toISOString().split("T")[0];
+ 
+    
     try {
-      const response = await axios.get("/card/cardDataTotal", {
-        params: { date: today },
+      const response = await axios.get("/api/user/cardDataTotal", {
+        params: { userid, date: today },
         withCredentials: true,
       });
-      console.log("대시보드 데이터:", response.data);
+      console.log("사용액액 데이터:", response.data);
       setDashboardData(response.data);
     } catch (error) {
       console.error("대시보드 데이터를 불러오는 중 에러 발생:", error);
     }
   };
- 
-  // dashboardData를 사용해 선택한 기간의 현재 값과 이전 값의 증감율을 계산하는 함수
+   
   const statDisplayValueForPeriod = () => {
     if (!dashboardData) return "데이터 없음";
     const currentValue = dashboardData[`${selectedPeriod}CurrentTotal`];
@@ -331,11 +332,11 @@ const DetailPage = () => {
   const getGraphData = async () => {
     const today = new Date().toISOString().split("T")[0];
     try {
-      const response = await axios.get("/card/cardDataMap", {
-        params: { date: today },
+      const response = await axios.get("/api/user/cardDataMap", {
+        params: { userid, date: today },
         withCredentials: true,
       });
-      console.log("그래프 데이터:", response.data);
+      console.log("사용액 그래프 데이터:", response.data);
       setGraphData(response.data);
     } catch (error) {
       console.error("그래프 데이터를 불러오는 중 에러 발생:", error);

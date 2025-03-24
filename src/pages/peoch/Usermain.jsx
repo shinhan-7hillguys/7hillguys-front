@@ -154,19 +154,72 @@ const ChartCard = styled(InfoCard)`
   height: 300px;
 `;
 
-const InactiveContainer = styled(PageContainer)`
+const ReviewGuideContainer = styled(PageContainer)`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  height: 100vh;
+  padding: 48px 20px 32px;
+  background-color: #fff;
+  min-height: 100vh;
 `;
+
+const SectionTitle = styled.h2`
+  margin-top: 20px;
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+  text-align: center;
+`;
+
+const Description = styled.p`
+  font-size: 15px;
+  margin-bottom: 16px;
+  color: #666;
+  line-height: 1.4;
+
+  strong,
+  span {
+    color: #e65084;
+    font-weight: 700;
+  }
+`;
+
+const FeatureCard = styled.div`
+  background: #FEF7F7;
+  border-radius: 10px;
+  padding: 16px;
+  margin-top: 50px;
+  margin-bottom: 45px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  text-align: left;
+  width: 340px;
+  max-width: 90vw;
+`;
+
+const FeatureTitle = styled.p`
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #ff7fae;
+`;
+
+const FeatureList = {
+  listStyleType: "disc",
+  paddingLeft: "18px",
+  margin: 0,
+  color: "#555",
+  fontSize: "14px",
+  lineHeight: "1.6",
+};
+
 
 const Message = styled.p`
   font-size: 20px;
   color: #666;
   margin-bottom: 16px;
 `;
+
 
 const ActionButton = styled.button`
   padding: 12px 24px;
@@ -269,18 +322,27 @@ export default function MainPage() {
   }, [selectedStat]);
 
   const getGraphData = async () => {
-    const today = new Date().toISOString().split("T")[0];
-    const response = await axios.get("/card/cardDataMap", {
-      params: { date: today },
-      withCredentials: true,
-    });
-    console.log("그래프 데이터:", response.data);
-    setRawGraphData(response.data);
+    try {
+      setIsLoading(true);
+      const today = new Date().toISOString().split("T")[0];
+      const response = await axios.get("/card/cardDataMap", {
+        params: {date: today},
+        withCredentials: true,
+      });
+      console.log("그래프 데이터:", response.data);
+
+      if (response.data && Object.keys(response.data).length > 0) {
+        setRawGraphData(response.data);
+      }
+    } catch (error) {
+      console.error("그래프 데이터 호출 중 오류 발생:", error);
+    }
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
+        setIsLoading(true);
         const userrole = await getRole();  
         console.log("useEffect 내 getrole : " + userrole);
         if (userrole === "ADMIN") {
@@ -291,7 +353,6 @@ export default function MainPage() {
         console.log("투자 심사 상태:", invStatus);
 
         if (invStatus !== "승인") {
-          setIsLoading(false);
           return;
         }
         await getUserName();
@@ -299,8 +360,11 @@ export default function MainPage() {
         await getDashboardData();
         await getGraphData();
         await getUserAge();
+
+        setIsLoading(false);
       } catch (error) {
         console.error("API 호출 중 오류 발생:", error);
+        setIsLoading(false);
       }
       setIsLoading(false);
     };
@@ -363,14 +427,29 @@ export default function MainPage() {
 
   if (investmentStatus !== "승인") {
     return (
-      <InactiveContainer>
-        <Message>투자 심사 완료 후 사용 가능 합니다.</Message>
-        <ActionButton onClick={() => navigate("/investReview")}>
-          심사 신청하기
-        </ActionButton>
-      </InactiveContainer>
+        <ReviewGuideContainer>
+          <SectionTitle>승인이 필요한 서비스 입니다.</SectionTitle>
+          <Description>
+            심사 완료 시 <strong>투자 서비스를 이용</strong>하실 수 있습니다.
+          </Description>
+
+          <FeatureCard>
+            <FeatureTitle>심사 완료 시 제공되는 혜택</FeatureTitle>
+            <ul style={FeatureList}>
+              <li>투자 현황 정보 열람</li>
+              <li>맞춤형 투자 리포트 제공</li>
+              <li>조기 상환 가능</li>
+              <li>취업 추천 서비스 제공</li>
+              <li>나에게 맞는 카드 혜택 고르기</li>
+            </ul>
+          </FeatureCard>
+          <ActionButton onClick={() => navigate("/investReview")}>
+            심사 신청하기
+          </ActionButton>
+        </ReviewGuideContainer>
     );
   }
+
 
   const getCurrentUsage = () => {
     if (!dashboardData) return { current: 0, previous: 0 };
@@ -491,6 +570,7 @@ export default function MainPage() {
         previousPeriodLabel = "지난 해";
         previousUsage = dashboardData.avgYearPreviousTotal;
       }
+
       return (
         <p>
           그룹 평균 대비 내 사용액은{" "}
