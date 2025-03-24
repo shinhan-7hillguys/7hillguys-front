@@ -171,11 +171,12 @@ const Message = styled.p`
 const ActionButton = styled.button`
   padding: 12px 24px;
   font-size: 16px;
-  background: #f95f89;
+  background: #ff99aa;
   color: white;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-weight: 600;
 `;
 
 export default function MainPage() { 
