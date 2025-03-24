@@ -94,7 +94,7 @@ function FinalCheckPage() {
             <input type="text" value={userInfo.address || ""} readOnly />
           </div> */}
           <div className="form-group">
-            <label>지원 종료 일:</label>
+            <label>지원 종료일:</label>
             <input type="text" value={userInfo.endDate ? userInfo.endDate: ""} readOnly />
           </div>
           <div className="form-group">

@@ -151,9 +151,8 @@ export const CardStyled = styled.div`
       animation: ${popAnimation} 2s ease-in-out;
     `}
 `;
-
 export const CardFront = styled.aside`
-  background-image: ${({ $bgImage }) => $bgImage || "linear-gradient(#333, #555)"};
+  background-image: ${({ $bgImage }) => $bgImage ? `url(${$bgImage})` : "linear-gradient(#333, #555)"};
   background-size: cover;
   background-position: center;
   color: ${({ $cardFrontColor }) => $cardFrontColor};
@@ -164,7 +163,6 @@ export const CardFront = styled.aside`
   border-radius: 12px;
   border: 1px solid #ddd; 
 `;
-
 const popAnimation = keyframes`
   0% {
     transform: scale(1) rotateY(0deg);

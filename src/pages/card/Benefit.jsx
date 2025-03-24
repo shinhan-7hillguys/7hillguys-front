@@ -138,7 +138,7 @@ const Benefit = () => {
       return;
     }
     const benefitNames = addedBenefits.map((b) => b.name).join(", ");
-    const confirmed = window.confirm(`다음 혜택들로 결제하시겠습니까?\n${benefitNames}`);
+    const confirmed = window.confirm(`다음 혜택을 구독하시겠습니까?\n${benefitNames}`);
     if (confirmed) {
       // 결제 시, Redux에 저장된 cardId와 선택된 혜택 ID들을 백엔드에 전송합니다.
       dispatch(applyBenefits({ cardId, benefitIds: addedBenefits.map(b => b.benefitId) }));
@@ -211,14 +211,16 @@ const filteredAvailableBenefits = useMemo(() => {
   //     </button>
   //   </div>
   // );
-console.log("card : ", checkedBenefits)
+  const backendUrl = "http://localhost:8080/";
+
+console.log("card : ", backendUrl+card?.cardDesigns[0]?.bgImageUrl);
   return (
     <>
           <h2 className="sec_title">카멜레온 카드 혜택 적용</h2>
       <section className="card_benefit_sec1">
         <div>
           {/* 백컬러 프론트로 바꾸고 이미지 url */}
-            <CardFront style={{ position: "relative",  }}
+            <CardFront $bgImage={`${backendUrl}${card?.cardDesigns[0]?.bgImageUrl}`} style={{ position: "relative",  }}
  $cardFrontColor={card?.cardDesigns[0]?.cardBackColor}>
                     <Chip style={card?.cardDesigns[0]?.layoutId === "2" ? currentLayout.chip : layoutPresets["1"].chip}>
                       <svg role="img" viewBox="0 0 100 100" aria-label="Chip">
