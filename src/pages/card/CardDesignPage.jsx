@@ -144,7 +144,8 @@ function CardDesignPage() {
     if (!file) return;
     setBgFile(file);
     const reader = new FileReader();
-    reader.onload = (event) => setBgImage(`url(${event.target.result})`);
+    reader.onload = (event) => setBgImage(`${event.target.result}`);
+    console.log("event.target.result : ", reader)
     reader.readAsDataURL(file);
   };
 
