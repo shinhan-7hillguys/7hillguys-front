@@ -182,7 +182,15 @@ const Main = () => {
         }
       );
     });
- 
+
+    // 스크롤 버튼 클릭 시 다음 섹션으로 이동
+    const scrollBtn = document.querySelector(".scroll_btn");
+    if (scrollBtn) {
+      scrollBtn.addEventListener("click", () => {
+        const nextSection = document.querySelector(".text-animation-section");
+        nextSection.scrollIntoView({ behavior: "smooth" });
+      });
+    }
   }, []);
 
   return (
@@ -237,21 +245,26 @@ const Main = () => {
           </div>
         </div>
         {/* 첫 번째 섹션 - 인트로 */}
-        <section className="vertical-section intro-section">
-          <div className="main_intro">
-            <p className="p1">새로운 금융의 시작</p>
-            <p className="p2">
-              <em ref={togetherRef}>같이</em> 만드는 <em ref={valueRef}>가치</em>
-            </p>
-            <h2>Peoch</h2>
-          </div>
-           
-          <div className="main_img1"></div>
-          <div className="main_img2"></div>
-          <div className="main_img3"></div>
-          <div className="main_img4"></div>
-          <div className="main_img5"></div>
-        </section>
+
+          <section className="vertical-section intro-section">
+            <div className="main_intro">
+              <p className="p1">새로운 금융의 시작</p>
+              <p className="p2">
+                <em ref={togetherRef}>같이</em> 만드는 <em ref={valueRef}>가치</em>
+              </p>
+              <h2>Peoch</h2>
+            </div>
+            <button className="scroll_btn">
+              <span>Scroll</span>
+              <div className="arrow"></div>
+            </button>
+
+            {/*<div className="main_img1"></div>*/}
+            {/*<div className="main_img2"></div>*/}
+            {/*<div className="main_img3"></div>*/}
+            {/*<div className="main_img4"></div>*/}
+            {/*<div className="main_img5"></div>*/}
+          </section>
         {/* 다른 섹션들... 필요에 따라 추가 */}
       </div>
       {/* 메인 페이지 아래쪽에 ServiceCycle 컴포넌트 렌더링 */}
