@@ -274,9 +274,7 @@ const DetailPage = () => {
   const topSectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
 
-  // dashboardData: API에서 받아온 대시보드 데이터 (weekCurrentTotal 등)
   const [dashboardData, setDashboardData] = useState(null); 
-  // graphData: 별도 그래프 데이터 상태
   const [graphData, setGraphData] = useState([]);
 
   useEffect(() => {
@@ -292,8 +290,6 @@ const DetailPage = () => {
 
   const getDashboardData = async () => {
     const today = new Date().toISOString().split("T")[0];
- 
-    
     try {
       const response = await axios.get("/api/user/cardDataTotal", {
         params: { userid, date: today },
@@ -471,24 +467,20 @@ const DetailPage = () => {
 
   const highSchool = highSchoolData?.highschool || "없음";
   const transcript = highSchoolData?.gpa || "없음";
-
-  const certifications = Array.isArray(certificationData)
-    ? certificationData.join(", ")
-    : certificationData.toString() || "없음";
-
-  const marriageStatus = familyData?.marriageStatus || "없음";
-  const children = familyData?.children != null ? familyData.children.toString() : "없음";
-
+ 
   let certificationsArray = [];
   if (Array.isArray(certificationData)) {
-    certificationsArray = certificationData.map(cert => 
+    certificationsArray = certificationData.map(cert =>
       typeof cert === 'object' && cert.certificate ? cert.certificate : cert
     );
-  } else if (typeof certificationData === 'object' && certificationData !== null) {
-    certificationsArray = [certificationData.certificate];
+  } else if (certificationData && typeof certificationData === 'object') { 
+    certificationsArray = Object.values(certificationData);
   } else if (certificationData) {
     certificationsArray = [certificationData.toString()];
   }
+
+  const marriageStatus = familyData?.marriageStatus || "없음";
+  const children = familyData?.children != null ? familyData.children.toString() : "없음";
 
   return (
     <PageContainer>
@@ -520,21 +512,21 @@ const DetailPage = () => {
         </Section>
  
         <Section>
-        <SectionTitle>통계</SectionTitle>
-        <StatBoxesContainer>
-          <StatBox style={{ marginBottom: '30px' }}>
+          <SectionTitle>통계</SectionTitle>
+          <StatBoxesContainer>
+            <StatBox style={{ marginBottom: '30px' }}>
               <StatTitleText>
                 사용액  
               </StatTitleText>
-            <div style={{ display: 'flex', alignItems: 'center' }}> 
-              <StatNumber>{statDisplayValueForPeriod()}</StatNumber>
-              <Badge change={computeBadgeChangeForPeriod()} />
-              <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-                {periodComparisonLabel}
+              <div style={{ display: 'flex', alignItems: 'center' }}> 
+                <StatNumber>{statDisplayValueForPeriod()}</StatNumber>
+                <Badge change={computeBadgeChangeForPeriod()} />
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                  {periodComparisonLabel}
+                </div>
               </div>
-            </div>
-          </StatBox>
-        </StatBoxesContainer> 
+            </StatBox>
+          </StatBoxesContainer> 
           <PeriodContainer>
             <PeriodButton
               onClick={() => setSelectedPeriod('week')}
@@ -586,20 +578,9 @@ const DetailPage = () => {
           <SectionTitle>사용자 프로필 정보</SectionTitle>
           <ReadOnlyField label="대학" value={universityName} />
           <ReadOnlyField label="학과" value={major} />
-          <ReadOnlyField label="고등학교" value={highSchool} />
-          <ReadOnlyField label="내신" value={transcript} />
-          <div style={{ marginBottom: '16px' }}>
-            <FieldLabel>자격증</FieldLabel>
-            <div>
-              {certificationsArray.length > 0 ? (
-                certificationsArray.map((cert, idx) => (
-                  <CertificationBadge key={idx}>{cert}</CertificationBadge>
-                ))
-              ) : (
-                <span>없음</span>
-              )}
-            </div>
-          </div>
+          <ReadOnlyField label="학점" value={transcript} />
+          <ReadOnlyField label="고등학교" value={highSchool} /> 
+          <ReadOnlyField label="자격증" value={certificationsArray.length > 0 ? certificationsArray.join(", ") : "없음"} />
           <ReadOnlyField label="결혼상태" value={marriageStatus} />
           <ReadOnlyField label="자녀" value={children} />
           <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />

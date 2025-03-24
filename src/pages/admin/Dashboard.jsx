@@ -5,8 +5,9 @@ import PieChartCard from 'components/dashboard/piechart';
 import Badge from 'components/dashboard/Badge';
 import UserListCard from 'components/dashboard/UserListCard';
 import config from 'config.js';
-import dummyDataMap from 'dummyData.js';   
-import { getDashboardData } from 'api';  
+import dummyDataMap from 'dummyData.js';
+import { getDashboardData } from 'api';
+import ScrollingText from './ScrollingText';  
 
 const DashboardContainer = styled.div`
   flex: 1;
@@ -38,7 +39,7 @@ const StatBox = styled.div`
     box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
   }
   font-family: 'Pretendard', sans-serif;
-  white-space :nowrap;
+  white-space: nowrap;
 `;
 
 const StatContentWrapper = styled.div`
@@ -95,6 +96,7 @@ const PeriodContainer = styled.div`
   display: flex;
   gap: 16px;
   margin-bottom: 24px;
+  margin-right : 30px;
   flex-wrap: wrap;
   font-family: 'Pretendard', sans-serif;
 `;
@@ -151,6 +153,7 @@ const Dashboard = () => {
   const periodComparisonLabel = {
     week: '지난 주 대비',
     month: '지난 달 대비',
+    quarter: '지난 분기 대비',
     '6months': '지난 반기 대비',
     year: '작년 대비',
   }[selectedPeriod];
@@ -184,7 +187,7 @@ const Dashboard = () => {
   return (
     <DashboardContainer> 
       <breadcrumbMaintitle>서비스 현황</breadcrumbMaintitle>
-      <StatsContainer>
+      <StatsContainer> 
         <StatBox
           onClick={() => handleStatClick('userCount')}
           isSelected={selectedStat === 'userCount'}
@@ -193,7 +196,7 @@ const Dashboard = () => {
           <StatContentWrapper isSelected={selectedStat === 'userCount'}>
             <StatLeft>
               <StatNumber isSelected={selectedStat === 'userCount'}>
-                6,212,541 명
+                <ScrollingText containerWidth={120} >710 명</ScrollingText>
               </StatNumber>
               <ComparisonText isSelected={selectedStat === 'userCount'}>
                 {periodComparisonLabel}
@@ -205,6 +208,7 @@ const Dashboard = () => {
           </StatContentWrapper>
         </StatBox>
      
+        {/* 총 가입 수치 */}
         <StatBox
           onClick={() => handleStatClick('totalSignups')}
           isSelected={selectedStat === 'totalSignups'}
@@ -213,7 +217,7 @@ const Dashboard = () => {
           <StatContentWrapper isSelected={selectedStat === 'totalSignups'}>
             <StatLeft>
               <StatNumber isSelected={selectedStat === 'totalSignups'}>
-                14,141,141 명
+                <ScrollingText containerWidth={120} >1,201 명</ScrollingText>
               </StatNumber>
               <ComparisonText isSelected={selectedStat === 'totalSignups'}>
                 {periodComparisonLabel}
@@ -225,15 +229,16 @@ const Dashboard = () => {
           </StatContentWrapper>
         </StatBox>
 
+        {/* 분석한 프로필 수 */}
         <StatBox
           onClick={() => handleStatClick('totalAmount')}
           isSelected={selectedStat === 'totalAmount'}
         >
-          <h3>총 거래 액</h3>
+          <h3>분석한 프로필 수</h3>
           <StatContentWrapper isSelected={selectedStat === 'totalAmount'}>
             <StatLeft>
               <StatNumber isSelected={selectedStat === 'totalAmount'}>
-                34,615,527 원
+                <ScrollingText containerWidth={120} >2,316 개</ScrollingText>
               </StatNumber>
               <ComparisonText isSelected={selectedStat === 'totalAmount'}>
                 {periodComparisonLabel}
@@ -245,15 +250,18 @@ const Dashboard = () => {
           </StatContentWrapper>
         </StatBox>
 
+        {/* 카드 사용 금액 */}
         <StatBox
           onClick={() => handleStatClick('revenue')}
           isSelected={selectedStat === 'revenue'}
         >
-          <h3>매출</h3>
+          <h3>카드 사용 금액</h3>
           <StatContentWrapper isSelected={selectedStat === 'revenue'}>
             <StatLeft>
               <StatNumber isSelected={selectedStat === 'revenue'}>
-                7,917,508 원
+                <ScrollingText containerWidth={120}>
+                  5,163,905,110 원
+                </ScrollingText>
               </StatNumber>
               <ComparisonText isSelected={selectedStat === 'revenue'}>
                 {periodComparisonLabel}
@@ -280,6 +288,12 @@ const Dashboard = () => {
           월
         </PeriodButton>
         <PeriodButton
+          onClick={() => handlePeriodClick('quarter')}
+          isSelected={selectedPeriod === 'quarter'}
+        >
+          분기
+        </PeriodButton>
+        <PeriodButton
           onClick={() => handlePeriodClick('6months')}
           isSelected={selectedPeriod === '6months'}
         >
@@ -294,7 +308,7 @@ const Dashboard = () => {
       </PeriodContainer>
  
       <ChartsContainer>
-        <ChartCard data={currentData.barData} name={selectedStat} />
+        <ChartCard data={currentData.barData}/>
       </ChartsContainer> 
       
       <RowContainer>

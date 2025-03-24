@@ -322,27 +322,18 @@ export default function MainPage() {
   }, [selectedStat]);
 
   const getGraphData = async () => {
-    try {
-      setIsLoading(true);
-      const today = new Date().toISOString().split("T")[0];
-      const response = await axios.get("/card/cardDataMap", {
-        params: {date: today},
-        withCredentials: true,
-      });
-      console.log("그래프 데이터:", response.data);
-
-      if (response.data && Object.keys(response.data).length > 0) {
-        setRawGraphData(response.data);
-      }
-    } catch (error) {
-      console.error("그래프 데이터 호출 중 오류 발생:", error);
-    }
+    const today = new Date().toISOString().split("T")[0];
+    const response = await axios.get("/card/cardDataMap", {
+      params: { date: today },
+      withCredentials: true,
+    });
+    console.log("그래프 데이터:", response.data);
+    setRawGraphData(response.data);
   };
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        setIsLoading(true);
         const userrole = await getRole();  
         console.log("useEffect 내 getrole : " + userrole);
         if (userrole === "ADMIN") {
@@ -353,6 +344,7 @@ export default function MainPage() {
         console.log("투자 심사 상태:", invStatus);
 
         if (invStatus !== "승인") {
+          setIsLoading(false);
           return;
         }
         await getUserName();
@@ -360,11 +352,8 @@ export default function MainPage() {
         await getDashboardData();
         await getGraphData();
         await getUserAge();
-
-        setIsLoading(false);
       } catch (error) {
         console.error("API 호출 중 오류 발생:", error);
-        setIsLoading(false);
       }
       setIsLoading(false);
     };
