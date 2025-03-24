@@ -11,6 +11,7 @@ import {
 } from 'recharts';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import axiosInstance from 'api';
 
 const InvestmentReallyExit = () => {
     const [chartData, setChartData] = useState([]);
@@ -27,7 +28,7 @@ const InvestmentReallyExit = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await axios.get('/api/investment/reallyexit', {
+                const res = await axiosInstance.get('/api/investment/reallyexit', {
                     withCredentials: true,
                     headers: {
                         'Content-Type': 'application/json',
@@ -103,7 +104,7 @@ const InvestmentReallyExit = () => {
     // 서비스 해지 처리
     const handleExit = () => {
         if (window.confirm('정말로 서비스를 해지하시겠습니까?')) {
-            axios
+            axiosInstance
                 .post(
                     '/api/investment/reallyexit',
                     {},

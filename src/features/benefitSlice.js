@@ -1,5 +1,6 @@
 // src/features/benefitSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import axiosInstance from "api";
 import axios from "axios";
 
 // 1. 내 카드에 대한 혜택 데이터 가져오기
@@ -7,7 +8,7 @@ export const fetchBenefits = createAsyncThunk(
   "benefit/fetchBenefits",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/benefit/card`);
+      const response = await axiosInstance.get(`/benefit/card`);
       console.log(response)
       return response.data; // { availableBenefits, appliedBenefits }
     } catch (error) {
@@ -22,7 +23,7 @@ export const deleteBenefit = createAsyncThunk(
     try {
       // 카드 정보가 필요하다면, 쿼리 파라미터로 전달하거나 요청 본문에 포함할 수 있습니다.
       // HTTP DELETE 요청은 본문 전달을 지원하지 않는 경우도 있으므로, 여기서는 쿼리 파라미터 사용 예시:
-      const response = await axios.delete(`/benefit/${benefitId}?cardId=${cardId}`);
+      const response = await axiosInstance.delete(`/benefit/${benefitId}?cardId=${cardId}`);
       return benefitId; // 삭제된 혜택 ID 반환
     } catch (error) {
       return rejectWithValue(error.response?.data || "혜택 삭제에 실패했습니다.");
@@ -35,7 +36,7 @@ export const applyBenefits = createAsyncThunk(
   "benefit/applyBenefits",
   async ({ cardId, benefitIds }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
+      const response = await axiosInstance.post(
           "/benefit/apply",
         { cardId, benefitIds },
       );

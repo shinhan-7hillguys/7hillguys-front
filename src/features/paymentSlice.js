@@ -1,7 +1,7 @@
 // src/features/paymentSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
-
+import axiosInstance from "api";
+  
 const initialState = {
   payments: [],
   status: "idle", // "idle" | "loading" | "succeeded" | "failed"
@@ -14,7 +14,7 @@ export const fetchPayments = createAsyncThunk(
     try {
       console.log(cardId)
 
-      const response = await axios.get("/benefit/payments", {
+      const response = await axiosInstance.get("/benefit/payments", {
         params: { cardId, month },
       });
       console.log(response.data)

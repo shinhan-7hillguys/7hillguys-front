@@ -5,6 +5,7 @@ import styled from 'styled-components';
 import axios from 'axios';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import axiosInstance from 'api';
 
 // Styled Components 정의
 const Container = styled.div`
@@ -121,7 +122,7 @@ const InvestmentTempAllowance = () => {
     useEffect(() => {
         const fetchInvestmentDetails = async () => {
             try {
-                const response = await axios.get('/api/investment/tempallowance', {
+                const response = await axiosInstance.get('/api/investment/tempallowance', {
                     withCredentials: true,
                     headers: {
                         'Content-Type': 'application/json'
@@ -194,7 +195,7 @@ const InvestmentTempAllowance = () => {
                 </SliderLabel>
             </SliderContainer>
 
-            <Button onClick={() => axios.post("/api/investment/applytempallowance",
+            <Button onClick={() => axiosInstance.post("/api/investment/applytempallowance",
                 {amount: sliderValue},
                 {
                     withCredentials: true,

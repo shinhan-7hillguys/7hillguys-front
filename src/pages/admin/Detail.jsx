@@ -6,6 +6,7 @@ import LineChartCard from 'components/dashboard/LineChartCard';
 import PieChartCard from 'components/dashboard/piechart';
 import Badge from 'components/dashboard/Badge';
 import axios from 'axios';
+import axiosInstance from 'api';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -277,7 +278,7 @@ const DetailPage = () => {
 
   useEffect(() => {
     if (userid) {
-      axios.get(`/api/user/info?userid=${userid}`, { withCredentials: true })
+      axiosInstance.get(`/api/usersearch/info?userid=${userid}`, { withCredentials: true })
         .then(response => {
           setUserInfo(response.data);
           console.log("사용자 정보 ", response.data);
@@ -289,7 +290,7 @@ const DetailPage = () => {
   // expectedValue API 호출은 기존 그대로
   useEffect(() => {
     if (userid) {
-      axios.get(`/api/expectedvalue/${userid}`, { withCredentials: true })
+      axiosInstance.get(`/api/expectedvalue/${userid}`, { withCredentials: true })
         .then(response => {
           setExpectedValue(response.data);
         })
@@ -300,7 +301,7 @@ const DetailPage = () => {
   const getDashboardData = async () => {
     const today = new Date().toISOString().split("T")[0];
     try {
-      const response = await axios.get("/api/user/cardDataTotal", {
+      const response = await axiosInstance.get("/api/usersearch/cardDataTotal", {
         params: { userid, date: today },
         withCredentials: true,
       });
@@ -337,7 +338,7 @@ const DetailPage = () => {
   const getGraphData = async () => {
     const today = new Date().toISOString().split("T")[0];
     try {
-      const response = await axios.get("/api/user/cardDataMap", {
+      const response = await axiosInstance.get("/api/usersearch/cardDataMap", {
         params: { userid, date: today },
         withCredentials: true,
       });
@@ -395,7 +396,7 @@ const DetailPage = () => {
     if (modalType === 'approve') {
       console.log('사용자 승인 처리');
       try {
-        const response = await axios.post('/api/investment/approve', {}, { withCredentials: true });
+        const response = await axiosInstance.post('/api/investment/approve', {}, { withCredentials: true });
         resultMessage = "승인 처리 완료: " + (response.data.message || "처리 성공");
       } catch (error) {
         resultMessage = "승인 처리 실패: " + (error.response?.data?.message || error.message);
@@ -403,7 +404,7 @@ const DetailPage = () => {
     } else if (modalType === 'reject') {
       console.log('사용자 거절 처리');
       try {
-        const response = await axios.post('/api/investment/reject', {}, { withCredentials: true });
+        const response = await axiosInstance.post('/api/investment/reject', {}, { withCredentials: true });
         resultMessage = "거절 처리 완료: " + (response.data.message || "처리 성공");
       } catch (error) {
         resultMessage = "거절 처리 실패: " + (error.response?.data?.message || error.message);
@@ -633,4 +634,4 @@ const DetailPage = () => {
   );
 };
 
-export default DetailPage;
+export default DetailPage; 

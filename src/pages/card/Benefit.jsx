@@ -211,7 +211,7 @@ const filteredAvailableBenefits = useMemo(() => {
   //     </button>
   //   </div>
   // );
-  const backendUrl = "http://localhost:8080/";
+  const backendUrl = process.env.REACT_APP_API_URL;
 
 console.log("card : ", backendUrl+card?.cardDesigns[0]?.bgImageUrl);
   return (

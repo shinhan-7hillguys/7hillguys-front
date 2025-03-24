@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import starbucks from "image/starbucks.png";
 import megacoffee from "image/megacoffee.png";
+import axiosInstance from "api";
 
 function PaymentTest() {
   const [responseMessage, setResponseMessage] = useState("");
@@ -15,7 +16,7 @@ function PaymentTest() {
       installmentMonth: 0,
     };
 
-    axios
+    axiosInstance
         .post("/payment/paymentRequest", requestData, {})
       .then((response) => {
         const { success, message, code } = response.data;

@@ -76,8 +76,7 @@ import Test from "./test/ServiceCycle";
 
 function App() {
   axios.defaults.withCredentials = true;
-  // (선택 사항) 기본 URL 설정
-  axios.defaults.baseURL = "http://localhost:8080";
+  
   return (
     <BrowserRouter>
       <Routes>

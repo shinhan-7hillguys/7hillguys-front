@@ -13,6 +13,7 @@ import {
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 import "styles/peoch/InvestmentExit.css";
+import axiosInstance from "api";
 
 const InvestmentExit = () => {
   const navigate = useNavigate();
@@ -25,7 +26,7 @@ const InvestmentExit = () => {
   useEffect(() => {
     const fetchExpectedIncome = async () => {
       try {
-        const response = await axios.get("/api/investment/exit", {
+        const response = await axiosInstance.get("/api/investment/exit", {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });
@@ -61,7 +62,7 @@ const InvestmentExit = () => {
   useEffect(() => {
     const fetchTotalBenefit = async () => {
       try {
-        const response = await axios.get("/payment/totalBenefit", {
+        const response = await axiosInstance.get("/payment/totalBenefit", {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });

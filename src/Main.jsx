@@ -2,10 +2,10 @@ import React, { useLayoutEffect, useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Link } from "react-router-dom";
-import "./main.css";
-import axios from "axios";
+import "./main.css"; 
 import { CiLogin, CiLogout } from "react-icons/ci";
-import ServiceCycle from "./test/ServiceCycle";
+import ServiceCycle from "./test/ServiceCycle"; 
+import axiosInstance from "api";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -14,14 +14,11 @@ const Main = () => {
   const containerRef = useRef(null);
   const togetherRef = useRef(null);
   const valueRef = useRef(null);
-  const panel2Ref = useRef(null);
-
-  // 텍스트 애니메이션을 위한 ref (여러 섹션을 제어할 수 있도록 배열 사용)
-  const sectionsRef = useRef([]);
-
+  const panel2Ref = useRef(null); 
+  
   useEffect(() => {
     // 로그인 상태 확인
-    axios
+    axiosInstance
       .get("/api/auth/userId", { withCredentials: true })
       .then((response) => { 
         if (response.data.name) {
@@ -36,7 +33,7 @@ const Main = () => {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/auth/logout", {
+      const response = await fetch(process.env.REACT_APP_API_URL+"/api/auth/logout", {
         method: "POST",
         credentials: "include",
       });

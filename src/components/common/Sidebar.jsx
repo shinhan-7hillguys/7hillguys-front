@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import AccordionMenu from './AccordionMenu';  
 import { menuData } from './menuData';         
 import { HiX } from "react-icons/hi";
+import axiosInstance from 'api';
 
 const SidebarContainer = styled.div`
   position: fixed;
@@ -162,7 +163,7 @@ const Sidebar = ({ toggleSidebar }) => {
   }, []);
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get('/api/auth/userId', { withCredentials: true })
       .then((response) => {
         setUserName(response.data.name);
@@ -199,7 +200,7 @@ const Sidebar = ({ toggleSidebar }) => {
   };
 
   const handleLogout = () => {
-    axios
+    axiosInstance
       .post('/api/auth/logout', {}, { withCredentials: true })
       .then((response) => { 
         navigate('/');

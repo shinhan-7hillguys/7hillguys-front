@@ -2,8 +2,8 @@
 import React, { useState, useContext } from 'react';
 import styled from 'styled-components';
 import { AuthContext } from '../contexts/AuthContext';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate } from 'react-router-dom'; 
+import axiosInstance from 'api';
 const LoginContainer = styled.div`
   display: flex;
   justify-content: center;
@@ -99,13 +99,12 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      // 실제 로그인 API 호출 로직
-      // 예: const response = await axios.post('/api/login', { userId, password });
-      // login(response.data.user, response.data.token);
-      // localStorage.setItem('accessToken', response.data.token);
-
-      // 여기서는 예시로 하드코딩
+    try { 
+       const path = process.env.REACT_APP_API_URL; 
+       const response = await axiosInstance.post(path+ '/api/login', { userId, password });
+       login(response.data.user, response.data.token);
+       localStorage.setItem('accessToken', response.data.token);
+ 
       if (userId === 'admin' && password === '1234') {
         const dummyUserData = { name: '관리자' };
         const dummyToken = 'FAKE_JWT_TOKEN';

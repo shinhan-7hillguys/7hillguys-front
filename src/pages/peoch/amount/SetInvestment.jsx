@@ -14,6 +14,7 @@ import {
 import styled from "styled-components";
 import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
+import axiosInstance from "api";
 
 const Container = styled.div`
     padding: 20px;
@@ -124,7 +125,7 @@ const InvestmentSimulator = () => {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const response = await axios.get("/api/investment/setamount", {
+                const response = await axiosInstance.get("/api/investment/setamount", {
                     withCredentials: true,
                     headers: {
                         "Content-Type": "application/json",
@@ -147,7 +148,7 @@ const InvestmentSimulator = () => {
 
                 const initialTotalInvestment = monthlySupport * supportPeriod * 12 * 10000;
                 if (initialTotalInvestment > 0) {
-                    const refundResponse = await axios.post(
+                    const refundResponse = await axiosInstance.post(
                         "/api/investment/refund-rate",
                         { investAmount: initialTotalInvestment },
                         {
@@ -171,7 +172,7 @@ const InvestmentSimulator = () => {
         const totalInvestment = monthlySupport * supportPeriod * 12 * 10000;
         if (totalInvestment > 0) {
             try {
-                const response = await axios.post(
+                const response = await axiosInstance.post(
                     "/api/investment/refund-rate",
                     { investAmount: totalInvestment },
                     {
@@ -195,7 +196,7 @@ const InvestmentSimulator = () => {
     const handleSubmit = async () => {
         try {
             const totalInvestment = monthlySupport * supportPeriod * 12 * 10000;
-            await axios.post(
+            await axiosInstance.post(
                 "/api/investment/setamount",
                 {
                     monthlyAmount: monthlySupport * 10000,

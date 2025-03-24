@@ -4,14 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 import "styles/user/login.css";
 
 function Login() {
+    const apipath = process.env.REACT_APP_API_URL;
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
 
     const navigate = useNavigate();
-
-    // 로고 클릭 시 홈으로 이동
+ 
     const handleLogoClick = () => {
         navigate("/");
     };
@@ -26,19 +26,19 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+              try {
+                console.log("fetch URL:", process.env.REACT_APP_API_URL + '/api/auth/login');
 
-        try {
-            const response = await fetch("/api/auth/login", {
+            const response = await fetch(process.env.REACT_APP_API_URL.replace(/"/g, "") +'/api/auth/login', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(formData), 
                 credentials: "include",
-            });
-
+            }); 
             if (response.ok) {
-                alert("로그인 성공!");
+                alert("로그인 성공!"); 
                 navigate("/user/dashboard");
             } else {
                 const errorData = await response.json();

@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import config from 'config';
+import axiosInstance from 'api';
 
 const PageContainer = styled.div`
   display: flex;
@@ -125,7 +126,7 @@ const UserSearchPage = () => {
       params.endDate = `${birthYear}-12-31`;
     }
 
-    axios.get(`${config.apiBaseUrl}/api/user/search/advanced`, { params })
+    axiosInstance.get(`${config.apiBaseUrl}/api/usersearch/search/advanced`, { params })
       .then(response => {
         setFilteredUsers(response.data);
       })
