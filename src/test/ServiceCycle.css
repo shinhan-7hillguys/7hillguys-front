@@ -55,6 +55,9 @@
     flex-direction: column;
     align-items: center;
   }
+ .stage:first-child {
+   margin-top: 0;
+ }
    
   .stage.left {
     margin-left: 5%;
@@ -101,4 +104,17 @@
       transform: translateY(0);
     }
   }
-  
+ .stage-title {
+   font-size: 20px;
+   font-weight: 700;
+   color: #e65084;
+   margin-bottom: 10px;
+   letter-spacing: -0.01em;
+   text-align: center;
+   text-shadow: 0 1px 4px rgba(230, 80, 132, 0.15);
+ }
+ @media (max-width: 768px) {
+   .stage-title {
+     font-size: 18px;
+   }
+ }
