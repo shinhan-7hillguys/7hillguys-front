@@ -16,7 +16,7 @@ const Step6Submit = ({ formData, handleSubmit, handleBack }) => {
                 </p>
 
                 {/* 사용자 입력 데이터 확인 */}
-                <p><strong>대학교 이름:</strong> {formData.universityInfo?.universityName || "없음"}</p>
+                <p><strong>대학:</strong> {formData.universityInfo?.universityName || "없음"}</p>
                 <p><strong>전공:</strong> {formData.universityInfo?.major || "없음"}</p>
                 <p><strong>학점:</strong> {formData.studentCard?.highscoolGPA || "없음"}</p>
                 <p><strong>성별:</strong> {formData.gender ? "남성" : "여성"}</p>
