@@ -10,7 +10,6 @@
 
 /* 로그인 박스 */
 .login-box {
-    background: #FEF7F7;
     padding: 30px;
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -47,7 +46,7 @@
 .login-box .login-button , .logout-button{
     width: 100%;
     padding: 10px;
-    background-color: #FEA1B8;
+    background-color: #f4a9c0;
     color: white;
     border: none;
     border-radius: 5px;
@@ -58,7 +57,6 @@
 .login-button , .logout-button{
     width: 100%;
     padding: 10px;
-    background-color: #f4b0b0;
     color: white;
     border: none;
     border-radius: 5px;
