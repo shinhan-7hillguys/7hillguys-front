@@ -72,7 +72,7 @@ export const BreadCrumb = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   text-align: left;
 `;
 
@@ -104,8 +104,7 @@ export const CardPage = styled.div`
 
 export const MobileButton = styled.button`
   padding: 10px 20px;
-  background-color: #f4a9c0;
-  border: 1.5px solid black;
+  background-color: #DF6E99;
   border-radius: 5px;
   color: white;
   font-size: 16px;
@@ -152,9 +151,8 @@ export const CardStyled = styled.div`
       animation: ${popAnimation} 2s ease-in-out;
     `}
 `;
-
 export const CardFront = styled.aside`
-  background-image: ${({ $bgImage }) => $bgImage || "linear-gradient(#333, #555)"};
+  background-image: ${({ $bgImage }) => $bgImage ? `url(${$bgImage})` : "linear-gradient(#333, #555)"};
   background-size: cover;
   background-position: center;
   color: ${({ $cardFrontColor }) => $cardFrontColor};
@@ -165,7 +163,6 @@ export const CardFront = styled.aside`
   border-radius: 12px;
   border: 1px solid #ddd; 
 `;
-
 const popAnimation = keyframes`
   0% {
     transform: scale(1) rotateY(0deg);

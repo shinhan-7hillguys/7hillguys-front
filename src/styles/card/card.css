@@ -6,6 +6,7 @@
     color: #000;
     justify-content: space-between;
     padding: 20px 0 50px 0;
+
 }   
 
 .card_intro h1 {
@@ -25,12 +26,12 @@
     width: 80%;
     height: 30vh;
     
-    background: #f98ac7;
+    background:  #f98ac7 url("../../../public/camel.png") no-repeat center center/ cover;
     border-radius: 20px;
 }
 .card_intro button {
     width: 80%;
-    background: #DF6E99;
+    background: var(--button-color);
     padding: 15px;
     border: 0;
     color: #fff;
@@ -44,6 +45,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
+    padding-top: 30px;
 }
 .card_agree h2 {
     font-size: var(--font-size22);
@@ -58,6 +60,7 @@
 .card_agree label {
     display: flex;
     align-items: center;
+    padding: 20px;
 }
 .card_agree input {
     height: 20px;
@@ -71,9 +74,22 @@
     background-color: #4caf50;
     border-color: #4caf50;
   }
+.card_agree_section ol {
+  padding: 30px;
+  height: 40vh;
+  overflow: scroll;
+}
+.card_agree_section h2 {
+  color: var(--button-color);
+  text-align: center;
+}
+.card_agree_section label {
+  width: 100%;
+  text-align: center;
+}
 .card_btn {
     width: 80%;
-    background: #DF6E99;
+    background: var(--button-color);
     padding: 15px;
     border: 0;
     color: #fff;
@@ -86,6 +102,7 @@
     flex-direction: column;
     justify-content: space-between;
     height: 80vh;
+    padding: 30px 20px;
 }
 .card_person em {
     color: #000;
@@ -102,20 +119,19 @@
     font-size: var(--font-size20);
     font-weight: 600;
     text-align: center;
-    margin: 20px 0;
     color: #000;
 }
-.card_person div {
-    padding: 20px 0;
-}
+
+
 .card_person input {
     border: 0;
-    border-bottom: 2px solid #f49ecf;
-    width: 90%;
-    background: transparent;
+    box-shadow: 0 2px 4px #ccc;
+    background: #cfcece2b;
+    width: 100%;
+    border-radius: 10px;
     font-size: var(--font-size18);
     font-weight: 600;
-    padding: 5px 0;
+    padding: 10px 10px;
 }
 .card_person input:focus {
     outline: none;
@@ -128,7 +144,10 @@
     justify-content: center;
 }
 
-
+.info_loading {
+  text-align: center;
+  padding-top: 150px;
+}
 
 
 .card_english {
@@ -136,11 +155,13 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    padding: 30px 20px;
 }
 .card_english h2 {
     font-size: var(--font-size20);
     font-weight: 600;
     color: #000;
+    text-align: center;
 }
 .card_english label {
     display: block;
@@ -151,22 +172,26 @@
 }
 .card_english input {
     border: 0;
-    border-bottom: 2px solid #f49ecf;
-    width: 90%;
-    background: transparent;
+    /* box-shadow: 0 2px 4px #000; */
+    /* box-shadow: -3px 4px 8px -3px var(--button-color); */
+
+    padding: 10px;
+    width: 100%;
+    background: var(--box-color);
     font-size: var(--font-size18);
     /* font-weight: 600; */
     color: #000;
-    padding: 5px 0;
+    border-radius: 10px;
 }
 .btn_box {
     width: 100%;
     display: flex;
     justify-content: center;
+    
 }
 .card_english input:focus {
     outline: none;
-    box-shadow: none;
+    /* box-shadow: none; */
   }
   
 
@@ -181,6 +206,10 @@
     align-items: center;
     cursor: pointer;
     position: relative;
+    background: var(--box-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+    /* box-shadow: 2px 2px 10px v2ar(--button-color); */
   }
   
   .hidden-input {
@@ -247,13 +276,13 @@
   }
   .final-info-form input {
     border: 0;
-    border-bottom: 2px solid #f49ecf;
-    width: 90%;
-    background: transparent;
+    box-shadow: 0 2px 4px #ccc;
+    background: #cfcece2b;
+    width: 100%;
+    border-radius: 10px;
     font-size: var(--font-size18);
     font-weight: 600;
-    padding: 5px 0;
-    color: #000;
+    padding: 10px 10px;
   }
   .final-check-container h2 {
     font-size: var(--font-size26);

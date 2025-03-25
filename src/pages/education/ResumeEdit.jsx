@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "api";
 
 const ResumeEdit = () => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const ResumeEdit = () => {
 
     // 페이지 마운트 시 기존 데이터 로드 (GET /api/myspecs/2)
     useEffect(() => {
-        axios
+        axiosInstance
             .get("/api/myspecs")
             .then((res) => {
                 const data = res.data;
@@ -101,7 +102,7 @@ const ResumeEdit = () => {
                 internship: JSON.stringify(internships),
                 grade: JSON.stringify({ gpa: grade, maxGpa: "4.5" }),
             };
-            await axios.put("/api/myspecs", requestData);
+            await axiosInstance.put("/api/myspecs", requestData);
             alert("모든 내용이 저장되었습니다.");
             navigate("/education/myeducation");
         } catch (error) {
@@ -136,6 +137,7 @@ const ResumeEdit = () => {
             <p style={charCount}>
                 {answers[selectedQuestion].length}/{maxCharacters}자
             </p>
+
 
             {/* 어학시험 섹션 */}
             <div style={sectionStyle}>
@@ -179,7 +181,7 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() =>
@@ -187,7 +189,7 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -242,13 +244,13 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() => setCertificates(certificates.slice(0, -1))}
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -339,13 +341,13 @@ const ResumeEdit = () => {
                         }
                         style={halfButton}
                     >
-                        + 추가
+                        추가
                     </button>
                     <button
                         onClick={() => setInternships(internships.slice(0, -1))}
                         style={halfButton}
                     >
-                        - 삭제
+                        삭제
                     </button>
                 </div>
             </div>
@@ -406,7 +408,7 @@ const buttonStyle = {
     height: "40px",
     borderRadius: "50%",
     backgroundColor: "#f0f0f0",
-    color: "#333",
+    color: "#ff99aa",
     border: "none",
     cursor: "pointer",
 };
@@ -487,16 +489,18 @@ const controlRow = {
 const halfButton = {
     width: "48%",
     padding: "2%",
-    backgroundColor: "#ccc",
+    backgroundColor: "#ff99aa",
+    color: "white",
     border: "none",
     cursor: "pointer",
     textAlign: "center",
+    borderRadius: "5px",
 };
 
 const saveButton = {
     width: "100%",
     padding: "3%",
-    backgroundColor: "#df6e99",
+    backgroundColor: "#ff99aa",
     color: "white",
     fontSize: "1.2rem",
     border: "none",

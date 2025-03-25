@@ -1,15 +1,22 @@
-import axios from 'axios';
-import config from './config';
+import axios from 'axios'; 
 
 const axiosInstance = axios.create({
-  baseURL: config.apiBaseUrl
-   
+  baseURL: process.env.REACT_APP_API_URL.replace(/"/g, '').trim(),
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  withCredentials: true,
+  
 });
+
+console.log("BASE_URL:", process.env.REACT_APP_API_URL);
+console.log("axiosInstance.defaults.baseURL:", axiosInstance.defaults.baseURL);
 
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('accessToken'); 
     if (token) {
+      console.log("token : " ,token);
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;

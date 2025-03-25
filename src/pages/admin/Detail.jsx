@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
-import config from 'config';
 import ChartCard from 'components/dashboard/chartcard';
+import LineChartCard from 'components/dashboard/LineChartCard';  
 import PieChartCard from 'components/dashboard/piechart';
 import Badge from 'components/dashboard/Badge';
 import axios from 'axios';
+import axiosInstance from 'api';
 
 const PageContainer = styled.div`
   padding: 24px;
@@ -88,14 +89,15 @@ const StatBox = styled.div`
 `;
 
 const StatTitleText = styled.h3`
-  margin: 0 0 8px 0;
-  font-size: 16px;
+  margin: 0 16px 8px 0;
+  font-size: 16px; 
 `;
 
 const StatNumber = styled.p`
   font-size: clamp(20px, 4vw, 24px);
   font-weight: bold;
   margin: 0;
+  margin-right: 10px;
   white-space: nowrap;
 `;
 
@@ -175,9 +177,9 @@ const FieldLabel = styled.label`
   font-weight: bold;
   color: #555;
   margin-bottom: 6px;
+  display: block;
 `;
 
-// ReadOnlyField: 값이 없으면 "없음"으로 표시
 const FieldInput = styled.input`
   background-color: #f7f7f7;
   border: 1px solid #ddd;
@@ -199,7 +201,6 @@ function ReadOnlyField({ label, value, placeholder }) {
   );
 }
 
-// 날짜 포맷 함수: 초 이하 없이 "YYYY년 M월 D일 H시 m분" 형태로 포맷팅
 const formatDateTime = (dateStr) => {
   if (!dateStr) return "없음";
   const date = new Date(dateStr);
@@ -211,17 +212,6 @@ const formatDateTime = (dateStr) => {
   return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
 };
 
-// JSON 파싱 헬퍼 함수
-const parseJSONField = (jsonStr, defaultValue = {}) => {
-  try {
-    return JSON.parse(jsonStr);
-  } catch (error) {
-    console.error("JSON 파싱 에러:", error);
-    return defaultValue;
-  }
-};
-
-// 모달 관련 스타일 정의
 const ApprovalModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -250,16 +240,26 @@ const ModalButtonContainer = styled.div`
   gap: 16px;
   margin-top: 16px;
 `;
+
+const CertificationBadge = styled.span`
+  display: inline-block;
+  background-color: #e08490;
+  color: white;
+  padding: 4px 12px;
+  border-radius: 16px;
+  margin-top: 10px;
+  margin-right: 8px;
+  margin-bottom: 8px; 
+  font-size: 14px;
+`;
+
 const DetailPage = () => {
-  const { userid } = useParams();
-  console.log("받은 userid:", userid);
+  const { userid } = useParams(); 
 
   const [userInfo, setUserInfo] = useState({});
   const [statCategories, setStatCategories] = useState({});
-  const [dataMap, setDataMap] = useState({});
-  const [currentData, setCurrentData] = useState({ barData: [], pieData: [] });
   const [selectedStat, setSelectedStat] = useState('remainingSupport');
-  const [selectedPeriod, setSelectedPeriod] = useState('month');
+  const [selectedPeriod, setSelectedPeriod] = useState('week');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
@@ -267,72 +267,136 @@ const DetailPage = () => {
   const [modalType, setModalType] = useState(null);
   const [resultModalOpen, setResultModalOpen] = useState(false);
   const [resultModalMessage, setResultModalMessage] = useState("");
+ 
+  const [expectedValue, setExpectedValue] = useState(null);
 
   const topSectionRef = useRef(null);
   const bottomSectionRef = useRef(null);
 
+  const [dashboardData, setDashboardData] = useState(null); 
+  const [graphData, setGraphData] = useState([]);
+
   useEffect(() => {
     if (userid) {
-      axios.get(`/api/user/info?userid=${userid}`, { withCredentials: true })
+      axiosInstance.get(`/api/usersearch/info?userid=${userid}`, { withCredentials: true })
         .then(response => {
-          console.log("전체 응답:", response);
-          console.log("응답 데이터:", response.data);
           setUserInfo(response.data);
+          console.log("사용자 정보 ", response.data);
         })
         .catch(err => console.error("userInfo 조회 실패:", err));
     }
   }, [userid]);
 
+  // expectedValue API 호출은 기존 그대로
   useEffect(() => {
-    if (dataMap[selectedStat] && dataMap[selectedStat][selectedPeriod]) {
-      setCurrentData(dataMap[selectedStat][selectedPeriod]);
+    if (userid) {
+      axiosInstance.get(`/api/expectedvalue/${userid}`, { withCredentials: true })
+        .then(response => {
+          setExpectedValue(response.data);
+        })
+        .catch(err => console.error("예상 가치 조회 실패:", err));
     }
-  }, [selectedStat, selectedPeriod, dataMap]);
+  }, [userid]);
 
-  const getCurrentTotalForCategory = (cat) => {
-    if (dataMap[cat] && dataMap[cat][selectedPeriod]) {
-      return dataMap[cat][selectedPeriod].barData.reduce((sum, item) => sum + item.usage, 0);
+  const getDashboardData = async () => {
+    const today = new Date().toISOString().split("T")[0];
+    try {
+      const response = await axiosInstance.get("/api/usersearch/cardDataTotal", {
+        params: { userid, date: today },
+        withCredentials: true,
+      });
+      console.log("사용액 데이터:", response.data);
+      setDashboardData(response.data);
+    } catch (error) {
+      console.error("대시보드 데이터를 불러오는 중 에러 발생:", error);
     }
-    return 0;
+  };
+   
+  const statDisplayValueForPeriod = () => {
+    if (!dashboardData) return "데이터 없음";
+    const currentValue = dashboardData[`${selectedPeriod}CurrentTotal`];
+    return currentValue !== undefined ? currentValue.toLocaleString() + ' 원' : "0 원";
   };
 
-  const getPrevTotalForCategory = (cat) => {
-    if (dataMap[cat] && dataMap[cat][selectedPeriod]) {
-      return dataMap[cat][selectedPeriod].prevTotal || 0;
-    }
-    return 0;
-  };
-
-  const computeBadgeChangeForCategory = (cat) => {
-    const currentTotal = getCurrentTotalForCategory(cat);
-    const prevTotal = getPrevTotalForCategory(cat);
-    if (!prevTotal) return 0;
-    const change = ((currentTotal - prevTotal) / prevTotal) * 100;
+  const computeBadgeChangeForPeriod = () => {
+    if (!dashboardData) return 0;
+    const current = dashboardData[`${selectedPeriod}CurrentTotal`];
+    const previous = dashboardData[`${selectedPeriod}PreviousTotal`];
+    if (!previous) return 0;
+    const change = ((current - previous) / previous) * 100;
     return change.toFixed(1);
   };
+ 
+  const getChartData = () => {
+    if (!dashboardData) return [];
+    return [
+      { name: "현재", usage: dashboardData[`${selectedPeriod}CurrentTotal`] || 0 },
+      { name: "이전", usage: dashboardData[`${selectedPeriod}PreviousTotal`] || 0 }
+    ];
+  };
 
-  const statDisplayValueForCategory = (cat) => {
-    const total = getCurrentTotalForCategory(cat);
-    if (cat === 'remainingSupport') {
-      return total.toLocaleString() + ' 원';
-    } else {
-      return total.toLocaleString() + '%';
+  const getGraphData = async () => {
+    const today = new Date().toISOString().split("T")[0];
+    try {
+      const response = await axiosInstance.get("/api/usersearch/cardDataMap", {
+        params: { userid, date: today },
+        withCredentials: true,
+      });
+      console.log("사용액 그래프 데이터:", response.data);
+      setGraphData(response.data);
+    } catch (error) {
+      console.error("그래프 데이터를 불러오는 중 에러 발생:", error);
     }
   };
+  
+  useEffect(() => {
+    getDashboardData();
+    getGraphData();
+  }, []);
+
+  // userInfo의 expectedIncome 필드를 파싱하여 차트 데이터로 생성 (useMemo 사용)
+  const expectedIncomeChartData = useMemo(() => {
+    if (userInfo && userInfo.expectedIncome) {
+      try {
+        const parsedIncome = JSON.parse(userInfo.expectedIncome);
+        return Object.entries(parsedIncome).map(([key, value]) => ({
+          name: key,
+          usage: value,
+        }));
+      } catch (error) {
+        console.error("JSON 파싱 에러:", error);
+        return [];
+      }
+    }
+    return [];
+  }, [userInfo]);
 
   const periodComparisonLabel = {
     week: '지난 주 대비',
-    month: '지난 달 대비',
-    '6months': '지난 반기 대비',
+    month: '지난 달 대비', 
     year: '작년 대비',
   }[selectedPeriod];
+
+  const calculateAge = (birthDate) => {
+    if (!birthDate) return null;
+    const today = new Date();
+    const birth = new Date(birthDate);
+    let age = today.getFullYear() - birth.getFullYear();
+    const m = today.getMonth() - birth.getMonth();
+    if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
+      age--;
+    }
+    return age;
+  };
+   
+  const currentAge = calculateAge(userInfo.birthDate);
 
   const handleConfirm = async () => {
     let resultMessage = "";
     if (modalType === 'approve') {
       console.log('사용자 승인 처리');
       try {
-        const response = await axios.post('/api/investment/approve', {}, { withCredentials: true });
+        const response = await axiosInstance.post('/api/investment/approve', {}, { withCredentials: true });
         resultMessage = "승인 처리 완료: " + (response.data.message || "처리 성공");
       } catch (error) {
         resultMessage = "승인 처리 실패: " + (error.response?.data?.message || error.message);
@@ -340,7 +404,7 @@ const DetailPage = () => {
     } else if (modalType === 'reject') {
       console.log('사용자 거절 처리');
       try {
-        const response = await axios.post('/api/investment/reject', {}, { withCredentials: true });
+        const response = await axiosInstance.post('/api/investment/reject', {}, { withCredentials: true });
         resultMessage = "거절 처리 완료: " + (response.data.message || "처리 성공");
       } catch (error) {
         resultMessage = "거절 처리 실패: " + (error.response?.data?.message || error.message);
@@ -350,13 +414,11 @@ const DetailPage = () => {
     setModalType(null);
     setResultModalMessage(resultMessage);
     setResultModalOpen(true);
-  
-    // 2초 후 페이지 새로고침
+
     setTimeout(() => {
       window.location.reload();
     }, 2000);
   };
-  
 
   const handleCancel = () => {
     setModalOpen(false);
@@ -374,7 +436,7 @@ const DetailPage = () => {
       bottomSectionRef.current.scrollIntoView({ behavior: 'smooth' });
     }
   };
-
+ 
   const parseJSONField = (jsonStr, defaultValue = {}) => {
     try {
       return JSON.parse(jsonStr) || defaultValue;
@@ -383,7 +445,7 @@ const DetailPage = () => {
       return defaultValue;
     }
   };
-
+ 
   const universityData = parseJSONField(userInfo.universityInfo);
   const highSchoolData = parseJSONField(userInfo.studentCard);
   const certificationData = parseJSONField(userInfo.certification, []);
@@ -392,19 +454,27 @@ const DetailPage = () => {
   const universityName = universityData?.universityName || "없음";
   const major = universityData?.major || "없음";
 
-  const highSchool = highSchoolData?.highSchool || "없음";
-  const transcript = highSchoolData?.score || "없음";
+  const highSchool = highSchoolData?.highscool || "없음";
+  const transcript = highSchoolData?.highscoolGPA || "없음";
+ 
+  let certificationsArray = [];
+  if (Array.isArray(certificationData)) {
+    certificationsArray = certificationData.map(cert =>
+      typeof cert === 'object' && cert.certificate ? cert.certificate : cert
+    );
+  } else if (certificationData && typeof certificationData === 'object') { 
+    certificationsArray = Object.values(certificationData);
+  } else if (certificationData) {
+    certificationsArray = [certificationData.toString()];
+  }
 
-  const certifications = Array.isArray(certificationData)
-    ? certificationData.join(", ")
-    : certificationData.toString() || "없음";
-
-  const marriageStatus = familyData?.marriageStatus || "없음";
+  const marriageStatus = familyData?.married !== undefined ? (familyData.married ? "기혼" : "미혼") : "없음";
   const children = familyData?.children != null ? familyData.children.toString() : "없음";
 
   return (
     <PageContainer>
       <ContentWrapper>
+        {/* 기본 사용자 정보 섹션 */}
         <Section ref={topSectionRef}>
           <SectionTitle>기본 사용자 정보</SectionTitle>
           <InfoContainer>
@@ -415,7 +485,7 @@ const DetailPage = () => {
               <ReadOnlyField label="전화번호" value={userInfo.phone} />
               <ReadOnlyField label="주소" value={userInfo.address} />
               <ReadOnlyField label="역할" value={userInfo.role} />
-              <ReadOnlyField label="가입일" value={userInfo.createdAt} />
+              <ReadOnlyField label="가입일" value={formatDateTime(userInfo.createdAt)} />
             </UserInfo>
           </InfoContainer>
           {userInfo.status === "대기" && (
@@ -428,39 +498,29 @@ const DetailPage = () => {
               </RejectButton>
             </div>
           )}
-
         </Section>
-
+ 
         <Section>
           <SectionTitle>통계</SectionTitle>
           <StatBoxesContainer>
-            {Object.entries(statCategories).map(([key, label]) => (
-              <StatBox
-                key={key}
-                onClick={() => setSelectedStat(key)}
-                $isSelected={selectedStat === key}
-              >
-                <StatTitleText>{label}</StatTitleText>
-                <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <StatNumber>{statDisplayValueForCategory(key)}</StatNumber>
-                  <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
-                    <Badge change={computeBadgeChangeForCategory(key)} />
-                    <ComparisonText>{periodComparisonLabel}</ComparisonText>
-                  </div>
+            <StatBox style={{ marginBottom: '30px' }}>
+              <StatTitleText>사용액</StatTitleText>
+              <div style={{ display: 'flex', alignItems: 'center' }}> 
+                <StatNumber>{statDisplayValueForPeriod()}</StatNumber>
+                <Badge change={computeBadgeChangeForPeriod()} />
+                <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
+                  {periodComparisonLabel}
                 </div>
-              </StatBox>
-            ))}
-          </StatBoxesContainer>
-
+              </div>
+            </StatBox>
+          </StatBoxesContainer> 
           <PeriodContainer>
-            {selectedStat !== 'remainingSupport' && (
-              <PeriodButton
-                onClick={() => setSelectedPeriod('week')}
-                isSelected={selectedPeriod === 'week'}
-              >
-                주
-              </PeriodButton>
-            )}
+            <PeriodButton
+              onClick={() => setSelectedPeriod('week')}
+              isSelected={selectedPeriod === 'week'}
+            >
+              주
+            </PeriodButton>
             <PeriodButton
               onClick={() => setSelectedPeriod('month')}
               isSelected={selectedPeriod === 'month'}
@@ -468,60 +528,80 @@ const DetailPage = () => {
               월
             </PeriodButton>
             <PeriodButton
-              onClick={() => setSelectedPeriod('6months')}
-              isSelected={selectedPeriod === '6months'}
-            >
-              6개월
-            </PeriodButton>
-            <PeriodButton
               onClick={() => setSelectedPeriod('year')}
               isSelected={selectedPeriod === 'year'}
             >
               연
             </PeriodButton>
-          </PeriodContainer>
-
-          <ChartsContainer>
-            <ChartCard data={currentData.barData} name={statCategories[selectedStat]} />
-            <PieChartCard data={currentData.pieData} />
+          </PeriodContainer>  
+          
+          <ChartCard 
+            data={getChartData()} 
+            name={`기간별 비교 (${selectedPeriod})`}
+          />
+          
+          <StatBoxesContainer/>
+       
+        </Section>
+ 
+        <Section>
+          <SectionTitle>예상 소득</SectionTitle>
+          <StatBoxesContainer>
+            <StatBox style={{ marginBottom: '30px' }}>
+              <StatTitleText>예상 소득</StatTitleText>
+              <StatNumber>
+                {userInfo.expectedIncome
+                  ? expectedValue.toLocaleString() + ' 원'
+                  : "데이터 없음"}
+              </StatNumber>
+            </StatBox>
+          </StatBoxesContainer>
+          <ChartsContainer> 
+            <LineChartCard 
+              data={expectedIncomeChartData} 
+              name="예상 소득" 
+              currentAge={calculateAge(userInfo.birthDate)}
+            />
           </ChartsContainer>
         </Section>
-
+ 
         <Section>
           <SectionTitle>사용자 프로필 정보</SectionTitle>
           <ReadOnlyField label="대학" value={universityName} />
           <ReadOnlyField label="학과" value={major} />
-          <ReadOnlyField label="고등학교" value={highSchool} />
-          <ReadOnlyField label="내신" value={transcript} />
-          <ReadOnlyField label="자격증" value={certifications} />
+          <ReadOnlyField label="학점" value={transcript} />
+          <ReadOnlyField label="고등학교" value={highSchool} /> 
+          <ReadOnlyField label="자격증" value={certificationsArray.length > 0 ? certificationsArray.join(", ") : "없음"} />
           <ReadOnlyField label="결혼상태" value={marriageStatus} />
           <ReadOnlyField label="자녀" value={children} />
           <ReadOnlyField label="자산" value={userInfo.assets ? userInfo.assets.toLocaleString() + ' 원' : null} />
-          <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '있음' : null} />
+          <ReadOnlyField label="범죄 기록" value={userInfo.criminalRecord ? '없음' : null} />
           <ReadOnlyField label="건강 상태" value={userInfo.healthStatus} />
           <ReadOnlyField label="성별" value={userInfo.gender != null ? (userInfo.gender ? '여성' : '남성') : null} />
-          <ReadOnlyField label="주소" value={userInfo.profileAddress} />
-          <ReadOnlyField label="정신 상태" value={userInfo.mentalStatus} />
+          <ReadOnlyField label="인성 점수" value={userInfo.mentalStatus} />
           <ReadOnlyField label="프로필 생성일" value={formatDateTime(userInfo.profileCreatedAt)} />
         </Section>
-
+ 
+        {/* 투자 정보 섹션 */}
         <Section>
           <SectionTitle>투자 정보</SectionTitle>
           <ReadOnlyField label="투자 ID" value={userInfo.grantId} />
           <ReadOnlyField label="투자 시작일" value={userInfo.startDate} />
           <ReadOnlyField label="투자 종료일" value={userInfo.endDate} />
           <ReadOnlyField label="상태" value={userInfo.status} />
-          <ReadOnlyField label="원래 투자 금액" value={userInfo.originalInvestValue ? userInfo.originalInvestValue.toLocaleString() + ' 원' : null} />
+          <ReadOnlyField label="누적 투자 금액" value={userInfo.originalInvestValue ? userInfo.originalInvestValue.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="월 지원금" value={userInfo.monthlyAllowance ? userInfo.monthlyAllowance.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="상환 비율" value={userInfo.refundRate ? userInfo.refundRate + '%' : null} />
           <ReadOnlyField label="최대 투자 가능 금액" value={userInfo.maxInvestment ? userInfo.maxInvestment.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="운용 보수" value={userInfo.field} placeholder="운용 보수" />
           <ReadOnlyField label="사용한 지원금" value={userInfo.investValue ? userInfo.investValue.toLocaleString() + ' 원' : null} />
           <ReadOnlyField label="임시 월 지원금" value={userInfo.tempAllowance ? userInfo.tempAllowance.toLocaleString() + ' 원' : null} />
-          <ReadOnlyField label="투자 생성일" value={userInfo.investmentCreatedAt} />
+          <ReadOnlyField label="투자 생성일" value={formatDateTime(userInfo.investmentCreatedAt)} />
         </Section>
-        <Section ref={bottomSectionRef}></Section>
 
+        <Section ref={bottomSectionRef} style={{ height: 0, overflow: 'hidden', margin: 0, padding: 0 }}></Section>
+
+        {/* 모달 영역 */}
         {modalOpen && (
           <ApprovalModalOverlay>
             <ApprovalModalContent>
@@ -554,4 +634,4 @@ const DetailPage = () => {
   );
 };
 
-export default DetailPage;
+export default DetailPage; 

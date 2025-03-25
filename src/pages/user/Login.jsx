@@ -4,12 +4,17 @@ import { Link, useNavigate } from "react-router-dom";
 import "styles/user/login.css";
 
 function Login() {
+    const apipath = process.env.REACT_APP_API_URL;
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
 
-    const navigate = useNavigate();  
+    const navigate = useNavigate();
+ 
+    const handleLogoClick = () => {
+        navigate("/");
+    };
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -21,20 +26,20 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+              try {
+                console.log("fetch URL:", process.env.REACT_APP_API_URL + '/api/auth/login');
 
-        try {
-            const response = await fetch("http://localhost:8080/api/auth/login", {
+            const response = await fetch(process.env.REACT_APP_API_URL.replace(/"/g, "") +'/api/auth/login', {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(formData),
+                body: JSON.stringify(formData), 
                 credentials: "include",
-            });
-
+            }); 
             if (response.ok) {
-                alert("로그인 성공!");
-                navigate("/");
+                alert("로그인 성공!"); 
+                navigate("/user/dashboard");
             } else {
                 const errorData = await response.json();
                 alert(errorData.message || "로그인 실패");
@@ -48,6 +53,11 @@ function Login() {
     return (
         <div className="login-container">
             <div className="login-box">
+                {/* 로고 클릭 시 홈으로 이동 */}
+                <h2 className="login-title" onClick={handleLogoClick} style={{ cursor: "pointer" }}>
+                    <img src="/logo.png" alt="Logo" width={38} />
+                    Peoch
+                </h2>
                 <h2 className="login-title">로그인</h2>
                 <form onSubmit={handleSubmit}>
                     <input
@@ -77,16 +87,6 @@ function Login() {
                 <div className="login-signup-box">
                     <p>아직 회원이 아니신가요?</p>
                     <Link to="/signup" className="signup-button">회원가입</Link>
-                </div>
-                <div className="social-login">
-                    <button className="kakao-login">
-
-                        카카오톡으로 계속하기
-                    </button>
-                    <button className="naver-login">
-
-                        네이버로 계속하기
-                    </button>
                 </div>
             </div>
         </div>

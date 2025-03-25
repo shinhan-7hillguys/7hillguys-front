@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import axiosInstance from "api";
 
 function BenefitStatement() {
   const [statement, setStatement] = useState({
@@ -24,8 +25,8 @@ function BenefitStatement() {
   };
 
   useEffect(() => {
-    axios
-      .get("http://localhost:8080/card/benefitStatement", {
+    axiosInstance
+      .get("/card/benefitStatement", {
         withCredentials: true,
         params: { yearMonth },
         headers: {
@@ -41,10 +42,12 @@ function BenefitStatement() {
   }, [yearMonth]);
 
   return (
-    <div className="min-h-screen bg-gray-100 p-4">
-      <div className="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
-        {/* 연/월 선택 영역 */}
-        <div className="flex items-center justify-center space-x-2 p-4 border-b border-gray-200">
+    <div className="min-h-screen">
+      <div className="w-full bg-white my-custom-rounded shadow-md p-6 min-h-screen">
+        <div className="flex justify-center">
+          <h1 className="text-2xl font-bold">혜택 명세서</h1>
+        </div>
+        <div className="flex items-center justify-start space-x-2 p-4 border-b border-gray-200">
           <span className="text-xl font-bold">{currentYear}년</span>
           <div className="relative">
             <select
@@ -70,15 +73,12 @@ function BenefitStatement() {
           </div>
         </div>
 
-        {/* 받은 혜택 정보 */}
-        <div className="text-center py-6">
+        <div className="rounded-lg p-4 mb-4 bg-pink-50">
           {statement.userName && (
-            <p className="text-sm text-gray-500 mb-1">
-              {statement.userName}님이 받은 혜택
-            </p>
+            <p className="text-sm mb-1">{statement.userName}님이 받은 혜택</p>
           )}
           <p className="text-3xl font-bold text-pink-600">
-            {String(statement.totalBenefitDiscount)}원
+            {statement.totalBenefitDiscount.toLocaleString()}원
           </p>
         </div>
 
@@ -92,10 +92,10 @@ function BenefitStatement() {
                 <span className="font-semibold">{tx.storeName}</span>
                 <div className="flex items-center space-x-1">
                   <span className="line-through">
-                    {String(tx.originalAmount)}원
+                    {tx.originalAmount.toLocaleString()}원
                   </span>
                   <span>→</span>
-                  <span>{String(tx.finalAmount)}원</span>
+                  <span>{tx.finalAmount.toLocaleString()}원</span>
                 </div>
               </div>
               <div className="flex justify-between items-center mt-1">
@@ -103,7 +103,7 @@ function BenefitStatement() {
                   {formatDate(tx.paymentDate)}
                 </span>
                 <span className="font-bold text-pink-600 text-lg mr-8">
-                  {String(tx.benefitDiscountAmount)}원
+                  {tx.benefitDiscountAmount.toLocaleString()}원
                 </span>
               </div>
             </li>

@@ -25,12 +25,10 @@ const ResumeDetail = () => {
             <h2 style={detailTitleStyle}>
                 {resume.company} / {resume.position} / {resume.applyDate}
             </h2>
-            <p style={detailSubTitleStyle}>{resume.type}</p>
             <hr />
-            <p style={detailTextStyle}>{resume.detail}</p>
-            <button onClick={() => navigate(-1)} style={backButtonStyle}>
-                뒤로가기
-            </button>
+            {resume.detail.split('\n').map((line, index) => (
+                <p key={index} style={detailTextStyle}>{line}</p>
+            ))}
         </div>
     );
 };
@@ -41,12 +39,12 @@ export default ResumeDetail;
 const detailContainerStyle = {
     width: "90%",
     maxWidth: "700px",
-    margin: "30px auto",
+    margin: "20px auto",
     padding: "20px",
-    background:
-        "linear-gradient(191deg, rgba(255,247,252,0.7) 0%, rgba(235,217,238,0.3) 100%)",
+    // background:
+    //     "linear-gradient(191deg, rgba(255,247,252,0.7) 0%, rgba(235,217,238,0.3) 100%)",
     borderRadius: "10px",
-    boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
+    // boxShadow: "0px 2px 8px rgba(0,0,0,0.1)",
     fontFamily: "Pretendard, sans-serif",
 };
 
@@ -64,10 +62,11 @@ const detailSubTitleStyle = {
 };
 
 const detailTextStyle = {
-    fontSize: "0.95rem",
+    fontSize: "1.10rem",
     lineHeight: "1.6",
     color: "#333",
     marginBottom: "20px",
+    whiteSpace: "pre-line", // 줄바꿈 유지
 };
 
 const backButtonStyle = {

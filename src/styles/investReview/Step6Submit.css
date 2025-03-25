@@ -1,31 +1,21 @@
 /* Step6Submit.css - 최종 제출페이지 */
 
-/* 전체 컨테이너 */
-.submit-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    padding: 40px;
-    background-color: #FFF7F7;
-}
-
 /* 제출 박스 */
 .submit-box {
     background: white;
     padding: 30px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
     width: 100%;
+    overflow: auto;
 }
 
 /* 제목 */
-.submit-title {
-    font-size: 22px;
+.submit-box .submit-title {
+    font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
+    text-align: center;
+    color: black;
     margin-bottom: 15px;
 }
 
@@ -57,14 +47,14 @@
     width: 48%;
 }
 
-.submit-prev-button:hover {
+/*.submit-prev-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 제출 버튼 */
 .submit-next-button {
     padding: 12px;
-    background-color: #4CAF50;
+    background-color: #FEA1B8;
     color: white;
     border: none;
     border-radius: 5px;
@@ -73,6 +63,7 @@
     width: 48%;
 }
 
+/*
 .submit-next-button:hover {
     background-color: #45A049;
-}
+}*/

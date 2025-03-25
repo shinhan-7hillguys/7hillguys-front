@@ -1,4 +1,4 @@
-const API_BASE_URL = "http://localhost:8080/api"; // 백엔드 API 기본 URL
+ // 백엔드 API 기본 URL
 
 export const apiRequest = async (endpoint, options = {}) => {
     const defaultHeaders = {
@@ -14,7 +14,7 @@ export const apiRequest = async (endpoint, options = {}) => {
         },
     };
 
-    const response = await fetch(`${API_BASE_URL}${endpoint}`, config);
+    const response = await fetch(process.env.REACT_APP_API_URL+`${endpoint}`, config);
 
     if (!response.ok) {
         throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);

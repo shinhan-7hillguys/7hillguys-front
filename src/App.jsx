@@ -3,8 +3,7 @@ import "./App.css";
 import AppLayout from "./components/common/AppLayout";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import axios from "axios";
-
-import Mypage from "./pages/mypage/Mypage";
+ 
 import Main from "./Main";
 import Education from "./pages/education/Education";
 
@@ -18,7 +17,6 @@ import Layout from "./components/dashboard/DashboardLayout";
 import SearchResults from "./pages/admin/searchresult";
 import Detail from "./pages/admin/Detail";
 
-import Dashboard from "./pages/admin/Dashboard";
 
 
 // card 및 혜택
@@ -32,12 +30,12 @@ import EnglishNamePage from "pages/card/EnglishNamePage";
 import CardPinPage from "pages/card/CardPinPage";
 import FinalCheckPage from "pages/card/FinalCheckPage";
 
-// import Dashboard from "./pages/admin/Dashboard";
-import Design from "./pages/card/CardDesignPage";
+import Dashboard from "./pages/admin/Dashboard"; 
 import BenefitCompare from "pages/card/BenefitCompare";
 
 import User from "pages/user/User";
 import Login from "pages/user/Login";
+import Logout from "pages/user/Logout";
 import Signup from "pages/user/Signup";
 import ResumeEdit from "./pages/education/ResumeEdit";
 import SalaryComparisonChart from "./pages/education/SalaryComparisonChart";
@@ -73,18 +71,19 @@ import CalculationResult from "./pages/account/CalculationResult";
 import PositiveFactors from "./pages/account/PositiveFactors";
 import ContractPreview from "./pages/investResult/ContractPreview";
 
-
+/* test */ 
+import Test from "./test/ServiceCycle";
 
 function App() {
   axios.defaults.withCredentials = true;
-  // (선택 사항) 기본 URL 설정
-  axios.defaults.baseURL = "http://localhost:8080";
+  
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Main />} />
         {/* 로그인 & 회원가입 추가 */}
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route path="/signup" element={<Signup />} />
 
         <Route element={<Layout />}>
@@ -123,7 +122,7 @@ function App() {
           <Route path="/contract" element={<ContractSigning />} />
           <Route path="/contract-preview" element={<ContractPreview />} />
 
-    
+
           <Route path="/user/dashboard" element={<UserMain />} />
 
           <Route path="/investReview" element={<Review />} />
@@ -132,7 +131,7 @@ function App() {
           <Route path="/investExit" element={<InvestmentExit/>}/>
           <Route path="/SetInvestment" element={<SetInvestment/>}/>
           <Route path="/investmentReallyExit" element={<InvestmentReallyExit/>}/>
-
+          <Route path="/test" element = {<Test/>}/>
           <Route
             path="/investment/status"
             element={<InvestmentStatusCheck />}
@@ -171,12 +170,12 @@ function App() {
           <Route path="/account/bill" element={<Bill />} />
           <Route path="/account/calculation" element={<Calculation />} />
           <Route path="/account/calculationResult" element={<CalculationResult />} />
-          <Route path="/account/positive" element={<PositiveFactors />} />
+          <Route path="/education/positive" element={<PositiveFactors />} />
         </Route>
         <Route element={<Layout />}>
           {/* <Route path="/admin" element={<Dashboard />} /> */}
           <Route path="/admin/search/:query" element={<SearchResults />} />
-          <Route path="/admin/user/detail/:id" element={<Detail />} />
+          <Route path="/admin/user/detail/:userid" element={<Detail />} />
         </Route>
 
       </Routes>

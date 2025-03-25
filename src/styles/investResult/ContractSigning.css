@@ -1,4 +1,4 @@
-/* ContractSigning.css - 대출 계약서 서명 페이지 */
+/* ContractSigning.css - 투자 계약서 서명 페이지 */
 
 /* 전체 컨테이너 */
 .contract-container {
@@ -6,9 +6,9 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 100vh;
-    padding: 40px;
-    background-color: #FFF7F7;
+    /* min-height: 100vh; */
+    padding: 20px;
+    /* background-color: #FFF7F7; */
 }
 
 /* 계약서 박스 */
@@ -16,17 +16,24 @@
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: -4px 6px 10px rgba(0, 0, 0, 0.3);
     text-align: left;
     width: 100%;
     max-width: 600px;
+}
+
+.contract-box h4 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #000;
+    margin-bottom: 20px;
 }
 
 /* 제목 */
 .contract-title {
     font-size: 24px;
     font-weight: bold;
-    color: #FF4170;
+    color: black;
     text-align: center;
     margin-bottom: 20px;
 }
@@ -42,7 +49,7 @@
 .contract-section {
     font-size: 18px;
     font-weight: bold;
-    color: #FF4170;
+    color: var(--button-color);
     margin-top: 15px;
 }
 
@@ -76,7 +83,7 @@
     padding: 12px;
     border: none;
     border-radius: 5px;
-    font-size: 18px;
+    font-size: 14px;
     cursor: pointer;
     width: 48%;
     text-align: center;
@@ -88,9 +95,9 @@
     color: black;
 }
 
-.clear-button:hover {
+/*.clear-button:hover {
     background-color: #B0B0B0;
-}
+}*/
 
 /* 서명 저장 버튼 */
 .save-button {
@@ -98,16 +105,53 @@
     color: white;
 }
 
-.save-button:hover {
-    background-color: #F994AD;
-}
+/*.save-button:hover {
+    background-color: #ff6688;
+}*/
 
 /* 계약서 제출 버튼 */
 .submit-button {
-    background-color: #4CAF50;
+    background-color: rgb(201, 232, 255);
     color: white;
 }
 
+/* 로딩 애니메이션 컨테이너 */
+.loading-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+/* 개별 점 스타일 */
+.dot {
+    width: 10px;
+    height: 10px;
+    margin: 0 4px;
+    background-color: black;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+}
+
+/* 애니메이션 적용 - 순차적으로 깜빡이게 */
+.dot:nth-child(1) {
+    animation-delay: 0s;
+}
+.dot:nth-child(2) {
+    animation-delay: 0.3s;
+}
+.dot:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+/* 깜빡이는 애니메이션 */
+@keyframes blink {
+    0% { opacity: 0.2; }
+    50% { opacity: 1; }
+    100% { opacity: 0.2; }
+}
+
+/*
 .submit-button:hover {
     background-color: #45A049;
-}
+}*/
