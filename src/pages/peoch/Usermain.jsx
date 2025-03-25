@@ -256,6 +256,7 @@ export default function MainPage() {
     const response = await axiosInstance.get("/api/usersearch/usertype", {
       withCredentials: true,
     });
+    
     console.log("사용자 역할:", response.data);
     return response.data;
   };
