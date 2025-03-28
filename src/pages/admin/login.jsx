@@ -101,7 +101,7 @@ const Login = () => {
     e.preventDefault();
     try { 
        const path = process.env.REACT_APP_API_URL; 
-       const response = await axiosInstance.post(path+ '/api/login', { userId, password });
+       const response = await axiosInstance.post(path+ '/api/auth/login', { userId, password });
        login(response.data.user, response.data.token);
        localStorage.setItem('accessToken', response.data.token);
  

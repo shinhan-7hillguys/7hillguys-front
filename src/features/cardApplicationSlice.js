@@ -11,7 +11,7 @@ export const fetchUserInfo = createAsyncThunk(
       const state = getState().cardApplication;
       console.log(state)
 
-      const response = await axiosInstance.get("/card/userInfo");
+      const response = await axiosInstance.get("/api/card/userInfo");
 
       console.log(response);
       return response.data; // 서버가 반환한 { name, phone, email, address }
@@ -26,7 +26,7 @@ export const fetchUserCardInfo = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
 
-      const response = await axiosInstance.get("/card/cardInfo");
+      const response = await axiosInstance.get("/api/card/cardInfo");
       console.log("response", response);
 
       return response.data; // 서버가 반환한 { cardRegistered: true/false }
@@ -82,7 +82,7 @@ export const submitCardApplication = createAsyncThunk(
         console.log(key, value);
       }
 
-      const response = await axiosInstance.post("/card/insert", formData);
+      const response = await axiosInstance.post("/api/card/insert", formData);
       console.log("결과:", response.data);
       return response.data;
     } catch (error) {

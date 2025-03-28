@@ -62,7 +62,7 @@ const InvestmentExit = () => {
   useEffect(() => {
     const fetchTotalBenefit = async () => {
       try {
-        const response = await axiosInstance.get("/payment/totalBenefit", {
+        const response = await axiosInstance.get("/api/payment/totalBenefit", {
           withCredentials: true,
           headers: { "Content-Type": "application/json" },
         });

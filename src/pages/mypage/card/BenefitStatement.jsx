@@ -26,7 +26,7 @@ function BenefitStatement() {
 
   useEffect(() => {
     axiosInstance
-      .get("/card/benefitStatement", {
+      .get("/api/card/benefitStatement", {
         withCredentials: true,
         params: { yearMonth },
         headers: {
