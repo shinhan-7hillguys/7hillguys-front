@@ -8,7 +8,7 @@ export const fetchBenefits = createAsyncThunk(
   "benefit/fetchBenefits",
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axiosInstance.get(`/benefit/card`);
+      const response = await axiosInstance.get(`/api/benefit/card`);
       console.log(response)
       return response.data; // { availableBenefits, appliedBenefits }
     } catch (error) {

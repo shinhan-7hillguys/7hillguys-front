@@ -296,7 +296,7 @@ export default function MainPage() {
 
   const getDashboardData = async () => {
     const today = new Date().toISOString().split("T")[0];
-    const response = await axiosInstance.get("/card/cardDataTotal", {
+    const response = await axiosInstance.get("/api/card/cardDataTotal", {
       params: { date: today },
       withCredentials: true,
     });
@@ -325,7 +325,7 @@ export default function MainPage() {
 
   const getGraphData = async () => {
     const today = new Date().toISOString().split("T")[0];
-    const response = await axiosInstance.get("/card/cardDataMap", {
+    const response = await axiosInstance.get("/api/card/cardDataMap", {
       params: { date: today },
       withCredentials: true,
     });

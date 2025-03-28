@@ -17,7 +17,7 @@ function PaymentTest() {
     };
 
     axiosInstance
-        .post("/payment/paymentRequest", requestData, {})
+        .post("/api/payment/paymentRequest", requestData, {})
       .then((response) => {
         const { success, message, code } = response.data;
 

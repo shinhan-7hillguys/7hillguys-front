@@ -14,7 +14,7 @@ export const fetchPayments = createAsyncThunk(
     try {
       console.log(cardId)
 
-      const response = await axiosInstance.get("/benefit/payments", {
+      const response = await axiosInstance.get("/api/benefit/payments", {
         params: { cardId, month },
       });
       console.log(response.data)
