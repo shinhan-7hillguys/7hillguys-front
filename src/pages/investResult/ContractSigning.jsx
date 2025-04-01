@@ -12,7 +12,7 @@ const ContractSigning = () => {
 
     // 계약서 내용 불러오기 (쿠키 포함)
     useEffect(() => {
-        fetch("/api/contract/template", {
+        fetch("http://192.168.0.172:31001/api/contract/template", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -44,7 +44,7 @@ const ContractSigning = () => {
         }
 
         try {
-            const response = await fetch("/api/contract/sign", {
+            const response = await fetch("http://192.168.0.172:31001/api/contract/sign", {
                 method: "POST",
                 credentials: "include",
                 headers: {

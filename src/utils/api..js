@@ -1,16 +1,15 @@
-const API_BASE_URL = "http://localhost:8080"; // 백엔드 API 기본 URL
+const API_BASE_URL = process.env.REACT_APP_API_URL || "http://192.168.0.172:31001";
 
-export const apiRequest = async (endpoint, options = {}) => {
+export const customFetch = async (endpoint, options = {}) => {
     const defaultHeaders = {
         "Content-Type": "application/json",
     };
 
     const config = {
         ...options,
-        credentials: "include",  // 쿠키 자동 포함
         headers: {
             ...defaultHeaders,
-            ...options.headers, // 사용자 정의 헤더 병합
+            ...options.headers,
         },
     };
 
@@ -20,5 +19,5 @@ export const apiRequest = async (endpoint, options = {}) => {
         throw new Error(`HTTP 오류! 상태 코드: ${response.status}`);
     }
 
-    return response.json(); // JSON 형태로 반환
+    return response.json();
 };
