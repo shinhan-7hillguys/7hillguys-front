@@ -1,7 +1,6 @@
 // src/features/cardApplicationSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axiosInstance from "api";
-import axios from "axios";
+import axiosInstance from "api"; 
 
 // 사용자 정보를 가져오는 Thunk
 export const fetchUserInfo = createAsyncThunk(
