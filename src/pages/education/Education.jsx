@@ -12,6 +12,7 @@ import {
   PolarRadiusAxis,
   Legend,
 } from "recharts";
+import axiosInstance from "api";
 
 // CompanyCard 컴포넌트 (onMouseEnter/Leave 사용)
 const CompanyCard = ({ company, onMouseEnter, onMouseLeave, onClick }) => {
@@ -129,7 +130,7 @@ const Education = () => {
 
   // userProfile 데이터 GET
   useEffect(() => {
-    axios
+    axiosInstance
       .get("/api/myspecs")
       .then((res) => setUserProfile(res.data))
       .catch((err) => console.error("Error fetching user profile:", err));

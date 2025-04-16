@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "api";
 
 const ResumeEdit = () => {
     const navigate = useNavigate();
@@ -37,7 +38,7 @@ const ResumeEdit = () => {
 
     // 페이지 마운트 시 기존 데이터 로드 (GET /api/myspecs/2)
     useEffect(() => {
-        axios
+        axiosInstance
             .get("/api/myspecs")
             .then((res) => {
                 const data = res.data;
@@ -101,7 +102,7 @@ const ResumeEdit = () => {
                 internship: JSON.stringify(internships),
                 grade: JSON.stringify({ gpa: grade, maxGpa: "4.5" }),
             };
-            await axios.put("/api/myspecs", requestData);
+            await axiosInstance.put("/api/myspecs", requestData);
             alert("모든 내용이 저장되었습니다.");
             navigate("/education/myeducation");
         } catch (error) {

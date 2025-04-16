@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import "../../style/Calculation.css";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from 'api';
 
 axios.defaults.withCredentials = true;
 
@@ -13,7 +14,7 @@ function Calculation() {
     const [error, setError] = useState("");
 
     useEffect(() => {
-        axios.get('/api/auth/user', {
+        axiosInstance.get('/api/auth/user', {
             headers: { "Content-Type": "application/json" }
         })
             .then(response => {

@@ -12,6 +12,7 @@ import {
 } from "recharts";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "api";
 
 const PageContainer = styled.div`
   padding: 16px;
@@ -252,15 +253,16 @@ export default function MainPage() {
   const navigate = useNavigate();
  
   const getRole = async () => {
-    const response = await axios.get("/api/user/usertype", {
+    const response = await axiosInstance.get("/api/usersearch/usertype", {
       withCredentials: true,
     });
+    
     console.log("사용자 역할:", response.data);
     return response.data;
   };
 
   const getUserAge = async () => {
-    const response = await axios.get("/api/user/age", {
+    const response = await axiosInstance.get("/api/usersearch/age", {
       withCredentials: true,
     });
     console.log("사용자 나이:", response.data);
@@ -268,7 +270,7 @@ export default function MainPage() {
   };
 
   const getInvestmentStatus = async () => {
-    const response = await axios.get("/api/investment/status", {
+    const response = await axiosInstance.get("/api/investment/status", {
       withCredentials: true,
     });
     console.log("사용자 정보 : " + response);
@@ -277,7 +279,7 @@ export default function MainPage() {
   };
 
   const getUserName = async () => {
-    const response = await axios.get("/api/auth/userId", {
+    const response = await axiosInstance.get("/api/auth/userId", {
       withCredentials: true,
     });
     console.log("사용자 이름:" + response.data.name);
@@ -285,7 +287,7 @@ export default function MainPage() {
   };
 
   const getUserId = async () => {
-    const response = await axios.get("/api/auth/user", {
+    const response = await axiosInstance.get("/api/auth/user", {
       withCredentials: true,
     });
     console.log("사용자 ID:" + response.data.userId);
@@ -294,7 +296,7 @@ export default function MainPage() {
 
   const getDashboardData = async () => {
     const today = new Date().toISOString().split("T")[0];
-    const response = await axios.get("/card/cardDataTotal", {
+    const response = await axiosInstance.get("/api/card/cardDataTotal", {
       params: { date: today },
       withCredentials: true,
     });
@@ -304,7 +306,7 @@ export default function MainPage() {
 /*    useEffect(() => {
     if (selectedStat === "예상소득") {
       axios
-        .get(`/api/user/expectedincome`, { withCredentials: true })
+        .get(`/api/usersearch/expectedincome`, { withCredentials: true })
         .then((response) => {
           const expectedIncome = response.data;
           console.log("예측소득 데이터:", expectedIncome);
@@ -323,7 +325,7 @@ export default function MainPage() {
 
   const getGraphData = async () => {
     const today = new Date().toISOString().split("T")[0];
-    const response = await axios.get("/card/cardDataMap", {
+    const response = await axiosInstance.get("/api/card/cardDataMap", {
       params: { date: today },
       withCredentials: true,
     });
@@ -334,6 +336,7 @@ export default function MainPage() {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("getrole 사용전");
         const userrole = await getRole();  
         console.log("useEffect 내 getrole : " + userrole);
         if (userrole === "ADMIN") {

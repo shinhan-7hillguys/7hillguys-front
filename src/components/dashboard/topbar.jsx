@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 import config from 'config';
+import axiosInstance from 'api';
 
 const TopbarContainer = styled.div`
   width: 100%;
@@ -61,7 +61,7 @@ const Topbar = () => {
   const handleSearchClick = async () => {
     if (searchValue.trim()) {
       try {
-        const response = await axios.get(`${config.apiBaseUrl}/user/search`, {
+        const response = await axiosInstance.get("/api/usersearch/search", {
           params: { query: searchValue },
           withCredentials: true,
           headers: {

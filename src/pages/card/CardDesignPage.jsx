@@ -20,6 +20,7 @@ import CardPreview from "./CardPreview";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { setCardDesign } from "features/cardApplicationSlice";
+import axiosInstance from "api";
 
 function CardDesignPage() {
   
@@ -118,7 +119,7 @@ function CardDesignPage() {
     if (bgFile) formData.append("image", bgFile);
     formData.append("cardDesignDTO", new Blob([JSON.stringify(cardDesign)], { type: "application/json" }));
 
-    axios
+    axiosInstance
         .post("/api/card/design/insert", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       })

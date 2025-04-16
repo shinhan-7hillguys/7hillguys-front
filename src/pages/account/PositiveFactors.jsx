@@ -7,8 +7,9 @@ import {
     YAxis,
     ResponsiveContainer
 } from 'recharts';
+import axiosInstance from 'api';
 
-axios.defaults.withCredentials = true;
+axiosInstance.defaults.withCredentials = true;
 
 function PositiveFactors() {
     const [profileData, setProfileData] = useState(null);
@@ -16,7 +17,7 @@ function PositiveFactors() {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     useEffect(() => {
-        axios.get("/api/userprofiles2", {
+        axiosInstance.get("/api/userprofiles2", {
             withCredentials: true, // 쿠키 포함
         })
             .then((res) => {

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import axiosInstance from "api";
 
 function AllBenefitSearch() {
   const [benefits, setBenefits] = useState([]);
 
   useEffect(() => {
-    axios
+    axiosInstance
       .get("/card/allBenefitSearch", {
         withCredentials: true,
         headers: {

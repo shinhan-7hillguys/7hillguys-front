@@ -242,3 +242,6 @@ gradle-app.setting
 # Ignore IDE and config files
 *.iml
 .idea/
+
+## 환경변수 파일 ##
+.env

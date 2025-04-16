@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import axiosInstance from "api";
 
 function BenefitStatement() {
   const [statement, setStatement] = useState({
@@ -24,8 +25,8 @@ function BenefitStatement() {
   };
 
   useEffect(() => {
-    axios
-      .get("/card/benefitStatement", {
+    axiosInstance
+      .get("/api/card/benefitStatement", {
         withCredentials: true,
         params: { yearMonth },
         headers: {

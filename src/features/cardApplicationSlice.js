@@ -1,6 +1,6 @@
 // src/features/cardApplicationSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axiosInstance from "api"; 
 
 // 사용자 정보를 가져오는 Thunk
 export const fetchUserInfo = createAsyncThunk(
@@ -10,7 +10,7 @@ export const fetchUserInfo = createAsyncThunk(
       const state = getState().cardApplication;
       console.log(state)
 
-      const response = await axios.get("/card/userInfo");
+      const response = await axiosInstance.get("/api/card/userInfo");
 
       console.log(response);
       return response.data; // 서버가 반환한 { name, phone, email, address }
@@ -25,7 +25,7 @@ export const fetchUserCardInfo = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
 
-      const response = await axios.get("http://localhost:8080/card/cardInfo");
+      const response = await axiosInstance.get("/api/card/cardInfo");
       console.log("response", response);
 
       return response.data; // 서버가 반환한 { cardRegistered: true/false }
@@ -81,7 +81,7 @@ export const submitCardApplication = createAsyncThunk(
         console.log(key, value);
       }
 
-      const response = await axios.post("/card/insert", formData);
+      const response = await axiosInstance.post("/api/card/insert", formData);
       console.log("결과:", response.data);
       return response.data;
     } catch (error) {
