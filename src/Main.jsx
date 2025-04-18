@@ -69,7 +69,7 @@ const Main = () => {
             toggleActions: "play none none reverse",
           },
         });
-
+   
         // 나타나는 애니메이션
         tl.fromTo(
           text,
